@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/JAVA Libs/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="D:/JAVA Libs/jEVE-Project Core 1.0/JEve-Core-1.0.jar"/>
-	<classpathentry kind="lib" path="D:/JAVA Libs/TrollTech/QTJambi 4.4.3_01/qtjambi-4.4.3_01.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
