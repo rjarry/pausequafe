@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/SkillInTraining" xmlns:tns="http://www.example.org/SkillInTraining" elementFormDefault="qualified">
+
+    <element name="eveapi" type="tns:eveapiType"></element>
+    
+    <complexType name="eveapiType">
+    	<sequence>
+    		<element name="currentTime" type="dateTime" maxOccurs="1" minOccurs="1"></element>
+    		<element name="result" type="tns:resultType" maxOccurs="1" minOccurs="1"></element>
+    		<element name="cachedUntil" type="dateTime" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+
+    	<attribute name="version">
+    		<simpleType>
+    			<restriction base="int">
+    				<maxInclusive value="2"></maxInclusive>
+    				<minInclusive value="1"></minInclusive>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    </complexType>
+
+    <complexType name="resultType">
+    	<sequence>
+    		<element name="currentTQTime" type="tns:currentTQTimeType" maxOccurs="1" minOccurs="1"></element>
+    		<element name="trainingEndTime" type="dateTime" maxOccurs="1" minOccurs="1"></element>
+    		<element name="trainingStartTime" type="dateTime" maxOccurs="1" minOccurs="1"></element>
+    		<element name="trainingTypeID" type="int" maxOccurs="1" minOccurs="1"></element>
+    		<element name="trainingStartSP" type="int" maxOccurs="1" minOccurs="1"></element>
+    		<element name="trainingDestinationSP" type="int" maxOccurs="1" minOccurs="1"></element>
+    		<element name="trainingToLevel" type="int" maxOccurs="1" minOccurs="1"></element>
+    		<element name="skillInTraining" type="int" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+
+
+
+    <complexType name="currentTQTimeType">
+    	<simpleContent>
+    		<extension base="dateTime">
+    			<attribute name="offset" type="int"></attribute>
+    		</extension>
+    	</simpleContent>
+    </complexType>
+</schema>
