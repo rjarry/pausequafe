@@ -1,4 +1,4 @@
-package org.jevemon.exceptions;
+package org.jevemon.misc.exceptions;
 
 public class JEVEMonParseException extends Exception {
 
