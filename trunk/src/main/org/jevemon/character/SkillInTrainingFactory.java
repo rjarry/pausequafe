@@ -1,4 +1,4 @@
-package main.character;
+package org.jevemon.character;
 
 import java.io.File;
 

@@ -1,8 +1,8 @@
-package main.characterlist;
+package org.jevemon.characterlist;
 
 import java.util.LinkedList;
 
-import main.exceptions.JEVEMonException;
+import org.jevemon.exceptions.JEVEMonException;
 
 public class CharacterList {
 	

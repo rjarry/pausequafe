@@ -1,4 +1,4 @@
-package main.character;
+package org.jevemon.character;
 
 public class SkillInTraining {
 

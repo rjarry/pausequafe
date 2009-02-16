@@ -1,4 +1,4 @@
-package main.characterlist;
+package org.jevemon.characterlist;
 
 /**
  * Infos from characters.xml used for character selection when entering a new API key

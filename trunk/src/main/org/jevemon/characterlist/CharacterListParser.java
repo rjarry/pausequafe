@@ -1,4 +1,4 @@
-package main.characterlist;
+package org.jevemon.characterlist;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +8,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-
-import main.exceptions.JEVEMonParseException;
+import org.jevemon.exceptions.JEVEMonParseException;
 
 public class CharacterListParser {
 	
