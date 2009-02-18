@@ -12,23 +12,13 @@ import org.jevemon.misc.exceptions.JEVEMonParseException;
 
 public class CharacterListParser {
 	
-	private Document doc = null;
-	
-	public CharacterListParser(String fileName) throws JEVEMonParseException {
-		File file = new File(fileName);
-		try {
-			 this.doc = new SAXBuilder().build(file);
-			 if(doc.getRootElement().getChildren("error").size() > 0){
-				 throw new JEVEMonParseException();
-			 }
-		} catch (JDOMException e) {
-			throw new JEVEMonParseException();
-		} catch (IOException e) {
-			throw new JEVEMonParseException();
-		}
-	}
-	
-	public CharacterList getList(){
+	/**
+	 * Generates a character list from a JDOM Document.
+	 * @param doc
+	 * @return a character list
+	 */
+	public static CharacterList getList(Document doc){
+				
 		Element root = doc.getRootElement();
 		List<Element> xmlList = root.getChild("result").getChild("rowset").getChildren("row");
 		
@@ -36,11 +26,32 @@ public class CharacterListParser {
 		
 		for (Element row : xmlList) {
 			String name = row.getAttributeValue("name");
-			Long id = Long.parseLong(row.getAttributeValue("characterID"));
+			int id = Integer.parseInt(row.getAttributeValue("characterID"));
 			
 			list.addCharacter(new CharacterLtd(name, id));
 		}
-		
 		return list;
+	}
+	
+	/**
+	 * parses an XML file to a document
+	 * @param fileName
+	 * @return a JDOM Document
+	 * @throws JEVEMonParseException
+	 */
+	public static Document parse(String fileName) throws JEVEMonParseException {
+		Document doc = null;
+		File file = new File(fileName);
+		try {
+			doc = new SAXBuilder().build(file);
+			if(doc.getRootElement().getChildren("error").size() > 0){
+				throw new JEVEMonParseException("Corrupted XML file");
+			}
+		} catch (JDOMException e) {
+			throw new JEVEMonParseException("Parsing error");
+		} catch (IOException i) {
+			throw new JEVEMonParseException("I/O error");
+		}
+		return doc;
 	}
 }

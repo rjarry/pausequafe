@@ -10,22 +10,22 @@ package org.jevemon.model.characterlist;
 public class CharacterLtd {
 
 	private String name;
-	private long characterId;
+	private int characterId;
 	
-	public CharacterLtd(String name, long characterId) {
+	public CharacterLtd(String name, int characterId) {
 		this.name = name;
 		this.characterId = characterId;
 	}
 	public String getName() {
 		return name;
 	}
-	public long getCharacterId() {
+	public int getCharacterId() {
 		return characterId;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setCharacterId(long characterId) {
+	public void setCharacterId(int characterId) {
 		this.characterId = characterId;
 	}
 	
