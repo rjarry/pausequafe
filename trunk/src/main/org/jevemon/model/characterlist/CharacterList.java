@@ -33,8 +33,16 @@ public class CharacterList {
 		try{
 			c = charList.get(index);
 		} catch (IndexOutOfBoundsException i) {
-			throw new JEVEMonException();
+			throw new JEVEMonException("This character does not exists");
 		}
 		return c ;
+	}
+	
+	public int getCharCount(){
+		return charList.size();
+	}
+	
+	public LinkedList<CharacterLtd> getList(){
+		return charList;
 	}
 }
