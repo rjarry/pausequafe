@@ -11,10 +11,11 @@ import java.util.TimeZone;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.model.Constants;
+import org.jevemon.misc.util.Constants;
 
 public class CharacterSheetParser {
 
+	@SuppressWarnings("unchecked")
 	public static CharacterSheet parse(Document doc, boolean isCached) throws JEVEMonException {
 		
 		Element root = doc.getRootElement();
@@ -33,8 +34,8 @@ public class CharacterSheetParser {
 		try {
 			cachedDate = dateFormat.parse(root.getChild("currentTime").getValue());
 		} catch (ParseException e) {
-			// if there's an error during parsing the cached date we take the current system time
-			cachedDate = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault()).getTime();
+			// if there's an error during parsing the cached date we take the current Eve time
+			cachedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault()).getTime();
 		}
 		sheet.setCachedDate(cachedDate);
 		

@@ -5,33 +5,13 @@ import java.util.Date;
 import java.util.HashMap;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
+import org.jevemon.misc.util.Constants;
 
 public class CharacterSheet {
 	
 	///////////////
 	// constants //
 	///////////////
-	
-	public static final Integer LEARNING = Integer.valueOf(3374);
-
-	public static final Integer IRON_WILL = Integer.valueOf(3375);
-	public static final Integer FOCUS = Integer.valueOf(12386);
-	
-	public static final Integer EMPATHY = Integer.valueOf(3376);
-	public static final Integer PRESENCE = Integer.valueOf(12383);
-	
-	public static final Integer ANALYTICAL_MIND = Integer.valueOf(3377);
-	public static final Integer LOGIC = Integer.valueOf(12376);
-	
-	public static final Integer INSTANT_RECALL = Integer.valueOf(3378);
-	public static final Integer EDEITIC_MEMORY = Integer.valueOf(12385);
-	
-	public static final Integer SPATIAL_AWARENESS = Integer.valueOf(3379);
-	public static final Integer CLARITY = Integer.valueOf(12387);
-	
-	////////////////////
-	// private fields //
-	////////////////////
 	
 	private int characterID;
 	private String name;
@@ -262,8 +242,8 @@ public class CharacterSheet {
 	public double getEffectiveAttributeValue(String attribute){
 				
 		double learningBonus;
-		if (skills.containsKey(LEARNING)){
-			learningBonus = 1 + skills.get(LEARNING).getLevel() * 0.02;
+		if (skills.containsKey(Constants.LEARNING)){
+			learningBonus = 1 + skills.get(Constants.LEARNING).getLevel() * 0.02;
 		} else {
 			learningBonus = 1;
 		}
@@ -279,47 +259,47 @@ public class CharacterSheet {
 		int skillsBonus = 0;
 		if (attribute.equals("intelligence")){
 			baseValue = intelligence;
-			if (skills.containsKey(ANALYTICAL_MIND)){
-				skillsBonus += skills.get(ANALYTICAL_MIND).getLevel();
+			if (skills.containsKey(Constants.ANALYTICAL_MIND)){
+				skillsBonus += skills.get(Constants.ANALYTICAL_MIND).getLevel();
 			}
-			if (skills.containsKey(LOGIC)){
-				skillsBonus += skills.get(LOGIC).getLevel();
+			if (skills.containsKey(Constants.LOGIC)){
+				skillsBonus += skills.get(Constants.LOGIC).getLevel();
 			}
 		}
 		if (attribute.equals("memory")){
 			baseValue = memory;
-			if (skills.containsKey(INSTANT_RECALL)){
-				skillsBonus += skills.get(INSTANT_RECALL).getLevel();
+			if (skills.containsKey(Constants.INSTANT_RECALL)){
+				skillsBonus += skills.get(Constants.INSTANT_RECALL).getLevel();
 			}
-			if (skills.containsKey(EDEITIC_MEMORY)){
-				skillsBonus += skills.get(EDEITIC_MEMORY).getLevel();
+			if (skills.containsKey(Constants.EDEITIC_MEMORY)){
+				skillsBonus += skills.get(Constants.EDEITIC_MEMORY).getLevel();
 			}		
 		}
 		if (attribute.equals("willpower")){
 			baseValue = willpower;
-			if (skills.containsKey(IRON_WILL)){
-				skillsBonus += skills.get(IRON_WILL).getLevel();
+			if (skills.containsKey(Constants.IRON_WILL)){
+				skillsBonus += skills.get(Constants.IRON_WILL).getLevel();
 			}
-			if (skills.containsKey(FOCUS)){
-				skillsBonus += skills.get(FOCUS).getLevel();
+			if (skills.containsKey(Constants.FOCUS)){
+				skillsBonus += skills.get(Constants.FOCUS).getLevel();
 			}
 		}
 		if (attribute.equals("charisma")){
 			baseValue = charisma;
-			if (skills.containsKey(EMPATHY)){
-				skillsBonus += skills.get(EMPATHY).getLevel();
+			if (skills.containsKey(Constants.EMPATHY)){
+				skillsBonus += skills.get(Constants.EMPATHY).getLevel();
 			}
-			if (skills.containsKey(PRESENCE)){
-				skillsBonus += skills.get(PRESENCE).getLevel();
+			if (skills.containsKey(Constants.PRESENCE)){
+				skillsBonus += skills.get(Constants.PRESENCE).getLevel();
 			}
 		}
 		if (attribute.equals("perception")){
 			baseValue = perception;
-			if (skills.containsKey(SPATIAL_AWARENESS)){
-				skillsBonus += skills.get(SPATIAL_AWARENESS).getLevel();
+			if (skills.containsKey(Constants.SPATIAL_AWARENESS)){
+				skillsBonus += skills.get(Constants.SPATIAL_AWARENESS).getLevel();
 			}
-			if (skills.containsKey(CLARITY)){
-				skillsBonus += skills.get(CLARITY).getLevel();
+			if (skills.containsKey(Constants.CLARITY)){
+				skillsBonus += skills.get(Constants.CLARITY).getLevel();
 			}
 		}
 		return (baseValue + skillsBonus + implantBonus) * learningBonus;

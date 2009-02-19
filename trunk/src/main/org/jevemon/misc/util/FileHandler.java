@@ -1,4 +1,4 @@
-package org.jevemon.model.charactersheet;
+package org.jevemon.misc.util;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
