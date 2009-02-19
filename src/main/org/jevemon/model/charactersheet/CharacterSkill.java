@@ -44,4 +44,12 @@ public class CharacterSkill {
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	
+	////////////////////
+	// public methods //
+	////////////////////
+	
+	public String toString(){
+		return "typeID=" + typeID + " skillPoints=" + skillPoints + " level=" + level;
+	}
 }

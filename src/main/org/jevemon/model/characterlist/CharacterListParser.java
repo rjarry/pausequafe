@@ -17,6 +17,7 @@ public class CharacterListParser {
 	 * @param doc
 	 * @return a character list
 	 */
+	@SuppressWarnings("unchecked")
 	public static CharacterList getList(Document doc){
 				
 		Element root = doc.getRootElement();
