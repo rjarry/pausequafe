@@ -3,7 +3,6 @@ package org.jevemon.misc.util;
 
 public class Constants {
 	
-	public static final String CHAR_SHEET_PATH = "cache/CharacterSheets/";
 	public static final int[] SKILL_LEVEL_REQS = {0 , 250, 1414, 8000, 45255, 256000};
 	public static final String API_VERSION = "2";
 	
@@ -18,6 +17,13 @@ public class Constants {
 	public static final Integer LOGIC = Integer.valueOf(12376);
 	public static final Integer PRESENCE = Integer.valueOf(12383);
 	public static final Integer SPATIAL_AWARENESS = Integer.valueOf(3379);
-	public static final String SKILL_TREE_FILE_LOCATION = "resources/SkillTree.xml";
+	
+	public static final String[] SKILL_GROUP_NAMES = {"Corporation Management", 
+		"Drones", "Electronics","Engineering", "Gunnery", "Industry", "Leadership", 
+		"Learning", "Mechanic", "Missile Launcher Operation","Navigation", "Science", 
+		"Social", "Spaceship Command", "Trade"};
+	
+	public static final String CHAR_SHEET_PATH = "cache/CharacterSheets/";
+	public static final String SKILL_TREE_FILE = "resources/SkillTree.xml";
 	
 }

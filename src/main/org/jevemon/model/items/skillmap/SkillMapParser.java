@@ -1,21 +1,20 @@
-package org.jevemon.model.items.skilltree;
+package org.jevemon.model.items.skillmap;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.model.items.ItemGroup;
-import org.jevemon.model.items.PreRequisite;
+import org.jevemon.model.items.PreRequisiteTree;
 
-public class SkillTreeParser {
+public class SkillMapParser {
 
 	@SuppressWarnings("unchecked")
-	public static TreeMap<Integer, ItemGroup> parse(String fileName) throws JEVEMonException{
+	public static HashMap<Integer, Skill> parse(String fileName) throws JEVEMonException{
 
 		Document doc = null;
 		SAXBuilder builder = new SAXBuilder();
@@ -35,29 +34,26 @@ public class SkillTreeParser {
 		// puts the group elements in a list
 		List<Element> groupsList  = root.getChild("result").getChild("rowset").getChildren();
 
-		TreeMap<Integer, ItemGroup> tree = new TreeMap<Integer, ItemGroup>();
+		HashMap<Integer, Skill> map = new HashMap<Integer, Skill>();
 		
 		for(Element group : groupsList){
-			// parses a group into an ItemGroup and adds it to the skill tree
-			ItemGroup grp = parseGroup(group);
-			tree.put(Integer.valueOf(grp.getGroupID()), grp);
+			// parses the XML file and builds a skills map with it
+			parseGroup(group, map);
 		}
 
-		return tree;
+		return map;
 
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static ItemGroup parseGroup(Element groupElement){
-		ItemGroup group = new ItemGroup();
-		group.setGroupID(Integer.valueOf(groupElement.getAttributeValue("groupID")));
-		group.setGroupName(groupElement.getAttributeValue("groupName"));
+	private static void parseGroup(Element groupElement, HashMap<Integer, Skill> map){
+		String groupName = groupElement.getAttributeValue("groupName");
 		
 		List<Element> skillsList = groupElement.getChild("rowset").getChildren();
 		for(Element skillElement : skillsList){
-			group.addItem(parseSkill(skillElement, group.getGroupName()));
+			Skill skill = parseSkill(skillElement, groupName);
+			map.put(Integer.valueOf(skill.getTypeID()), skill);
 		}
-		return group;	
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,9 +68,9 @@ public class SkillTreeParser {
 		
 		List<Element> preReqList = skillElement.getChild("rowset").getChildren();
 		for(Element preReqElement : preReqList){
-			PreRequisite preReq = new PreRequisite();
+			PreRequisiteTree preReq = new PreRequisiteTree();
 			preReq.setTypeID(Integer.parseInt(preReqElement.getAttributeValue("typeID")));
-			preReq.setLevel(Integer.parseInt(preReqElement.getAttributeValue("skillLevel")));
+			preReq.setRequiredLevel(Integer.parseInt(preReqElement.getAttributeValue("skillLevel")));
 			skill.addPreRequisite(preReq);
 		}
 
