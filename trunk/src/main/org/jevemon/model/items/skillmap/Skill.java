@@ -1,4 +1,4 @@
-package org.jevemon.model.items.skilltree;
+package org.jevemon.model.items.skillmap;
 
 import org.jevemon.model.items.Item;
 
@@ -54,5 +54,7 @@ public class Skill extends Item {
 	public void setSecondaryAttribute(String secondaryAttribute) {
 		this.secondaryAttribute = secondaryAttribute;
 	}
+
+
 
 }

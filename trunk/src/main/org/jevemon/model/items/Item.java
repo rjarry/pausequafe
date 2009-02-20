@@ -2,7 +2,7 @@ package org.jevemon.model.items;
 
 import java.util.LinkedList;
 
-public abstract class Item {
+public abstract class Item implements Comparable<Item> {
 	
 	//////////////////////
 	// protected fields //
@@ -12,7 +12,7 @@ public abstract class Item {
 	protected int typeID;
 	protected String typeName;
 	protected String description;
-	protected final LinkedList<PreRequisite> preReqs = new LinkedList<PreRequisite>();
+	protected final LinkedList<PreRequisiteTree> preReqs = new LinkedList<PreRequisiteTree>();
 
     /////////////////
     // constructor //
@@ -23,10 +23,15 @@ public abstract class Item {
     ////////////////////
     // public methods //
     ////////////////////
-    public void addPreRequisite(PreRequisite preReq){
+    public void addPreRequisite(PreRequisiteTree preReq){
     	preReqs.add(preReq);
     }
     
+	@Override
+	public int compareTo(Item o) {
+		return this.typeName.compareTo(o.getTypeName());
+	}
+	
     /////////////
     // getters //
     /////////////
@@ -45,7 +50,7 @@ public abstract class Item {
     public String getDescription() {
     	return description;
     }
-    public LinkedList<PreRequisite> getPreReqs() {
+    public LinkedList<PreRequisiteTree> getPreReqs() {
     	return preReqs;
     }
     
