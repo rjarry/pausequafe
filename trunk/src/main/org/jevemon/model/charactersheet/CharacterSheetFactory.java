@@ -23,7 +23,9 @@ import be.fomp.jeve.core.exceptions.JEveParseException;
 
 
 /**
- * This factory provides a character sheet. It first tries to 
+ * This factory provides a character sheet. 
+ * It first tries to retrieve it from CCP server and, if not possible, from a previously cached file.
+ * 
  * @author diabeteman
  *
  */

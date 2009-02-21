@@ -14,7 +14,6 @@ import be.fomp.jeve.core.api.LimitedAPI;
 import be.fomp.jeve.core.api.connectors.JEveConnectionFactory;
 import be.fomp.jeve.core.exceptions.JEveConfigurationException;
 import be.fomp.jeve.core.exceptions.JEveConnectionException;
-import be.fomp.jeve.core.exceptions.JEveException;
 import be.fomp.jeve.core.exceptions.JEveParseException;
 
 public class SkillInTrainingFactory {
@@ -43,9 +42,6 @@ public class SkillInTrainingFactory {
 			doc = readCachedFile(name);
 			isCached = true;
 		} catch (JEveParseException e) {
-			doc = readCachedFile(name);
-			isCached = true;
-		} catch (JEveException e) {
 			doc = readCachedFile(name);
 			isCached = true;
 		}
