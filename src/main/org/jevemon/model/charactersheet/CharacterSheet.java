@@ -305,6 +305,15 @@ public class CharacterSheet {
 		return (baseValue + skillsBonus + implantBonus) * learningBonus;
 	}
 	
+	public double getTrainingSpeed(String attribute1, String attribute2){
+		double att1 = getEffectiveAttributeValue(attribute1);
+		double att2 = getEffectiveAttributeValue(attribute2);
+
+		return (att1 + (att2 / 2.0)) / (60.0 * 1000.0);
+	}
+	
+	
+	
 	public long getSkillPoints(){
 		long skillPoints = 0;
 		for(CharacterSkill skill : skills.values()){

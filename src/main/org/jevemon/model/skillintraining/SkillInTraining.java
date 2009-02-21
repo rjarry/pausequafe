@@ -1,26 +1,30 @@
 package org.jevemon.model.skillintraining;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import org.jevemon.misc.exceptions.JEVEMonException;
+import org.jevemon.misc.util.Constants;
+import org.jevemon.model.items.skillmap.SkillMap;
 
 public class SkillInTraining {
 	
 	////////////////////
 	// private fields //
 	////////////////////
-	private Date currentTime;
-	private Date currentTQTime;
-	private Date trainingEndTime;
-	private Date trainingStartTime;
+	private long currentTime;
+	private long currentTQTime;
+	private long trainingEndTime;
+	private long trainingStartTime;
     private int trainingTypeID;
     private int trainingStartSP;
     private int trainingDestinationSP;
     private int trainingToLevel;
     private int skillInTraining;
-    private Date cachedUntil;
+    private long cachedUntil;
     private boolean cached;
+    
     
     /////////////////
     // constructor //
@@ -33,18 +37,12 @@ public class SkillInTraining {
     // public methods //
     ////////////////////
     /**
-     * calculates the training speed for this skill in SP per millisecond
+     * calculates the training speed for this skill in SP per milliseconds
      * 
      * @return the training speed
      */
     public double trainingSpeed(){
-    	Calendar cal = Calendar.getInstance();
-    	cal.setTime(trainingEndTime);
-    	long end = cal.getTimeInMillis();
-    	cal.setTime(trainingStartTime);
-    	long start = cal.getTimeInMillis();
-    	    	
-    	return (trainingDestinationSP - trainingStartSP)/(end - start);
+    	return ((double)(trainingDestinationSP - trainingStartSP)/(double)(trainingEndTime - trainingStartTime));
     }
     
     /**
@@ -53,34 +51,64 @@ public class SkillInTraining {
      * @return the current SP
      */
     public int currentSP(){
-    	TimeZone gmt = TimeZone.getTimeZone("GMT");
-    	Locale here = Locale.getDefault();
-    	Calendar calNow = Calendar.getInstance(gmt, here);
-    	long now = calNow.getTimeInMillis();
-    	
-    	Calendar calStart = Calendar.getInstance();
-    	calStart.setTime(trainingStartTime);
-    	long start = calStart.getTimeInMillis();
-    	
-    	return (int) Math.round((now - start)*trainingSpeed());
+    	long now = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault()).getTimeInMillis();
+    	return (int) (Math.round((now - trainingStartTime)*trainingSpeed())+trainingStartSP);
     }
+    
+    /**
+     * calculate SP in this skill when started skilling current level
+     * 
+     * @return SP when started skilling current level
+     */
+    public int calculateLevelStartSP(){
+    	return Constants.SKILL_LEVEL_REQS[trainingToLevel-1]*calculateRank();
+    }
+    
+    public double calculateCompletion(){
+    	return (double)(currentSP() - calculateLevelStartSP())/(double)(trainingDestinationSP - calculateLevelStartSP());
+    }
+    
+    public String toString(){
+    	String print = "";
+    	
+    	try {
+			print += SkillMap.getInstance().getSkill(trainingTypeID).getTypeName();
+		} catch (JEVEMonException e) {
+			print += trainingTypeID;
+		}
+		
+		print += " training to level " + trainingToLevel;
+		print += "\nCurrent SP : " + currentSP();
+		print += "\nDone : " + calculateCompletion()*100 + " %";
+		System.out.println(trainingSpeed()*1000*60*60 + " SP / h");
+		
+    	return print;
+    }
+    
+    /////////////////////
+    // private methods //
+    /////////////////////
+    private int calculateRank(){
+    	return (int) Math.round((double)trainingDestinationSP/(double)Constants.SKILL_LEVEL_REQS[trainingToLevel]);
+    }
+    
 
     /////////////
     // getters //
     /////////////
-    public Date getCurrentTime() {
+    public long getCurrentTime() {
     	return currentTime;
     }
 
-    public Date getCurrentTQTime() {
+    public long getCurrentTQTime() {
 		return currentTQTime;
 	}
 
-	public Date getTrainingEndTime() {
+	public long getTrainingEndTime() {
 		return trainingEndTime;
 	}
 
-	public Date getTrainingStartTime() {
+	public long getTrainingStartTime() {
 		return trainingStartTime;
 	}
 
@@ -104,7 +132,7 @@ public class SkillInTraining {
 		return skillInTraining;
 	}
 
-	public Date getCachedUntil() {
+	public long getCachedUntil() {
 		return cachedUntil;
 	}
 	
@@ -115,19 +143,19 @@ public class SkillInTraining {
 	/////////////
     // setters //
     /////////////
-	public void setCurrentTime(Date currentTime) {
+	public void setCurrentTime(long currentTime) {
 		this.currentTime = currentTime;
 	}
 
-	public void setCurrentTQTime(Date currentTQTime) {
+	public void setCurrentTQTime(long currentTQTime) {
 		this.currentTQTime = currentTQTime;
 	}
 
-	public void setTrainingEndTime(Date trainingEndTime) {
+	public void setTrainingEndTime(long trainingEndTime) {
 		this.trainingEndTime = trainingEndTime;
 	}
 
-	public void setTrainingStartTime(Date trainingStartTime) {
+	public void setTrainingStartTime(long trainingStartTime) {
 		this.trainingStartTime = trainingStartTime;
 	}
 
@@ -147,7 +175,7 @@ public class SkillInTraining {
 		this.trainingToLevel = trainingToLevel;
 	}
 
-	public void setCachedUntil(Date cachedUntil) {
+	public void setCachedUntil(long cachedUntil) {
 		this.cachedUntil = cachedUntil;
 	}
 

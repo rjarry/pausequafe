@@ -30,6 +30,7 @@ public class SkillInTrainingParser {
 		
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
 		Date cachedDate = null;
 		try {
 			cachedDate = dateFormat.parse(root.getChild("currentTime").getValue());
@@ -37,7 +38,8 @@ public class SkillInTrainingParser {
 			// if there's an error during parsing the cached date we take the current Eve time
 			cachedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault()).getTime();
 		}
-		inTraining.setCurrentTime(cachedDate);
+		cal.setTime(cachedDate);
+		inTraining.setCurrentTime(cal.getTimeInMillis());
 		
 		try {
 			cachedDate = dateFormat.parse(root.getChild("cachedUntil").getValue());
@@ -45,14 +47,18 @@ public class SkillInTrainingParser {
 			// if there's an error during parsing the cached date we take the current Eve time
 			cachedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault()).getTime();
 		}
-		inTraining.setCachedUntil(cachedDate);
+		cal.setTime(cachedDate);
+		inTraining.setCachedUntil(cal.getTimeInMillis());
 				
 		Element result = root.getChild("result");
 		
 		try {
-			inTraining.setCurrentTQTime(dateFormat.parse(result.getChild("currentTQTime").getValue()));
-			inTraining.setTrainingEndTime(dateFormat.parse(result.getChild("trainingEndTime").getValue()));
-			inTraining.setTrainingStartTime(dateFormat.parse(result.getChild("trainingStartTime").getValue()));
+			cal.setTime(dateFormat.parse(result.getChild("currentTQTime").getValue()));
+			inTraining.setCurrentTQTime(cal.getTimeInMillis());
+			cal.setTime(dateFormat.parse(result.getChild("trainingEndTime").getValue()));
+			inTraining.setTrainingEndTime(cal.getTimeInMillis());
+			cal.setTime(dateFormat.parse(result.getChild("trainingStartTime").getValue()));
+			inTraining.setTrainingStartTime(cal.getTimeInMillis());
 		} catch (ParseException e) {
 			throw new JEVEMonException("date parsing error");
 		}

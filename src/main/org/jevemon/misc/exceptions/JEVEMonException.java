@@ -1,5 +1,6 @@
 package org.jevemon.misc.exceptions;
 
+@SuppressWarnings("serial")
 public class JEVEMonException extends Exception {
 	
 	private String message;

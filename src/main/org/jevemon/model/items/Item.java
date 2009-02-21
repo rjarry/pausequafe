@@ -12,7 +12,7 @@ public abstract class Item implements Comparable<Item> {
 	protected int typeID;
 	protected String typeName;
 	protected String description;
-	protected final LinkedList<PreRequisiteTree> preReqs = new LinkedList<PreRequisiteTree>();
+	protected final LinkedList<PreRequisite> preReqs = new LinkedList<PreRequisite>();
 
     /////////////////
     // constructor //
@@ -23,7 +23,7 @@ public abstract class Item implements Comparable<Item> {
     ////////////////////
     // public methods //
     ////////////////////
-    public void addPreRequisite(PreRequisiteTree preReq){
+    public void addPreRequisite(PreRequisite preReq){
     	preReqs.add(preReq);
     }
     
@@ -50,7 +50,7 @@ public abstract class Item implements Comparable<Item> {
     public String getDescription() {
     	return description;
     }
-    public LinkedList<PreRequisiteTree> getPreReqs() {
+    public LinkedList<PreRequisite> getPreReqs() {
     	return preReqs;
     }
     
