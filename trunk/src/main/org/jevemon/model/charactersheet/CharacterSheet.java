@@ -3,10 +3,25 @@ package org.jevemon.model.charactersheet;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
-
+import org.jevemon.model.items.skillmap.Skill;
+/**
+ * Represents the API response for a character.
+ * <br><br>It contains all the information regarding the character :
+ * <ul><li>Name, Race, Corporation name, etc.
+ * <li>Account balance
+ * <li>Current backup clone info
+ * <li>Base attributes
+ * <li>Attribute enhancers (implants)
+ * <li>Skills known
+ * <li>Corporation titles
+ * </ul>
+ * @author diabeteman
+ *
+ */
 public class CharacterSheet {
 	
 	///////////////
@@ -23,6 +38,7 @@ public class CharacterSheet {
 	private String cloneName;
 	private long cloneSkillPoints;
 	private double balance;
+	private final LinkedList<String> corporationTitles = new LinkedList<String>();
 	
 	private final HashMap<String, AttributeEnhancer> attributeEnhancers = new HashMap<String, AttributeEnhancer>();
 	
@@ -42,7 +58,267 @@ public class CharacterSheet {
 	//////////////////
 	public CharacterSheet() {
 	}
+	
+	////////////////////
+	// public methods //
+	////////////////////
+	
+	/**
+	 * Adds an attribute enhancer to the character
+	 * @param e 
+	 * 			the implant to be added
+	 * @throws JEVEMonException 
+	 * 				if the implant slot is already in use, to inform it has been overwritten.
+	 */
+	public void addAttributeEnhancer(AttributeEnhancer e) throws JEVEMonException {
+		if (attributeEnhancers.containsKey(e.getAttribute())){
+			attributeEnhancers.put(e.getAttribute(), e);
+			throw new JEVEMonException("enhancer overwritten "+e.getAttribute());
+		} else {
+			attributeEnhancers.put(e.getAttribute(), e);
+		}
+	}
+	
+	/**
+	 * Adds a CharacterSkill to the character's skill list.
+	 * @param skill 
+	 * 			the skill to be added
+	 * @throws JEVEMonException  
+	 * 				if the skill was already there, to inform it has been overwritten.
+	 */
+	public void addSkill(CharacterSkill skill) throws JEVEMonException {
+		Integer typeID = Integer.valueOf(skill.getTypeID());
+		if (skills.containsKey(typeID)){
+			skills.put(typeID, skill);
+			throw new JEVEMonException("skill overwritten");
+		} else {
+			skills.put(typeID, skill);
+		}
+	}
+	/**
+	 * Adds a new corporation title to the character.
+	 * 
+	 * @param title
+	 * 			the title to be added
+	 */
+	public void addTitle(String title){
+		corporationTitles.add(title);
+	}
+	/**
+	 * Calculates the effective attribute value which will be used for skill training speed.<br><br>
+	 * Taking in consideration :<br>
+	 * <ul><li>"Learning" skills
+	 * <li>Implants bonuses
+	 * </ul>
+	 * 
+	 * @param attribute 
+	 * 				the attribute
+	 * @return 
+	 * 		the effective attribute's value
+	 */
+	public double getEffectiveAttributeValue(String attribute){
+		double learningBonus;
+		if (skills.containsKey(Constants.LEARNING)){
+			learningBonus = 1 + skills.get(Constants.LEARNING).getLevel() * 0.02;
+		} else {
+			learningBonus = 1;
+		}
+		
+		int implantBonus;
+		if (attributeEnhancers.containsKey(attribute)){
+			implantBonus = attributeEnhancers.get(attribute).getAugmentatorValue();
+		} else {
+			implantBonus = 0;
+		}
+		
+		int baseValue = 0;
+		int skillsBonus = 0;
+		if (attribute.equals("intelligence")){
+			baseValue = intelligence;
+			if (skills.containsKey(Constants.ANALYTICAL_MIND)){
+				skillsBonus += skills.get(Constants.ANALYTICAL_MIND).getLevel();
+			}
+			if (skills.containsKey(Constants.LOGIC)){
+				skillsBonus += skills.get(Constants.LOGIC).getLevel();
+			}
+		}
+		if (attribute.equals("memory")){
+			baseValue = memory;
+			if (skills.containsKey(Constants.INSTANT_RECALL)){
+				skillsBonus += skills.get(Constants.INSTANT_RECALL).getLevel();
+			}
+			if (skills.containsKey(Constants.EDEITIC_MEMORY)){
+				skillsBonus += skills.get(Constants.EDEITIC_MEMORY).getLevel();
+			}		
+		}
+		if (attribute.equals("willpower")){
+			baseValue = willpower;
+			if (skills.containsKey(Constants.IRON_WILL)){
+				skillsBonus += skills.get(Constants.IRON_WILL).getLevel();
+			}
+			if (skills.containsKey(Constants.FOCUS)){
+				skillsBonus += skills.get(Constants.FOCUS).getLevel();
+			}
+		}
+		if (attribute.equals("charisma")){
+			baseValue = charisma;
+			if (skills.containsKey(Constants.EMPATHY)){
+				skillsBonus += skills.get(Constants.EMPATHY).getLevel();
+			}
+			if (skills.containsKey(Constants.PRESENCE)){
+				skillsBonus += skills.get(Constants.PRESENCE).getLevel();
+			}
+		}
+		if (attribute.equals("perception")){
+			baseValue = perception;
+			if (skills.containsKey(Constants.SPATIAL_AWARENESS)){
+				skillsBonus += skills.get(Constants.SPATIAL_AWARENESS).getLevel();
+			}
+			if (skills.containsKey(Constants.CLARITY)){
+				skillsBonus += skills.get(Constants.CLARITY).getLevel();
+			}
+		}
+		return (baseValue + skillsBonus + implantBonus) * learningBonus;
+	}
+	
+	/**
+	 * Calculates the training speed (in SP per millisecond) for the given attributes.
+	 * 
+	 * @param primaryAttribute
+	 * 					counts for 2/3 of the training speed
+	 * @param secondaryAttribute
+	 * 					counts for 1/3 of the training speed
+	 * @return
+	 * 		the training speed
+	 */
+	public double getTrainingSpeed(String primaryAttribute, String secondaryAttribute){
+		double att1 = getEffectiveAttributeValue(primaryAttribute);
+		double att2 = getEffectiveAttributeValue(secondaryAttribute);
+		
+		return (att1 + (att2 / 2.0)) / (60.0 * 1000.0);
+	}
+	
+	/**
+	 * Calculates the training speed (in SP per millisecond) for the given skill.
+	 * 
+	 * @param skill the given skill
+	 * 			
+	 * @return
+	 * 		the training speed
+	 */
+	public double getTrainingSpeed(Skill skill){
+		double att1 = getEffectiveAttributeValue(skill.getPrimaryAttribute());
+		double att2 = getEffectiveAttributeValue(skill.getSecondaryAttribute());
+		
+		return (att1 + (att2 / 2.0)) / (60.0 * 1000.0);
+	}
+	
+	/**
+	 * Calculates the total number of skillpoints of the character (at the time of file caching).
+	 * @return
+	 * 		total SP
+	 */
+	public long getSkillPoints(){
+		long skillPoints = 0;
+		for(CharacterSkill skill : skills.values()){
+			skillPoints += skill.getSkillPoints();
+		}
+		return skillPoints;
+	}
+	/**
+	 * Returns the number of skills known.
+	 * @return
+	 * 		skills count
+	 */
+	public int getSkillCount(){
+		return skills.size();
+	}
+	/**
+	 * Calculates the number of skills known to level 0.
+	 * @return
+	 * 		level 0 skills count
+	 */
+	public int getLevel0Skills(){
+		int level0Skills = 0;
+		for(CharacterSkill skill : skills.values()){
+			if (skill.getLevel() == 0){
+				level0Skills++;
+			}
+		}
+		return level0Skills;
+	}
+	/**
+	 * Calculates the number of skills known to level 1.
+	 * @return
+	 * 		level 1 skills count
+	 */
+	public int getLevel1Skills(){
+		int level1Skills = 0;
+		for(CharacterSkill skill : skills.values()){
+			if (skill.getLevel() == 1){
+				level1Skills++;
+			}
+		}
+		return level1Skills;
+	}
+	/**
+	 * Calculates the number of skills known to level 2.
+	 * @return
+	 * 		level 2 skills count
+	 */
+	public int getLevel2Skills(){
+		int level2Skills = 0;
+		for(CharacterSkill skill : skills.values()){
+			if (skill.getLevel() == 2){
+				level2Skills++;
+			}
+		}
+		return level2Skills;
+	}
+	/**
+	 * Calculates the number of skills known to level 3.
+	 * @return
+	 * 		level 3 skills count
+	 */
+	public int getLevel3Skills(){
+		int level3Skills = 0;
+		for(CharacterSkill skill : skills.values()){
+			if (skill.getLevel() == 3){
+				level3Skills++;
+			}
+		}
+		return level3Skills;
+	}
+	/**
+	 * Calculates the number of skills known to level 4.
+	 * @return
+	 * 		level 4 skills count
+	 */
+	public int getLevel4Skills(){
+		int level4Skills = 0;
+		for(CharacterSkill skill : skills.values()){
+			if (skill.getLevel() == 4){
+				level4Skills++;
+			}
+		}
+		return level4Skills;
+	}
+	/**
+	 * Calculates the number of skills known to level 5.
+	 * @return
+	 * 		level 5 skills count
+	 */
+	public int getLevel5Skills(){
+		int level5Skills = 0;
+		for(CharacterSkill skill : skills.values()){
+			if (skill.getLevel() == 5){
+				level5Skills++;
+			}
+		}
+		return level5Skills;
+	}
 
+	
 	/////////////
 	// getters //
 	/////////////
@@ -84,6 +360,10 @@ public class CharacterSheet {
 	
 	public double getBalance() {
 		return balance;
+	}
+
+	public LinkedList<String> getCorporationTitles() {
+		return corporationTitles;
 	}
 
 	public HashMap<String, AttributeEnhancer> getAttributeEnhancers() {
@@ -201,139 +481,5 @@ public class CharacterSheet {
 		this.cachedAt = date;
 	}
 	
-	////////////////////
-	// public methods //
-	////////////////////
-	
-	/**
-	 * Adds an attribute enhancer to the character
-	 * @param e the implant to be added
-	 * @throws JEVEMonException if the slot is already in use, to inform it has been overwritten.
-	 */
-	public void addAttributeEnhancer(AttributeEnhancer e) throws JEVEMonException {
-		if (attributeEnhancers.containsKey(e.getAttribute())){
-			attributeEnhancers.put(e.getAttribute(), e);
-			throw new JEVEMonException("enhancer overwritten "+e.getAttribute());
-		} else {
-			attributeEnhancers.put(e.getAttribute(), e);
-		}
-	}
-	
-	/**
-	 * Adds a CharacterSkill to the character's skill list.
-	 * @param skill the skill to be added
-	 * @throws JEVEMonException  if the skill was already there, to inform it has been overwritten.
-	 */
-	public void addSkill(CharacterSkill skill) throws JEVEMonException {
-		Integer typeID = Integer.valueOf(skill.getTypeID());
-		if (skills.containsKey(typeID)){
-			skills.put(typeID, skill);
-			throw new JEVEMonException("skill overwritten");
-		} else {
-			skills.put(typeID, skill);
-		}
-	}
-	/**
-	 * Calculates the effective attribute value which will be used for skill training speed.
-	 * 
-	 * @param attribute the attribute
-	 * @return the effective attribute's value
-	 */
-	public double getEffectiveAttributeValue(String attribute){
-				
-		double learningBonus;
-		if (skills.containsKey(Constants.LEARNING)){
-			learningBonus = 1 + skills.get(Constants.LEARNING).getLevel() * 0.02;
-		} else {
-			learningBonus = 1;
-		}
-		
-		int implantBonus;
-		if (attributeEnhancers.containsKey(attribute)){
-			implantBonus = attributeEnhancers.get(attribute).getAugmentatorValue();
-		} else {
-			implantBonus = 0;
-		}
-		
-		int baseValue = 0;
-		int skillsBonus = 0;
-		if (attribute.equals("intelligence")){
-			baseValue = intelligence;
-			if (skills.containsKey(Constants.ANALYTICAL_MIND)){
-				skillsBonus += skills.get(Constants.ANALYTICAL_MIND).getLevel();
-			}
-			if (skills.containsKey(Constants.LOGIC)){
-				skillsBonus += skills.get(Constants.LOGIC).getLevel();
-			}
-		}
-		if (attribute.equals("memory")){
-			baseValue = memory;
-			if (skills.containsKey(Constants.INSTANT_RECALL)){
-				skillsBonus += skills.get(Constants.INSTANT_RECALL).getLevel();
-			}
-			if (skills.containsKey(Constants.EDEITIC_MEMORY)){
-				skillsBonus += skills.get(Constants.EDEITIC_MEMORY).getLevel();
-			}		
-		}
-		if (attribute.equals("willpower")){
-			baseValue = willpower;
-			if (skills.containsKey(Constants.IRON_WILL)){
-				skillsBonus += skills.get(Constants.IRON_WILL).getLevel();
-			}
-			if (skills.containsKey(Constants.FOCUS)){
-				skillsBonus += skills.get(Constants.FOCUS).getLevel();
-			}
-		}
-		if (attribute.equals("charisma")){
-			baseValue = charisma;
-			if (skills.containsKey(Constants.EMPATHY)){
-				skillsBonus += skills.get(Constants.EMPATHY).getLevel();
-			}
-			if (skills.containsKey(Constants.PRESENCE)){
-				skillsBonus += skills.get(Constants.PRESENCE).getLevel();
-			}
-		}
-		if (attribute.equals("perception")){
-			baseValue = perception;
-			if (skills.containsKey(Constants.SPATIAL_AWARENESS)){
-				skillsBonus += skills.get(Constants.SPATIAL_AWARENESS).getLevel();
-			}
-			if (skills.containsKey(Constants.CLARITY)){
-				skillsBonus += skills.get(Constants.CLARITY).getLevel();
-			}
-		}
-		return (baseValue + skillsBonus + implantBonus) * learningBonus;
-	}
-	
-	public double getTrainingSpeed(String attribute1, String attribute2){
-		double att1 = getEffectiveAttributeValue(attribute1);
-		double att2 = getEffectiveAttributeValue(attribute2);
-
-		return (att1 + (att2 / 2.0)) / (60.0 * 1000.0);
-	}
-	
-	
-	
-	public long getSkillPoints(){
-		long skillPoints = 0;
-		for(CharacterSkill skill : skills.values()){
-			skillPoints += skill.getSkillPoints();
-		}
-		return skillPoints;
-	}
-	
-	public int getSkillCount(){
-		return skills.size();
-	}
-	
-	public int getLevel5Skills(){
-		int level5Skills = 0;
-		for(CharacterSkill skill : skills.values()){
-			if (skill.getLevel() == 5){
-				level5Skills++;
-			}
-		}
-		return level5Skills;
-	}
 
 }

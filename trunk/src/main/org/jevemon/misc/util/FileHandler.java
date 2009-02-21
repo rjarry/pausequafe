@@ -11,8 +11,7 @@ import javax.imageio.ImageIO;
 
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
-
-import be.fomp.jeve.core.exceptions.JEveException;
+import org.jevemon.misc.exceptions.JEVEMonException;
 
 public class FileHandler {
 	private static final XMLOutputter xmlOutputter = new XMLOutputter();
@@ -23,10 +22,9 @@ public class FileHandler {
 	 * 
 	 * @param doc The document to be saved
 	 * @param fileName The file it should be written to
-	 * @throws JEveException
-	 * @author Sven Meys
+	 * @throws JEVEMonException
 	 */
-	public static void writeXmlFile(Document doc,String pathName, String fileName) throws JEveException {
+	public static void writeXmlFile(Document doc,String pathName, String fileName) throws JEVEMonException {
 		
 		FileWriter out = null;
 		try {
@@ -45,9 +43,9 @@ public class FileHandler {
 			out.close();
 			
 		} catch (FileNotFoundException e) {
-			throw new JEveException("Unable to write to file");
+			throw new JEVEMonException("Unable to write to file");
 		} catch (IOException e) {
-			throw new JEveException("Unable to write to file");
+			throw new JEVEMonException("Unable to write to file");
 		} finally {
 			try {
 				if(out != null) out.close();
@@ -62,22 +60,21 @@ public class FileHandler {
 	 * 
 	 * @param image the image to be saved
 	 * @param fileName The file to be written to
-	 * @throws JEveException
-	 * 
-	 * @author Sven Meys
+	 * @throws JEVEMonException
 	 */
-	public static void writeImage(Image image,String pathName, String fileName) throws JEveException {
+	public static void writeImage(Image image,String pathName, String fileName) throws JEVEMonException {
 		try {
-		// Get an instance of the file
-		File path = new File(pathName);
-		File file = new File(pathName + fileName);
-		
-		// Check if the directories exist
-		if(!path.exists()) path.mkdirs();
-		
-		// Write the image as a jpg to the file
-		ImageIO.write((BufferedImage)image, "jpg", file);
-		
-		} catch (IOException ioe) { throw new JEveException("Unable to write image to file");}
+			// Get an instance of the file
+			File path = new File(pathName);
+			File file = new File(pathName + fileName);
+			
+			// Check if the directories exist
+			if(!path.exists()) path.mkdirs();
+			
+			// Write the image as a jpg to the file
+			ImageIO.write((BufferedImage)image, "jpg", file);
+		} catch (IOException ioe) { 
+			throw new JEVEMonException("Unable to write image to file");
+		}
 	}
 }

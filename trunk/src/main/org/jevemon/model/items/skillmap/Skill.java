@@ -1,7 +1,15 @@
 package org.jevemon.model.items.skillmap;
 
 import org.jevemon.model.items.Item;
-
+/**
+ * A specific Item which has 3 additional attributes.
+ * <ul><li>the rank (or time multiplier)
+ * <li>a primary attribute (used for training speed calculation)
+ * <li>a secondary attribute (used for training speed calculation)
+ * </ul>
+ * @author diabeteman
+ *
+ */
 public class Skill extends Item {
 
 	////////////////////
@@ -21,6 +29,7 @@ public class Skill extends Item {
     ////////////////////
     // public methods //
     ////////////////////
+    // for test purposes
 	public String toString(){
 		String print = "";
 		print += typeName + " (rank " + rank + ") - " + groupName + "\n";
@@ -42,6 +51,7 @@ public class Skill extends Item {
 	public String getSecondaryAttribute() {
 		return secondaryAttribute;
 	}
+	
 	/////////////
     // setters //
     /////////////
@@ -54,7 +64,4 @@ public class Skill extends Item {
 	public void setSecondaryAttribute(String secondaryAttribute) {
 		this.secondaryAttribute = secondaryAttribute;
 	}
-
-
-
 }
