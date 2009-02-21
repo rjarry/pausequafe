@@ -12,14 +12,18 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
-
+/**
+ * Outputs a CharacterSheet object from an XML file.
+ * 
+ * @author diabeteman
+ */
 public class CharacterSheetParser {
 
 	@SuppressWarnings("unchecked")
 	public static CharacterSheet parse(Document doc, boolean isCached) throws JEVEMonException {
-		
 		Element root = doc.getRootElement();
 		
+		// tests if the API version from the XML file is ok
 		if (!root.getAttributeValue("version").equals(Constants.API_VERSION)){
 			throw new JEVEMonException("wrong API version");
 		}
@@ -52,8 +56,8 @@ public class CharacterSheetParser {
 		sheet.setCloneSkillPoints(Long.parseLong(root.getChild("cloneSkillPoints").getValue()));
 		sheet.setBalance(Double.parseDouble(root.getChild("balance").getValue()));
 		
+		// adding attribute enhancers
 		List<Element> enhancers  = root.getChild("attributeEnhancers").getChildren();
-		
 		for (Element row : enhancers) {
 			String enhancerName = row.getName();
 			AttributeEnhancer enhancer = new AttributeEnhancer();
@@ -90,24 +94,30 @@ public class CharacterSheetParser {
 		sheet.setPerception(Integer.parseInt(root.getChild("attributes").getChild("perception").getValue()));
 		sheet.setCharisma(Integer.parseInt(root.getChild("attributes").getChild("charisma").getValue()));
 		sheet.setWillpower(Integer.parseInt(root.getChild("attributes").getChild("willpower").getValue()));
-		
-		List<Element> skills = null;
-		// getting the "right" rowset
-		if (root.getChild("rowset").getAttributeValue("name").equals("skills")){
-			skills = root.getChild("rowset").getChildren();
-		} else {
-			throw new JEVEMonException("skill list parsing error");
-		}
-		
 
-		// adding skills
-		for(Element row : skills){
-			CharacterSkill s = new CharacterSkill();
-			s.setTypeID(Integer.parseInt(row.getAttributeValue("typeID")));
-			s.setSkillPoints(Integer.parseInt(row.getAttributeValue("skillpoints")));
-			s.setLevel(Integer.parseInt(row.getAttributeValue("level")));
-			sheet.addSkill(s);
+		// browsing through all the rowsets
+		List<Element> rowsets = root.getChildren("rowset");
+		for(Element rowset : rowsets){
+			// adding skills
+			if (rowset.getAttributeValue("name").equals("skills")){
+				List<Element> skills = root.getChild("rowset").getChildren();
+				for(Element row : skills){
+					CharacterSkill skill = new CharacterSkill();
+					skill.setTypeID(Integer.parseInt(row.getAttributeValue("typeID")));
+					skill.setSkillPoints(Integer.parseInt(row.getAttributeValue("skillpoints")));
+					skill.setLevel(Integer.parseInt(row.getAttributeValue("level")));
+					sheet.addSkill(skill);
+				}
+			}
+			// adding corporation roles
+			if(rowset.getAttributeValue("name").equals("corporationTitles")){
+				List<Element> titles = rowset.getChildren();
+				for(Element title : titles){
+					sheet.addTitle(title.getAttributeValue("titleName"));
+				}
+			}
 		}
+
 		// done parsing
 		return sheet;
 	}

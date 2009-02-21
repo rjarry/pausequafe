@@ -5,7 +5,13 @@ import java.util.TreeSet;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
-
+/**
+ * This is the skill database generated from an XML file.
+ * 
+ * It can be accessed via the method <code>getInstance()</code> which returns the only instance of the class (generating it from the XML file if it hasn't already been). Every skill in the database is mapped with it's typeID.
+ * 
+ * @author diabeteman
+ */
 public class SkillMap {
 	
 	////////////////////
@@ -24,7 +30,12 @@ public class SkillMap {
 	////////////////////
 	// public methods //
 	////////////////////
-
+	/**
+	 * Returns the only instance of the class and creates it if it doesn't exists.
+	 * 
+	 * @return
+	 * 		the instance of SkillMap
+	 */
 	public static SkillMap getInstance() throws JEVEMonException{
 		if (instance == null){
 			instance = new SkillMap();
@@ -34,6 +45,14 @@ public class SkillMap {
 		}
 	}
 	
+	/**
+	 * Outputs a sorted set of skills (sorted by name) belonging to the same skill group.
+	 * @param groupName
+	 * 				the skill group name
+	 * @return
+	 * 		a sorted set of skills from the groupName
+	 * @throws JEVEMonException
+	 */
 	public TreeSet<Skill> getGroup(String groupName) throws JEVEMonException{
 		TreeSet<Skill> group = new TreeSet<Skill>();
 		if (instance == null){
@@ -46,7 +65,14 @@ public class SkillMap {
 		}
 		return group;
 	}
-	
+	/**
+	 * Outputs a sorted set of skills (sorted by name) belonging to the same skill group.
+	 * @param groupID
+	 * 				the skill group ID
+	 * @return
+	 * 		a sorted set of skills from the groupID
+	 * @throws JEVEMonException
+	 */
 	public TreeSet<Skill> getGroup(int groupID) throws JEVEMonException{
 		TreeSet<Skill> group = new TreeSet<Skill>();
 		if (instance == null){
@@ -60,7 +86,7 @@ public class SkillMap {
 		return group;
 	}
 	
-	
+	// just for testing
 	public String toString(){
 		String print = "----------SKILL TREE----------\n\n";
 		
@@ -85,6 +111,9 @@ public class SkillMap {
 	/////////////////////
 	// private methods //
 	/////////////////////
+	/**
+	 * Used only to build the database from the data file.
+	 */
 	private void buildMap() throws JEVEMonException {
 		skills = SkillMapParser.parse(Constants.SKILL_TREE_FILE);
 	}

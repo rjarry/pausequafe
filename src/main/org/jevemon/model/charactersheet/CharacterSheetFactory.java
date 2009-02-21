@@ -22,12 +22,15 @@ import be.fomp.jeve.core.exceptions.JEveException;
 import be.fomp.jeve.core.exceptions.JEveParseException;
 
 
-
+/**
+ * This factory provides a character sheet. It first tries to 
+ * @author diabeteman
+ *
+ */
 public class CharacterSheetFactory {
 
 	public static CharacterSheet getCharacterSheet(int userID, String apiKey, int characterID, String name) 
-										throws JEVEMonException
-	{
+										throws JEVEMonException {
 		LimitedAPI con = null;
 		boolean isCached = false;
 		
@@ -49,9 +52,6 @@ public class CharacterSheetFactory {
 			doc = readCachedFile(name);
 			isCached = true;
 		} catch (JEveParseException e) {
-			doc = readCachedFile(name);
-			isCached = true;
-		} catch (JEveException e) {
 			doc = readCachedFile(name);
 			isCached = true;
 		}
@@ -90,7 +90,7 @@ public class CharacterSheetFactory {
 		} catch (JDOMException e) {
 			throw new JEVEMonException("parsing error");
 		} catch (IOException e) {
-			throw new JEVEMonException("file not present");
+			throw new JEVEMonException("XML file not found");
 		}
 		return doc;
 	}
