@@ -54,6 +54,9 @@ public class TestCharacterList {
 			System.out.println(e.getMessage());
 			System.exit(0);
 		}
+
+		
+
 		System.out.println();
 		System.out.println(sheet.getName());
 		System.out.println(sheet.getGender());
@@ -76,6 +79,7 @@ public class TestCharacterList {
 		for(CharacterSkill skill : sheet.getSkills().values()){
 			System.out.println(skill);
 		}
+		System.out.println(sheet.getTrainingSpeed("charisma", "memory")*60*60*1000 + " sp/h");
 	}
 	
 	public static String printNumber(double number) {

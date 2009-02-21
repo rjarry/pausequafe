@@ -9,7 +9,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.model.items.PreRequisiteTree;
+import org.jevemon.misc.util.Constants;
+import org.jevemon.model.items.PreRequisite;
 
 public class SkillMapParser {
 
@@ -28,7 +29,7 @@ public class SkillMapParser {
 		
 		Element root = doc.getRootElement();
 		
-		if(!root.getAttributeValue("version").equals("2")){
+		if(!root.getAttributeValue("version").equals(Constants.API_VERSION)){
 			throw new JEVEMonException("wrong API version");
 		}
 		// puts the group elements in a list
@@ -68,7 +69,7 @@ public class SkillMapParser {
 		
 		List<Element> preReqList = skillElement.getChild("rowset").getChildren();
 		for(Element preReqElement : preReqList){
-			PreRequisiteTree preReq = new PreRequisiteTree();
+			PreRequisite preReq = new PreRequisite();
 			preReq.setTypeID(Integer.parseInt(preReqElement.getAttributeValue("typeID")));
 			preReq.setRequiredLevel(Integer.parseInt(preReqElement.getAttributeValue("skillLevel")));
 			skill.addPreRequisite(preReq);
