@@ -10,7 +10,6 @@ public class PreRequisite {
 	////////////////////
 	// private fields //
 	////////////////////
-	
 	private int typeID;
 	private int requiredLevel;
 	
@@ -20,6 +19,7 @@ public class PreRequisite {
 	public PreRequisite(){
 		
 	}
+	
 	public PreRequisite(int typeID, int requiredLevel){
 		this.typeID = typeID;
 		this.requiredLevel = requiredLevel;
