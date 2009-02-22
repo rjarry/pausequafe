@@ -1,5 +1,6 @@
 package org.jevemon.model.charactersheet;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -57,13 +58,15 @@ public class TestPortrait {
 		try {
 			System.out.print("fetching character portrait... ");
 			//portrait = 
-			CharacterSheetFactory.getPortrait(characterID, characterName);
+			CharacterSheetFactory.getPortrait(characterID, characterName,true);
 			System.out.println("success");
 			
 		} catch (JEVEMonException e) {
 			System.out.println("error, could not get portrait");
 			System.out.println(e.getMessage());
 			System.exit(0);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 		JLabel label = new JLabel();

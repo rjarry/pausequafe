@@ -26,4 +26,6 @@ public class Constants {
 	public static final String CHAR_SHEET_PATH = "cache/CharacterSheets/";
 	public static final String SKILL_TREE_FILE = "resources/SkillTree.xml";
 	
+	public static final int PORTRAIT_FILE_SIZE = 256;
+	public static final int PORTRAIT_GUI_SIZE = 150;
 }

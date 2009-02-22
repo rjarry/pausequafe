@@ -2,14 +2,20 @@ package org.jevemon.misc.exceptions;
 
 @SuppressWarnings("serial")
 public class JEVEMonException extends Exception {
-	
-	private String message;
 
-	public JEVEMonException(String message){
-		this.message = message;
+	public JEVEMonException() {
 	}
-	
-	public String getMessage(){
-		return this.message;
+
+	public JEVEMonException(String message) {
+		super(message);
 	}
+
+	public JEVEMonException(Throwable cause) {
+		super(cause);
+	}
+
+	public JEVEMonException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }
