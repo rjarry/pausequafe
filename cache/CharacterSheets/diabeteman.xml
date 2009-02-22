@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eveapi version="2">
+  <currentTime>2009-02-22 04:55:56</currentTime>
+  <result>
+    <characterID>1888774537</characterID>
+    <name>diabeteman</name>
+    <race>Gallente</race>
+    <bloodLine>Jin-Mei</bloodLine>
+    <gender>Male</gender>
+    <corporationName>ICE is Coming to EVE</corporationName>
+    <corporationID>649254410</corporationID>
+    <cloneName>Clone Grade Mu</cloneName>
+    <cloneSkillPoints>20000000</cloneSkillPoints>
+    <balance>56916411.92</balance>
+    <attributeEnhancers>
+      <charismaBonus>
+        <augmentatorName>Social Adaptation Chip - Standard</augmentatorName>
+        <augmentatorValue>4</augmentatorValue>
+      </charismaBonus>
+      <intelligenceBonus>
+        <augmentatorName>Cybernetic Subprocessor - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </intelligenceBonus>
+      <perceptionBonus>
+        <augmentatorName>Ocular Filter - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </perceptionBonus>
+      <willpowerBonus>
+        <augmentatorName>Neural Boost - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </willpowerBonus>
+      <memoryBonus>
+        <augmentatorName>Memory Augmentation - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </memoryBonus>
+    </attributeEnhancers>
+    <attributes>
+      <intelligence>8</intelligence>
+      <memory>8</memory>
+      <charisma>7</charisma>
+      <perception>8</perception>
+      <willpower>8</willpower>
+    </attributes>
+    <rowset name="skills" key="typeID" columns="typeID,skillpoints,level,unpublished">
+      <row typeID="11584" skillpoints="750" level="1" />
+      <row typeID="3363" skillpoints="250" level="1" />
+      <row typeID="12484" skillpoints="226275" level="4" />
+      <row typeID="12487" skillpoints="226275" level="4" />
+      <row typeID="24241" skillpoints="90510" level="4" />
+      <row typeID="23618" skillpoints="40000" level="3" />
+      <row typeID="3442" skillpoints="631136" level="4" />
+      <row typeID="12305" skillpoints="256000" level="5" />
+      <row typeID="23606" skillpoints="45255" level="4" />
+      <row typeID="3436" skillpoints="256000" level="5" />
+      <row typeID="23566" skillpoints="7072" level="2" />
+      <row typeID="12486" skillpoints="226275" level="4" />
+      <row typeID="3441" skillpoints="1280000" level="5" />
+      <row typeID="3438" skillpoints="500" level="1" />
+      <row typeID="12485" skillpoints="226275" level="4" />
+      <row typeID="3439" skillpoints="24000" level="3" />
+      <row typeID="3437" skillpoints="256000" level="5" />
+      <row typeID="23594" skillpoints="226275" level="4" />
+      <row typeID="11579" skillpoints="48000" level="3" />
+      <row typeID="21603" skillpoints="7072" level="2" />
+      <row typeID="3427" skillpoints="90510" level="4" />
+      <row typeID="3426" skillpoints="256000" level="5" />
+      <row typeID="3432" skillpoints="507" level="1" />
+      <row typeID="19760" skillpoints="4243" level="2" />
+      <row typeID="19759" skillpoints="1002" level="1" />
+      <row typeID="3428" skillpoints="90510" level="4" />
+      <row typeID="3435" skillpoints="135765" level="4" />
+      <row typeID="3433" skillpoints="24000" level="3" />
+      <row typeID="19761" skillpoints="6" level="0" />
+      <row typeID="3431" skillpoints="45255" level="4" />
+      <row typeID="3551" skillpoints="8000" level="3" />
+      <row typeID="19921" skillpoints="5" level="0" />
+      <row typeID="3429" skillpoints="45255" level="4" />
+      <row typeID="3434" skillpoints="24007" level="3" />
+      <row typeID="3423" skillpoints="16000" level="3" />
+      <row typeID="3424" skillpoints="90510" level="4" />
+      <row typeID="3418" skillpoints="135765" level="4" />
+      <row typeID="3421" skillpoints="500" level="1" />
+      <row typeID="3417" skillpoints="256000" level="5" />
+      <row typeID="3413" skillpoints="256000" level="5" />
+      <row typeID="21059" skillpoints="2829" level="2" />
+      <row typeID="3422" skillpoints="500" level="1" />
+      <row typeID="3419" skillpoints="4243" level="2" />
+      <row typeID="3416" skillpoints="45255" level="4" />
+      <row typeID="3425" skillpoints="18913" level="3" />
+      <row typeID="3420" skillpoints="15268" level="2" />
+      <row typeID="11207" skillpoints="8486" level="2" />
+      <row typeID="3316" skillpoints="16000" level="3" />
+      <row typeID="3300" skillpoints="49505" level="4" />
+      <row typeID="3306" skillpoints="24000" level="3" />
+      <row typeID="3304" skillpoints="24000" level="3" />
+      <row typeID="3312" skillpoints="16000" level="3" />
+      <row typeID="3310" skillpoints="3109" level="2" />
+      <row typeID="3311" skillpoints="16000" level="3" />
+      <row typeID="12210" skillpoints="24000" level="3" />
+      <row typeID="3303" skillpoints="8000" level="3" />
+      <row typeID="3301" skillpoints="256000" level="5" />
+      <row typeID="3302" skillpoints="270" level="1" />
+      <row typeID="3315" skillpoints="32000" level="3" />
+      <row typeID="3318" skillpoints="512000" level="5" />
+      <row typeID="16281" skillpoints="8000" level="3" />
+      <row typeID="3380" skillpoints="256000" level="5" />
+      <row typeID="3387" skillpoints="500" level="1" />
+      <row typeID="3386" skillpoints="48935" level="4" />
+      <row typeID="22578" skillpoints="5657" level="2" />
+      <row typeID="3388" skillpoints="750" level="1" />
+      <row typeID="3385" skillpoints="30558" level="3" />
+      <row typeID="20494" skillpoints="0" level="0" />
+      <row typeID="20495" skillpoints="0" level="0" />
+      <row typeID="3348" skillpoints="8000" level="3" />
+      <row typeID="22536" skillpoints="5" level="0" />
+      <row typeID="3350" skillpoints="0" level="0" />
+      <row typeID="3349" skillpoints="0" level="0" />
+      <row typeID="3377" skillpoints="256000" level="5" />
+      <row typeID="12387" skillpoints="135765" level="4" />
+      <row typeID="12385" skillpoints="135765" level="4" />
+      <row typeID="3376" skillpoints="45255" level="4" />
+      <row typeID="12386" skillpoints="135765" level="4" />
+      <row typeID="3378" skillpoints="256000" level="5" />
+      <row typeID="3375" skillpoints="256000" level="5" />
+      <row typeID="3374" skillpoints="256000" level="5" />
+      <row typeID="12376" skillpoints="135765" level="4" />
+      <row typeID="12383" skillpoints="24000" level="3" />
+      <row typeID="3379" skillpoints="256000" level="5" />
+      <row typeID="26253" skillpoints="750" level="1" />
+      <row typeID="26254" skillpoints="0" level="0" />
+      <row typeID="26255" skillpoints="1" level="0" />
+      <row typeID="26256" skillpoints="0" level="0" />
+      <row typeID="22806" skillpoints="2829" level="2" />
+      <row typeID="22807" skillpoints="16000" level="3" />
+      <row typeID="3394" skillpoints="512000" level="5" />
+      <row typeID="26259" skillpoints="0" level="0" />
+      <row typeID="26252" skillpoints="16000" level="3" />
+      <row typeID="22808" skillpoints="16000" level="3" />
+      <row typeID="26260" skillpoints="2" level="0" />
+      <row typeID="3392" skillpoints="256000" level="5" />
+      <row typeID="28879" skillpoints="0" level="0" />
+      <row typeID="16069" skillpoints="16000" level="3" />
+      <row typeID="27902" skillpoints="3895" level="2" />
+      <row typeID="3393" skillpoints="45255" level="4" />
+      <row typeID="25863" skillpoints="24000" level="3" />
+      <row typeID="26261" skillpoints="750" level="1" />
+      <row typeID="22809" skillpoints="2829" level="2" />
+      <row typeID="12441" skillpoints="500" level="1" />
+      <row typeID="3319" skillpoints="45255" level="4" />
+      <row typeID="12442" skillpoints="1000" level="1" />
+      <row typeID="21071" skillpoints="500" level="1" />
+      <row typeID="3320" skillpoints="250" level="1" />
+      <row typeID="3321" skillpoints="6461" level="2" />
+      <row typeID="20314" skillpoints="500" level="1" />
+      <row typeID="20315" skillpoints="1250" level="1" />
+      <row typeID="3452" skillpoints="181020" level="4" />
+      <row typeID="3450" skillpoints="45255" level="4" />
+      <row typeID="3453" skillpoints="512000" level="5" />
+      <row typeID="3451" skillpoints="90510" level="4" />
+      <row typeID="3454" skillpoints="226275" level="4" />
+      <row typeID="3449" skillpoints="256000" level="5" />
+      <row typeID="3455" skillpoints="45255" level="4" />
+      <row typeID="3410" skillpoints="135765" level="4" />
+      <row typeID="3411" skillpoints="768000" level="5" />
+      <row typeID="24242" skillpoints="8000" level="3" />
+      <row typeID="3406" skillpoints="0" level="0" />
+      <row typeID="3409" skillpoints="750" level="1" />
+      <row typeID="3403" skillpoints="8" level="0" />
+      <row typeID="3402" skillpoints="46772" level="4" />
+      <row typeID="3359" skillpoints="24000" level="3" />
+      <row typeID="3357" skillpoints="1415" level="2" />
+      <row typeID="16552" skillpoints="8000" level="3" />
+      <row typeID="16550" skillpoints="8000" level="3" />
+      <row typeID="16549" skillpoints="8000" level="3" />
+      <row typeID="3356" skillpoints="511" level="1" />
+      <row typeID="3355" skillpoints="45255" level="4" />
+      <row typeID="3335" skillpoints="40000" level="3" />
+      <row typeID="3331" skillpoints="90510" level="4" />
+      <row typeID="3343" skillpoints="5657" level="2" />
+      <row typeID="12095" skillpoints="181020" level="4" />
+      <row typeID="12099" skillpoints="48000" level="3" />
+      <row typeID="3330" skillpoints="500" level="1" />
+      <row typeID="12097" skillpoints="2829" level="2" />
+      <row typeID="3336" skillpoints="362039" level="4" />
+      <row typeID="3332" skillpoints="1280000" level="5" />
+      <row typeID="3328" skillpoints="512000" level="5" />
+      <row typeID="3340" skillpoints="32000" level="3" />
+      <row typeID="16591" skillpoints="271530" level="4" />
+      <row typeID="12092" skillpoints="181020" level="4" />
+      <row typeID="17940" skillpoints="32000" level="3" />
+      <row typeID="3333" skillpoints="1250" level="1" />
+      <row typeID="3329" skillpoints="90510" level="4" />
+      <row typeID="3327" skillpoints="256000" level="5" />
+      <row typeID="3446" skillpoints="2829" level="2" />
+      <row typeID="25235" skillpoints="250" level="1" />
+      <row typeID="16598" skillpoints="750" level="1" />
+      <row typeID="3444" skillpoints="2829" level="2" />
+      <row typeID="3443" skillpoints="2949" level="2" />
+    </rowset>
+    <rowset name="certificates" key="certificateID" columns="certificateID">
+      <row certificateID="1" />
+      <row certificateID="258" />
+      <row certificateID="5" />
+      <row certificateID="9" />
+      <row certificateID="12" />
+      <row certificateID="13" />
+      <row certificateID="282" />
+      <row certificateID="285" />
+      <row certificateID="161" />
+      <row certificateID="162" />
+      <row certificateID="165" />
+      <row certificateID="166" />
+      <row certificateID="39" />
+      <row certificateID="169" />
+      <row certificateID="170" />
+      <row certificateID="173" />
+      <row certificateID="46" />
+      <row certificateID="47" />
+      <row certificateID="50" />
+      <row certificateID="180" />
+      <row certificateID="186" />
+      <row certificateID="189" />
+      <row certificateID="192" />
+      <row certificateID="195" />
+      <row certificateID="68" />
+      <row certificateID="200" />
+      <row certificateID="201" />
+      <row certificateID="202" />
+      <row certificateID="79" />
+      <row certificateID="93" />
+      <row certificateID="100" />
+      <row certificateID="239" />
+      <row certificateID="174" />
+      <row certificateID="196" />
+      <row certificateID="171" />
+      <row certificateID="72" />
+      <row certificateID="332" />
+      <row certificateID="333" />
+      <row certificateID="2" />
+      <row certificateID="27" />
+      <row certificateID="296" />
+      <row certificateID="53" />
+      <row certificateID="3" />
+    </rowset>
+    <rowset name="corporationRoles" key="roleID" columns="roleID,roleName">
+      <row roleID="256" roleName="roleAccountant" />
+      <row roleID="512" roleName="roleSecurityOfficer" />
+      <row roleID="1024" roleName="roleFactoryManager" />
+      <row roleID="2048" roleName="roleStationManager" />
+      <row roleID="4096" roleName="roleAuditor" />
+      <row roleID="134217728" roleName="roleAccountCanTake1" />
+      <row roleID="268435456" roleName="roleAccountCanTake2" />
+      <row roleID="536870912" roleName="roleAccountCanTake3" />
+      <row roleID="1073741824" roleName="roleAccountCanTake4" />
+      <row roleID="2147483648" roleName="roleAccountCanTake5" />
+      <row roleID="4294967296" roleName="roleAccountCanTake6" />
+      <row roleID="8589934592" roleName="roleAccountCanTake7" />
+      <row roleID="2199023255552" roleName="roleEquipmentConfig" />
+      <row roleID="562949953421312" roleName="roleCanRentOffice" />
+      <row roleID="1125899906842624" roleName="roleCanRentFactorySlot" />
+      <row roleID="2251799813685248" roleName="roleCanRentResearchSlot" />
+      <row roleID="4503599627370496" roleName="roleJuniorAccountant" />
+      <row roleID="9007199254740992" roleName="roleStarbaseConfig" />
+      <row roleID="18014398509481984" roleName="roleTrader" />
+      <row roleID="36028797018963968" roleName="roleChatManager" />
+      <row roleID="72057594037927936" roleName="roleContractManager" />
+      <row roleID="144115188075855872" roleName="roleInfrastructureTacticalOfficer" />
+      <row roleID="288230376151711744" roleName="roleStarbaseCaretaker" />
+    </rowset>
+    <rowset name="corporationRolesAtHQ" key="roleID" columns="roleID,roleName">
+      <row roleID="8192" roleName="roleHangarCanTake1" />
+      <row roleID="16384" roleName="roleHangarCanTake2" />
+      <row roleID="32768" roleName="roleHangarCanTake3" />
+      <row roleID="65536" roleName="roleHangarCanTake4" />
+      <row roleID="131072" roleName="roleHangarCanTake5" />
+      <row roleID="262144" roleName="roleHangarCanTake6" />
+      <row roleID="524288" roleName="roleHangarCanTake7" />
+      <row roleID="1048576" roleName="roleHangarCanQuery1" />
+      <row roleID="2097152" roleName="roleHangarCanQuery2" />
+      <row roleID="4194304" roleName="roleHangarCanQuery3" />
+      <row roleID="8388608" roleName="roleHangarCanQuery4" />
+      <row roleID="16777216" roleName="roleHangarCanQuery5" />
+      <row roleID="33554432" roleName="roleHangarCanQuery6" />
+      <row roleID="67108864" roleName="roleHangarCanQuery7" />
+      <row roleID="4398046511104" roleName="roleContainerCanTake1" />
+      <row roleID="8796093022208" roleName="roleContainerCanTake2" />
+      <row roleID="17592186044416" roleName="roleContainerCanTake3" />
+      <row roleID="35184372088832" roleName="roleContainerCanTake4" />
+      <row roleID="70368744177664" roleName="roleContainerCanTake5" />
+      <row roleID="140737488355328" roleName="roleContainerCanTake6" />
+      <row roleID="281474976710656" roleName="roleContainerCanTake7" />
+    </rowset>
+    <rowset name="corporationRolesAtBase" key="roleID" columns="roleID,roleName">
+      <row roleID="8192" roleName="roleHangarCanTake1" />
+      <row roleID="16384" roleName="roleHangarCanTake2" />
+      <row roleID="32768" roleName="roleHangarCanTake3" />
+      <row roleID="65536" roleName="roleHangarCanTake4" />
+      <row roleID="131072" roleName="roleHangarCanTake5" />
+      <row roleID="262144" roleName="roleHangarCanTake6" />
+      <row roleID="524288" roleName="roleHangarCanTake7" />
+      <row roleID="1048576" roleName="roleHangarCanQuery1" />
+      <row roleID="2097152" roleName="roleHangarCanQuery2" />
+      <row roleID="4194304" roleName="roleHangarCanQuery3" />
+      <row roleID="8388608" roleName="roleHangarCanQuery4" />
+      <row roleID="16777216" roleName="roleHangarCanQuery5" />
+      <row roleID="33554432" roleName="roleHangarCanQuery6" />
+      <row roleID="67108864" roleName="roleHangarCanQuery7" />
+      <row roleID="4398046511104" roleName="roleContainerCanTake1" />
+      <row roleID="8796093022208" roleName="roleContainerCanTake2" />
+      <row roleID="17592186044416" roleName="roleContainerCanTake3" />
+      <row roleID="35184372088832" roleName="roleContainerCanTake4" />
+      <row roleID="70368744177664" roleName="roleContainerCanTake5" />
+      <row roleID="140737488355328" roleName="roleContainerCanTake6" />
+      <row roleID="281474976710656" roleName="roleContainerCanTake7" />
+    </rowset>
+    <rowset name="corporationRolesAtOther" key="roleID" columns="roleID,roleName">
+      <row roleID="8192" roleName="roleHangarCanTake1" />
+      <row roleID="16384" roleName="roleHangarCanTake2" />
+      <row roleID="32768" roleName="roleHangarCanTake3" />
+      <row roleID="65536" roleName="roleHangarCanTake4" />
+      <row roleID="131072" roleName="roleHangarCanTake5" />
+      <row roleID="262144" roleName="roleHangarCanTake6" />
+      <row roleID="524288" roleName="roleHangarCanTake7" />
+      <row roleID="1048576" roleName="roleHangarCanQuery1" />
+      <row roleID="2097152" roleName="roleHangarCanQuery2" />
+      <row roleID="4194304" roleName="roleHangarCanQuery3" />
+      <row roleID="8388608" roleName="roleHangarCanQuery4" />
+      <row roleID="16777216" roleName="roleHangarCanQuery5" />
+      <row roleID="33554432" roleName="roleHangarCanQuery6" />
+      <row roleID="67108864" roleName="roleHangarCanQuery7" />
+      <row roleID="4398046511104" roleName="roleContainerCanTake1" />
+      <row roleID="8796093022208" roleName="roleContainerCanTake2" />
+      <row roleID="17592186044416" roleName="roleContainerCanTake3" />
+      <row roleID="35184372088832" roleName="roleContainerCanTake4" />
+      <row roleID="70368744177664" roleName="roleContainerCanTake5" />
+      <row roleID="140737488355328" roleName="roleContainerCanTake6" />
+      <row roleID="281474976710656" roleName="roleContainerCanTake7" />
+    </rowset>
+    <rowset name="corporationTitles" key="titleID" columns="titleID,titleName">
+      <row titleID="32768" titleName="Femme du directeur" />
+    </rowset>
+  </result>
+  <cachedUntil>2009-02-22 05:55:56</cachedUntil>
+</eveapi>

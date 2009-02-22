@@ -8,8 +8,6 @@ import org.jevemon.model.charactersheet.CharacterSheet;
 import org.jevemon.model.charactersheet.CharacterSheetFactory;
 
 import com.trolltech.qt.gui.QApplication;
-import com.trolltech.qt.gui.QHBoxLayout;
-import com.trolltech.qt.gui.QWidget;
 
 public class TestCharacterInfo {
 
@@ -45,6 +43,8 @@ public class TestCharacterInfo {
 			e.printStackTrace();
 		}
 		view.loadInfo(sheet);
+		view.loadAttributes(sheet);
+		view.loadSkills(sheet);
 		
         view.show();
         
