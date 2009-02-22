@@ -28,7 +28,10 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" >
      <item>
-      <widget class="QLabel" name="filterLabel" >
+      <widget class="QLabel" name="filterLabel_2" >
+       <property name="enabled" >
+        <bool>true</bool>
+       </property>
        <property name="sizePolicy" >
         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
          <horstretch>0</horstretch>
@@ -43,9 +46,6 @@
        </property>
        <property name="text" >
         <string>Filter</string>
-       </property>
-       <property name="alignment" >
-        <set>com.trolltech.qt.core.Qt.AlignmentFlag.AlignRight|com.trolltech.qt.core.Qt.AlignmentFlag.AlignTrailing|com.trolltech.qt.core.Qt.AlignmentFlag.AlignVCenter</set>
        </property>
       </widget>
      </item>

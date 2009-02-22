@@ -13,7 +13,6 @@ import org.jevemon.misc.util.Formater;
 import org.jevemon.model.charactersheet.CharacterSheet;
 import org.jevemon.model.items.skillmap.SkillMap;
 import org.jevemon.model.skillintraining.SkillInTraining;
-import org.jevemon.view.Ui_CharacterInfo;
 
 import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.gui.QFrame;
