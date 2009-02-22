@@ -5,6 +5,11 @@ import java.text.FieldPosition;
 
 public class Formater {
 	
+	private static final long SECOND = 1000;
+	private static final long MINUTE = 60 * SECOND;
+	private static final long HOUR = 60 * MINUTE;
+	private static final long DAY = 24 * HOUR;
+
 	public static String printDouble(double number) {
 		StringBuffer buff = new StringBuffer("");
 
@@ -30,4 +35,47 @@ public class Formater {
 
 		return buff.toString();
 	}
+	
+	public static String printPercent(double number) {
+		StringBuffer buff = new StringBuffer("");
+
+		DecimalFormat form = new DecimalFormat();
+		form.setMaximumFractionDigits(0);
+		form.setMinimumFractionDigits(0);
+
+		form.format(number * 100.0, buff, new FieldPosition(1));
+
+		return buff.toString();
+	}
+	
+	public static String printTime(long time){
+		String timeString = "";
+		
+		int temp = (int) (time / DAY);
+		switch (temp){
+			case 1 : timeString += temp + " day "; break;
+			default : timeString += temp + " days ";
+		}
+		
+		temp = (int) ((time % DAY) / HOUR);
+		switch (temp){
+			case 1 : timeString += temp + " hour "; break;
+			default : timeString += temp + " hours ";
+		}
+		
+		temp = (int) ((time % HOUR) / MINUTE);
+		switch (temp){
+			case 1 : timeString += temp + " minute "; break;
+			default : timeString += temp + " minutes ";
+		}
+		
+		temp = (int) ((time % MINUTE) / SECOND);
+		switch (temp){
+			case 1 : timeString += temp + " second "; break;
+			default : timeString += temp + " seconds ";
+		}
+
+		return timeString;
+	}
+	
 }

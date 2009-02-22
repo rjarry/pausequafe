@@ -23,14 +23,9 @@ import be.fomp.jeve.core.exceptions.JEveConnectionException;
 import be.fomp.jeve.core.exceptions.JEveParseException;
 
 /**
-<<<<<<< .mine
- * This factory provides a character sheet. It first tries to
- * 
-=======
  * This factory provides a character sheet. 
  * It first tries to retrieve it from CCP server and, if not possible, from a previously cached file.
  * 
->>>>>>> .r27
  * @author diabeteman
  * 
  */
@@ -108,6 +103,7 @@ public class CharacterSheetFactory {
 			throw new JEVEMonFileNotFoundException("XML file not found");
 		}
 		SAXBuilder builder = new SAXBuilder();
+		
 		Document doc = null;
 		try {
 			doc = builder.build(file);

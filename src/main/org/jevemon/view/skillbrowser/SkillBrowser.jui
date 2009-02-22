@@ -18,84 +18,81 @@
   <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <widget class="QComboBox" name="filterCombo" >
-   <property name="geometry" >
-    <rect>
-     <x>47</x>
-     <y>11</y>
-     <width>194</width>
-     <height>20</height>
-    </rect>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <property name="spacing" >
+    <number>10</number>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
+   <property name="margin" >
+    <number>10</number>
    </property>
-   <property name="minimumSize" >
-    <size>
-     <width>190</width>
-     <height>20</height>
-    </size>
-   </property>
-   <property name="focusPolicy" >
-    <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="filterLabel" >
-   <property name="geometry" >
-    <rect>
-     <x>11</x>
-     <y>11</y>
-     <width>30</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize" >
-    <size>
-     <width>30</width>
-     <height>20</height>
-    </size>
-   </property>
-   <property name="text" >
-    <string>Filter</string>
-   </property>
-  </widget>
-  <widget class="QTreeView" name="treeWidget" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>230</width>
-     <height>380</height>
-    </rect>
-   </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
-     <horstretch>1</horstretch>
-     <verstretch>1</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize" >
-    <size>
-     <width>230</width>
-     <height>380</height>
-    </size>
-   </property>
-   <property name="focusPolicy" >
-    <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
-   </property>
-   <property name="frameShape" >
-    <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
-   </property>
-  </widget>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" >
+     <item>
+      <widget class="QLabel" name="filterLabel" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>30</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text" >
+        <string>Filter</string>
+       </property>
+       <property name="alignment" >
+        <set>com.trolltech.qt.core.Qt.AlignmentFlag.AlignRight|com.trolltech.qt.core.Qt.AlignmentFlag.AlignTrailing|com.trolltech.qt.core.Qt.AlignmentFlag.AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="filterCombo" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>190</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="focusPolicy" >
+        <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="skillsFrame" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize" >
+      <size>
+       <width>230</width>
+       <height>380</height>
+      </size>
+     </property>
+     <property name="frameShape" >
+      <enum>com.trolltech.qt.gui.QFrame.Shape.Box</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

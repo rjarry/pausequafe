@@ -29,8 +29,8 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>135</width>
-     <height>135</height>
+     <width>120</width>
+     <height>120</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -49,10 +49,10 @@
   <widget class="QLabel" name="info" >
    <property name="geometry" >
     <rect>
-     <x>150</x>
+     <x>135</x>
      <y>10</y>
-     <width>240</width>
-     <height>65</height>
+     <width>255</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -71,10 +71,10 @@
   <widget class="QLabel" name="charisma" >
    <property name="geometry" >
     <rect>
-     <x>150</x>
-     <y>81</y>
-     <width>240</width>
-     <height>12</height>
+     <x>135</x>
+     <y>65</y>
+     <width>120</width>
+     <height>13</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -93,10 +93,10 @@
   <widget class="QLabel" name="intelligence" >
    <property name="geometry" >
     <rect>
-     <x>150</x>
-     <y>94</y>
-     <width>240</width>
-     <height>12</height>
+     <x>135</x>
+     <y>78</y>
+     <width>120</width>
+     <height>13</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -115,10 +115,10 @@
   <widget class="QLabel" name="memory" >
    <property name="geometry" >
     <rect>
-     <x>150</x>
-     <y>107</y>
-     <width>240</width>
-     <height>12</height>
+     <x>135</x>
+     <y>91</y>
+     <width>120</width>
+     <height>13</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -137,10 +137,10 @@
   <widget class="QLabel" name="perception" >
    <property name="geometry" >
     <rect>
-     <x>150</x>
-     <y>120</y>
-     <width>240</width>
-     <height>12</height>
+     <x>135</x>
+     <y>104</y>
+     <width>120</width>
+     <height>13</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -159,10 +159,10 @@
   <widget class="QLabel" name="willpower" >
    <property name="geometry" >
     <rect>
-     <x>150</x>
-     <y>133</y>
-     <width>240</width>
-     <height>12</height>
+     <x>135</x>
+     <y>117</y>
+     <width>120</width>
+     <height>13</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -182,8 +182,8 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>149</y>
-     <width>150</width>
+     <y>135</y>
+     <width>120</width>
      <height>13</height>
     </rect>
    </property>
@@ -204,8 +204,96 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>162</y>
-     <width>150</width>
+     <y>148</y>
+     <width>120</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="sizePolicy" >
+    <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="frameShape" >
+    <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="levelVSkills" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>161</y>
+     <width>120</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="sizePolicy" >
+    <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="frameShape" >
+    <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="skillInTraining" >
+   <property name="geometry" >
+    <rect>
+     <x>135</x>
+     <y>135</y>
+     <width>255</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="sizePolicy" >
+    <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="frameShape" >
+    <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="timeLeft" >
+   <property name="geometry" >
+    <rect>
+     <x>135</x>
+     <y>148</y>
+     <width>255</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="sizePolicy" >
+    <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="frameShape" >
+    <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="trainingEnd" >
+   <property name="geometry" >
+    <rect>
+     <x>135</x>
+     <y>161</y>
+     <width>255</width>
      <height>13</height>
     </rect>
    </property>
