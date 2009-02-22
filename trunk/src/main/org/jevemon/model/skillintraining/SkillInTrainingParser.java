@@ -32,6 +32,9 @@ public class SkillInTrainingParser {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		Date cachedDate = null;
+		
+
+		
 		try {
 			cachedDate = dateFormat.parse(root.getChild("currentTime").getValue());
 		} catch (ParseException e) {
@@ -52,6 +55,13 @@ public class SkillInTrainingParser {
 				
 		Element result = root.getChild("result");
 		
+		inTraining.setSkillInTraining(Integer.parseInt(result.getChild("skillInTraining").getValue()));
+		
+		// if there's no skill in training we don't try to parse the file further.
+		if (inTraining.skillInTraining() == 0){
+			return inTraining;
+		}
+
 		try {
 			cal.setTime(dateFormat.parse(result.getChild("currentTQTime").getValue()));
 			inTraining.setCurrentTQTime(cal.getTimeInMillis());
@@ -67,7 +77,6 @@ public class SkillInTrainingParser {
 		inTraining.setTrainingStartSP(Integer.parseInt(result.getChild("trainingStartSP").getValue()));
 		inTraining.setTrainingDestinationSP(Integer.parseInt(result.getChild("trainingDestinationSP").getValue()));
 		inTraining.setTrainingToLevel(Integer.parseInt(result.getChild("trainingToLevel").getValue()));
-		inTraining.setSkillInTraining(Integer.parseInt(result.getChild("skillInTraining").getValue()));
 		
 		return inTraining;
 	}

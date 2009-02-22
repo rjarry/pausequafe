@@ -65,7 +65,15 @@ public class SkillInTraining {
     }
     
     public double calculateCompletion(){
-    	return (double)(currentSP() - calculateLevelStartSP())/(double)(trainingDestinationSP - calculateLevelStartSP());
+    	double completion = (double)(currentSP() - calculateLevelStartSP())
+    					   /(double)(trainingDestinationSP - calculateLevelStartSP());
+    	
+    	if (completion > 1){
+    		return 1;
+    	} else {
+    		return completion;
+    	}
+    	
     }
     
     public String toString(){
