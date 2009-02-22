@@ -117,12 +117,25 @@ public class CharacterSheet {
 	 * 		the effective attribute's value
 	 */
 	public double getEffectiveAttributeValue(String attribute){
-		double learningBonus;
-		if (skills.containsKey(Constants.LEARNING)){
-			learningBonus = 1 + skills.get(Constants.LEARNING).getLevel() * 0.02;
-		} else {
-			learningBonus = 1;
+			
+		int baseValue = 0;
+		if (attribute.equals("intelligence")){
+			baseValue = intelligence;
 		}
+		if (attribute.equals("memory")){
+			baseValue = memory;
+		}
+		if (attribute.equals("willpower")){
+			baseValue = willpower;
+		}
+		if (attribute.equals("charisma")){
+			baseValue = charisma;
+		}
+		if (attribute.equals("perception")){
+			baseValue = perception;
+		}
+		
+		int skillsBonus = getSkillsBonus(attribute);
 		
 		int implantBonus;
 		if (attributeEnhancers.containsKey(attribute)){
@@ -131,10 +144,16 @@ public class CharacterSheet {
 			implantBonus = 0;
 		}
 		
-		int baseValue = 0;
+		double learningBonus = getLearningBonus();
+				
+		return (baseValue + skillsBonus + implantBonus) * learningBonus;
+	}
+	
+	public int getSkillsBonus(String attribute){
 		int skillsBonus = 0;
+		
 		if (attribute.equals("intelligence")){
-			baseValue = intelligence;
+
 			if (skills.containsKey(Constants.ANALYTICAL_MIND)){
 				skillsBonus += skills.get(Constants.ANALYTICAL_MIND).getLevel();
 			}
@@ -143,7 +162,6 @@ public class CharacterSheet {
 			}
 		}
 		if (attribute.equals("memory")){
-			baseValue = memory;
 			if (skills.containsKey(Constants.INSTANT_RECALL)){
 				skillsBonus += skills.get(Constants.INSTANT_RECALL).getLevel();
 			}
@@ -152,7 +170,6 @@ public class CharacterSheet {
 			}		
 		}
 		if (attribute.equals("willpower")){
-			baseValue = willpower;
 			if (skills.containsKey(Constants.IRON_WILL)){
 				skillsBonus += skills.get(Constants.IRON_WILL).getLevel();
 			}
@@ -161,7 +178,6 @@ public class CharacterSheet {
 			}
 		}
 		if (attribute.equals("charisma")){
-			baseValue = charisma;
 			if (skills.containsKey(Constants.EMPATHY)){
 				skillsBonus += skills.get(Constants.EMPATHY).getLevel();
 			}
@@ -170,7 +186,6 @@ public class CharacterSheet {
 			}
 		}
 		if (attribute.equals("perception")){
-			baseValue = perception;
 			if (skills.containsKey(Constants.SPATIAL_AWARENESS)){
 				skillsBonus += skills.get(Constants.SPATIAL_AWARENESS).getLevel();
 			}
@@ -178,8 +193,22 @@ public class CharacterSheet {
 				skillsBonus += skills.get(Constants.CLARITY).getLevel();
 			}
 		}
-		return (baseValue + skillsBonus + implantBonus) * learningBonus;
+		
+		return skillsBonus;
 	}
+	
+	public double getLearningBonus(){
+		if (skills.containsKey(Constants.LEARNING)){
+			return 1 + skills.get(Constants.LEARNING).getLevel() * 0.02;
+		} else {
+			return 1;
+		}
+	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * Calculates the training speed (in SP per millisecond) for the given attributes.
@@ -371,7 +400,11 @@ public class CharacterSheet {
 	}
 	
 	public AttributeEnhancer getAttributeEnhancer(String attribute){
-		return attributeEnhancers.get(attribute);
+		if (attributeEnhancers.containsKey(attribute)){
+			return attributeEnhancers.get(attribute);
+		} else {
+			return new AttributeEnhancer();
+		}
 	}
 
 	public int getIntelligence() {
