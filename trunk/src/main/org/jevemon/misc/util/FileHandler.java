@@ -61,9 +61,10 @@ public class FileHandler {
 	 * @param image the image to be saved
 	 * @param fileName The file to be written to
 	 * @throws JEVEMonException
+	 * @throws IOException 
 	 */
-	public static void writeImage(Image image,String pathName, String fileName) throws JEVEMonException {
-		try {
+	public static void writeImage(Image image,String pathName, String fileName) throws IOException {
+
 			// Get an instance of the file
 			File path = new File(pathName);
 			File file = new File(pathName + fileName);
@@ -73,8 +74,6 @@ public class FileHandler {
 			
 			// Write the image as a jpg to the file
 			ImageIO.write((BufferedImage)image, "jpg", file);
-		} catch (IOException ioe) { 
-			throw new JEVEMonException("Unable to write image to file");
-		}
+
 	}
 }

@@ -1,5 +1,6 @@
 package org.jevemon.model.charactersheet;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.util.Scanner;
@@ -53,6 +54,8 @@ public class TestCharacterList {
 			System.out.println("error, could not get character list");
 			System.out.println(e.getMessage());
 			System.exit(0);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		
