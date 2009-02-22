@@ -4,8 +4,10 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import javax.imageio.ImageIO;
 
@@ -26,17 +28,21 @@ public class FileHandler {
 	 */
 	public static void writeXmlFile(Document doc,String pathName, String fileName) throws JEVEMonException {
 		
-		FileWriter out = null;
+		Writer out = null;
+		
+		
 		try {
 			
 			// Prepare the output file
-			File path = new File (pathName);
+			File path = new File(pathName);
 			File file = new File(pathName + fileName);
-			
+						
 			// Check if the directories exist
-			if(!path.exists()) path.mkdirs();		
+			if(!path.exists()) path.mkdirs();	
 			
-			out = new FileWriter(file);
+			// To force encoding to UTF-8
+			FileOutputStream stream = new FileOutputStream(file);
+			out = new OutputStreamWriter(stream,"UTF-8");
 			
 			xmlOutputter.output(doc, out);
 			
