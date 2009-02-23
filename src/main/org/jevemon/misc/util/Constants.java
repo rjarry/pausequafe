@@ -27,5 +27,10 @@ public class Constants {
 	public static final String SKILL_TREE_FILE = "resources/SkillTree.xml";
 	
 	public static final int PORTRAIT_FILE_SIZE = 256;
-	public static final int PORTRAIT_GUI_SIZE = 150;
+	public static final int PORTRAIT_GUI_SIZE = 120;
+	
+	public static final int SECOND = 1000;
+	public static final int MINUTE = 60 * SECOND;
+	public static final int HOUR = 60 * MINUTE;
+	public static final int DAY = 24 * HOUR;
 }

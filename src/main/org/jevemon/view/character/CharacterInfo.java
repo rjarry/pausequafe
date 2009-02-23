@@ -9,21 +9,30 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
+import org.jevemon.misc.util.Constants;
 import org.jevemon.misc.util.Formater;
 import org.jevemon.model.charactersheet.CharacterSheet;
 import org.jevemon.model.items.skillmap.SkillMap;
 import org.jevemon.model.skillintraining.SkillInTraining;
 
 import com.trolltech.qt.core.QRect;
+import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.gui.QFrame;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QWidget;
-
+/**
+ * This widget gathers all the information about a character.
+ * 
+ * @author diabeteman
+ */
 public class CharacterInfo extends QFrame {
 
+	////////////////////
+	// private fields //
+	////////////////////
 	private Ui_CharacterInfo ui = new Ui_CharacterInfo();
-
+	
 	private QLabel portrait;
 	
 	private QLabel info;
@@ -41,7 +50,19 @@ public class CharacterInfo extends QFrame {
 	private QLabel skillInTraining;
 	private QLabel timeLeft;
 	private QLabel trainingEnd;
+	
+	private double currentSP = 0;
+	private long trainingTimeLeft = 0;
+	private double trainingSpeed = 0;
 
+	private boolean thereIsASkillTraining = false;
+	
+	private QTimer timer;
+
+	//////////////////
+	// constructors //
+	//////////////////
+	
 	public CharacterInfo() {
 		this(null);
 	}
@@ -52,6 +73,9 @@ public class CharacterInfo extends QFrame {
 		setupUi();
 	}
 
+	//////////////////
+	// widget setup //
+	//////////////////
 	private void setupUi() {
 		setFrameShape(QFrame.Shape.Panel);
 		setFrameShadow(QFrame.Shadow.Sunken);
@@ -72,9 +96,20 @@ public class CharacterInfo extends QFrame {
 		skillInTraining = (QLabel) this.findChild(QLabel.class, "skillInTraining");
 		timeLeft = (QLabel) this.findChild(QLabel.class, "timeLeft");
 		trainingEnd = (QLabel) this.findChild(QLabel.class, "trainingEnd");
-
+		
+		timer = new QTimer(this);
+		timer.timeout.connect(this, "updateValues()");
 	}
 
+	////////////////////
+	// public methods //
+	////////////////////
+	/**
+	 * Loads the portrait of the character.
+	 * 
+	 * @param fileName
+	 * 			portrait image file location
+	 */
 	public void loadPortrait(String fileName) {
 		QPixmap image = new QPixmap();
 		image.load(fileName);
@@ -83,10 +118,14 @@ public class CharacterInfo extends QFrame {
 		portrait.setPixmap(image.scaledToHeight(size));
 	}
 
+	/**
+	 * Sets up basic info about the character
+	 * 
+	 * @param sheet
+	 * 			the character
+	 */
 	public void loadInfo(CharacterSheet sheet) {
 		String textInfo = "<b><font size=5>" + sheet.getName() + "</font></b><br>";
-		//textInfo += sheet.getGender() + " " + sheet.getRace() 
-		//										+ " " + sheet.getBloodLine() + "<br>";
 		textInfo += "Corporation: " + sheet.getCorporationName() + "<br>";
 		textInfo += "Balance: " + Formater.printDouble(sheet.getBalance()) + " ISK";
 				
@@ -100,11 +139,18 @@ public class CharacterInfo extends QFrame {
 			corpTitles += titles.get(titles.size() - 1);
 			info.setToolTip(corpTitles);
 		}
-		
 		info.setText(textInfo);
 	}
 	
+	/**
+	 * Sets up the effective attribute values of the character.
+	 * 
+	 * @param sheet
+	 * 			the character
+	 */
 	public void loadAttributes(CharacterSheet sheet) {
+		
+		// building of the labels' text
 		String charismaText = "Charisma: " 
 			+ Formater.printDouble(sheet.getEffectiveAttributeValue("charisma"));
 		String intelligenceText = "Intelligence: " 
@@ -122,6 +168,7 @@ public class CharacterInfo extends QFrame {
 		perception.setText(perceptionText);
 		willpower.setText(willpowerText);
 		
+		// building of the tooltips
 		charismaText += " = [("	+ sheet.getCharisma() + " base + "
 						+ sheet.getSkillsBonus("charisma") + " skills + "
 						+ sheet.getAttributeEnhancer("charisma").getAugmentatorValue() 
@@ -155,59 +202,122 @@ public class CharacterInfo extends QFrame {
 		willpower.setToolTip(willpowerText);
 	}
 	
+	/**
+	 * Sets up the skills info of the character
+	 * 
+	 * @param sheet
+	 * 			the character sheet
+	 */
 	public void loadSkills(CharacterSheet sheet){
+		// the amount of SP here is only calculated by summing the SP from all skills.
+		// it represents the total SP of character at the time of the XML file generation.
+		currentSP = sheet.getSkillPoints();
 		skillPoints.setText("<b>" 
-				+ Formater.printLong(sheet.getSkillPoints()) + " total SP</b>");
+				+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
 		skillPoints.setToolTip(sheet.getCloneName() 
 				+ " (" + Formater.printLong(sheet.getCloneSkillPoints()) + " SP)");
-		skills.setText("<b>" + sheet.getSkillCount() + " known skills</b>");
-		skills.setToolTip(	  sheet.getLevel1Skills() + " skills at level I\n"
+		
+		String levelVText = sheet.getLevel1Skills() + " skills at level I\n"
 							+ sheet.getLevel2Skills() + " skills at level II\n"
 							+ sheet.getLevel3Skills() + " skills at level III\n"
 							+ sheet.getLevel4Skills() + " skills at level IV\n"
-							+ sheet.getLevel5Skills() + " skills at level V");
+							+ sheet.getLevel5Skills() + " skills at level V";
+		
+		skills.setText("<b>" + sheet.getSkillCount() + " known skills</b>");
+		skills.setToolTip(levelVText);
+		
 		levelVSkills.setText("<b>" 
 				+ sheet.getLevel5Skills() + " skills at level V</b>");
+		levelVSkills.setToolTip(levelVText);
 	}
 	
-	public void loadSkillInTrraining(SkillInTraining inTraining) throws JEVEMonException{
+	/**
+	 * Sets up the skill in training info
+	 * 
+	 * @param inTraining
+	 * 				the skill actually in training
+	 * @throws JEVEMonException
+	 * 					if there's a problem accessing the skills database
+	 */
+	public void loadSkillInTraining(CharacterSheet sheet, SkillInTraining inTraining) throws JEVEMonException{
 		
-		
-		String trainingText = "<b>Training: </b>";
+		String trainingText = "";
 		String timeText = "";
 		StringBuffer endText = new StringBuffer("");
+		String toolTipText = "";
 		SimpleDateFormat dateFormat 
 					= new SimpleDateFormat("EEE dd/MM/yyyy HH:mm:ss", Locale.getDefault());
 		FieldPosition fieldPos = new FieldPosition(1);
 		
 		if (inTraining.skillInTraining() == 0){
-			trainingText += "no skill in training!";
+			// if there's no skill in training
+			trainingText += "<b>no skill in training!</b>";
+			thereIsASkillTraining  = false;
 		} else {
-			trainingText += SkillMap.getInstance()
-									.getSkill(inTraining.getTrainingTypeID()).getTypeName();
+			// else we fill the fields
+			thereIsASkillTraining  = true;
+			trainingText += "<b>" + SkillMap.getInstance()
+							.getSkill(inTraining.getTrainingTypeID()).getTypeName();
 			switch (inTraining.getTrainingToLevel()){
-				case 1 : trainingText += " I "; break;
-				case 2 : trainingText += " II "; break;
-				case 3 : trainingText += " III "; break;
-				case 4 : trainingText += " IV "; break;
-				case 5 : trainingText += " V "; break;
-				default : trainingText += " 0 ";
+				case 1 : trainingText += " I </b>("; break;
+				case 2 : trainingText += " II </b>("; break;
+				case 3 : trainingText += " III </b>("; break;
+				case 4 : trainingText += " IV </b>("; break;
+				case 5 : trainingText += " V </b>("; break;
+				default : trainingText += " 0 </b>(";
 			}
-			trainingText += Formater.printPercent(inTraining.calculateCompletion()) + "%";
+			trainingText += Formater.printPercent(inTraining.calculateCompletion()) + "%)";
 			
-			
+			// time left
 			dateFormat.format(new Date(inTraining.getTrainingEndTime()), endText, fieldPos);
 			long now = Calendar.getInstance(TimeZone.getTimeZone("GMT") 
 													,Locale.getDefault()).getTimeInMillis();
-			long time = inTraining.getTrainingEndTime() - now;
+			trainingTimeLeft = inTraining.getTrainingEndTime() - now;
+			if (trainingTimeLeft <= 0){
+				trainingTimeLeft = 0;
+			}
+			timeText += Formater.printTime(trainingTimeLeft);
 			
-			timeText += Formater.printTime(time);
-			
-		}
+			// calculation of the current SP.
+			// here, the correct amount of SP is calculated 
+			// by deducting the "last known" SP of skill in training (from the character sheet)
+			// and adding the current SP of it.
+			currentSP -= sheet.getSkill(inTraining.getTrainingTypeID()).getSkillPoints();
+			currentSP += inTraining.currentSP();
 
+			// setup of the current training speed (in SP / millisecond)
+			trainingSpeed = inTraining.trainingSpeed();
+			
+			// training speed tooltip
+			toolTipText += "Training at: " 
+				+ Math.round(trainingSpeed * Constants.HOUR) + " SP/hour";
+		}
+		
 		skillInTraining.setText(trainingText);
 		timeLeft.setText(timeText);
 		trainingEnd.setText(endText.toString());
+		skillInTraining.setToolTip(toolTipText);
+		timeLeft.setToolTip(toolTipText);
+		trainingEnd.setToolTip(toolTipText);
+		
+		timer.start(Constants.SECOND);
 	}
-
+	
+	/**
+	 * Updates total SP and time left fields every second
+	 */
+	@SuppressWarnings("unused")
+	private void updateValues(){
+		if (thereIsASkillTraining){
+			if (currentSP != 0){
+				currentSP += trainingSpeed * Constants.SECOND;			
+				skillPoints.setText("<b>" 
+						+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
+			}
+			if (trainingTimeLeft >= Constants.SECOND){
+				trainingTimeLeft -= Constants.SECOND;
+				timeLeft.setText(Formater.printTime(trainingTimeLeft));
+			}
+		}
+	}
 }
