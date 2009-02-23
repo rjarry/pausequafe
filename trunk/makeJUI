@@ -1,0 +1,18 @@
+#!/bin/bash
+################################################
+# Generate Ui_*.java classes from *.jui files
+#
+# The binary juic must be in your PATH or in
+# this directory
+#
+# Don't forget to add the Generated_JUIC_files 
+# directory to your source folders in Eclipse
+################################################
+echo ""
+echo "Check for .jui in ./src/main :"
+juic -d Generated_JUIC_files -cp ./src/main
+
+echo ""
+echo "Check for .jui in ./src/main :"
+juic -d Generated_JUIC_files -cp ./src/test
+echo ""
