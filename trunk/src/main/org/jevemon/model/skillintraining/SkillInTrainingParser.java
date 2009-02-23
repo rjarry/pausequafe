@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import org.jdom.Document;
@@ -30,6 +29,7 @@ public class SkillInTrainingParser {
 		
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 		Calendar cal = Calendar.getInstance();
 		Date cachedDate = null;
 		
@@ -39,7 +39,8 @@ public class SkillInTrainingParser {
 			cachedDate = dateFormat.parse(root.getChild("currentTime").getValue());
 		} catch (ParseException e) {
 			// if there's an error during parsing the cached date we take the current Eve time
-			cachedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault()).getTime();
+			cachedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime();
+			
 		}
 		cal.setTime(cachedDate);
 		inTraining.setCurrentTime(cal.getTimeInMillis());
@@ -48,7 +49,7 @@ public class SkillInTrainingParser {
 			cachedDate = dateFormat.parse(root.getChild("cachedUntil").getValue());
 		} catch (ParseException e) {
 			// if there's an error during parsing the cached date we take the current Eve time
-			cachedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault()).getTime();
+			cachedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime();
 		}
 		cal.setTime(cachedDate);
 		inTraining.setCachedUntil(cal.getTimeInMillis());

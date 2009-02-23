@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
@@ -246,8 +245,10 @@ public class CharacterInfo extends QFrame {
 		StringBuffer endText = new StringBuffer("");
 		String toolTipText = "";
 		SimpleDateFormat dateFormat 
-					= new SimpleDateFormat("EEE dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-		FieldPosition fieldPos = new FieldPosition(1);
+					= new SimpleDateFormat("EEE dd MMMMMMMMMM HH:mm:ss");
+		
+		
+
 		
 		if (inTraining.skillInTraining() == 0){
 			// if there's no skill in training
@@ -268,10 +269,11 @@ public class CharacterInfo extends QFrame {
 			}
 			trainingText += Formater.printPercent(inTraining.calculateCompletion()) + "%)";
 			
+			// training end date
+			dateFormat.format(new Date(inTraining.getTrainingEndTime()), endText, new FieldPosition(0));
+			
 			// time left
-			dateFormat.format(new Date(inTraining.getTrainingEndTime()), endText, fieldPos);
-			long now = Calendar.getInstance(TimeZone.getTimeZone("GMT") 
-													,Locale.getDefault()).getTimeInMillis();
+			long now = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
 			trainingTimeLeft = inTraining.getTrainingEndTime() - now;
 			if (trainingTimeLeft <= 0){
 				trainingTimeLeft = 0;
@@ -308,16 +310,13 @@ public class CharacterInfo extends QFrame {
 	 */
 	@SuppressWarnings("unused")
 	private void updateValues(){
-		if (thereIsASkillTraining){
-			if (currentSP != 0){
-				currentSP += trainingSpeed * Constants.SECOND;			
-				skillPoints.setText("<b>" 
-						+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
-			}
-			if (trainingTimeLeft >= Constants.SECOND){
-				trainingTimeLeft -= Constants.SECOND;
-				timeLeft.setText(Formater.printTime(trainingTimeLeft));
-			}
+		if (thereIsASkillTraining && trainingTimeLeft >= Constants.SECOND){
+			currentSP += trainingSpeed * Constants.SECOND;			
+			skillPoints.setText("<b>" 
+					+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
+			
+			trainingTimeLeft -= Constants.SECOND;
+			timeLeft.setText(Formater.printTime(trainingTimeLeft));
 		}
 	}
 }
