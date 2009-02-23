@@ -58,7 +58,7 @@ public class TestCharacterInfo {
 		view.loadAttributes(sheet);
 		view.loadSkills(sheet);
 		try {
-			view.loadSkillInTrraining(training);
+			view.loadSkillInTraining(sheet, training);
 		} catch (JEVEMonException e) {
 			e.printStackTrace();
 		}
