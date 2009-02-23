@@ -1,7 +1,6 @@
 package org.jevemon.model.skillintraining;
 
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
@@ -42,7 +41,8 @@ public class SkillInTraining {
      * @return the training speed
      */
     public double trainingSpeed(){
-    	return ((double)(trainingDestinationSP - trainingStartSP)/(double)(trainingEndTime - trainingStartTime));
+    	return ((double)(trainingDestinationSP - trainingStartSP)
+    			/(double)(trainingEndTime - trainingStartTime));
     }
     
     /**
@@ -51,8 +51,9 @@ public class SkillInTraining {
      * @return the current SP
      */
     public int currentSP(){
-    	long now = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault()).getTimeInMillis();
-    	return (int) (Math.round((now - trainingStartTime)*trainingSpeed())+trainingStartSP);
+    	long now = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
+    	return (int) (Math.round((now - trainingStartTime)
+    						*trainingSpeed())+trainingStartSP);
     }
     
     /**
@@ -97,7 +98,8 @@ public class SkillInTraining {
     // private methods //
     /////////////////////
     private int calculateRank(){
-    	return (int) Math.round((double)trainingDestinationSP/(double)Constants.SKILL_LEVEL_REQS[trainingToLevel]);
+    	return (int) Math.round((double)trainingDestinationSP
+    				/(double)Constants.SKILL_LEVEL_REQS[trainingToLevel]);
     }
     
 
