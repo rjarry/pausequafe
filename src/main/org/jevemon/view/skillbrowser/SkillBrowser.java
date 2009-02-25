@@ -4,6 +4,7 @@ import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.model.character.sheet.CharacterSheet;
 import org.jevemon.model.items.skilltreemodel.SkillTreeModel;
 
+import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QComboBox;
@@ -15,6 +16,7 @@ import com.trolltech.qt.gui.QWidget;
 
 public class SkillBrowser extends QWidget {
 
+	private static final QSize SKILL_ICON_SIZE = new QSize(21,14);
 	
 	/////////////////////
 	// private members //
@@ -55,7 +57,7 @@ public class SkillBrowser extends QWidget {
     	treeView.setHeaderHidden(true);
     	treeView.setHorizontalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOff);
     	treeView.setIndentation(10);
-    	
+    	treeView.setIconSize(SKILL_ICON_SIZE);
     	treeLayout.addWidget(treeView);
     }
     
