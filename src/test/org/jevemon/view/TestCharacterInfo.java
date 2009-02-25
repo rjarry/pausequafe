@@ -32,7 +32,6 @@ public class TestCharacterInfo {
     	view.setWindowTitle("Character Info");
     	browser.setWindowTitle("Skills");
     	
-    	
     	String imageLocation = null;
         try {
         	imageLocation = CharacterSheetFactory.getPortrait(characterID , name , false);
