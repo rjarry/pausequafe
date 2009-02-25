@@ -11,12 +11,17 @@ import org.jevemon.model.characterlist.CharacterListFactory;
 import org.jevemon.model.characterlist.CharacterLtd;
 
 public class TestCharacterList {
+	private static int characterID;
+	private static String name;
+	private static int userID = 909108;
+	private static String apiKey = "AEE374E2E2D04D178A1C18A30CEC54FF538E74254D0649CEBFD2E79DAA215E40";
+	
 	public static void main(String[] args){
+		
 		CharacterList list = null;
 		try {
 			System.out.print("fetching character list... ");
-			list = CharacterListFactory.getCharList(3173522, 
-					"39D32F567BC4491BA1FCC0F3D8EED9B2F52BFEC3A3DD4F66B33DF0FADB9DFABB");
+			list = CharacterListFactory.getCharList(userID, apiKey);
 			System.out.println("success");
 		} catch (JEVEMonException e) {
 			System.out.println("error, could not get character list");
@@ -31,11 +36,9 @@ public class TestCharacterList {
 		System.out.print("Choose a character : ");
 		int index = in.nextInt();
 		
-		int characterID = 0;
-		String characterName = null;
 		try {
 			characterID = list.getCharcterAt(index - 1).getCharacterId();
-			characterName = list.getCharcterAt(index - 1).getName();
+			name = list.getCharcterAt(index - 1).getName();
 		} catch (JEVEMonException e1) {
 			System.out.println("wrong character");
 			System.exit(0);
@@ -46,9 +49,7 @@ public class TestCharacterList {
 		
 		try {
 			System.out.print("fetching character sheet... ");
-			sheet = CharacterSheetFactory.getCharacterSheet(3173522, 
-					"39D32F567BC4491BA1FCC0F3D8EED9B2F52BFEC3A3DD4F66B33DF0FADB9DFABB", 
-					characterID,characterName);
+			sheet = CharacterSheetFactory.getCharacterSheet(userID, apiKey, characterID, name);
 			System.out.println("success");
 		} catch (JEVEMonException e) {
 			System.out.println("error, could not get character list");

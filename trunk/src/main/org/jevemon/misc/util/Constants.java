@@ -1,6 +1,7 @@
 package org.jevemon.misc.util;
 
 
+
 public class Constants {
 	
 	public static final int[] SKILL_LEVEL_REQS = {0 , 250, 1414, 8000, 45255, 256000};
@@ -25,6 +26,16 @@ public class Constants {
 	
 	public static final String CHAR_SHEET_PATH = "cache/CharacterSheets/";
 	public static final String SKILL_TREE_FILE = "resources/SkillTree.xml";
+	public static final String BLANK_PORTRAIT = "resources/blank_portrait.jpg";
+	
+	public static final String SKILL_LEVEL_0 = "resources/icons/skill_level_0.png";
+	public static final String SKILL_LEVEL_1 = "resources/icons/skill_level_1.png";
+	public static final String SKILL_LEVEL_2 = "resources/icons/skill_level_2.png";
+	public static final String SKILL_LEVEL_3 = "resources/icons/skill_level_3.png";
+	public static final String SKILL_LEVEL_4 = "resources/icons/skill_level_4.png";
+	public static final String SKILL_LEVEL_5 = "resources/icons/skill_level_5.png";
+	public static final String SKILL_TRAINABLE = "resources/icons/skill_trainable.png";
+	public static final String SKILL_NOT_TRAINABLE = "resources/icons/skill_not_trainable.png";
 	
 	public static final int PORTRAIT_FILE_SIZE = 256;
 	public static final int PORTRAIT_GUI_SIZE = 120;

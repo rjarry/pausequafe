@@ -43,11 +43,11 @@ public abstract class Item implements Comparable<Item> {
      * 		The item to be compared with.
      * 
      * @return
-     * 		A positive value if the Item o is "before" (in alphabetical order) the caller of the method.
-     * 		<br>A negative value if the Item o is "after" (in alphabetical order) the caller of the method.
-     * 		<br>0 if the Items have the same name.
+     * 		
+     * 		<li>A positive value if the Item o is "before" (in alphabetical order) the caller of the method.
+     * 		<li>A negative value if the Item o is "after" (in alphabetical order) the caller of the method.
+     * 		<li>0 if the Items have the same name.
      */
-	@Override
 	public int compareTo(Item o) {
 		return this.typeName.compareTo(o.getTypeName());
 	}

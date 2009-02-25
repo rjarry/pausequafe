@@ -1,8 +1,9 @@
-package org.jevemon.model.qtrelated.skilltree;
+package org.jevemon.model.items.skilltreemodel;
 
 import java.util.LinkedList;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
+import org.jevemon.model.charactersheet.CharacterSheet;
 
 public class SkillTreeGroup {
 
@@ -18,10 +19,24 @@ public class SkillTreeGroup {
 	public SkillTreeGroup(){
 		
 	}
-	public SkillTreeGroup(String groupName) throws JEVEMonException{
+	public SkillTreeGroup(String groupName, CharacterSheet sheet) throws JEVEMonException{
 		this.groupName = groupName;
-		skillList = SkillTreeItem.buildGroup(this, groupName);
+		skillList = SkillTreeItem.buildGroup(groupName, sheet);
 	}
+
+	public int getTotalGroupSP(){
+		int groupSP = 0;
+		
+		for(SkillTreeItem skill : skillList){
+			if (skill.isKnown()){
+				groupSP += skill.getCharSkill().getSkillPoints();
+			}
+		}
+			
+		return groupSP;
+	}
+	
+	
 	
 	/////////////
 	// getters //

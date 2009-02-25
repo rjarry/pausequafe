@@ -9,15 +9,16 @@ import org.jevemon.model.charactersheet.CharacterSheetFactory;
 import org.jevemon.model.skillintraining.SkillInTraining;
 import org.jevemon.model.skillintraining.SkillInTrainingFactory;
 import org.jevemon.view.character.CharacterInfo;
+import org.jevemon.view.skillbrowser.SkillBrowser;
 
 import com.trolltech.qt.gui.QApplication;
 
 public class TestCharacterInfo {
 
-	private static int characterID = 1888774537;
-	private static String name = "diabeteman";
-	private static int userID = 3173522;
-	private static String apiKey = "39D32F567BC4491BA1FCC0F3D8EED9B2F52BFEC3A3DD4F66B33DF0FADB9DFABB";
+	private static int characterID = 614763546;
+	private static String name = "Salys Groumf";
+	private static int userID = 909108;
+	private static String apiKey = "AEE374E2E2D04D178A1C18A30CEC54FF538E74254D0649CEBFD2E79DAA215E40";
 
 	/**
 	 * @param args
@@ -26,6 +27,11 @@ public class TestCharacterInfo {
     	QApplication.initialize(args);
     	
     	CharacterInfo view = new CharacterInfo();
+    	SkillBrowser browser = new SkillBrowser();;
+    	
+    	view.setWindowTitle("Character Info");
+    	browser.setWindowTitle("Skills");
+    	
     	
     	String imageLocation = null;
         try {
@@ -63,9 +69,16 @@ public class TestCharacterInfo {
 			e.printStackTrace();
 		}
 		
-        view.show();
-        
-        QApplication.exec();
+		try {
+			browser.loadTree(sheet);
+		} catch (JEVEMonException e) {
+			e.printStackTrace();
+		}
+		
+		
+		browser.show();
+		view.show();
+		QApplication.exec();
     }
 
 }
