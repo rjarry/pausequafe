@@ -1,0 +1,126 @@
+<ui version="4.0" language="jambi" >
+ <class>SkillBrowser</class>
+ <widget class="QWidget" name="SkillBrowser" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>330</width>
+    <height>460</height>
+   </rect>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>330</width>
+    <height>460</height>
+   </size>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" >
+     <property name="spacing" >
+      <number>0</number>
+     </property>
+     <property name="leftMargin" >
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>45</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text" >
+        <string>Filter:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox" >
+       <property name="minimumSize" >
+        <size>
+         <width>180</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="focusPolicy" >
+        <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" >
+     <property name="spacing" >
+      <number>0</number>
+     </property>
+     <property name="leftMargin" >
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="searchLabel" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>45</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text" >
+        <string>Search:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="searchLineEdit" >
+       <property name="minimumSize" >
+        <size>
+         <width>180</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="focusPolicy" >
+        <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="skillTree" >
+     <property name="minimumSize" >
+      <size>
+       <width>281</width>
+       <height>386</height>
+      </size>
+     </property>
+     <property name="frameShape" >
+      <enum>com.trolltech.qt.gui.QFrame.Shape.StyledPanel</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>com.trolltech.qt.gui.QFrame.Shadow.Raised</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

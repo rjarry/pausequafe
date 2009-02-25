@@ -17,9 +17,11 @@ import org.jevemon.model.skillintraining.SkillInTraining;
 import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.gui.QFrame;
+import com.trolltech.qt.gui.QGroupBox;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QWidget;
+
 /**
  * This widget gathers all the information about a character.
  * 
@@ -92,12 +94,21 @@ public class CharacterInfo extends QFrame {
 		skillPoints = (QLabel) this.findChild(QLabel.class, "skillPoints");
 		skills = (QLabel) this.findChild(QLabel.class, "skills");
 		levelVSkills = (QLabel) this.findChild(QLabel.class, "levelVSkills");
+		
 		skillInTraining = (QLabel) this.findChild(QLabel.class, "skillInTraining");
 		timeLeft = (QLabel) this.findChild(QLabel.class, "timeLeft");
 		trainingEnd = (QLabel) this.findChild(QLabel.class, "trainingEnd");
 		
+		this.findChild(QGroupBox.class, "groupBox");
+		
 		timer = new QTimer(this);
 		timer.timeout.connect(this, "updateValues()");
+		
+		QPixmap image = new QPixmap();
+		image.load(Constants.BLANK_PORTRAIT);
+		
+		int size = portrait.height();
+		portrait.setPixmap(image.scaledToHeight(size));
 	}
 
 	////////////////////
@@ -293,6 +304,9 @@ public class CharacterInfo extends QFrame {
 			// training speed tooltip
 			toolTipText += "Training at: " 
 				+ Math.round(trainingSpeed * Constants.HOUR) + " SP/hour";
+
+			// we start the timer only if there's a skill in training
+			timer.start(Constants.SECOND);
 		}
 		
 		skillInTraining.setText(trainingText);
@@ -302,7 +316,6 @@ public class CharacterInfo extends QFrame {
 		timeLeft.setToolTip(toolTipText);
 		trainingEnd.setToolTip(toolTipText);
 		
-		timer.start(Constants.SECOND);
 	}
 	
 	/**
@@ -316,6 +329,11 @@ public class CharacterInfo extends QFrame {
 					+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
 			
 			trainingTimeLeft -= Constants.SECOND;
+			timeLeft.setText(Formater.printTime(trainingTimeLeft));
+		}
+		if (thereIsASkillTraining && trainingTimeLeft <= Constants.SECOND){
+			timer.stop();
+			trainingTimeLeft = 0;
 			timeLeft.setText(Formater.printTime(trainingTimeLeft));
 		}
 	}

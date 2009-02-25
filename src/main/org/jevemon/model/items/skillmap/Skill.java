@@ -64,4 +64,9 @@ public class Skill extends Item {
 	public void setSecondaryAttribute(String secondaryAttribute) {
 		this.secondaryAttribute = secondaryAttribute;
 	}
+
+	public boolean isTrainable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
