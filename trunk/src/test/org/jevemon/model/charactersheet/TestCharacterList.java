@@ -6,9 +6,12 @@ import java.text.FieldPosition;
 import java.util.Scanner;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.model.characterlist.CharacterList;
-import org.jevemon.model.characterlist.CharacterListFactory;
-import org.jevemon.model.characterlist.CharacterLtd;
+import org.jevemon.model.character.list.CharacterList;
+import org.jevemon.model.character.list.CharacterListFactory;
+import org.jevemon.model.character.list.CharacterLtd;
+import org.jevemon.model.character.sheet.CharacterSheet;
+import org.jevemon.model.character.sheet.CharacterSheetFactory;
+import org.jevemon.model.character.sheet.CharacterSkill;
 
 public class TestCharacterList {
 	private static int characterID;

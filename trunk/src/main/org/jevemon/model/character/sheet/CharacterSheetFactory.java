@@ -1,4 +1,4 @@
-package org.jevemon.model.charactersheet;
+package org.jevemon.model.character.sheet;
 
 import java.awt.Image;
 import java.io.File;

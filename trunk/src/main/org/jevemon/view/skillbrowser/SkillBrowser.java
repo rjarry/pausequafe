@@ -1,7 +1,7 @@
 package org.jevemon.view.skillbrowser;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.model.charactersheet.CharacterSheet;
+import org.jevemon.model.character.sheet.CharacterSheet;
 import org.jevemon.model.items.skilltreemodel.SkillTreeModel;
 
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;

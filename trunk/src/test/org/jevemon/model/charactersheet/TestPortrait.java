@@ -10,9 +10,10 @@ import javax.swing.WindowConstants;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
-import org.jevemon.model.characterlist.CharacterList;
-import org.jevemon.model.characterlist.CharacterListFactory;
-import org.jevemon.model.characterlist.CharacterLtd;
+import org.jevemon.model.character.list.CharacterList;
+import org.jevemon.model.character.list.CharacterListFactory;
+import org.jevemon.model.character.list.CharacterLtd;
+import org.jevemon.model.character.sheet.CharacterSheetFactory;
 
 public class TestPortrait {
 

@@ -1,4 +1,4 @@
-package org.jevemon.model.characterlist;
+package org.jevemon.model.character.list;
 
 import java.util.LinkedList;
 

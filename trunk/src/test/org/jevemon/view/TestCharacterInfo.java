@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.exceptions.JEVEMonFileNotFoundException;
-import org.jevemon.model.charactersheet.CharacterSheet;
-import org.jevemon.model.charactersheet.CharacterSheetFactory;
-import org.jevemon.model.skillintraining.SkillInTraining;
-import org.jevemon.model.skillintraining.SkillInTrainingFactory;
+import org.jevemon.model.character.sheet.CharacterSheet;
+import org.jevemon.model.character.sheet.CharacterSheetFactory;
+import org.jevemon.model.character.skillintraining.SkillInTraining;
+import org.jevemon.model.character.skillintraining.SkillInTrainingFactory;
 import org.jevemon.view.character.CharacterInfo;
 import org.jevemon.view.skillbrowser.SkillBrowser;
 

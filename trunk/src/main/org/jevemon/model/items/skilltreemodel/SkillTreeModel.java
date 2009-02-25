@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
 import org.jevemon.misc.util.Formater;
-import org.jevemon.model.charactersheet.CharacterSheet;
+import org.jevemon.model.character.sheet.CharacterSheet;
 import org.jevemon.model.items.PreRequisite;
 import org.jevemon.model.items.skillmap.Skill;
 

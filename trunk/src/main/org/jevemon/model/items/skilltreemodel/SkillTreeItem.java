@@ -3,8 +3,8 @@ package org.jevemon.model.items.skilltreemodel;
 import java.util.LinkedList;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.model.charactersheet.CharacterSheet;
-import org.jevemon.model.charactersheet.CharacterSkill;
+import org.jevemon.model.character.sheet.CharacterSheet;
+import org.jevemon.model.character.sheet.CharacterSkill;
 import org.jevemon.model.items.skillmap.Skill;
 import org.jevemon.model.items.skillmap.SkillMap;
 

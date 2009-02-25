@@ -1,5 +1,5 @@
 
-package org.jevemon.model.charactersheet;
+package org.jevemon.model.character.sheet;
 
 import java.util.Date;
 import java.util.HashMap;
