@@ -1,4 +1,4 @@
-package org.jevemon.model.skillintraining;
+package org.jevemon.model.character.skillintraining;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

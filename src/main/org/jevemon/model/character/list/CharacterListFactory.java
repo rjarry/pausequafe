@@ -1,4 +1,4 @@
-package org.jevemon.model.characterlist;
+package org.jevemon.model.character.list;
 
 import org.jdom.Document;
 import org.jevemon.misc.exceptions.JEVEMonException;

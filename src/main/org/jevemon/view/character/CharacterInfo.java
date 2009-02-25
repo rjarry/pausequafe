@@ -10,9 +10,9 @@ import java.util.TimeZone;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
 import org.jevemon.misc.util.Formater;
-import org.jevemon.model.charactersheet.CharacterSheet;
+import org.jevemon.model.character.sheet.CharacterSheet;
+import org.jevemon.model.character.skillintraining.SkillInTraining;
 import org.jevemon.model.items.skillmap.SkillMap;
-import org.jevemon.model.skillintraining.SkillInTraining;
 
 import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.core.QTimer;
