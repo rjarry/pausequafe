@@ -57,6 +57,7 @@ public class SkillTreeModel extends QTreeModel {
 			} 
 		}
 	}
+	
 	@Override
 	public int childCount(Object parent) {
 		if (parent == null) { // root
@@ -76,6 +77,7 @@ public class SkillTreeModel extends QTreeModel {
 	 */
 	public Object data(Object value, int role){
 		switch(role){
+			case ItemDataRole.BackgroundRole : return QColor.darkRed;
 			// text to display
 			case ItemDataRole.DisplayRole    : return displayRole(value);
 			// display font
@@ -90,6 +92,8 @@ public class SkillTreeModel extends QTreeModel {
 			default : return null;
 		}
 	}
+	
+	
 
 	@Override
 	public String text(Object value) {
@@ -172,7 +176,7 @@ public class SkillTreeModel extends QTreeModel {
 			if (value instanceof SkillTreeGroup) {
 				return ((SkillTreeGroup) value).getGroupName() + " (" 
 						+ Formater.printLong(((SkillTreeGroup) value).getTotalGroupSP())
-																					+ " SP)";
+																					+ " points)";
 			} else { // the node is a skill
 				return ((SkillTreeItem) value).getSkill().getTypeName() 
 						+ " (x" + ((SkillTreeItem) value).getSkill().getRank() + ")";

@@ -56,7 +56,7 @@ public class SkillBrowser extends QWidget {
     	treeView = new QTreeView();
     	treeView.setHeaderHidden(true);
     	treeView.setHorizontalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOff);
-    	treeView.setIndentation(10);
+    	treeView.setIndentation(15);
     	treeView.setIconSize(SKILL_ICON_SIZE);
     	treeLayout.addWidget(treeView);
     }
