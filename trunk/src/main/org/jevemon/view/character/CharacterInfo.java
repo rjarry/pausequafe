@@ -107,7 +107,7 @@ public class CharacterInfo extends QFrame {
 		QPixmap image = new QPixmap();
 		image.load(Constants.BLANK_PORTRAIT);
 		
-		int size = portrait.height();
+		int size = portrait.size().height();
 		portrait.setPixmap(image.scaledToHeight(size));
 	}
 
@@ -124,7 +124,7 @@ public class CharacterInfo extends QFrame {
 		QPixmap image = new QPixmap();
 		image.load(fileName);
 
-		int size = portrait.height();
+		int size = portrait.size().height();
 		portrait.setPixmap(image.scaledToHeight(size));
 	}
 
