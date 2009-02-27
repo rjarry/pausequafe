@@ -36,6 +36,7 @@ public abstract class Item implements Comparable<Item> {
     public void addPreRequisite(PreRequisite preReq){
     	preReqs.add(preReq);
     }
+    
     /**
      * Used for lexical sorting of the items when exporting sub-parts of the database.
      * 

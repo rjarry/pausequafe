@@ -102,6 +102,7 @@ public class CharacterInfo extends QFrame {
 		this.findChild(QGroupBox.class, "groupBox");
 		
 		timer = new QTimer(this);
+		timer.setObjectName("timer");
 		timer.timeout.connect(this, "updateValues()");
 		
 		QPixmap image = new QPixmap();
@@ -318,23 +319,28 @@ public class CharacterInfo extends QFrame {
 		
 	}
 	
+	///////////
+	// slots //
+	///////////
 	/**
 	 * Updates total SP and time left fields every second
 	 */
 	@SuppressWarnings("unused")
 	private void updateValues(){
-		if (thereIsASkillTraining && trainingTimeLeft >= Constants.SECOND){
-			currentSP += trainingSpeed * Constants.SECOND;			
-			skillPoints.setText("<b>" 
-					+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
-			
-			trainingTimeLeft -= Constants.SECOND;
-			timeLeft.setText(Formater.printTime(trainingTimeLeft));
-		}
-		if (thereIsASkillTraining && trainingTimeLeft <= Constants.SECOND){
-			timer.stop();
-			trainingTimeLeft = 0;
-			timeLeft.setText(Formater.printTime(trainingTimeLeft));
+		if (thereIsASkillTraining) {
+			if (trainingTimeLeft >= Constants.SECOND){
+				currentSP += trainingSpeed * Constants.SECOND;			
+				skillPoints.setText("<b>" 
+						+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
+				
+				trainingTimeLeft -= Constants.SECOND;
+				timeLeft.setText(Formater.printTime(trainingTimeLeft));
+			} else {
+				timer.stop();
+				trainingTimeLeft = 0;
+				thereIsASkillTraining = false;
+				timeLeft.setText(Formater.printTime(trainingTimeLeft));
+			}
 		}
 	}
 }

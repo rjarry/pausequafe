@@ -2,8 +2,9 @@ package org.jevemon.view.skillbrowser;
 
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.model.character.sheet.CharacterSheet;
-import org.jevemon.model.items.skilltreemodel.SkillTreeModel;
+import org.jevemon.model.items.skilltreemodel.TreeModel;
 
+import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;
 import com.trolltech.qt.gui.QApplication;
@@ -58,6 +59,7 @@ public class SkillBrowser extends QWidget {
     	treeView.setHorizontalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOff);
     	treeView.setIndentation(15);
     	treeView.setIconSize(SKILL_ICON_SIZE);
+    	treeView.expanded.connect(this, "oneGroupAtATime(QModelIndex)");
     	treeLayout.addWidget(treeView);
     }
     
@@ -72,19 +74,30 @@ public class SkillBrowser extends QWidget {
      * 			The sheet may be <code>null</code>.
      */
     public void loadTree(CharacterSheet sheet) throws JEVEMonException{
-    	SkillTreeModel model = new SkillTreeModel(treeView, sheet);
+    	TreeModel model = new TreeModel(treeView, sheet);
     	treeView.setModel(model);
     	treeView.collapsed.connect(model, "releaseChildren(QModelIndex)");
     }
     
     
-    // TEST
+
+	// TEST
     public static void main(String[] args) throws JEVEMonException{
     	QApplication.initialize(args);
     	SkillBrowser browser = new SkillBrowser();
     	browser.loadTree(null);
     	browser.show();
 		QApplication.exec();
+    }
+    
+    
+    ///////////
+    // slots //
+    ///////////
+    @SuppressWarnings("unused")
+	private void oneGroupAtATime(QModelIndex index){
+    	treeView.collapseAll();
+    	treeView.expand(index);
     }
     
  

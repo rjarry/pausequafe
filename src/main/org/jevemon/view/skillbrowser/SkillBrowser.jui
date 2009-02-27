@@ -5,14 +5,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>460</height>
+    <width>350</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize" >
    <size>
-    <width>330</width>
-    <height>460</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="windowTitle" >
@@ -50,7 +50,7 @@
       <widget class="QComboBox" name="comboBox" >
        <property name="minimumSize" >
         <size>
-         <width>180</width>
+         <width>261</width>
          <height>20</height>
         </size>
        </property>
@@ -92,7 +92,7 @@
       <widget class="QLineEdit" name="searchLineEdit" >
        <property name="minimumSize" >
         <size>
-         <width>180</width>
+         <width>261</width>
          <height>20</height>
         </size>
        </property>
@@ -107,8 +107,8 @@
     <widget class="QFrame" name="skillTree" >
      <property name="minimumSize" >
       <size>
-       <width>281</width>
-       <height>386</height>
+       <width>332</width>
+       <height>526</height>
       </size>
      </property>
      <property name="frameShape" >
