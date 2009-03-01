@@ -7,7 +7,6 @@ import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
 import org.jevemon.misc.util.Formater;
 import org.jevemon.model.character.sheet.CharacterSheet;
-import org.jevemon.model.character.sheet.CharacterSkill;
 import org.jevemon.model.items.Item;
 import org.jevemon.model.items.ItemGroup;
 import org.jevemon.model.items.PreRequisite;
@@ -28,13 +27,13 @@ public class TreeModel extends QTreeModel {
 	private List<TreeModel> children = null;
 	private ItemGroup group = null;
 	private Item item = null;
-	private CharacterSkill charSkill = null;
 	private CharacterSheet sheet = null;
 	
 	//////////////////
 	// constructors //
 	//////////////////
 	public TreeModel(){
+	
 	}
 	
 	public TreeModel(QObject parent){
@@ -47,26 +46,20 @@ public class TreeModel extends QTreeModel {
 		this.sheet = sheet;
 		
 		for(String groupName : Constants.SKILL_GROUP_NAMES){ // adding groups to the first level
-			children.add(new TreeModel(new ItemGroup(groupName), null, null, sheet));
+			children.add(new TreeModel(new ItemGroup(groupName), null, sheet));
 		}
 		for(TreeModel treeGroup : this.children){
 			treeGroup.children = new LinkedList<TreeModel>();
 			for(Item item : SkillMap.getInstance().getGroup(treeGroup.group.getGroupName())){
-				if (sheet != null && sheet.getSkills().containsKey(item.getTypeID())){
-					treeGroup.children.add(new TreeModel(null, item, 
-										sheet.getSkill(item.getTypeID()), sheet));
-				} else {
-					treeGroup.children.add(new TreeModel(null, item, null, sheet));
-				}
+				treeGroup.children.add(new TreeModel(null, item, sheet));
 			}
 		}
 	}
 	
-	private TreeModel(ItemGroup group, Item item, CharacterSkill charSkill, CharacterSheet sheet) {
+	private TreeModel(ItemGroup group, Item item, CharacterSheet sheet) {
 		super();
 		this.group = group;
 		this.item = item;
-		this.charSkill = charSkill;
 		this.sheet = sheet;
 	}
 
@@ -79,9 +72,6 @@ public class TreeModel extends QTreeModel {
 	public Item getSkill() {
 		return item;
 	}
-	public CharacterSkill getCharSkill() {
-		return charSkill;
-	}
 	/////////////
 	// setters //
 	/////////////	
@@ -90,9 +80,6 @@ public class TreeModel extends QTreeModel {
 	}
 	public void setGroup(ItemGroup group) {
 		this.group = group;
-	}
-	public void setCharSkill(CharacterSkill charSkill) {
-		this.charSkill = charSkill;
 	}
 	
 	///////////////////////
@@ -112,7 +99,7 @@ public class TreeModel extends QTreeModel {
 	}
 	
 	@Override
-	public int childCount(Object parent) {
+	public int childCount(Object parent){
 		if (parent == null){
 			return children.size();
 		} else {
@@ -125,15 +112,6 @@ public class TreeModel extends QTreeModel {
 	}
 	@Override
 	public String text(Object item) {
-//		if (item == null) { // root
-//			return null;
-//		} else {
-//			if (((TreeModel) item).children != null) { // parent is a group
-//				return ((TreeModel) item).group.getGroupName();
-//			} else { // the node is a skill
-//				return ((TreeModel) item).skill.getTypeName();
-//			} 
-//		}
 		return null;
 	}
 	
@@ -189,8 +167,8 @@ public class TreeModel extends QTreeModel {
 		int groupSP = 0;
 		if (children != null){		
 			for(TreeModel skill : children){
-				if (skill.charSkill != null){
-					groupSP += skill.charSkill.getSkillPoints();
+				if (skill.sheet.getSkills().containsKey(skill.item.getTypeID())){
+					groupSP += skill.sheet.getSkill(skill.item.getTypeID()).getSkillPoints();
 				}
 			}
 		}
@@ -207,8 +185,10 @@ public class TreeModel extends QTreeModel {
 			if (((TreeModel) value).children != null) {
 				return null;
 			} else { // the node is a skill
-				if (((TreeModel) value).charSkill != null){
-					int level = ((TreeModel) value).charSkill.getLevel();
+				if (((TreeModel) value).sheet != null && ((TreeModel) value).sheet.getSkills()
+										.containsKey(((TreeModel) value).item.getTypeID())){
+					int level = ((TreeModel) value).sheet.getSkill(
+										((TreeModel) value).item.getTypeID() ).getLevel();
 					switch(level){
 						case 1 : icon = new QIcon(Constants.SKILL_LEVEL_1); break;
 						case 2 : icon = new QIcon(Constants.SKILL_LEVEL_2); break;
@@ -218,7 +198,8 @@ public class TreeModel extends QTreeModel {
 						default : icon = new QIcon(Constants.SKILL_LEVEL_0);
 					}
 				} else {
-					if (skillIsTrainable(((TreeModel) value).item)){
+					if (((TreeModel) value).sheet != null 
+										&& skillIsTrainable(((TreeModel) value).item)){
 						icon = new QIcon(Constants.SKILL_TRAINABLE);
 					} else {
 						icon = new QIcon(Constants.SKILL_NOT_TRAINABLE);
@@ -236,7 +217,11 @@ public class TreeModel extends QTreeModel {
 			return null;
 		} else {
 			if (((TreeModel) value).children != null) {
-				return Formater.printLong(((TreeModel) value).getTotalGroupSP()) + " points";
+				if (((TreeModel) value).sheet != null){
+					return Formater.printLong(((TreeModel) value).getTotalGroupSP()) + " points";
+				} else {
+					return null;
+				}
 			} else { // the node is a skill
 				String description = ((TreeModel) value).item.getDescription();
 				if (description.length() < 80){
