@@ -65,8 +65,4 @@ public class Skill extends Item {
 		this.secondaryAttribute = secondaryAttribute;
 	}
 
-	public boolean isTrainable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }
