@@ -2,14 +2,14 @@ package org.jevemon.view;
 
 import java.io.IOException;
 
+import org.jevemon.data.business.CharacterSheet;
+import org.jevemon.data.business.SkillInTraining;
+import org.jevemon.data.dao.CharacterSheetFactory;
+import org.jevemon.data.dao.SkillInTrainingFactory;
+import org.jevemon.gui.view.character.CharacterInfo;
+import org.jevemon.gui.view.skillbrowser.SkillBrowser;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.exceptions.JEVEMonFileNotFoundException;
-import org.jevemon.model.character.sheet.CharacterSheet;
-import org.jevemon.model.character.sheet.CharacterSheetFactory;
-import org.jevemon.model.character.skillintraining.SkillInTraining;
-import org.jevemon.model.character.skillintraining.SkillInTrainingFactory;
-import org.jevemon.view.character.CharacterInfo;
-import org.jevemon.view.skillbrowser.SkillBrowser;
 
 import com.trolltech.qt.gui.QApplication;
 

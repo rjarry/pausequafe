@@ -8,12 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
+import org.jevemon.data.business.CharacterList;
+import org.jevemon.data.business.CharacterLtd;
+import org.jevemon.data.dao.CharacterListFactory;
+import org.jevemon.data.dao.CharacterSheetFactory;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
-import org.jevemon.model.character.list.CharacterList;
-import org.jevemon.model.character.list.CharacterListFactory;
-import org.jevemon.model.character.list.CharacterLtd;
-import org.jevemon.model.character.sheet.CharacterSheetFactory;
 
 public class TestPortrait {
 
