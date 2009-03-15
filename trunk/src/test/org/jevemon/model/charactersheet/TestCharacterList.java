@@ -5,13 +5,13 @@ import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.util.Scanner;
 
+import org.jevemon.data.business.CharacterList;
+import org.jevemon.data.business.CharacterLtd;
+import org.jevemon.data.business.CharacterSheet;
+import org.jevemon.data.business.CharacterSkill;
+import org.jevemon.data.dao.CharacterListFactory;
+import org.jevemon.data.dao.CharacterSheetFactory;
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.model.character.list.CharacterList;
-import org.jevemon.model.character.list.CharacterListFactory;
-import org.jevemon.model.character.list.CharacterLtd;
-import org.jevemon.model.character.sheet.CharacterSheet;
-import org.jevemon.model.character.sheet.CharacterSheetFactory;
-import org.jevemon.model.character.sheet.CharacterSkill;
 
 public class TestCharacterList {
 	private static int characterID;
