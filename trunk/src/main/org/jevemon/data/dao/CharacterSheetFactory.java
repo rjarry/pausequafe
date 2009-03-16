@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.jevemon.data.business.APIData;
 import org.jevemon.data.business.CharacterSheet;
 import org.jevemon.misc.exceptions.JEVEMonConfigException;
 import org.jevemon.misc.exceptions.JEVEMonConnectionException;
@@ -32,8 +33,7 @@ import be.fomp.jeve.core.exceptions.JEveParseException;
  */
 public class CharacterSheetFactory {
 
-	public static CharacterSheet getCharacterSheet(int userID, String apiKey,
-			int characterID, String name) throws JEVEMonException, IOException {
+	public static CharacterSheet getCharacterSheet(APIData data) throws JEVEMonException, IOException {
 		LimitedAPI con = null;
 		boolean isCached = false;
 
@@ -47,16 +47,15 @@ public class CharacterSheetFactory {
 		// get character sheet and cache it
 		Document doc;
 		try {
-			doc = con.getCharacterSheet(userID, apiKey, characterID);
-			FileHandler.writeXmlFile(doc, Constants.CHAR_SHEET_PATH, name
-					+ ".xml");
-			doc = readCachedFile(name);
+			doc = con.getCharacterSheet(data.getUserID(), data.getApiKey(), data.getCharacterID());
+			FileHandler.writeXmlFile(doc, Constants.CHAR_SHEET_PATH, data.getCharacterName() + ".xml");
+			doc = readCachedFile(data.getCharacterName());
 			// if the connection failed, gets one previously cached file.
 		} catch (JEveConnectionException e) {
-			doc = readCachedFile(name);
+			doc = readCachedFile(data.getCharacterName());
 			isCached = true;
 		} catch (JEveParseException e) {
-			doc = readCachedFile(name);
+			doc = readCachedFile(data.getCharacterName());
 			isCached = true;
 		}
 
@@ -65,8 +64,7 @@ public class CharacterSheetFactory {
 		return result;
 	}
 
-	public static String getPortrait(
-			int characterID, String name,boolean forceDownload) 
+	public static String getPortrait(APIData data, boolean forceDownload) 
 	throws IOException, JEVEMonFileNotFoundException  {
 
 		String portraitFilePath = "";
@@ -74,21 +72,21 @@ public class CharacterSheetFactory {
 
 		if (forceDownload) {
 			try {
-				downloadPortrait(characterID, name);
+				downloadPortrait(data.getCharacterID(), data.getCharacterName());
 			} catch (JEVEMonException e) {
 				downloadFailed = true;
 			}
 		}
 		
 		try {
-			portraitFilePath = getPortraitFileName(name);
+			portraitFilePath = getPortraitFileName(data.getCharacterName());
 		} catch (JEVEMonFileNotFoundException e) {
 			if(downloadFailed) {
 				throw e;
 			} else {
 				try {
-					downloadPortrait(characterID, name);
-					portraitFilePath = getPortraitFileName(name);
+					downloadPortrait(data.getCharacterID(), data.getCharacterName());
+					portraitFilePath = getPortraitFileName(data.getCharacterName());
 				} catch (JEVEMonException e1) {
 					throw e;
 				}

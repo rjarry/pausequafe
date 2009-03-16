@@ -13,7 +13,7 @@ import org.jevemon.data.dao.SkillMap;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
 import org.jevemon.misc.util.Formater;
-import org.jevemon.view.character.Ui_CharacterInfo;
+import org.jevemon.gui.view.character.Ui_CharacterInfo;
 
 import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.core.QTimer;

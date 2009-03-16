@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.jevemon.data.business.APIData;
 import org.jevemon.data.business.SkillInTraining;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
@@ -19,9 +20,7 @@ import be.fomp.jeve.core.exceptions.JEveParseException;
 
 public class SkillInTrainingFactory {
 	
-	public static SkillInTraining getSkillInTraining(int userID, String apiKey, int characterID, String name) 
-											throws JEVEMonException
-	{
+	public static SkillInTraining getSkillInTraining(APIData data) throws JEVEMonException {
 		LimitedAPI con = null;
 		boolean isCached = false;
 		
@@ -35,15 +34,16 @@ public class SkillInTrainingFactory {
 		// get skill in training and cache it
 		Document doc;
 		try {
-			doc = con.getSkillInTraining(userID, apiKey, characterID);
-			FileHandler.writeXmlFile(doc, Constants.CHAR_SHEET_PATH, name + "InTraining.xml");
-			doc = readCachedFile(name);
+			doc = con.getSkillInTraining(data.getUserID(), data.getApiKey(), data.getCharacterID());
+			FileHandler.writeXmlFile(doc, Constants.CHAR_SHEET_PATH, data.getCharacterName() 
+															+ "InTraining.xml");
+			doc = readCachedFile(data.getCharacterName());
 		// if the connection failed, gets one previously cached file.
 		} catch (JEveConnectionException e) {
-			doc = readCachedFile(name);
+			doc = readCachedFile(data.getCharacterName());
 			isCached = true;
 		} catch (JEveParseException e) {
-			doc = readCachedFile(name);
+			doc = readCachedFile(data.getCharacterName());
 			isCached = true;
 		}
 		

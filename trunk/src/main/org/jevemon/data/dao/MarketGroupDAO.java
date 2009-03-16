@@ -86,7 +86,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	private List<MarketGroup> queryMarketGroupsById(List<Integer> toBeQueried) throws SQLException {
 		List<MarketGroup> result = new ArrayList<MarketGroup>();
 		
-		initConnection();
+		initConnection(SQLConstants.EVE_DATABASE);
 		
 		String inClause = "";
 		boolean first = true;

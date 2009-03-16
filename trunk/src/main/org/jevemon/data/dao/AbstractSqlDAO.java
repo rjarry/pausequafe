@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.jevemon.misc.util.SQLConstants;
-
 /**
  * An abstract class for DAOs that use SQL to retrieve data
  * 
@@ -19,11 +17,11 @@ public abstract class AbstractSqlDAO {
 	protected Statement stat;
 	protected PreparedStatement prep;
 	
-	protected void initConnection() {
+	protected void initConnection(String dataBaseName) {
 		if (conn == null){
 			try {
 				Class.forName("org.sqlite.JDBC");
-				conn = DriverManager.getConnection(SQLConstants.EVE_DATABASE);
+				conn = DriverManager.getConnection(dataBaseName);
 				stat = conn.createStatement();
 			} catch (ClassNotFoundException e) {
 				// TODO réviser la gestion de cette exception
@@ -35,9 +33,9 @@ public abstract class AbstractSqlDAO {
 		}
 	}
 	
-	protected void initPrepareStatement(String sql) {
+	protected void initPrepareStatement(String dataBaseName, String sql) {
 		if (conn==null){
-			initConnection();
+			initConnection(dataBaseName);
 		}
 		try {
 			prep = conn.prepareStatement(sql);

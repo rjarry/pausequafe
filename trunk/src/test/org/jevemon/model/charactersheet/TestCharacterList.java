@@ -3,10 +3,10 @@ package org.jevemon.model.charactersheet;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
+import java.util.List;
 import java.util.Scanner;
 
-import org.jevemon.data.business.CharacterList;
-import org.jevemon.data.business.CharacterLtd;
+import org.jevemon.data.business.APIData;
 import org.jevemon.data.business.CharacterSheet;
 import org.jevemon.data.business.CharacterSkill;
 import org.jevemon.data.dao.CharacterListFactory;
@@ -14,14 +14,12 @@ import org.jevemon.data.dao.CharacterSheetFactory;
 import org.jevemon.misc.exceptions.JEVEMonException;
 
 public class TestCharacterList {
-	private static int characterID;
-	private static String name;
 	private static int userID = 909108;
 	private static String apiKey = "AEE374E2E2D04D178A1C18A30CEC54FF538E74254D0649CEBFD2E79DAA215E40";
 	
 	public static void main(String[] args){
 		
-		CharacterList list = null;
+		List<APIData> list = null;
 		try {
 			System.out.print("fetching character list... ");
 			list = CharacterListFactory.getCharList(userID, apiKey);
@@ -31,28 +29,22 @@ public class TestCharacterList {
 			System.exit(0);
 		}
 		int charCount = 0;
-		for (CharacterLtd characterLtd : list.getList()) {
+		for (APIData data : list) {
 			charCount++;
-			System.out.println(charCount + " - " + characterLtd.getName());
+			System.out.println(charCount + " - " + data.getCharacterName());
 		}
 		Scanner in = new Scanner(System.in);
 		System.out.print("Choose a character : ");
 		int index = in.nextInt();
 		
-		try {
-			characterID = list.getCharcterAt(index - 1).getCharacterId();
-			name = list.getCharcterAt(index - 1).getName();
-		} catch (JEVEMonException e1) {
-			System.out.println("wrong character");
-			System.exit(0);
-		}
-		
+		APIData data = new APIData(list.get(index - 1).getCharacterID(),
+							list.get(index - 1).getCharacterName(),userID,apiKey);
 		
 		CharacterSheet sheet = null;
 		
 		try {
 			System.out.print("fetching character sheet... ");
-			sheet = CharacterSheetFactory.getCharacterSheet(userID, apiKey, characterID, name);
+			sheet = CharacterSheetFactory.getCharacterSheet(data);
 			System.out.println("success");
 		} catch (JEVEMonException e) {
 			System.out.println("error, could not get character list");
