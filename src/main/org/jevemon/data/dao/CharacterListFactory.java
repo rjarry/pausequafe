@@ -1,7 +1,9 @@
 package org.jevemon.data.dao;
 
+import java.util.List;
+
 import org.jdom.Document;
-import org.jevemon.data.business.CharacterList;
+import org.jevemon.data.business.APIData;
 import org.jevemon.misc.exceptions.JEVEMonException;
 
 import be.fomp.jeve.core.api.LimitedAPI;
@@ -12,7 +14,7 @@ import be.fomp.jeve.core.exceptions.JEveParseException;
 
 public class CharacterListFactory {
 	
-	public static CharacterList getCharList(int userID, String apiKey) throws JEVEMonException {
+	public static List<APIData> getCharList(int userID, String apiKey) throws JEVEMonException {
 		LimitedAPI connection = null;
 		Document doc = null;
 		
@@ -32,6 +34,6 @@ public class CharacterListFactory {
 		}
 		
 		// parse the character list and return it
-		return CharacterListParser.getList(doc);
+		return CharacterListParser.getList(doc, userID, apiKey);
 	}
 }

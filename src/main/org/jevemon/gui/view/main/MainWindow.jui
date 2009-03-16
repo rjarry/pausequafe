@@ -1,0 +1,112 @@
+<ui version="4.0" language="jambi" >
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>410</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget" >
+   <property name="minimumSize" >
+    <size>
+     <width>410</width>
+     <height>200</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QMenuBar" name="menuBar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>410</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile" >
+    <property name="title" >
+     <string>File</string>
+    </property>
+    <addaction name="actionAdd_character" />
+    <addaction name="actionDelete_current_character" />
+    <addaction name="actionExport_Character_Info" />
+    <addaction name="separator" />
+    <addaction name="action_Export_Settings" />
+    <addaction name="action_Import_Settings" />
+    <addaction name="separator" />
+    <addaction name="action_Quit" />
+   </widget>
+   <widget class="QMenu" name="menuPlan" >
+    <property name="title" >
+     <string>&amp;Plan</string>
+    </property>
+    <addaction name="actionNew_skill_plan" />
+    <addaction name="actionManage_Skill_plans" />
+    <addaction name="separator" />
+   </widget>
+   <widget class="QMenu" name="menu_Options" >
+    <property name="title" >
+     <string>&amp;Options</string>
+    </property>
+    <addaction name="actionPreferences" />
+   </widget>
+   <addaction name="menuFile" />
+   <addaction name="menuPlan" />
+   <addaction name="menu_Options" />
+  </widget>
+  <widget class="QStatusBar" name="statusBar" />
+  <action name="actionNew_skill_plan" >
+   <property name="text" >
+    <string>&amp;New skill plan...</string>
+   </property>
+  </action>
+  <action name="actionManage_Skill_plans" >
+   <property name="text" >
+    <string>&amp;Manage Skill plans</string>
+   </property>
+  </action>
+  <action name="actionAdd_character" >
+   <property name="text" >
+    <string>Add &amp;New Character...</string>
+   </property>
+  </action>
+  <action name="actionDelete_current_character" >
+   <property name="text" >
+    <string>Delete current character</string>
+   </property>
+  </action>
+  <action name="action_Export_Settings" >
+   <property name="text" >
+    <string>&amp;Export Settings...</string>
+   </property>
+  </action>
+  <action name="action_Import_Settings" >
+   <property name="text" >
+    <string>&amp;Import Settings...</string>
+   </property>
+  </action>
+  <action name="actionExport_Character_Info" >
+   <property name="text" >
+    <string>&amp;Export Character Info...</string>
+   </property>
+  </action>
+  <action name="action_Quit" >
+   <property name="text" >
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+  <action name="actionPreferences" >
+   <property name="text" >
+    <string>Preferences</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

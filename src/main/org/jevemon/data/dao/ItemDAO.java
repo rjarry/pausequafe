@@ -86,7 +86,7 @@ public class ItemDAO  extends AbstractSqlDAO{
 	private List<Item> queryItemsById(List<Integer> toBeQueried) throws SQLException {
 		List<Item> result = new ArrayList<Item>();
 		
-		initConnection();
+		initConnection(SQLConstants.EVE_DATABASE);
 
 		String inClause = "";
 		boolean first = true;

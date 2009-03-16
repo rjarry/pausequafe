@@ -1,6 +1,7 @@
 package org.jevemon.model.charactersheet;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -8,8 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
-import org.jevemon.data.business.CharacterList;
-import org.jevemon.data.business.CharacterLtd;
+import org.jevemon.data.business.APIData;
 import org.jevemon.data.dao.CharacterListFactory;
 import org.jevemon.data.dao.CharacterSheetFactory;
 import org.jevemon.misc.exceptions.JEVEMonException;
@@ -22,7 +22,7 @@ public class TestPortrait {
 	 */
 	public static void main(String[] args) {
 		
-		CharacterList list = null;
+		List<APIData> list = null;
 		try {
 			System.out.print("fetching character list... ");
 			list = CharacterListFactory.getCharList(3173522, 
@@ -33,33 +33,20 @@ public class TestPortrait {
 			System.exit(0);
 		}
 		int charCount = 0;
-		for (CharacterLtd characterLtd : list.getList()) {
+		for (APIData data : list) {
 			charCount++;
-			System.out.println(charCount + " - " + characterLtd.getName());
+			System.out.println(charCount + " - " + data.getCharacterName());
 		}
 		Scanner in = new Scanner(System.in);
 		System.out.print("Choose a character : ");
 		int index = in.nextInt();
-		
-		int characterID = 0;
-		String characterName = null;
-		try {
-			characterID = list.getCharcterAt(index - 1).getCharacterId();
-			characterName = list.getCharcterAt(index - 1).getName();
-		} catch (JEVEMonException e1) {
-			System.out.println("wrong character");
-			System.exit(0);
-		}
-		
-		
-		
 		
 		//Image portrait = null;
 		
 		try {
 			System.out.print("fetching character portrait... ");
 			//portrait = 
-			CharacterSheetFactory.getPortrait(characterID, characterName,true);
+			CharacterSheetFactory.getPortrait(list.get(index-1), true);
 			System.out.println("success");
 			
 		} catch (JEVEMonException e) {
@@ -71,7 +58,7 @@ public class TestPortrait {
 		}
 		
 		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon(Constants.CHAR_SHEET_PATH + characterName + ".jpg"));
+		label.setIcon(new ImageIcon(Constants.CHAR_SHEET_PATH + list.get(index-1).getCharacterName() + ".jpg"));
 		JFrame frame = new JFrame();
 		frame.add(label);
 		frame.pack();

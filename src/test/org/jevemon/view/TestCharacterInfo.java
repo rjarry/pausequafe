@@ -2,6 +2,7 @@ package org.jevemon.view;
 
 import java.io.IOException;
 
+import org.jevemon.data.business.APIData;
 import org.jevemon.data.business.CharacterSheet;
 import org.jevemon.data.business.SkillInTraining;
 import org.jevemon.data.dao.CharacterSheetFactory;
@@ -19,7 +20,7 @@ public class TestCharacterInfo {
 	private static String name = "Salys Groumf";
 	private static int userID = 909108;
 	private static String apiKey = "AEE374E2E2D04D178A1C18A30CEC54FF538E74254D0649CEBFD2E79DAA215E40";
-
+	private static APIData data = new APIData(characterID,name,userID,apiKey);
 	/**
 	 * @param args
 	 */
@@ -34,7 +35,7 @@ public class TestCharacterInfo {
     	
     	String imageLocation = null;
         try {
-        	imageLocation = CharacterSheetFactory.getPortrait(characterID , name , false);
+        	imageLocation = CharacterSheetFactory.getPortrait(data, false);
 		} catch (JEVEMonFileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -44,7 +45,7 @@ public class TestCharacterInfo {
 
 		CharacterSheet sheet = null;
 		try {
-			sheet = CharacterSheetFactory.getCharacterSheet(userID, apiKey, characterID, name);
+			sheet = CharacterSheetFactory.getCharacterSheet(data);
 		} catch (JEVEMonException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -53,8 +54,7 @@ public class TestCharacterInfo {
 		
 		SkillInTraining training = null;
 		try{
-			training = SkillInTrainingFactory.getSkillInTraining(userID, 
-					apiKey, characterID, name);
+			training = SkillInTrainingFactory.getSkillInTraining(data);
 		} catch (JEVEMonException e) {
 			e.printStackTrace();
 		}

@@ -1,60 +1,59 @@
 package org.jevemon.data.dao;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jevemon.data.business.CharacterList;
-import org.jevemon.data.business.CharacterLtd;
-import org.jevemon.misc.exceptions.JEVEMonParseException;
+import org.jevemon.data.business.APIData;
 
 public class CharacterListParser {
 	
 	/**
 	 * Generates a character list from a JDOM Document.
 	 * @param doc
+	 * @param apiKey 
+	 * @param userID 
 	 * @return a character list
 	 */
 	@SuppressWarnings("unchecked")
-	public static CharacterList getList(Document doc){
+	public static List<APIData> getList(Document doc, int userID, String apiKey){
 				
 		Element root = doc.getRootElement();
 		List<Element> xmlList = root.getChild("result").getChild("rowset").getChildren("row");
 		
-		CharacterList list = new CharacterList();
+		List<APIData> list = new ArrayList<APIData>();
 		
 		for (Element row : xmlList) {
-			String name = row.getAttributeValue("name");
-			int id = Integer.parseInt(row.getAttributeValue("characterID"));
+			String chrName = row.getAttributeValue("name");
+			int charID = Integer.parseInt(row.getAttributeValue("characterID"));
 			
-			list.addCharacter(new CharacterLtd(name, id));
+			list.add(new APIData(charID, chrName, userID, apiKey));
 		}
 		return list;
 	}
 	
-	/**
-	 * parses an XML file to a document
-	 * @param fileName
-	 * @return a JDOM Document
-	 * @throws JEVEMonParseException
-	 */
-	public static Document parse(String fileName) throws JEVEMonParseException {
-		Document doc = null;
-		File file = new File(fileName);
-		try {
-			doc = new SAXBuilder().build(file);
-			if(doc.getRootElement().getChildren("error").size() > 0){
-				throw new JEVEMonParseException("Corrupted XML file");
-			}
-		} catch (JDOMException e) {
-			throw new JEVEMonParseException("Parsing error");
-		} catch (IOException i) {
-			throw new JEVEMonParseException("I/O error");
-		}
-		return doc;
-	}
+
+//	/**
+//	 * parses an XML file to a document
+//	 * @param fileName
+//	 * @return a JDOM Document
+//	 * @throws JEVEMonParseException
+//	 */
+//	public static Document parse(String fileName) throws JEVEMonParseException {
+//		Document doc = null;
+//		File file = new File(fileName);
+//		try {
+//			doc = new SAXBuilder().build(file);
+//			if(doc.getRootElement().getChildren("error").size() > 0){
+//				throw new JEVEMonParseException("Corrupted XML file");
+//			}
+//		} catch (JDOMException e) {
+//			throw new JEVEMonParseException("Parsing error");
+//		} catch (IOException i) {
+//			throw new JEVEMonParseException("I/O error");
+//		}
+//		return doc;
+//	}
+
 }
