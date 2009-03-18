@@ -33,6 +33,20 @@ public abstract class AbstractSqlDAO {
 		}
 	}
 	
+	protected void closeConnection(){
+		if (conn != null){
+			try {
+				conn.close();
+				conn = null;
+				stat = null;
+				prep = null;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	protected void initPrepareStatement(String dataBaseName, String sql) {
 		if (conn==null){
 			initConnection(dataBaseName);

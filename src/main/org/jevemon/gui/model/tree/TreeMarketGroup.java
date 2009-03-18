@@ -56,7 +56,9 @@ public class TreeMarketGroup extends TreeGroup {
 	@Override
 	public QFont getFont() {
 		// TODO implements
-		return null;
+		QFont font = new QFont();
+		font.setBold(true);
+		return font;
 	}
 
 	@Override
@@ -69,4 +71,6 @@ public class TreeMarketGroup extends TreeGroup {
 		// TODO implements
 		return null;
 	}
+
+
 }
