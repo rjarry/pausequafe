@@ -41,21 +41,24 @@ public class SQLConstants {
 	public static final String APIKEY_COL = "apiKey";
 	
 	// Queries
-	public static final String QUERY_MONITORED_CHARACTERS = "select * from monitoredCharacters";
+	public static final String QUERY_MONITORED_CHARACTERS = "SELECT * FROM monitoredCharacters WHERE isMonitored=1";
 	public static final String QUERY_DISTINCT_API = "SELECT DISTINCT userID, apiKey FROM monitoredCharacters";
 	public static final String ADD_MONITORED_CHARACTER = "INSERT INTO " +
-				"monitoredCharacters(characterID,characterName,userID,apiKey) VALUES (?,?,?,?)";
-	public static final String REMOVE_MONITORED_CHARACTER = "DELETE FROM monitoredCharacters WHERE characterID=?";
+				"monitoredCharacters(characterID,characterName,userID,apiKey,isMonitored) VALUES (?,?,?,?,1)";
+	public static final String REMOVE_MONITORED_CHARACTER = "UPDATE monitoredCharacters SET isMonitored=0 WHERE characterID=?";
+	public static final String UPDATE_MONITORED_CHARACTER = "UPDATE monitoredCharacters SET isMonitored=1 WHERE characterID=?";
 	public static final String CREATE_USER_DATABASE = 
 									"CREATE TABLE monitoredCharacters " +
 									"(" +
 										"characterID int NOT NULL UNIQUE,"+
 										"characterName nvarchar(256),"+
 										"userID int,"+
-										"apiKey nvarchar(256),"+
+										"apiKey nvarchar(256)," +
+										"isMonitored bit," +
 									
 										"CONSTRAINT characterID_PK PRIMARY KEY (characterID)"+
 									")";
+	public static final String CHARACTER_EXISTS = "SELECT isMonitored FROM monitoredCharacters WHERE characterID=?";
 
 
 }

@@ -92,16 +92,24 @@ public class SessionDAO extends AbstractSqlDAO {
 		if(!userdataBaseFile.exists()){
 			createUserDataBase();
 		}
-		initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.ADD_MONITORED_CHARACTER);
-		
+		initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.CHARACTER_EXISTS);
 		prep.setInt(1, data.getCharacterID());
-		prep.setString(2, data.getCharacterName());
-		prep.setInt(3, data.getUserID());
-		prep.setString(4, data.getApiKey());
+		ResultSet rs = prep.executeQuery();
 		
-		prep.executeUpdate();
-		
-		
+		if (rs.next()){
+			initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.UPDATE_MONITORED_CHARACTER);
+			prep.setInt(1, data.getCharacterID());
+			prep.executeUpdate();
+		} else {
+			initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.ADD_MONITORED_CHARACTER);
+			
+			prep.setInt(1, data.getCharacterID());
+			prep.setString(2, data.getCharacterName());
+			prep.setInt(3, data.getUserID());
+			prep.setString(4, data.getApiKey());
+			
+			prep.executeUpdate();
+		}
 		closeConnection();
 	}
 	

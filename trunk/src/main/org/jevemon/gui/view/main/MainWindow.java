@@ -9,6 +9,7 @@ import org.jevemon.misc.exceptions.JEVEMonException;
 
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
+import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QTabWidget;
 import com.trolltech.qt.gui.QVBoxLayout;
@@ -86,13 +87,15 @@ public class MainWindow extends QMainWindow {
 	private void addCharacter() throws JEVEMonException, IOException{
 		AddCharacterDialog addCharDialog = new AddCharacterDialog(this);
 		addCharDialog.exec();
-		APIData data = addCharDialog.getChosenCharacter();
-		tabWidget.addTab(new CharacterTab(data), data.getCharacterName());
-		try {
-			SessionDAO.getInstance().addMonitoredCharacter(data);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(addCharDialog.result() == QDialog.DialogCode.Accepted.value()){
+			APIData data = addCharDialog.getChosenCharacter();
+			tabWidget.addTab(new CharacterTab(data), data.getCharacterName());
+			try {
+				SessionDAO.getInstance().addMonitoredCharacter(data);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
