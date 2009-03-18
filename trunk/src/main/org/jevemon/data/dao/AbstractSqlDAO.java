@@ -34,16 +34,22 @@ public abstract class AbstractSqlDAO {
 	}
 	
 	protected void closeConnection(){
-		if (conn != null){
-			try {
+		try {
+			if(prep != null){
+				prep.close();
+				prep = null;
+			}
+			if(stat != null){
+				stat.close();
+				stat = null;
+			}
+			if(conn != null){
 				conn.close();
 				conn = null;
-				stat = null;
-				prep = null;
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

@@ -63,6 +63,7 @@ public class MainWindow extends QMainWindow {
 	private void setupUi() {
 		action_Quit = (QAction) this.findChild(QAction.class, "action_Quit");
 		action_Quit.triggered.connect(QApplication.instance(), "quit()");
+		action_Quit.setShortcut("Ctrl+Q");
 		tabWidget = new QTabWidget();
 		
 		QVBoxLayout treeLayout = new QVBoxLayout((QWidget) this.findChild(QWidget.class, "centralWidget"));
@@ -76,6 +77,7 @@ public class MainWindow extends QMainWindow {
     	
     	actionDelete_current_character = (QAction) this.findChild(QAction.class, "actionDelete_current_character");
     	actionDelete_current_character.triggered.connect(this, "deleteCharacterDialog()");
+    	actionDelete_current_character.setShortcut("Ctrl+W");
 		
 		
 	}

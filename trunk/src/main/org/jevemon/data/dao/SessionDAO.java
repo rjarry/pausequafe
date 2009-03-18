@@ -107,19 +107,18 @@ public class SessionDAO extends AbstractSqlDAO {
 	
 	public void removeMonitoredCharacter(int characterID) throws SQLException{
 		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
-		if(!userdataBaseFile.exists()){
-			createUserDataBase();
+		if(userdataBaseFile.exists()){
+			initConnection(SQLConstants.USER_DATABASE);
+			
+			PreparedStatement prep = conn.prepareStatement(SQLConstants.REMOVE_MONITORED_CHARACTER);
+			
+			prep.setInt(1, characterID);
+			
+			prep.executeUpdate();
+			
+			
+			closeConnection();
 		}
-		initConnection(SQLConstants.USER_DATABASE);
-		
-		PreparedStatement prep = conn.prepareStatement(SQLConstants.REMOVE_MONITORED_CHARACTER);
-		
-		prep.setInt(1, characterID);
-		
-		prep.executeUpdate();
-		
-		
-		closeConnection();
 	}
 	
 	
