@@ -27,6 +27,7 @@ public class DeleteCharacterDialog extends QDialog {
     
     private void setupUi(){
     	ui.setupUi(this);
+    	
     	removeButton = (QPushButton) this.findChild(QPushButton.class, "removeButton");
     	cancelButton = (QPushButton) this.findChild(QPushButton.class, "cancelButton");
     	iconLabel = (QLabel) this.findChild(QLabel.class, "iconLabel");
