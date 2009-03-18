@@ -13,9 +13,7 @@ import org.jevemon.data.dao.SkillMap;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.util.Constants;
 import org.jevemon.misc.util.Formater;
-import org.jevemon.gui.view.character.Ui_CharacterInfo;
 
-import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.gui.QFrame;
 import com.trolltech.qt.gui.QGroupBox;
@@ -79,11 +77,11 @@ public class CharacterInfo extends QFrame {
 	// widget setup //
 	//////////////////
 	private void setupUi() {
-		setFrameShape(QFrame.Shape.Panel);
-		setFrameShadow(QFrame.Shadow.Sunken);
-		QRect rect = new QRect(
-				5,5,this.width()-10,this.height()-10);
-		setFrameRect(rect);
+//		setFrameShape(QFrame.Shape.Panel);
+//		setFrameShadow(QFrame.Shadow.Sunken);
+//		QRect rect = new QRect(
+//				5,5,this.width()-10,this.height()-10);
+//		setFrameRect(rect);
 		
 		portrait = (QLabel) this.findChild(QLabel.class, "portrait");
 		info = (QLabel) this.findChild(QLabel.class, "info");

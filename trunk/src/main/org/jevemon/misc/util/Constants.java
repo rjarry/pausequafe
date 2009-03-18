@@ -2,6 +2,8 @@ package org.jevemon.misc.util;
 
 
 
+
+
 public class Constants {
 	
 	public static final int[] SKILL_LEVEL_REQS = {0 , 250, 1414, 8000, 45255, 256000};
@@ -36,6 +38,8 @@ public class Constants {
 	public static final String SKILL_LEVEL_5 = "resources/icons/JEVEMon/skill_level_5.png";
 	public static final String SKILL_TRAINABLE = "resources/icons/JEVEMon/skill_trainable.png";
 	public static final String SKILL_NOT_TRAINABLE = "resources/icons/JEVEMon/skill_not_trainable.png";
+	public static final String ERROR_ICON_FILE = "resources/icons/JEVEMon/error.png";
+	public static final String QUESTION_ICON_FILE = "resources/icons/JEVEMon/question.png";
 	
 	public static final int PORTRAIT_FILE_SIZE = 256;
 	

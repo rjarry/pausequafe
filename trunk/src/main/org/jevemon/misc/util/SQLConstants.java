@@ -4,9 +4,9 @@ package org.jevemon.misc.util;
 
 public class SQLConstants {
 	
-	public static final String EVE_DATABASE = "jdbc:sqlite:db/eve-online.db";
-	public static final String USER_DATABASE = "jdbc:sqlite:db/user-session.db";
-	public static final String USER_DATABASE_FILE = "db/user-session.db";
+	public static final String EVE_DATABASE = "jdbc:sqlite:resources/eve-online.db";
+	public static final String USER_DATABASE = "jdbc:sqlite:resources/user-session.db";
+	public static final String USER_DATABASE_FILE = "resources/user-session.db";
 	
 	
 	/*
@@ -42,8 +42,10 @@ public class SQLConstants {
 	
 	// Queries
 	public static final String QUERY_MONITORED_CHARACTERS = "select * from monitoredCharacters";
-	public static final String ADD_MONITORED_CHARACTER = "INSERT IN " +
+	public static final String QUERY_DISTINCT_API = "SELECT DISTINCT userID, apiKey FROM monitoredCharacters";
+	public static final String ADD_MONITORED_CHARACTER = "INSERT INTO " +
 				"monitoredCharacters(characterID,characterName,userID,apiKey) VALUES (?,?,?,?)";
+	public static final String REMOVE_MONITORED_CHARACTER = "DELETE FROM monitoredCharacters WHERE characterID=?";
 	public static final String CREATE_USER_DATABASE = 
 									"CREATE TABLE monitoredCharacters " +
 									"(" +

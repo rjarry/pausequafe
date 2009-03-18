@@ -1,7 +1,10 @@
 package org.jevemon.gui.view.main;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
+import org.jevemon.data.business.APIData;
+import org.jevemon.data.dao.SessionDAO;
 import org.jevemon.misc.exceptions.JEVEMonException;
 
 import com.trolltech.qt.gui.QAction;
@@ -25,7 +28,7 @@ public class MainWindow extends QMainWindow {
 //    private QAction actionNew_skill_plan;
 //    private QAction actionManage_Skill_plans;
     private QAction actionAdd_character;
-//    private QAction actionDelete_current_character;
+    private QAction actionDelete_current_character;
 //    private QAction action_Export_Settings;
 //    private QAction action_Import_Settings;
 //    private QAction actionExport_Character_Info;
@@ -70,13 +73,45 @@ public class MainWindow extends QMainWindow {
     	
     	actionAdd_character = (QAction) this.findChild(QAction.class, "actionAdd_character");
     	actionAdd_character.triggered.connect(this, "addCharacter()");
+    	
+    	actionDelete_current_character = (QAction) this.findChild(QAction.class, "actionDelete_current_character");
+    	actionDelete_current_character.triggered.connect(this, "deleteCharacterDialog()");
 		
 		
 	}
 	
 	@SuppressWarnings("unused")
 	private void addCharacter() throws JEVEMonException, IOException{
-		
+		AddCharacterDialog addCharDialog = new AddCharacterDialog(this);
+		addCharDialog.exec();
+		APIData data = addCharDialog.getChosenCharacter();
+		tabWidget.addTab(new CharacterTab(data), data.getCharacterName());
+		try {
+			SessionDAO.getInstance().addMonitoredCharacter(data);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private void deleteCharacterDialog() throws JEVEMonException, IOException{
+		DeleteCharacterDialog delCharDialog = 
+			new DeleteCharacterDialog(this, tabWidget.tabText(tabWidget.currentIndex()));
+		delCharDialog.accepted.connect(this, "removeTab()");
+		delCharDialog.exec();
+	}
+	
+	@SuppressWarnings("unused")
+	private void removeTab(){
+		int characterID = ((CharacterTab) tabWidget.currentWidget()).getSheet().getCharacterID();
+		try {
+			SessionDAO.getInstance().removeMonitoredCharacter(characterID);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tabWidget.removeTab(tabWidget.currentIndex());
 	}
     
     

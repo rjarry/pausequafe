@@ -1,0 +1,72 @@
+<ui version="4.0" language="jambi" >
+ <class>ErrorMessage</class>
+ <widget class="QDialog" name="ErrorMessage" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>291</width>
+    <height>112</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Dialog</string>
+  </property>
+  <widget class="QLabel" name="icon" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>64</width>
+     <height>64</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="text" >
+   <property name="geometry" >
+    <rect>
+     <x>80</x>
+     <y>10</y>
+     <width>201</width>
+     <height>64</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton" >
+   <property name="geometry" >
+    <rect>
+     <x>107</x>
+     <y>80</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="focusPolicy" >
+    <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+   </property>
+   <property name="text" >
+    <string>Ok</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

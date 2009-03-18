@@ -1,0 +1,182 @@
+<ui version="4.0" language="jambi" >
+ <class>AddCharacterDialog</class>
+ <widget class="QDialog" name="AddCharacterDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>351</width>
+    <height>268</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Dialog</string>
+  </property>
+  <property name="modal" >
+   <bool>false</bool>
+  </property>
+  <widget class="QPushButton" name="addButton" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>237</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="focusPolicy" >
+    <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+   </property>
+   <property name="text" >
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cancelButton" >
+   <property name="geometry" >
+    <rect>
+     <x>261</x>
+     <y>237</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="focusPolicy" >
+    <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+   </property>
+   <property name="text" >
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>7</y>
+     <width>331</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string>EVE Online API Details</string>
+   </property>
+   <widget class="QLabel" name="mainTextLabel" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>320</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">Enter the &lt;span style=" font-weight:600;">User ID&lt;/span> and the &lt;span style=" font-weight:600;">limited API key&lt;/span> for the character &lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">you want to monitor.&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">You can find the API details from the link below: &lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;a href="http://www.eveonline.com/api/">&lt;span style=" text-decoration: underline; color:#0000ff;">http://www.eveonline.com/api/&lt;/span>&lt;/a>&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;">&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;">&lt;/p>&lt;/body>&lt;/html></string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="chooseCharButton" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>186</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="focusPolicy" >
+     <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+    </property>
+    <property name="text" >
+     <string>Chose Character...</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="apiKeyLabel" >
+    <property name="geometry" >
+     <rect>
+      <x>13</x>
+      <y>141</y>
+      <width>46</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>API Key</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="userIDCombo" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>117</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="focusPolicy" >
+     <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+    </property>
+    <property name="editable" >
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="userIDlabel" >
+    <property name="geometry" >
+     <rect>
+      <x>13</x>
+      <y>101</y>
+      <width>46</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>User ID</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="characterLabel" >
+    <property name="geometry" >
+     <rect>
+      <x>130</x>
+      <y>186</y>
+      <width>181</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>no character selected</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="apiKeyText" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>156</y>
+      <width>310</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="focusPolicy" >
+     <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+    </property>
+    <property name="text" >
+     <string/>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

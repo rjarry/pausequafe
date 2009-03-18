@@ -47,6 +47,7 @@ public class SessionDAO extends AbstractSqlDAO {
 		
 		initConnection(SQLConstants.USER_DATABASE);
 		
+		
 		ResultSet rs = stat.executeQuery(SQLConstants.QUERY_MONITORED_CHARACTERS);
 		
 		while(rs.next()){
@@ -58,9 +59,32 @@ public class SessionDAO extends AbstractSqlDAO {
 			monitoredCharacters.add(data);
 		}
 		rs.close();
-		conn.close();
+		closeConnection();
 		
 		return monitoredCharacters;
+	}
+	
+	public List<APIData> getDistinctApiData() throws SQLException{
+		List<APIData> apiData = new ArrayList<APIData>();
+		
+		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
+		if(!userdataBaseFile.exists()){
+			createUserDataBase();
+		}
+		
+		initConnection(SQLConstants.USER_DATABASE);
+		
+		ResultSet rs = stat.executeQuery(SQLConstants.QUERY_DISTINCT_API);
+		
+		while(rs.next()){
+			APIData data = new APIData(	rs.getInt(SQLConstants.USERID_COL),
+										rs.getString(SQLConstants.APIKEY_COL));
+			apiData.add(data);
+		}
+		rs.close();
+		closeConnection();
+		
+		return apiData;
 	}
 	
 	public void addMonitoredCharacter(APIData data) throws SQLException{
@@ -68,24 +92,43 @@ public class SessionDAO extends AbstractSqlDAO {
 		if(!userdataBaseFile.exists()){
 			createUserDataBase();
 		}
-		initConnection(SQLConstants.USER_DATABASE);
+		initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.ADD_MONITORED_CHARACTER);
 		
-		PreparedStatement prep = conn.prepareStatement(SQLConstants.ADD_MONITORED_CHARACTER);
 		prep.setInt(1, data.getCharacterID());
 		prep.setString(2, data.getCharacterName());
 		prep.setInt(3, data.getUserID());
 		prep.setString(4, data.getApiKey());
 		
-		prep.execute();
+		prep.executeUpdate();
 		
-		conn.close();
+		
+		closeConnection();
 	}
+	
+	public void removeMonitoredCharacter(int characterID) throws SQLException{
+		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
+		if(!userdataBaseFile.exists()){
+			createUserDataBase();
+		}
+		initConnection(SQLConstants.USER_DATABASE);
+		
+		PreparedStatement prep = conn.prepareStatement(SQLConstants.REMOVE_MONITORED_CHARACTER);
+		
+		prep.setInt(1, characterID);
+		
+		prep.executeUpdate();
+		
+		
+		closeConnection();
+	}
+	
+	
+	
 	/////////////////////
     // private methods //
     /////////////////////
 	private void createUserDataBase() throws SQLException {
 		initConnection(SQLConstants.USER_DATABASE);
 		stat.executeUpdate(SQLConstants.CREATE_USER_DATABASE);
-		conn.close();
 	}
 }

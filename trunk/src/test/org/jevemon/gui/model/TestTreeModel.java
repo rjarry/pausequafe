@@ -15,7 +15,7 @@ public class TestTreeModel {
 	public static void main(String[] args) {
     	QApplication.initialize(args);
 		
-		MarketGroup group = MarketGroupDAO.getInstance().findMarketGroupById(2);
+		MarketGroup group = MarketGroupDAO.getInstance().findMarketGroupById(4);
 		TreeElement root = new TreeMarketGroup(group);
 		TreeModel ships = new TreeModel(root);
 		

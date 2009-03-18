@@ -11,7 +11,7 @@ import com.trolltech.qt.gui.QIcon;
  * 
  * @author Gobi
  */
-public abstract class TreeElement {
+public abstract class TreeElement implements Comparable<TreeElement>{
 	
 	public int childCount(){
 		return 0;
@@ -26,6 +26,10 @@ public abstract class TreeElement {
 	public abstract QFont getFont();
 	public abstract String getTooltip();
 	public abstract QIcon getIcon();
+	
+	public int compareTo(TreeElement o) {
+		return this.getName().compareTo(o.getName());
+	}
 	
 
 }
