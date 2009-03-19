@@ -97,10 +97,12 @@ public class SessionDAO extends AbstractSqlDAO {
 		ResultSet rs = prep.executeQuery();
 		
 		if (rs.next()){
+			rs.close();
 			initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.UPDATE_MONITORED_CHARACTER);
 			prep.setInt(1, data.getCharacterID());
 			prep.executeUpdate();
 		} else {
+			rs.close();
 			initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.ADD_MONITORED_CHARACTER);
 			
 			prep.setInt(1, data.getCharacterID());

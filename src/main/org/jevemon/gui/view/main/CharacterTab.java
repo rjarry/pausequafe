@@ -9,7 +9,6 @@ import org.jevemon.data.dao.CharacterSheetFactory;
 import org.jevemon.data.dao.SkillInTrainingFactory;
 import org.jevemon.gui.view.character.CharacterInfo;
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.misc.exceptions.JEVEMonFileNotFoundException;
 
 import com.trolltech.qt.gui.QWidget;
 
@@ -21,43 +20,24 @@ public class CharacterTab extends QWidget {
 
 	CharacterInfo infoWidget;
 
-	public CharacterTab(APIData data){
-		try {
-			sheet = CharacterSheetFactory.getCharacterSheet(data);
-			inTraining = SkillInTrainingFactory.getSkillInTraining(data);
-		} catch (JEVEMonException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public CharacterTab(){
 		infoWidget = new CharacterInfo(this);
+		infoWidget.show();
+	}
+	
+	
+	public void updateCharacterInfo(APIData data) throws IOException, JEVEMonException{
+		sheet = CharacterSheetFactory.getCharacterSheet(data);
+		inTraining = SkillInTrainingFactory.getSkillInTraining(data);
 		infoWidget.loadInfo(sheet);
 		infoWidget.loadAttributes(sheet);
 		infoWidget.loadSkills(sheet);
-		try {
-			infoWidget.loadSkillInTraining(sheet, inTraining);
-		} catch (JEVEMonException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		infoWidget.loadSkillInTraining(sheet, inTraining);
 		String imageLocation = null;
-        try {
-        	imageLocation = CharacterSheetFactory.getPortrait(data, false);
-		} catch (JEVEMonFileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+        imageLocation = CharacterSheetFactory.getPortrait(data, false);
 		infoWidget.loadPortrait(imageLocation);
-		infoWidget.show();
 	}
 
-	
-	
-	
 	public CharacterSheet getSheet() {
 		return sheet;
 	}
