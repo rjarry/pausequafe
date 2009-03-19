@@ -2,6 +2,7 @@ package org.jevemon.gui.view.main;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.jevemon.data.business.APIData;
 import org.jevemon.data.dao.SessionDAO;
@@ -42,21 +43,40 @@ public class MainWindow extends QMainWindow {
     public static void main(String[] args) {
         QApplication.initialize(args);
 
-        MainWindow testMainWindow = new MainWindow();
-        testMainWindow.show();
+        MainWindow testMainWindow = null;
+		try {
+			testMainWindow = new MainWindow();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JEVEMonException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        testMainWindow.baseSize();
 
         QApplication.exec();
     }
 
-    public MainWindow() {
+    public MainWindow() throws SQLException, IOException, JEVEMonException {
         this(null);
     }
 
-    public MainWindow(QWidget parent) {
+    public MainWindow(QWidget parent) throws SQLException, IOException, JEVEMonException {
         super(parent);
         ui.setupUi(this);
         setupUi();
-        
+        this.show();
+
+        List<APIData> list = SessionDAO.getInstance().getMonitoredCharacters();
+        for(APIData data : list){
+        	CharacterTab tab = new CharacterTab();
+			tabWidget.addTab(tab, data.getCharacterName());
+			tab.updateCharacterInfo(data);
+        }
         
         
     }
@@ -79,8 +99,6 @@ public class MainWindow extends QMainWindow {
     	actionDelete_current_character = (QAction) this.findChild(QAction.class, "actionDelete_current_character");
     	actionDelete_current_character.triggered.connect(this, "deleteCharacterDialog()");
     	actionDelete_current_character.setShortcut("Ctrl+W");
-		
-		
 	}
 	
 	@SuppressWarnings("unused")
@@ -89,7 +107,9 @@ public class MainWindow extends QMainWindow {
 		addCharDialog.exec();
 		if(addCharDialog.result() == QDialog.DialogCode.Accepted.value()){
 			APIData data = addCharDialog.getChosenCharacter();
-			tabWidget.addTab(new CharacterTab(data), data.getCharacterName());
+			CharacterTab tab = new CharacterTab();
+			tabWidget.addTab(tab, data.getCharacterName());
+			tab.updateCharacterInfo(data);
 			try {
 				SessionDAO.getInstance().addMonitoredCharacter(data);
 			} catch (SQLException e) {
