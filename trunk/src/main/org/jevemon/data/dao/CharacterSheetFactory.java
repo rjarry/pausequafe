@@ -33,7 +33,7 @@ import be.fomp.jeve.core.exceptions.JEveParseException;
  */
 public class CharacterSheetFactory {
 
-	public static CharacterSheet getCharacterSheet(APIData data) throws JEVEMonException, IOException {
+	public static synchronized CharacterSheet getCharacterSheet(APIData data) throws JEVEMonException, IOException {
 		LimitedAPI con = null;
 		boolean isCached = false;
 
@@ -64,8 +64,8 @@ public class CharacterSheetFactory {
 		return result;
 	}
 
-	public static String getPortrait(APIData data, boolean forceDownload) 
-	throws IOException, JEVEMonFileNotFoundException  {
+	public static synchronized String getPortrait(APIData data, boolean forceDownload) 
+								throws IOException, JEVEMonFileNotFoundException  {
 
 		String portraitFilePath = "";
 		boolean downloadFailed = false;

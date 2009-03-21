@@ -1,16 +1,21 @@
 package org.jevemon.gui.view.main;
 
-import java.sql.SQLException;
+import java.io.File;
 import java.util.List;
 
 import org.jevemon.data.business.APIData;
 import org.jevemon.data.dao.CharacterListFactory;
 import org.jevemon.data.dao.SessionDAO;
 import org.jevemon.gui.view.misc.ErrorMessage;
+import org.jevemon.gui.view.misc.ErrorQuestion;
 import org.jevemon.misc.exceptions.JEVEMonConfigException;
 import org.jevemon.misc.exceptions.JEVEMonConnectionException;
+import org.jevemon.misc.exceptions.JEVEMonDatabaseFileCorrupted;
 import org.jevemon.misc.exceptions.JEVEMonException;
 import org.jevemon.misc.exceptions.JEVEMonParseException;
+import org.jevemon.misc.exceptions.JEVEMonSQLDriverNotFoundException;
+import org.jevemon.misc.util.Constants;
+import org.jevemon.misc.util.SQLConstants;
 
 import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QDialog;
@@ -71,9 +76,16 @@ public class AddCharacterDialog extends QDialog {
 	    
 		try {
 			list = SessionDAO.getInstance().getDistinctApiData();
-		} catch (SQLException e) {
-			// TODO gérer cette exception
-			e.printStackTrace();
+		} catch (JEVEMonSQLDriverNotFoundException e) {
+			ErrorMessage error = new ErrorMessage(this,tr(Constants.DRIVER_NOT_FOUND_ERROR));
+			error.exec();
+		} catch (JEVEMonDatabaseFileCorrupted e) {
+			ErrorQuestion error = new ErrorQuestion(this,tr(Constants.USER_DB_CORRUPTED_ERROR));
+			error.exec();
+			if(error.result() == QDialog.DialogCode.Accepted.value()){
+				File userDb = new File(SQLConstants.USER_DATABASE_FILE);
+				userDb.delete();
+			}
 		}
 		userIDCombo.addItem("");
 		for(APIData data : list){
@@ -100,7 +112,7 @@ public class AddCharacterDialog extends QDialog {
     }
     
     @SuppressWarnings("unused")
-	private void fetchCharacters(){
+	private void fetchCharacters() throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted {
     	int userID;
     	String apiKey;
 
@@ -139,17 +151,23 @@ public class AddCharacterDialog extends QDialog {
 		
 		CharacterListDialog dialog = new CharacterListDialog(this, characterList);
 		dialog.exec();
-		int index = dialog.getChosenCharacterIndex();
-		if(index == -1){
-			ErrorMessage error = new ErrorMessage(this, "Character not in the list.");
-			error.exec();
-			return;
+		
+		if(dialog.result() == QDialog.DialogCode.Accepted.value()){
+			int index = dialog.getChosenCharacterIndex();
+			if(index == -1){
+				ErrorMessage error = new ErrorMessage(this, "Character not in the list.");
+				error.exec();
+				return;
+			}
+			if(SessionDAO.getInstance().isMonitored(characterList.get(index))){
+				ErrorMessage error = new ErrorMessage(this, "This character is already monitored.");
+				error.exec();
+				return;
+			}
+			chosenCharacter = characterList.get(index);
+			characterLabel.setText("<b>" + chosenCharacter.getCharacterName() + "</b>");
+			addButton.setEnabled(true);
 		}
-		
-		chosenCharacter = characterList.get(index);
-		characterLabel.setText("<b>" + chosenCharacter.getCharacterName() + "</b>");
-		addButton.setEnabled(true);
-		
     }
 
 	public APIData getChosenCharacter() {

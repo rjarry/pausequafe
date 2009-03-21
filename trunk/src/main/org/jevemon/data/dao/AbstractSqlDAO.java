@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.jevemon.misc.exceptions.JEVEMonDatabaseFileCorrupted;
+import org.jevemon.misc.exceptions.JEVEMonSQLDriverNotFoundException;
+
 /**
  * An abstract class for DAOs that use SQL to retrieve data
  * 
@@ -17,18 +20,16 @@ public abstract class AbstractSqlDAO {
 	protected Statement stat;
 	protected PreparedStatement prep;
 	
-	protected void initConnection(String dataBaseName) {
+	protected void initConnection(String dataBaseName) throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted {
 		if (conn == null){
 			try {
 				Class.forName("org.sqlite.JDBC");
 				conn = DriverManager.getConnection(dataBaseName);
 				stat = conn.createStatement();
 			} catch (ClassNotFoundException e) {
-				// TODO réviser la gestion de cette exception
-				e.printStackTrace();
+				throw new JEVEMonSQLDriverNotFoundException();
 			} catch (SQLException e) {
-				// TODO réviser la gestion de cette exception
-				e.printStackTrace();
+				throw new JEVEMonDatabaseFileCorrupted();
 			}
 		}
 	}
@@ -48,19 +49,17 @@ public abstract class AbstractSqlDAO {
 				conn = null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	protected void initPrepareStatement(String dataBaseName, String sql) {
+	protected void initPrepareStatement(String dataBaseName, String sql) throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted {
 		if (conn==null){
 			initConnection(dataBaseName);
 		}
 		try {
 			prep = conn.prepareStatement(sql);
 		} catch (SQLException e) {
-			// TODO réviser la gestion de cette exception
 			e.printStackTrace();
 		}
 	}

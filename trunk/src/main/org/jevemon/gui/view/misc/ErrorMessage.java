@@ -26,7 +26,7 @@ public class ErrorMessage extends QDialog {
         super(parent);
         setupUi();
         this.setWindowTitle("Error");
-        text.setText("<b>" + message + "</b>");
+        text.setText(message);
     }
     
     private void setupUi(){

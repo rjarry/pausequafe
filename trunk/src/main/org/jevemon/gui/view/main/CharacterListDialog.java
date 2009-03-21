@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.jevemon.data.business.APIData;
 
-import com.trolltech.qt.gui.*;
+import com.trolltech.qt.gui.QDialog;
+import com.trolltech.qt.gui.QListWidget;
+import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QWidget;
 
 public class CharacterListDialog extends QDialog {
 

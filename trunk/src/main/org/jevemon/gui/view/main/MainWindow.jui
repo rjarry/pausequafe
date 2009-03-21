@@ -60,7 +60,11 @@
    <addaction name="menuPlan" />
    <addaction name="menu_Options" />
   </widget>
-  <widget class="QStatusBar" name="statusBar" />
+  <widget class="QStatusBar" name="statusBar" >
+   <property name="sizeGripEnabled" >
+    <bool>true</bool>
+   </property>
+  </widget>
   <action name="actionNew_skill_plan" >
    <property name="text" >
     <string>&amp;New skill plan...</string>
