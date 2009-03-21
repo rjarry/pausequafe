@@ -2,8 +2,6 @@ package org.jevemon.misc.util;
 
 
 
-
-
 public class Constants {
 	
 	public static final int[] SKILL_LEVEL_REQS = {0 , 250, 1414, 8000, 45255, 256000};
@@ -40,6 +38,16 @@ public class Constants {
 	public static final String SKILL_NOT_TRAINABLE = "resources/icons/JEVEMon/skill_not_trainable.png";
 	public static final String ERROR_ICON_FILE = "resources/icons/JEVEMon/error.png";
 	public static final String QUESTION_ICON_FILE = "resources/icons/JEVEMon/question.png";
+	public static final String DOWNLOADING_ICON = "resources/icons/JEVEMon/rosace.gif";
+	public static final String IDLE_ICON = "resources/icons/JEVEMon/rosace.png";
+	public static final String SERVER_ONLINE_ICON = "resources/icons/JEVEMon/online.png";
+	public static final String SERVER_OFFLINE_ICON = "resources/icons/JEVEMon/offline.png";
+	public static final String SERVER_STATUS_UNKONWN_ICON = "resources/icons/JEVEMon/unknown.png";
+	
+	public static final String DRIVER_NOT_FOUND_ERROR = "File \"/lib/sqlitejdbc-v054.jar\" not found.\nPlease check your installation.";
+	public static final String EVE_DB_CORRUPTED_ERROR = "File \"/resources/eve-online.db\" corrupted.\nPlease check your installation.";
+	public static final String USER_DB_CORRUPTED_ERROR = "File \"/resources/user.db\" corrupted.\nReset user settings?";
+	
 	
 	public static final int PORTRAIT_FILE_SIZE = 256;
 	

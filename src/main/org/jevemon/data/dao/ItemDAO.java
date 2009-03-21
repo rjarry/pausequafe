@@ -1,5 +1,6 @@
 package org.jevemon.data.dao;
 
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jevemon.data.business.Item;
+import org.jevemon.misc.exceptions.JEVEMonDatabaseFileCorrupted;
+import org.jevemon.misc.exceptions.JEVEMonEveDatabaseNotFound;
+import org.jevemon.misc.exceptions.JEVEMonSQLDriverNotFoundException;
 import org.jevemon.misc.util.SQLConstants;
 
 /**
@@ -39,7 +43,7 @@ public class ItemDAO  extends AbstractSqlDAO{
 	////////////////////
     // public methods //
     ////////////////////
-	public List<Item> findItemsById(List<Integer> list){
+	public List<Item> findItemsById(List<Integer> list) throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted, JEVEMonEveDatabaseNotFound{
 		ArrayList<Item> result = new ArrayList<Item>();
 		List<Integer> toBeQueried = new ArrayList<Integer>();
 		
@@ -56,18 +60,13 @@ public class ItemDAO  extends AbstractSqlDAO{
 		
 		// get missing items from database
 		if(!toBeQueried.isEmpty()){
-			try {
-				result.addAll(queryItemsById(toBeQueried));
-			} catch (SQLException e) {
-				// TODO gestion de cette exception
-				e.printStackTrace();
-			}
+			result.addAll(queryItemsById(toBeQueried)); 
 		}
 		
 		return result;
 	}
 	
-	public Item findItemById(Integer itemId) {
+	public Item findItemById(Integer itemId) throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted, JEVEMonEveDatabaseNotFound {
 		Item result = null;
 		List<Integer> list = new ArrayList<Integer>();
 		list.add(itemId);
@@ -83,9 +82,13 @@ public class ItemDAO  extends AbstractSqlDAO{
 	/////////////////////
     // private methods //
     /////////////////////
-	private List<Item> queryItemsById(List<Integer> toBeQueried) throws SQLException {
+	private List<Item> queryItemsById(List<Integer> toBeQueried) throws  JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted, JEVEMonEveDatabaseNotFound {
 		List<Item> result = new ArrayList<Item>();
 		
+		File db = new File(SQLConstants.EVE_DATABASE_FILE);
+		if(!db.exists()){
+			throw new JEVEMonEveDatabaseNotFound();
+		}
 		initConnection(SQLConstants.EVE_DATABASE);
 
 		String inClause = "";
@@ -102,16 +105,21 @@ public class ItemDAO  extends AbstractSqlDAO{
 		query = query.replace("?", inClause);
 		//System.out.println(query); // for convenience : uncomment to see DB queries
 		
-		ResultSet res = stat.executeQuery(query);
-		while(res.next()){
-			Item newItem = new Item(
-					res.getInt(SQLConstants.TYPEID_COL),
-					res.getString(SQLConstants.TYPENAME_COL), 
-					res.getInt(SQLConstants.MARKETGRPID_COL), 
-					res.getString(SQLConstants.DESCRIPTION_COL)  );
-			
-			memoryCache.put(newItem.getTypeID(), newItem);
-			result.add(newItem);
+		try {
+			ResultSet res = stat.executeQuery(query);
+			while(res.next()){
+				Item newItem = new Item(
+						res.getInt(SQLConstants.TYPEID_COL),
+						res.getString(SQLConstants.TYPENAME_COL), 
+						res.getInt(SQLConstants.MARKETGRPID_COL), 
+						res.getString(SQLConstants.DESCRIPTION_COL)  );
+				
+				memoryCache.put(newItem.getTypeID(), newItem);
+				result.add(newItem);
+			}
+			res.close();
+		} catch (SQLException e) {
+			throw new JEVEMonDatabaseFileCorrupted();
 		}
 		
 		return result;

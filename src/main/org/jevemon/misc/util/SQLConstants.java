@@ -5,8 +5,9 @@ package org.jevemon.misc.util;
 public class SQLConstants {
 	
 	public static final String EVE_DATABASE = "jdbc:sqlite:resources/eve-online.db";
-	public static final String USER_DATABASE = "jdbc:sqlite:resources/user-session.db";
-	public static final String USER_DATABASE_FILE = "resources/user-session.db";
+	public static final String EVE_DATABASE_FILE = "resources/eve-online.db";;
+	public static final String USER_DATABASE = "jdbc:sqlite:resources/user.db";
+	public static final String USER_DATABASE_FILE = "resources/user.db";
 	
 	
 	/*

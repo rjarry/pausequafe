@@ -3,7 +3,6 @@ package org.jevemon.gui.view.skillbrowser;
 import org.jevemon.data.business.CharacterSheet;
 import org.jevemon.gui.model.items.skilltreemodel.TreeModel;
 import org.jevemon.misc.exceptions.JEVEMonException;
-import org.jevemon.gui.view.skillbrowser.Ui_SkillBrowser;
 
 import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.QSize;

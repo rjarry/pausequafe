@@ -2,7 +2,11 @@ package org.jevemon.gui.view.main;
 
 import org.jevemon.misc.util.Constants;
 
-import com.trolltech.qt.gui.*;
+import com.trolltech.qt.gui.QDialog;
+import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QWidget;
 
 public class DeleteCharacterDialog extends QDialog {
 

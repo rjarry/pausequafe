@@ -20,7 +20,7 @@ import be.fomp.jeve.core.exceptions.JEveParseException;
 
 public class SkillInTrainingFactory {
 	
-	public static SkillInTraining getSkillInTraining(APIData data) throws JEVEMonException {
+	public static synchronized SkillInTraining getSkillInTraining(APIData data) throws JEVEMonException {
 		LimitedAPI con = null;
 		boolean isCached = false;
 		

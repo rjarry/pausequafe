@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jevemon.data.business.MarketGroup;
+import org.jevemon.misc.exceptions.JEVEMonDatabaseFileCorrupted;
+import org.jevemon.misc.exceptions.JEVEMonSQLDriverNotFoundException;
 import org.jevemon.misc.util.SQLConstants;
 
 /**
@@ -39,7 +41,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	////////////////////
     // public methods //
     ////////////////////
-	public List<MarketGroup> findMarketGroupsById(List<Integer> list){
+	public List<MarketGroup> findMarketGroupsById(List<Integer> list) throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted{
 		ArrayList<MarketGroup> result = new ArrayList<MarketGroup>();
 		List<Integer> toBeQueried = new ArrayList<Integer>();
 		
@@ -56,18 +58,13 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 		
 		// get missing items from database
 		if(!toBeQueried.isEmpty()){
-			try {
-				result.addAll(queryMarketGroupsById(toBeQueried));
-			} catch (SQLException e) {
-				// TODO gestion de cette exception
-				e.printStackTrace();
-			}
+			result.addAll(queryMarketGroupsById(toBeQueried));
 		}
 		
 		return result;
 	}
 	
-	public MarketGroup findMarketGroupById(Integer groupId) {
+	public MarketGroup findMarketGroupById(Integer groupId) throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted {
 		MarketGroup result = null;
 		List<Integer> list = new ArrayList<Integer>();
 		list.add(groupId);
@@ -83,7 +80,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	/////////////////////
     // private methods //
     /////////////////////
-	private List<MarketGroup> queryMarketGroupsById(List<Integer> toBeQueried) throws SQLException {
+	private List<MarketGroup> queryMarketGroupsById(List<Integer> toBeQueried) throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted {
 		List<MarketGroup> result = new ArrayList<MarketGroup>();
 		
 		initConnection(SQLConstants.EVE_DATABASE);
@@ -103,22 +100,27 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 		query = query.replace("?", inClause);
 		//System.out.println(query); // for convenience : uncomment to see DB queries
 		
-		ResultSet res = stat.executeQuery(query);
-		while(res.next()){
-			Integer marketGroupId = res.getInt(SQLConstants.MARKETGRPID_COL);
-			MarketGroup marketGroup = memoryCache.get(marketGroupId);
-			if(marketGroup==null){
-				marketGroup = new MarketGroup(
-						marketGroupId,
-						res.getString(SQLConstants.MARKETGRPNAME_COL),
-						res.getString(SQLConstants.DESCRIPTION_COL),
-						res.getBoolean(SQLConstants.HASTYPE_COL)  );
+		try {
+			ResultSet res = stat.executeQuery(query);
+			while(res.next()){
+				Integer marketGroupId = res.getInt(SQLConstants.MARKETGRPID_COL);
+				MarketGroup marketGroup = memoryCache.get(marketGroupId);
+				if(marketGroup==null){
+					marketGroup = new MarketGroup(
+							marketGroupId,
+							res.getString(SQLConstants.MARKETGRPNAME_COL),
+							res.getString(SQLConstants.DESCRIPTION_COL),
+							res.getBoolean(SQLConstants.HASTYPE_COL)  );
 
-				memoryCache.put(marketGroup.getGroupID(), marketGroup);
-				result.add(marketGroup);
+					memoryCache.put(marketGroup.getGroupID(), marketGroup);
+					result.add(marketGroup);
+				}
+				marketGroup.addChild(res.getInt(SQLConstants.CHILDID_COL));
+				
 			}
-			marketGroup.addChild(res.getInt(SQLConstants.CHILDID_COL));
-			
+			res.close();
+		} catch (SQLException e) {
+			throw new JEVEMonDatabaseFileCorrupted();
 		}
 
 		return result;

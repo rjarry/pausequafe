@@ -4,6 +4,9 @@ import org.jevemon.data.business.Item;
 import org.jevemon.data.business.MarketGroup;
 import org.jevemon.data.dao.ItemDAO;
 import org.jevemon.data.dao.MarketGroupDAO;
+import org.jevemon.misc.exceptions.JEVEMonDatabaseFileCorrupted;
+import org.jevemon.misc.exceptions.JEVEMonEveDatabaseNotFound;
+import org.jevemon.misc.exceptions.JEVEMonSQLDriverNotFoundException;
 
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QIcon;
@@ -31,7 +34,7 @@ public class TreeMarketGroup extends TreeGroup {
 	}
 
 	@Override
-	public TreeElement ChildAt(int position) {
+	public TreeElement ChildAt(int position) throws JEVEMonSQLDriverNotFoundException, JEVEMonDatabaseFileCorrupted, JEVEMonEveDatabaseNotFound {
 		TreeElement child = null;
 		Integer childId = marketGroup.childAt(position);
 		
