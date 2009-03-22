@@ -21,7 +21,7 @@ public class TestTreeModel {
 		
 		MarketGroup group=null;
 		try {
-			group = MarketGroupDAO.getInstance().findMarketGroupById(4);
+			group = MarketGroupDAO.getInstance().findMarketGroupById(9);
 		} catch (JEVEMonSQLDriverNotFoundException e) {
 			e.printStackTrace();
 		} catch (JEVEMonDatabaseFileCorrupted e) {
@@ -33,7 +33,6 @@ public class TestTreeModel {
 		QTreeView view = new QTreeView();
 		view.setModel(ships);
 		view.show();
-		
 		QApplication.exec();
 	}
 

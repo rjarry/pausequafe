@@ -22,15 +22,44 @@ public class SQLConstants {
 	public static final String MARKETGRPNAME_COL = "marketGroupName";
 	public static final String HASTYPE_COL = "hasTypes";
 	public static final String CHILDID_COL = "childID";
+	public static final String BASEPRICE_COL = "basePrice";
+	public static final String GRAPHICID_COL = "graphicID";
+	public static final String MASS_COL = "mass";
+	public static final String RADIUS_COL = "radius";
+	public static final String VOLUME_COL = "volume";
+	public static final String CAPACITY_COL = "capacity";
+	public static final String ATTRIBUTE_NAME_COL = "attributeName";
+	public static final String ATTRIBUTE_CATEGORY_COL = "categoryName";
+	public static final String ATTRIBUTE_VALUE_COL = "value";
+	public static final String ATTRIBUTEID_COL = "attributeID";
+	
+	// attributes ids
+	public static final int REQUIRED_SKILL_1_ATTID = 182;
+	public static final int REQUIRED_SKILL_2_ATTID = 183;
+	public static final int REQUIRED_SKILL_3_ATTID = 184;
+	public static final int REQUIRED_SKILL_1_LEVEL_ATTID = 277;
+	public static final int REQUIRED_SKILL_2_LEVEL_ATTID = 278;
+	public static final int REQUIRED_SKILL_3_LEVEL_ATTID = 279;
 
 	// Queries
-	public static final String QUERY_TYPES_BY_ID = "select * from invTypes where typeID in (?)";
+//	public static final String QUERY_TYPES_BY_ID = "select * from invTypes where typeID in (?)";
 	public static final String QUERY_MARKETGRP_BY_ID = "select * from invMarketGroups where marketGroupID in (?)";
 	public static final String QUERY_MARKETGRP_BY_ID_WITHCHILDREN
 		= "select mk1.*,mk2.marketGroupID as " + CHILDID_COL + " from invMarketGroups mk1,invMarketGroups mk2 where mk1.marketGroupID in (?) and mk1.marketGroupID=mk2.parentGroupID"
 		  + " union " +
 		  "select mk.*,t.typeID as " + CHILDID_COL + " from invMarketGroups mk,invTypes t where mk.marketGroupID in (?) and mk.marketGroupID=t.marketGroupID" ;
 
+	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value,u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice,IFNULL(t.graphicID,t.typeID) AS graphicID " +
+													"FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u " +
+													"WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND ac.categoryName != 'NULL' AND at.unitID = u.unitID " +
+													"ORDER BY t.typeID ";
+	
+	public static final String QUERY_METAGROUP_BY_TYPEID = "SELECT typeID, metaGroupID FROM invMetaTypes WHERE typeID in (?)";
+	
+	
+	
+	
+	
 	/*
 	 * User database queries
 	 */
@@ -60,6 +89,7 @@ public class SQLConstants {
 										"CONSTRAINT characterID_PK PRIMARY KEY (characterID)"+
 									")";
 	public static final String CHARACTER_EXISTS = "SELECT isMonitored FROM monitoredCharacters WHERE characterID=?";
+
 
 
 }
