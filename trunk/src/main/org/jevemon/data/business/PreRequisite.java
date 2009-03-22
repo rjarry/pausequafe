@@ -9,8 +9,8 @@ public class PreRequisite {
 	////////////////////
 	// private fields //
 	////////////////////
-	private int typeID;
-	private int requiredLevel;
+	private int typeID = -1;
+	private int requiredLevel = -1;
 	
 	//////////////////
 	// constructors //
