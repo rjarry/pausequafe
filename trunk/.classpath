@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main"/>
+	<classpathentry kind="src" path="src/test"/>
+	<classpathentry kind="src" path="Generated JUIC files"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/JEveCore_Modified.jar"/>
+	<classpathentry kind="lib" path="lib/sqlitejdbc-v054.jar"/>
+	<classpathentry kind="lib" path="/Users/diabeteman/Documents/JAVA/## LIBRARIES/qtjambi-mac-gpl-4.4.3_01/qtjambi-4.4.3_01.jar"/>
+	<classpathentry kind="lib" path="/Users/diabeteman/Documents/JAVA/## LIBRARIES/qtjambi-mac-gpl-4.4.3_01/qtjambi-macosx-gcc-4.4.3_01.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

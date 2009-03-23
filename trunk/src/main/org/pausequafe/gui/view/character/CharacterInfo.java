@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.jevemon.gui.view.character.Ui_CharacterInfo;
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.data.dao.ItemDAO;

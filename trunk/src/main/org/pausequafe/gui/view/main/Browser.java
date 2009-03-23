@@ -1,7 +1,5 @@
 package org.pausequafe.gui.view.main;
 
-import org.jevemon.gui.view.main.Ui_Browser;
-
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QWidget;
 

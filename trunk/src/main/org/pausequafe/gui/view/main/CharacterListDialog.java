@@ -2,7 +2,6 @@ package org.pausequafe.gui.view.main;
 
 import java.util.List;
 
-import org.jevemon.gui.view.main.Ui_CharacterListDialog;
 import org.pausequafe.data.business.APIData;
 
 import com.trolltech.qt.gui.QDialog;
