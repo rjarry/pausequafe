@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.jevemon.gui.view.main.Ui_MainWindow;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.ServerStatus;
 import org.pausequafe.data.dao.SessionDAO;

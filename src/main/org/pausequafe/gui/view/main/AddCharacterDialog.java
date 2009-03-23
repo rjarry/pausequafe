@@ -3,7 +3,6 @@ package org.pausequafe.gui.view.main;
 import java.io.File;
 import java.util.List;
 
-import org.jevemon.gui.view.main.Ui_AddCharacterDialog;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.dao.CharacterListFactory;
 import org.pausequafe.data.dao.SessionDAO;

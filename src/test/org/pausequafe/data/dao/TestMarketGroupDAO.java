@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pausequafe.data.business.MarketGroup;
-import org.pausequafe.data.dao.MarketGroupDAO;
 
 public class TestMarketGroupDAO {
 	public static void main(String[] args) throws Exception{

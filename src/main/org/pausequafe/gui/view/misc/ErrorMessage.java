@@ -1,6 +1,5 @@
 package org.pausequafe.gui.view.misc;
 
-import org.jevemon.gui.view.misc.Ui_ErrorMessage;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.Qt;

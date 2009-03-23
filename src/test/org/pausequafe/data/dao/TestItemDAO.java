@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pausequafe.data.business.Item;
-import org.pausequafe.data.dao.ItemDAO;
 
 public class TestItemDAO {
 	public static void main(String[] args) throws Exception{

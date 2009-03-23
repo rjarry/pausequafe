@@ -1,6 +1,5 @@
 package org.pausequafe.gui.view.main;
 
-import org.jevemon.gui.view.main.Ui_DeleteCharacterDialog;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.gui.QDialog;
