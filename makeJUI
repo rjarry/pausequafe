@@ -1,5 +1,4 @@
 #!/bin/bash
-################################################
 # Generate Ui_*.java classes from *.jui files
 #
 # The binary juic must be in your PATH or in
@@ -10,9 +9,9 @@
 ################################################
 echo ""
 echo "Check for .jui in ./src/main :"
-juic -d Generated_JUIC_files -cp ./src/main
+juic -d Generated\ JUIC\ files -cp ./src/main
 
 echo ""
-echo "Check for .jui in ./src/main :"
-juic -d Generated_JUIC_files -cp ./src/test
+echo "Check for .jui in ./src/test :"
+juic -d Generated\ JUIC\ files -cp ./src/test
 echo ""
