@@ -75,5 +75,15 @@ public class TreeMarketGroup extends TreeGroup {
 		return null;
 	}
 
+	@Override
+	public Item getItem() {
+		return null;
+	}
+
+	@Override
+	public String toString() {
+		return marketGroup.getGroupName();
+	}
+
 
 }

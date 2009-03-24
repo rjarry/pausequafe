@@ -6,13 +6,15 @@ public class ItemAttribute {
 	private String attributeName;
 	private String attributeCategory;
 	private float value;
+	private String unit;
 	
 	
 	
-	public ItemAttribute(String attributeName, String attributeCategory,float value) {
+	public ItemAttribute(String attributeName, String attributeCategory,float value,String unit) {
 		this.attributeName = attributeName;
 		this.attributeCategory = attributeCategory;
 		this.value = value;
+		this.unit = unit;
 	}
 
 	
@@ -39,5 +41,17 @@ public class ItemAttribute {
 
 	public void setValue(float value) {
 		this.value = value;
+	}
+
+
+
+	public String getUnit() {
+		return unit;
+	}
+
+
+
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 }

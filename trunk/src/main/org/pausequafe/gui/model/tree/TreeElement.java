@@ -1,5 +1,6 @@
 package org.pausequafe.gui.model.tree;
 
+import org.pausequafe.data.business.Item;
 import org.pausequafe.misc.exceptions.PQException;
 
 import com.trolltech.qt.gui.QFont;
@@ -30,6 +31,9 @@ public abstract class TreeElement implements Comparable<TreeElement>{
 	public int compareTo(TreeElement o) {
 		return this.getName().compareTo(o.getName());
 	}
+
+	public abstract Item getItem();
 	
+	public abstract String toString();
 
 }

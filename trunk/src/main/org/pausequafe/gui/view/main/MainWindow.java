@@ -25,6 +25,7 @@ import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QDialog;
+import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMovie;
@@ -79,6 +80,8 @@ public class MainWindow extends QMainWindow {
         ui.setupUi(this);
         setupUi();
         this.show();
+        updateTime();
+        requestServerStatus();
 
         
 		try {
@@ -102,6 +105,10 @@ public class MainWindow extends QMainWindow {
     }
 
 	private void setupUi() {
+		// init icon & window name
+		this.setWindowIcon(new QIcon(Constants.WINDOW_ICON));
+		this.setWindowTitle("Pause Quafé");
+		
 		// Init menu actions
 		action_Quit = (QAction) this.findChild(QAction.class, "action_Quit");
 		action_Quit.triggered.connect(QApplication.instance(), "quit()");
@@ -131,14 +138,12 @@ public class MainWindow extends QMainWindow {
     	serverStatusTimer.timeout.connect(this, "requestServerStatus()");
     	serverStatusTimer.start(5 * Constants.MINUTE);
     	updateServerStatus(new ServerStatus());
-    	requestServerStatus();
     	
     	eveTimeLabel = new QLabel();
     	TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
     	eveTimeTimer = new QTimer(this);
     	eveTimeTimer.timeout.connect(this, "updateTime()");
     	eveTimeTimer.start(Constants.MINUTE);
-    	updateTime();
     	
     	apiActivityIcon = new QLabel();
 		apiActivityIcon.setPixmap(new QPixmap(Constants.IDLE_ICON));

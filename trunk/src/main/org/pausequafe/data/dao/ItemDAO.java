@@ -3,9 +3,7 @@ package org.pausequafe.data.dao;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.pausequafe.data.business.Item;
 import org.pausequafe.data.business.ItemAttribute;
@@ -44,7 +42,7 @@ public class ItemDAO  extends AbstractSqlDAO{
 	////////////////////
     // public methods //
     ////////////////////
-	public List<Item> findItemsById(List<Integer> list) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted, PQEveDatabaseNotFound{
+	/*public List<Item> findItemsById(List<Integer> list) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted, PQEveDatabaseNotFound{
 		ArrayList<Item> result = new ArrayList<Item>();
 		List<Integer> toBeQueried = new ArrayList<Integer>();
 		
@@ -63,27 +61,117 @@ public class ItemDAO  extends AbstractSqlDAO{
 		if(!toBeQueried.isEmpty()){
 			result.addAll(queryItemsById(toBeQueried)); 
 		}
+		result.addAll(queryItemsById(toBeQueried)); 
 		
 		return result;
-	}
+	}*/
 	
-	public Item findItemById(Integer itemId) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted, PQEveDatabaseNotFound {
-		Item result = null;
-		List<Integer> list = new ArrayList<Integer>();
-		list.add(itemId);
+
+	
+	public Item findItemById(int typeIDrequired) throws  PQSQLDriverNotFoundException, PQDatabaseFileCorrupted, PQEveDatabaseNotFound {
 		
-		List<Item> listResult = findItemsById(list);
-		
-		if(!listResult.isEmpty()){
-			result = listResult.get(0);
+		File db = new File(SQLConstants.EVE_DATABASE_FILE);
+		if(!db.exists()){
+			throw new PQEveDatabaseNotFound();
 		}
-		return result;
+		initConnection(SQLConstants.EVE_DATABASE);
+
+		String query = SQLConstants.QUERY_TYPES_BY_ID.replace("?", "" + typeIDrequired);
+		//System.out.println(query); // for convenience : uncomment to see DB queries
+		Item newItem = null;
+
+		try {
+			ResultSet res = stat.executeQuery(query);
+			while(res.next()){
+				Integer itemId = res.getInt(SQLConstants.TYPEID_COL);
+				newItem = memoryCache.get(itemId);
+				if(newItem == null){
+					newItem = new Item(itemId,
+							res.getString(SQLConstants.TYPENAME_COL),
+							res.getString(SQLConstants.DESCRIPTION_COL),
+							res.getFloat(SQLConstants.BASEPRICE_COL),
+							res.getFloat(SQLConstants.RADIUS_COL),
+							res.getFloat(SQLConstants.MASS_COL),
+							res.getFloat(SQLConstants.VOLUME_COL),
+							res.getFloat(SQLConstants.CAPACITY_COL)				
+					);
+
+					memoryCache.put(newItem.getTypeID(), newItem);
+				}
+
+				int attributeID = res.getInt(SQLConstants.ATTRIBUTEID_COL);
+
+				switch(attributeID){
+				case SQLConstants.REQUIRED_SKILL_1_ATTID : 
+					newItem.youDontWantToKnowWhatThisIs(1).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					break;
+				case SQLConstants.REQUIRED_SKILL_2_ATTID : 
+					newItem.youDontWantToKnowWhatThisIs(2).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					break;
+				case SQLConstants.REQUIRED_SKILL_3_ATTID : 
+					newItem.youDontWantToKnowWhatThisIs(3).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					break;
+				case SQLConstants.REQUIRED_SKILL_1_LEVEL_ATTID : 
+					newItem.youDontWantToKnowWhatThisIs(1).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					break;
+				case SQLConstants.REQUIRED_SKILL_2_LEVEL_ATTID : 
+					newItem.youDontWantToKnowWhatThisIs(2).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					break;
+				case SQLConstants.REQUIRED_SKILL_3_LEVEL_ATTID : 
+					newItem.youDontWantToKnowWhatThisIs(3).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					break;
+				case SQLConstants.METALEVEL_ATTID : 
+					newItem.setMetaLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+				default : 
+					String attributeName = res.getString(SQLConstants.ATTRIBUTE_NAME_COL);
+					String attributeCategory = res.getString(SQLConstants.ATTRIBUTE_CATEGORY_COL);
+					float attributeValue = res.getFloat(SQLConstants.ATTRIBUTE_VALUE_COL);
+					String unit = res.getString(SQLConstants.UNIT_COL);
+					ItemAttribute attribute = new ItemAttribute(attributeName, attributeCategory, attributeValue, unit);
+					newItem.addAttribute(attribute);
+				}
+			}
+			res.close();
+
+			query = SQLConstants.QUERY_ICON_BY_TYPEID.replace("?", "" + typeIDrequired);
+			res = stat.executeQuery(query);
+			String icon = null;
+			while(res.next()){
+				icon = "icon" + res.getString(1) + ".png";
+			}
+			if(icon == null){
+				icon = newItem.getTypeID() + ".png";
+			}
+			newItem.setIcon(icon);
+			res.close();
+
+			query = SQLConstants.QUERY_METAGROUP_BY_TYPEID.replace("?", "" + typeIDrequired);
+			res = stat.executeQuery(query);
+			int metaGroupID = -1;
+			while(res.next()){
+				metaGroupID = res.getInt(1);
+			}
+			if(metaGroupID == -1){
+				metaGroupID = 1;
+			}
+			if(metaGroupID == 14){
+				metaGroupID = 7;
+			}
+			newItem.setMetaGroupID(metaGroupID);
+			res.close();
+
+		} catch (SQLException e) {
+			throw new PQDatabaseFileCorrupted();
+		}
+		return newItem;
 	}
 
+	
 	/////////////////////
-    // private methods //
-    /////////////////////
-	private List<Item> queryItemsById(List<Integer> toBeQueried) throws  PQSQLDriverNotFoundException, PQDatabaseFileCorrupted, PQEveDatabaseNotFound {
+	// private methods //
+	/////////////////////
+	
+	/*private List<Item> queryItemsById(List<Integer> toBeQueried) throws  PQSQLDriverNotFoundException, PQDatabaseFileCorrupted, PQEveDatabaseNotFound {
 		List<Item> result = new ArrayList<Item>();
 		
 		File db = new File(SQLConstants.EVE_DATABASE_FILE);
@@ -108,15 +196,15 @@ public class ItemDAO  extends AbstractSqlDAO{
 		
 		try {
 			ResultSet res = stat.executeQuery(query);
+			Item newItem = null;
 			while(res.next()){
 				Integer itemId = res.getInt(SQLConstants.TYPEID_COL);
-				Item newItem = memoryCache.get(itemId);
+				newItem = memoryCache.get(itemId);
 				if(newItem == null){
 					newItem = new Item(itemId,
 							res.getString(SQLConstants.TYPENAME_COL),
 							res.getString(SQLConstants.DESCRIPTION_COL),
 							res.getFloat(SQLConstants.BASEPRICE_COL),
-							res.getInt(SQLConstants.GRAPHICID_COL),
 							res.getFloat(SQLConstants.RADIUS_COL),
 							res.getFloat(SQLConstants.MASS_COL),
 							res.getFloat(SQLConstants.VOLUME_COL),
@@ -162,5 +250,5 @@ public class ItemDAO  extends AbstractSqlDAO{
 			throw new PQDatabaseFileCorrupted();
 		}
 		return result;
-	}
+	}*/
 }

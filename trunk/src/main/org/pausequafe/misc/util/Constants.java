@@ -2,6 +2,7 @@ package org.pausequafe.misc.util;
 
 
 
+
 public class Constants {
 	
 	public static final int[] SKILL_LEVEL_REQS = {0 , 250, 1414, 8000, 45255, 256000};
@@ -26,8 +27,11 @@ public class Constants {
 	
 	public static final String CHAR_SHEET_PATH = "cache/CharacterSheets/";
 	public static final String SKILL_TREE_FILE = "resources/SkillTree.xml";
-	public static final String BLANK_PORTRAIT = "resources/icons/JEVEMon/blank_portrait.jpg";
 	
+	public static final String EVE_ICONS_PATH = "resources/icons/EVE/";
+	public static final String NO_ITEM_SELECTED_ICON = "resources/icons/JEVEMon/no_item_selected.png";
+	public static final String BLANK_PORTRAIT = "resources/icons/JEVEMon/blank_portrait.jpg";
+	public static final String WINDOW_ICON = "resources/icons/JEVEMon/icon_16.png";
 	public static final String SKILL_LEVEL_0 = "resources/icons/JEVEMon/skill_level_0.png";
 	public static final String SKILL_LEVEL_1 = "resources/icons/JEVEMon/skill_level_1.png";
 	public static final String SKILL_LEVEL_2 = "resources/icons/JEVEMon/skill_level_2.png";
@@ -55,4 +59,22 @@ public class Constants {
 	public static final int MINUTE = 60 * SECOND;
 	public static final int HOUR = 60 * MINUTE;
 	public static final int DAY = 24 * HOUR;
+	public static final String[] METAGROUP_ICONS_TAG = {"nothing",
+													"resources/icons/JEVEMon/tech1_no_tag.png",
+													"resources/icons/JEVEMon/tag_tech2.png",
+													"resources/icons/JEVEMon/tag_storyline",
+													"resources/icons/JEVEMon/tag_faction.png",
+													"resources/icons/JEVEMon/tag_officer.png",
+													"resources/icons/JEVEMon/tag_deadspace.png",
+													"resources/icons/JEVEMon/tag_tech3.png"};
+	public static final String[] METAGROUP_ICONS_SQUARE = {"nothing",
+													"resources/icons/JEVEMon/tech1_no_tag.png",
+													"resources/icons/JEVEMon/tag_tech2_square.png",
+													"resources/icons/JEVEMon/tag_storyline_square.png",
+													"resources/icons/JEVEMon/tag_faction_square.png",
+													"resources/icons/JEVEMon/tag_officer_square.png",
+													"resources/icons/JEVEMon/tag_deadspace_square.png",
+													"resources/icons/JEVEMon/tag_tech3_square.png"};
+
+
 }
