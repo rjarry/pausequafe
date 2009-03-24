@@ -66,4 +66,22 @@ public class TreePrerequisite extends TreeGroup {
 		return null;
 	}
 
+	@Override
+	public Item getItem() {
+		return item;
+	}
+
+	@Override
+	public String toString() {
+		String name = item.getTypeName();
+		switch(requiredLevel){
+			case 1: name += " I"; break;
+			case 2: name += " II"; break;
+			case 3: name += " III"; break;
+			case 4: name += " IV"; break;
+			case 5: name += " V"; break;
+		}
+		return name;
+	}
+
 }

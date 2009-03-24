@@ -22,7 +22,9 @@ public class Item implements Comparable<Item> {
 	protected String typeName;
 	protected String description;
 	protected float basePrice;
-	protected int graphicID;
+	protected String icon;
+	protected int metaGroupID;
+	protected int metaLevel;
 	
 	protected List<ItemAttribute> attributeList = new ArrayList<ItemAttribute>();
 	
@@ -31,8 +33,6 @@ public class Item implements Comparable<Item> {
 	private PreRequisite preRequisite2 = new PreRequisite();
 	private PreRequisite preRequisite3= new PreRequisite();
 	
-	protected int marketGroupID; //FIXME totalement inutile 
-	protected String groupName; //FIXME totalement inutile 
 
     /////////////////
     // constructor //
@@ -43,19 +43,18 @@ public class Item implements Comparable<Item> {
 
 
 	public Item(int typeID, String typeName, String description,
-								float basePrice, int graphicID, float radius, float mass,
+								float basePrice, float radius, float mass,
 								float volume, float capacity) {
 		super();
 		this.typeID = typeID;
 		this.typeName = typeName;
 		this.description = description;
 		this.basePrice = basePrice;
-		this.graphicID = graphicID;
 		
-		attributeList.add(new ItemAttribute("Radius", "Structure", radius));
-		attributeList.add(new ItemAttribute("Mass", "Structure", mass));
-		attributeList.add(new ItemAttribute("Volume", "Structure", volume));
-		attributeList.add(new ItemAttribute("Capacity", "Structure", capacity));
+		attributeList.add(new ItemAttribute("Radius", "Structure", radius, "m"));
+		attributeList.add(new ItemAttribute("Mass", "Structure", mass, "kg"));
+		attributeList.add(new ItemAttribute("Volume", "Structure", volume, "m3"));
+		attributeList.add(new ItemAttribute("Capacity", "Structure", capacity, "m3"));
 		
 	}
 
@@ -89,27 +88,18 @@ public class Item implements Comparable<Item> {
 	public String toString() {
     	String result = "";
     	result += typeID + " : " + typeName + " : ";
-    	result += marketGroupID + " : " + description; //FIXME totalement inutile 
 		return result;
 	}
 
 	/////////////
     // getters //
     /////////////
-  //FIXME totalement inutile 
-    public int getMarketGroupID() {
-    	return marketGroupID;
-    }
     public int getTypeID() {
     	return typeID;
     }
     public String getTypeName() {
     	return typeName;
     }
-  //FIXME totalement inutile 
-	public String getGroupName() {
-		return groupName;
-	}
     public String getDescription() {
     	return description;
     }
@@ -137,30 +127,46 @@ public class Item implements Comparable<Item> {
     	}
     }
     
+    public float getBasePrice() {
+    	return basePrice;
+    }
+    public String getIcon() {
+    	return icon;
+    }
+    public int getMetaGroupID(){
+    	return metaGroupID;
+    }
+    
+    public List<ItemAttribute> getAttributeList(){
+    	return attributeList;
+    }
 	/////////////
     // setters //
     /////////////
-  //FIXME totalement inutile 
-    public void setMarketGroupID(int groupID) {
-    	this.marketGroupID = groupID;
-    }
-    public void setTypeID(int typeID) {
-    	this.typeID = typeID;
-    }
-    public void setTypeName(String typeName) {
-    	this.typeName = typeName;
-    }
-  //FIXME totalement inutile 
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-    public void setDescription(String description) {
-    	this.description = description;
-    }
-
 
 
 	public void addAttribute(ItemAttribute attribute) {
 		attributeList.add(attribute);
 	}
+	
+	public void setIcon(String icon){
+		this.icon = icon;
+	}
+	
+	public void setMetaGroupID(int metaGroupID){
+		this.metaGroupID = metaGroupID;
+	}
+
+
+
+	public int getMetaLevel() {
+		return metaLevel;
+	}
+
+
+
+	public void setMetaLevel(int metaLevel) {
+		this.metaLevel = metaLevel;
+	}
+
 }

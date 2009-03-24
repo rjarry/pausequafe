@@ -28,10 +28,11 @@ public class SQLConstants {
 	public static final String RADIUS_COL = "radius";
 	public static final String VOLUME_COL = "volume";
 	public static final String CAPACITY_COL = "capacity";
-	public static final String ATTRIBUTE_NAME_COL = "attributeName";
+	public static final String ATTRIBUTE_NAME_COL = "displayName";
 	public static final String ATTRIBUTE_CATEGORY_COL = "categoryName";
 	public static final String ATTRIBUTE_VALUE_COL = "value";
 	public static final String ATTRIBUTEID_COL = "attributeID";
+	public static final String UNIT_COL = "unit";
 	
 	// attributes ids
 	public static final int REQUIRED_SKILL_1_ATTID = 182;
@@ -40,6 +41,7 @@ public class SQLConstants {
 	public static final int REQUIRED_SKILL_1_LEVEL_ATTID = 277;
 	public static final int REQUIRED_SKILL_2_LEVEL_ATTID = 278;
 	public static final int REQUIRED_SKILL_3_LEVEL_ATTID = 279;
+	public static final int METALEVEL_ATTID = 633;
 
 	// Queries
 //	public static final String QUERY_TYPES_BY_ID = "select * from invTypes where typeID in (?)";
@@ -49,13 +51,13 @@ public class SQLConstants {
 		  + " union " +
 		  "select mk.*,t.typeID as " + CHILDID_COL + " from invMarketGroups mk,invTypes t where mk.marketGroupID in (?) and mk.marketGroupID=t.marketGroupID" ;
 
-	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value,u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice,IFNULL(t.graphicID,t.typeID) AS graphicID " +
+	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.typeName,ac.categoryName,at.attributeID,at.displayName,IFNULL(a.valueInt, a.valueFloat) AS value,u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice,IFNULL(t.graphicID,t.typeID) AS graphicID " +
 													"FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u " +
 													"WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND ac.categoryName != 'NULL' AND at.unitID = u.unitID " +
-													"ORDER BY t.typeID ";
+													"ORDER BY ac.categoryName ";
 	
-	public static final String QUERY_METAGROUP_BY_TYPEID = "SELECT typeID, metaGroupID FROM invMetaTypes WHERE typeID in (?)";
-	
+	public static final String QUERY_METAGROUP_BY_TYPEID = "SELECT metaGroupID FROM invMetaTypes WHERE typeID in (?)";
+	public static final String QUERY_ICON_BY_TYPEID = "SELECT g.icon FROM eveGraphics g, invTypes t WHERE t.graphicID = g.graphicID AND t.typeID IN (?)";
 	
 	
 	

@@ -1,6 +1,7 @@
 package org.pausequafe.gui.model.tree;
 
 import org.pausequafe.data.business.Item;
+import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QIcon;
@@ -29,13 +30,12 @@ public class TreeItem extends TreeElement {
 
 	@Override
 	public QIcon getIcon() {
-		// TODO implements
-		return null;
+		return new QIcon(Constants.METAGROUP_ICONS_SQUARE[item.getMetaGroupID()]);
 	}
 
 	@Override
 	public String getName() {
-		return item.getTypeName();
+		return "" + item.getMetaLevel();
 	}
 
 	@Override
@@ -44,5 +44,14 @@ public class TreeItem extends TreeElement {
 		return null;
 	}
 
+	@Override
+	public Item getItem() {
+		return item;
+	}
+
+	@Override
+	public String toString() {
+		return item.getTypeName();
+	}
 
 }
