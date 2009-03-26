@@ -5,7 +5,7 @@ import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.gui.model.tree.TreeElement;
 import org.pausequafe.gui.model.tree.TreeModel;
 import org.pausequafe.gui.model.tree.TreePrerequisite;
-import org.pausequafe.misc.exceptions.PQDatabaseFileCorrupted;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 
@@ -25,12 +25,12 @@ public class TestTreePrerequisite {
 			item = ItemDAO.getInstance().findItemById(671);
 		} catch (PQSQLDriverNotFoundException e) {
 			e.printStackTrace();
-		} catch (PQDatabaseFileCorrupted e) {
+		} catch (PQUserDatabaseFileCorrupted e) {
 			e.printStackTrace();
 		} catch (PQEveDatabaseNotFound e) {
 			e.printStackTrace();
 		}
-		TreeElement root = new TreePrerequisite(item,-1);
+		TreeElement root = new TreePrerequisite(item,null);
 		TreeModel preReqTree = new TreeModel(root);
 		
 		QTreeView view = new QTreeView();

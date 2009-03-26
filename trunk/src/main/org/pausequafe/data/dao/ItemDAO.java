@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import org.pausequafe.data.business.Item;
 import org.pausequafe.data.business.ItemAttribute;
-import org.pausequafe.misc.exceptions.PQDatabaseFileCorrupted;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.util.SQLConstants;
@@ -68,7 +68,13 @@ public class ItemDAO  extends AbstractSqlDAO{
 	
 
 	
-	public Item findItemById(int typeIDrequired) throws  PQSQLDriverNotFoundException, PQDatabaseFileCorrupted, PQEveDatabaseNotFound {
+	public Item findItemById(int typeIDrequired) throws  PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
+		
+		Item askedItem = memoryCache.get(typeIDrequired);
+		
+		if(askedItem != null){
+			return askedItem;
+		}
 		
 		File db = new File(SQLConstants.EVE_DATABASE_FILE);
 		if(!db.exists()){
@@ -78,57 +84,57 @@ public class ItemDAO  extends AbstractSqlDAO{
 
 		String query = SQLConstants.QUERY_TYPES_BY_ID.replace("?", "" + typeIDrequired);
 		//System.out.println(query); // for convenience : uncomment to see DB queries
-		Item newItem = null;
 
 		try {
 			ResultSet res = stat.executeQuery(query);
 			while(res.next()){
 				Integer itemId = res.getInt(SQLConstants.TYPEID_COL);
-				newItem = memoryCache.get(itemId);
-				if(newItem == null){
-					newItem = new Item(itemId,
+				askedItem = memoryCache.get(itemId);
+				if(askedItem == null){
+					askedItem = new Item(itemId,
 							res.getString(SQLConstants.TYPENAME_COL),
 							res.getString(SQLConstants.DESCRIPTION_COL),
-							res.getFloat(SQLConstants.BASEPRICE_COL),
-							res.getFloat(SQLConstants.RADIUS_COL),
-							res.getFloat(SQLConstants.MASS_COL),
-							res.getFloat(SQLConstants.VOLUME_COL),
-							res.getFloat(SQLConstants.CAPACITY_COL)				
+							res.getDouble(SQLConstants.BASEPRICE_COL),
+							res.getDouble(SQLConstants.RADIUS_COL),
+							res.getDouble(SQLConstants.MASS_COL),
+							res.getDouble(SQLConstants.VOLUME_COL),
+							res.getDouble(SQLConstants.CAPACITY_COL)				
 					);
 
-					memoryCache.put(newItem.getTypeID(), newItem);
+					memoryCache.put(askedItem.getTypeID(), askedItem);
 				}
 
 				int attributeID = res.getInt(SQLConstants.ATTRIBUTEID_COL);
 
 				switch(attributeID){
 				case SQLConstants.REQUIRED_SKILL_1_ATTID : 
-					newItem.youDontWantToKnowWhatThisIs(1).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					askedItem.youDontWantToKnowWhatThisIs(1).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 					break;
 				case SQLConstants.REQUIRED_SKILL_2_ATTID : 
-					newItem.youDontWantToKnowWhatThisIs(2).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					askedItem.youDontWantToKnowWhatThisIs(2).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 					break;
 				case SQLConstants.REQUIRED_SKILL_3_ATTID : 
-					newItem.youDontWantToKnowWhatThisIs(3).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					askedItem.youDontWantToKnowWhatThisIs(3).setTypeID(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 					break;
 				case SQLConstants.REQUIRED_SKILL_1_LEVEL_ATTID : 
-					newItem.youDontWantToKnowWhatThisIs(1).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					askedItem.youDontWantToKnowWhatThisIs(1).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 					break;
 				case SQLConstants.REQUIRED_SKILL_2_LEVEL_ATTID : 
-					newItem.youDontWantToKnowWhatThisIs(2).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					askedItem.youDontWantToKnowWhatThisIs(2).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 					break;
 				case SQLConstants.REQUIRED_SKILL_3_LEVEL_ATTID : 
-					newItem.youDontWantToKnowWhatThisIs(3).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					askedItem.youDontWantToKnowWhatThisIs(3).setRequiredLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 					break;
 				case SQLConstants.METALEVEL_ATTID : 
-					newItem.setMetaLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
+					askedItem.setMetaLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 				default : 
 					String attributeName = res.getString(SQLConstants.ATTRIBUTE_NAME_COL);
 					String attributeCategory = res.getString(SQLConstants.ATTRIBUTE_CATEGORY_COL);
-					float attributeValue = res.getFloat(SQLConstants.ATTRIBUTE_VALUE_COL);
+					double attributeValue = res.getDouble(SQLConstants.ATTRIBUTE_VALUE_COL);
 					String unit = res.getString(SQLConstants.UNIT_COL);
-					ItemAttribute attribute = new ItemAttribute(attributeName, attributeCategory, attributeValue, unit);
-					newItem.addAttribute(attribute);
+					int unitID = res.getInt(SQLConstants.UNITID_COL);
+					ItemAttribute attribute = new ItemAttribute(attributeName, attributeCategory, attributeValue, unit, unitID);
+					askedItem.addAttribute(attribute);
 				}
 			}
 			res.close();
@@ -140,9 +146,9 @@ public class ItemDAO  extends AbstractSqlDAO{
 				icon = "icon" + res.getString(1) + ".png";
 			}
 			if(icon == null){
-				icon = newItem.getTypeID() + ".png";
+				icon = askedItem.getTypeID() + ".png";
 			}
-			newItem.setIcon(icon);
+			askedItem.setIcon(icon);
 			res.close();
 
 			query = SQLConstants.QUERY_METAGROUP_BY_TYPEID.replace("?", "" + typeIDrequired);
@@ -152,18 +158,18 @@ public class ItemDAO  extends AbstractSqlDAO{
 				metaGroupID = res.getInt(1);
 			}
 			if(metaGroupID == -1){
-				metaGroupID = 1;
+				metaGroupID = 0;
 			}
 			if(metaGroupID == 14){
 				metaGroupID = 7;
 			}
-			newItem.setMetaGroupID(metaGroupID);
+			askedItem.setMetaGroupID(metaGroupID);
 			res.close();
 
 		} catch (SQLException e) {
-			throw new PQDatabaseFileCorrupted();
+			throw new PQUserDatabaseFileCorrupted();
 		}
-		return newItem;
+		return askedItem;
 	}
 
 	

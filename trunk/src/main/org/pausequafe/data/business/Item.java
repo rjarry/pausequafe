@@ -21,7 +21,7 @@ public class Item implements Comparable<Item> {
 	protected int typeID;
 	protected String typeName;
 	protected String description;
-	protected float basePrice;
+	protected double basePrice;
 	protected String icon;
 	protected int metaGroupID;
 	protected int metaLevel;
@@ -43,18 +43,18 @@ public class Item implements Comparable<Item> {
 
 
 	public Item(int typeID, String typeName, String description,
-								float basePrice, float radius, float mass,
-								float volume, float capacity) {
+								double basePrice, double radius, double mass,
+								double volume, double capacity) {
 		super();
 		this.typeID = typeID;
 		this.typeName = typeName;
 		this.description = description;
 		this.basePrice = basePrice;
 		
-		attributeList.add(new ItemAttribute("Radius", "Structure", radius, "m"));
-		attributeList.add(new ItemAttribute("Mass", "Structure", mass, "kg"));
-		attributeList.add(new ItemAttribute("Volume", "Structure", volume, "m3"));
-		attributeList.add(new ItemAttribute("Capacity", "Structure", capacity, "m3"));
+		attributeList.add(new ItemAttribute("Radius", "Structure", radius, "m", 1));
+		attributeList.add(new ItemAttribute("Mass", "Structure", mass, "kg", 2));
+		attributeList.add(new ItemAttribute("Volume", "Structure", volume, "m3", 9));
+		attributeList.add(new ItemAttribute("Capacity", "Structure", capacity, "m3", 9));
 		
 	}
 
@@ -127,7 +127,7 @@ public class Item implements Comparable<Item> {
     	}
     }
     
-    public float getBasePrice() {
+    public double getBasePrice() {
     	return basePrice;
     }
     public String getIcon() {

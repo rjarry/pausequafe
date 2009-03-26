@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pausequafe.data.business.APIData;
-import org.pausequafe.misc.exceptions.PQDatabaseFileCorrupted;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.util.SQLConstants;
 
@@ -42,7 +42,7 @@ public class SessionDAO extends AbstractSqlDAO {
 	
 	
 	
-	public List<APIData> getMonitoredCharacters() throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	public List<APIData> getMonitoredCharacters() throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		List<APIData> monitoredCharacters = new ArrayList<APIData>();
 		
 		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
@@ -67,7 +67,7 @@ public class SessionDAO extends AbstractSqlDAO {
 			rs.close();
 		} catch (SQLException e) {
 			closeConnection();
-			throw new PQDatabaseFileCorrupted();
+			throw new PQUserDatabaseFileCorrupted();
 		}
 		closeConnection();
 		
@@ -82,7 +82,7 @@ public class SessionDAO extends AbstractSqlDAO {
 	
 	
 	
-	public boolean isMonitored(APIData data) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	public boolean isMonitored(APIData data) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
 		if(userdataBaseFile.exists()){
 			List<APIData> list = getMonitoredCharacters();
@@ -105,7 +105,7 @@ public class SessionDAO extends AbstractSqlDAO {
 	
 	
 	
-	public List<APIData> getDistinctApiData() throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted{
+	public List<APIData> getDistinctApiData() throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted{
 		List<APIData> apiData = new ArrayList<APIData>();
 		
 		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
@@ -126,7 +126,7 @@ public class SessionDAO extends AbstractSqlDAO {
 			rs.close();
 		} catch (SQLException e) {
 			closeConnection();
-			throw new PQDatabaseFileCorrupted();
+			throw new PQUserDatabaseFileCorrupted();
 		}
 		closeConnection();
 		
@@ -141,7 +141,7 @@ public class SessionDAO extends AbstractSqlDAO {
 	
 	
 	
-	public void addMonitoredCharacter(APIData data) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	public void addMonitoredCharacter(APIData data) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
 		if(!userdataBaseFile.exists()){
 			createUserDataBase();
@@ -170,7 +170,7 @@ public class SessionDAO extends AbstractSqlDAO {
 			}
 		} catch (SQLException e) {
 			closeConnection();
-			throw new PQDatabaseFileCorrupted();
+			throw new PQUserDatabaseFileCorrupted();
 		}
 		closeConnection();
 	}
@@ -183,7 +183,7 @@ public class SessionDAO extends AbstractSqlDAO {
 	
 	
 	
-	public void removeMonitoredCharacter(int characterID) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	public void removeMonitoredCharacter(int characterID) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
 		if(userdataBaseFile.exists()){
 			initConnection(SQLConstants.USER_DATABASE);
@@ -196,7 +196,7 @@ public class SessionDAO extends AbstractSqlDAO {
 				prep.executeUpdate();
 			} catch (SQLException e) {
 				closeConnection();
-				throw new PQDatabaseFileCorrupted();
+				throw new PQUserDatabaseFileCorrupted();
 			}
 			
 			
@@ -213,7 +213,7 @@ public class SessionDAO extends AbstractSqlDAO {
     /////////////////////
 	
 	
-	private void createUserDataBase() throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	private void createUserDataBase() throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		initConnection(SQLConstants.USER_DATABASE);
 		try {
 			stat.executeUpdate(SQLConstants.CREATE_USER_DATABASE);

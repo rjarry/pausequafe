@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.pausequafe.data.business.APIData;
+import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.ServerStatus;
 import org.pausequafe.data.dao.SessionDAO;
+import org.pausequafe.gui.view.character.CharacterTab;
+import org.pausequafe.gui.view.misc.AboutPQ;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
-import org.pausequafe.misc.exceptions.PQDatabaseFileCorrupted;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.util.Constants;
@@ -39,23 +42,15 @@ public class MainWindow extends QMainWindow {
 
     private static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 	
-//    private QWidget centralwidget;
-//    private QMenuBar menuBar;
-//    private QMenu menuFile;
-//    private QMenu menuPlan;
-//    private QMenu menu_Options;
     private QStatusBar statusBar;
     private QTabWidget tabWidget;
 	
-//    private QAction actionNew_skill_plan;
-//    private QAction actionManage_Skill_plans;
-    private QAction actionAdd_character;
-    private QAction actionDelete_current_character;
-//    private QAction action_Export_Settings;
-//    private QAction action_Import_Settings;
-//    private QAction actionExport_Character_Info;
-    private QAction action_Quit;
-//    private QAction actionPreferences;
+    private QAction actionAdd_Character;
+    private QAction actionDelete_Current_Character;
+    private QAction actionQuit;
+    private QAction actionOpen_Browsers;
+    private QAction actionAbout_PQ;
+
     private QLabel eveTimeLabel;
     private QTimer eveTimeTimer;
     
@@ -65,6 +60,7 @@ public class MainWindow extends QMainWindow {
     private QLabel serverStatusIndicator;
     private QTimer serverStatusTimer;
 	
+    public Signal1<CharacterSheet> tabChanged = new Signal1<CharacterSheet>();
 	
     private Ui_MainWindow ui = new Ui_MainWindow();
 
@@ -92,7 +88,7 @@ public class MainWindow extends QMainWindow {
 		} catch (PQSQLDriverNotFoundException e) {
 			ErrorMessage error = new ErrorMessage(this,tr(Constants.DRIVER_NOT_FOUND_ERROR));
 			error.exec();
-		} catch (PQDatabaseFileCorrupted e) {
+		} catch (PQUserDatabaseFileCorrupted e) {
 			ErrorQuestion error = new ErrorQuestion(this,tr(Constants.USER_DB_CORRUPTED_ERROR));
 			error.exec();
 			if(error.result() == QDialog.DialogCode.Accepted.value()){
@@ -110,21 +106,33 @@ public class MainWindow extends QMainWindow {
 		this.setWindowTitle("Pause Quafé");
 		
 		// Init menu actions
-		action_Quit = (QAction) this.findChild(QAction.class, "action_Quit");
-		action_Quit.triggered.connect(QApplication.instance(), "quit()");
-		action_Quit.setShortcut("Ctrl+Q");
+		actionQuit = (QAction) this.findChild(QAction.class, "actionQuit");
+		actionQuit.triggered.connect(QApplication.instance(), "quit()");
+		actionQuit.setShortcut("Ctrl+Q");
 		
-    	actionAdd_character = (QAction) this.findChild(QAction.class, "actionAdd_character");
-    	actionAdd_character.triggered.connect(this, "addCharacterDialog()");
+    	actionAdd_Character = (QAction) this.findChild(QAction.class, "actionAdd_Character");
+    	actionAdd_Character.triggered.connect(this, "addCharacterDialog()");
+    	actionAdd_Character.setShortcut("Ctrl+N");
     	
-    	actionDelete_current_character = (QAction) this.findChild(QAction.class, "actionDelete_current_character");
-    	actionDelete_current_character.triggered.connect(this, "deleteCharacterDialog()");
-    	actionDelete_current_character.setShortcut("Ctrl+W");
+    	actionDelete_Current_Character = (QAction) this.findChild(QAction.class, "actionDelete_Current_Character");
+    	actionDelete_Current_Character.triggered.connect(this, "deleteCharacterDialog()");
+    	actionDelete_Current_Character.setShortcut("Ctrl+W");
 
+    	actionOpen_Browsers = (QAction) this.findChild(QAction.class, "actionOpen_Browsers");
+    	actionOpen_Browsers.triggered.connect(this, "openBrowsers()");
+    	actionOpen_Browsers.setShortcut("Ctrl+B");
+    	
+    	actionAbout_PQ = (QAction) this.findChild(QAction.class, "actionAbout_PQ");
+    	actionAbout_PQ.triggered.connect(this, "aboutPQ()");
+    	
+    	
     	// Init central widget
     	tabWidget = new QTabWidget();
+    	tabWidget.currentChanged.connect(this, "currentTabChanged(Integer)");
     	
-    	QVBoxLayout centralLayout = new QVBoxLayout((QWidget) this.findChild(QWidget.class, "centralWidget"));
+    	QWidget centralWidget = (QWidget) this.findChild(QWidget.class, "centralWidget");
+    	QVBoxLayout centralLayout = new QVBoxLayout();
+    	centralWidget.setLayout(centralLayout);
     	centralLayout.setContentsMargins(0,0,0,0);
     	centralLayout.setSpacing(0);
     	
@@ -182,14 +190,14 @@ public class MainWindow extends QMainWindow {
 	 */
 	private void updateServerStatus(ServerStatus status){
 		if(status.isOnLine()){
-			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVER_ONLINE_ICON));
+			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_ONLINE_ICON));
 			serverStatusIndicator.setToolTip("Tranquility Server Online (" + status.getPlayerCount() + " pilots)");
 		} else {
-			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVER_OFFLINE_ICON));
+			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_OFFLINE_ICON));
 			serverStatusIndicator.setToolTip("Tranquility Server Offline");
 		}
 		if(status.isUnknown()){
-			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVER_STATUS_UNKONWN_ICON));
+			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_UNKONWN_ICON));
 		}
 		
 		
@@ -241,7 +249,7 @@ public class MainWindow extends QMainWindow {
 			} catch (PQSQLDriverNotFoundException e) {
 				ErrorMessage error = new ErrorMessage(this,tr(Constants.DRIVER_NOT_FOUND_ERROR));
 				error.exec();
-			} catch (PQDatabaseFileCorrupted e) {
+			} catch (PQUserDatabaseFileCorrupted e) {
 				ErrorQuestion error = new ErrorQuestion(this,tr(Constants.USER_DB_CORRUPTED_ERROR));
 				error.exec();
 				if(error.result() == QDialog.DialogCode.Accepted.value()){
@@ -253,7 +261,7 @@ public class MainWindow extends QMainWindow {
 	}
 	
 	
-	private void addTab(APIData data) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted{
+	private void addTab(APIData data) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted{
 		CharacterTab tab = new CharacterTab(data);
 		tab.requestStarted.connect(this, "incrementRequestCount()");
 		tab.requestFinished.connect(this, "decrementRequestCount()");
@@ -275,14 +283,35 @@ public class MainWindow extends QMainWindow {
 	}
 	
 	
-	private void removeTab() throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted{
+	private void removeTab() throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted{
 		int characterID = ((CharacterTab) tabWidget.currentWidget()).getSheet().getCharacterID();
 			SessionDAO.getInstance().removeMonitoredCharacter(characterID);
 		tabWidget.removeTab(tabWidget.currentIndex());
 	}
     
+    @SuppressWarnings("unused")
+	private void currentTabChanged(Integer tabIndex){
+    	tabChanged.emit(((CharacterTab) tabWidget.widget(tabIndex)).getSheet());
+    }
     
+    /**
+	 * Invoked by the menu action "About Pause Quafé..."
+	 * 
+	 */
+    @SuppressWarnings("unused")
+	private void aboutPQ(){
+    	AboutPQ about = new AboutPQ(this);
+    	about.exec();
+    }
     
+    /**
+	 * Invoked by the menu action "About Pause Quafé..."
+	 * 
+	 */
+    @SuppressWarnings("unused")
+	private void openBrowsers(){
+    	
+    }
     
     
 }

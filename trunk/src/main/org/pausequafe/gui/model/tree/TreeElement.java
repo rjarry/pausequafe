@@ -18,8 +18,7 @@ public abstract class TreeElement implements Comparable<TreeElement>{
 		return 0;
 	}
 	
-	public TreeElement ChildAt(int position) throws PQException{
-		//TODO create new excepton class
+	public TreeElement childAt(int position) throws PQException{
 		throw new PQException("Leafs don't have children");
 	}
 	

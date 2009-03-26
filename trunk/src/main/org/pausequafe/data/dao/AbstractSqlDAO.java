@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.pausequafe.misc.exceptions.PQDatabaseFileCorrupted;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 
 /**
@@ -20,7 +20,7 @@ public abstract class AbstractSqlDAO {
 	protected Statement stat;
 	protected PreparedStatement prep;
 	
-	protected void initConnection(String dataBaseName) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	protected void initConnection(String dataBaseName) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		if (conn == null){
 			try {
 				Class.forName("org.sqlite.JDBC");
@@ -29,7 +29,7 @@ public abstract class AbstractSqlDAO {
 			} catch (ClassNotFoundException e) {
 				throw new PQSQLDriverNotFoundException();
 			} catch (SQLException e) {
-				throw new PQDatabaseFileCorrupted();
+				throw new PQUserDatabaseFileCorrupted();
 			}
 		}
 	}
@@ -53,7 +53,7 @@ public abstract class AbstractSqlDAO {
 		}
 	}
 	
-	protected void initPrepareStatement(String dataBaseName, String sql) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	protected void initPrepareStatement(String dataBaseName, String sql) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		if (conn==null){
 			initConnection(dataBaseName);
 		}

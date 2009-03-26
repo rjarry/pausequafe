@@ -5,16 +5,17 @@ public class ItemAttribute {
 	
 	private String attributeName;
 	private String attributeCategory;
-	private float value;
+	private double value;
 	private String unit;
+	private int unitID;
 	
 	
-	
-	public ItemAttribute(String attributeName, String attributeCategory,float value,String unit) {
+	public ItemAttribute(String attributeName, String attributeCategory, double value, String unit, int unitID) {
 		this.attributeName = attributeName;
 		this.attributeCategory = attributeCategory;
-		this.value = value;
 		this.unit = unit;
+		this.value = value;
+		this.setUnitID(unitID);
 	}
 
 	
@@ -27,7 +28,7 @@ public class ItemAttribute {
 		return attributeCategory;
 	}
 
-	public float getValue() {
+	public double getValue() {
 		return value;
 	}
 
@@ -39,7 +40,7 @@ public class ItemAttribute {
 		this.attributeCategory = attributeCategory;
 	}
 
-	public void setValue(float value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
 
@@ -53,5 +54,17 @@ public class ItemAttribute {
 
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+
+
+
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
+	}
+
+
+
+	public int getUnitID() {
+		return unitID;
 	}
 }

@@ -45,10 +45,8 @@ public class ApiRequest extends QSignalEmitter implements Runnable {
 			inTraining = SkillInTrainingFactory.getSkillInTraining(data);
 			dataRetrieved.emit(sheet ,inTraining, imageLocation);
 		} catch (PQException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

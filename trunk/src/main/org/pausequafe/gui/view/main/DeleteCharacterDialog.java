@@ -2,6 +2,7 @@ package org.pausequafe.gui.view.main;
 
 import org.pausequafe.misc.util.Constants;
 
+import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
@@ -24,18 +25,20 @@ public class DeleteCharacterDialog extends QDialog {
     public DeleteCharacterDialog(QWidget parent, String characterName) {
         super(parent);
         setupUi();
-        textLabel.setText("Are you sure you want to remove <b>" + characterName + "</b>?");
+        textLabel.setText("Are you sure you want to remove <br><b>" + characterName + "</b>?");
     }
     
     
     
     private void setupUi(){
     	ui.setupUi(this);
+    	this.setWindowTitle("Delete Character?");
     	
     	removeButton = (QPushButton) this.findChild(QPushButton.class, "removeButton");
     	cancelButton = (QPushButton) this.findChild(QPushButton.class, "cancelButton");
     	iconLabel = (QLabel) this.findChild(QLabel.class, "iconLabel");
     	textLabel = (QLabel) this.findChild(QLabel.class, "textLabel");
+    	textLabel.setAlignment(Qt.AlignmentFlag.AlignCenter);
     	
     	removeButton.clicked.connect(this, "accept()");
     	cancelButton.clicked.connect(this, "reject()");

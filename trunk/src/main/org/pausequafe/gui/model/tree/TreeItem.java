@@ -24,13 +24,12 @@ public class TreeItem extends TreeElement {
 
 	@Override
 	public QFont getFont() {
-		// TODO implements
 		return null;
 	}
 
 	@Override
 	public QIcon getIcon() {
-		return new QIcon(Constants.METAGROUP_ICONS_SQUARE[item.getMetaGroupID()]);
+		return new QIcon(Constants.METAGROUP_ICONS_SMALL[item.getMetaGroupID()]);
 	}
 
 	@Override
@@ -40,7 +39,6 @@ public class TreeItem extends TreeElement {
 
 	@Override
 	public String getTooltip() {
-		// TODO implements
 		return null;
 	}
 
