@@ -12,10 +12,7 @@
   <property name="windowTitle" >
    <string>Browser</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5" >
-   <property name="spacing" >
-    <number>0</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3" >
    <property name="margin" >
     <number>5</number>
    </property>
@@ -25,9 +22,9 @@
       <enum>com.trolltech.qt.core.Qt.Orientation.Horizontal</enum>
      </property>
      <widget class="QWidget" name="layoutWidget" >
-      <layout class="QVBoxLayout" name="verticalLayout_4" >
+      <layout class="QVBoxLayout" name="leftArea" >
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_3" >
+        <layout class="QVBoxLayout" name="sortShowArea" >
          <property name="spacing" >
           <number>0</number>
          </property>
@@ -142,7 +139,7 @@
            <property name="title" >
             <string>Show</string>
            </property>
-           <widget class="QCheckBox" name="tech1CheckBox" >
+           <widget class="QCheckBox" name="tech13CheckBox" >
             <property name="geometry" >
              <rect>
               <x>10</x>
@@ -161,7 +158,10 @@
              <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
             </property>
             <property name="text" >
-             <string>Tech I</string>
+             <string>Tech I &amp;&amp; III</string>
+            </property>
+            <property name="checked" >
+             <bool>true</bool>
             </property>
            </widget>
            <widget class="QCheckBox" name="tech2CheckBox" >
@@ -185,11 +185,14 @@
             <property name="text" >
              <string>Tech II</string>
             </property>
+            <property name="checked" >
+             <bool>true</bool>
+            </property>
            </widget>
            <widget class="QCheckBox" name="factionCheckBox" >
             <property name="geometry" >
              <rect>
-              <x>80</x>
+              <x>100</x>
               <y>20</y>
               <width>111</width>
               <height>18</height>
@@ -207,11 +210,14 @@
             <property name="text" >
              <string>Faction / Storyline</string>
             </property>
+            <property name="checked" >
+             <bool>true</bool>
+            </property>
            </widget>
            <widget class="QCheckBox" name="deadspaceCheckBox" >
             <property name="geometry" >
              <rect>
-              <x>80</x>
+              <x>100</x>
               <y>40</y>
               <width>81</width>
               <height>18</height>
@@ -229,11 +235,14 @@
             <property name="text" >
              <string>DeadSpace</string>
             </property>
+            <property name="checked" >
+             <bool>true</bool>
+            </property>
            </widget>
            <widget class="QCheckBox" name="officerCheckBox" >
             <property name="geometry" >
              <rect>
-              <x>80</x>
+              <x>100</x>
               <y>60</y>
               <width>72</width>
               <height>18</height>
@@ -250,6 +259,9 @@
             </property>
             <property name="text" >
              <string>Officer</string>
+            </property>
+            <property name="checked" >
+             <bool>true</bool>
             </property>
            </widget>
            <widget class="QCheckBox" name="namedCheckBox" >
@@ -273,6 +285,9 @@
             <property name="text" >
              <string>Named</string>
             </property>
+            <property name="checked" >
+             <bool>true</bool>
+            </property>
            </widget>
           </widget>
          </item>
@@ -295,6 +310,9 @@
          <property name="dragDropMode" >
           <enum>com.trolltech.qt.gui.QAbstractItemView.DragDropMode.DragOnly</enum>
          </property>
+         <property name="indentation" >
+          <number>20</number>
+         </property>
          <property name="uniformRowHeights" >
           <bool>true</bool>
          </property>
@@ -309,7 +327,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="layoutWidget" >
-      <layout class="QVBoxLayout" name="centerAreaLayout" >
+      <layout class="QVBoxLayout" name="centerArea" >
        <item>
         <widget class="QFrame" name="itemHeaderFrame" >
          <property name="sizePolicy" >
@@ -455,24 +473,18 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableView" name="attributesTable" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QFrame" name="attributeTableFrame" >
          <property name="minimumSize" >
           <size>
            <width>150</width>
            <height>150</height>
           </size>
          </property>
-         <property name="focusPolicy" >
-          <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+         <property name="frameShape" >
+          <enum>com.trolltech.qt.gui.QFrame.Shape.StyledPanel</enum>
          </property>
-         <property name="selectionMode" >
-          <enum>com.trolltech.qt.gui.QAbstractItemView.SelectionMode.SingleSelection</enum>
+         <property name="frameShadow" >
+          <enum>com.trolltech.qt.gui.QFrame.Shadow.Raised</enum>
          </property>
         </widget>
        </item>

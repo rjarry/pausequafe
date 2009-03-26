@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.pausequafe.data.business.MarketGroup;
-import org.pausequafe.misc.exceptions.PQDatabaseFileCorrupted;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.util.SQLConstants;
 
@@ -41,7 +41,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	////////////////////
     // public methods //
     ////////////////////
-	public List<MarketGroup> findMarketGroupsById(List<Integer> list) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted{
+	public List<MarketGroup> findMarketGroupsById(List<Integer> list) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted{
 		ArrayList<MarketGroup> result = new ArrayList<MarketGroup>();
 		List<Integer> toBeQueried = new ArrayList<Integer>();
 		
@@ -64,7 +64,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 		return result;
 	}
 	
-	public MarketGroup findMarketGroupById(Integer groupId) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	public MarketGroup findMarketGroupById(Integer groupId) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		MarketGroup result = null;
 		List<Integer> list = new ArrayList<Integer>();
 		list.add(groupId);
@@ -80,7 +80,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	/////////////////////
     // private methods //
     /////////////////////
-	private List<MarketGroup> queryMarketGroupsById(List<Integer> toBeQueried) throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	private List<MarketGroup> queryMarketGroupsById(List<Integer> toBeQueried) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		List<MarketGroup> result = new ArrayList<MarketGroup>();
 		
 		initConnection(SQLConstants.EVE_DATABASE);
@@ -109,7 +109,6 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 					marketGroup = new MarketGroup(
 							marketGroupId,
 							res.getString(SQLConstants.MARKETGRPNAME_COL),
-							res.getString(SQLConstants.DESCRIPTION_COL),
 							res.getBoolean(SQLConstants.HASTYPE_COL)  );
 
 					memoryCache.put(marketGroup.getGroupID(), marketGroup);
@@ -120,7 +119,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 			}
 			res.close();
 		} catch (SQLException e) {
-			throw new PQDatabaseFileCorrupted();
+			throw new PQUserDatabaseFileCorrupted();
 		}
 
 		return result;

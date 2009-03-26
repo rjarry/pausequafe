@@ -33,7 +33,7 @@ public class TreeModel extends QTreeModel {
 		
 		TreeElement child = null;
 		try {
-			child = treeElement.ChildAt(index);
+			child = treeElement.childAt(index);
 		} catch (PQException e) {
 			e.printStackTrace();
 		}

@@ -17,7 +17,6 @@ public class MarketGroup {
 	// ////////////////////
 	private int groupID;
 	private String groupName;
-	private String description;
 	private boolean itemContainer;
 	private List<Integer> children = new ArrayList<Integer>();
 
@@ -28,11 +27,10 @@ public class MarketGroup {
 		super();
 	}
 
-	public MarketGroup(int groupID, String groupName, String description,boolean containsItem) {
+	public MarketGroup(int groupID, String groupName, boolean containsItem) {
 		super();
 		this.groupID = groupID;
 		this.groupName = groupName;
-		this.description = description;
 		this.itemContainer = containsItem;
 	}
 
@@ -75,7 +73,6 @@ public class MarketGroup {
 	public String toString() {
     	String result = "";
     	result += groupID + " : " + groupName + " : ";
-    	result += itemContainer + " : " + description + "\n";
     	for(Integer child : children){
     		result += child + ";";
     	}
@@ -97,9 +94,6 @@ public class MarketGroup {
 		return groupID;
 	}
 	
-	public String getDescription() {
-		return description;
-	}
 
 	// ///////////
 	// setters //
@@ -116,7 +110,4 @@ public class MarketGroup {
 		this.groupID = groupID;
 	}
 	
-	public void setDescription(String description) {
-		this.description = description;
-	}
 }

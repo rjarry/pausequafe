@@ -5,7 +5,7 @@ import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.gui.model.tree.TreeElement;
 import org.pausequafe.gui.model.tree.TreeMarketGroup;
 import org.pausequafe.gui.model.tree.TreeModel;
-import org.pausequafe.misc.exceptions.PQDatabaseFileCorrupted;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 
 import com.trolltech.qt.gui.QApplication;
@@ -24,7 +24,7 @@ public class TestTreeModel {
 			group = MarketGroupDAO.getInstance().findMarketGroupById(9);
 		} catch (PQSQLDriverNotFoundException e) {
 			e.printStackTrace();
-		} catch (PQDatabaseFileCorrupted e) {
+		} catch (PQUserDatabaseFileCorrupted e) {
 			e.printStackTrace();
 		}
 		TreeElement root = new TreeMarketGroup(group);

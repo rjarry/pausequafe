@@ -1,25 +1,18 @@
 package org.pausequafe.gui.view.character;
 
-import java.text.FieldPosition;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.SkillInTraining;
-import org.pausequafe.data.dao.ItemDAO;
-import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.Formater;
 
 import com.trolltech.qt.core.QTimer;
+import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QFrame;
-import com.trolltech.qt.gui.QGroupBox;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QWidget;
+import com.trolltech.qt.gui.QPalette.ColorRole;
 
 /**
  * This widget gathers all the information about a character.
@@ -43,21 +36,13 @@ public class CharacterInfo extends QFrame {
 	private QLabel perception;
 	private QLabel willpower;
 	
-	private QLabel skillPoints;
-	private QLabel skills;
-	private QLabel levelVSkills;
+	private QLabel clock;
 	
-	private QLabel skillInTraining;
-	private QLabel timeLeft;
-	private QLabel trainingEnd;
+	private QTimer timerHour;
+	private QTimer timerSecond;
+	private CountdownTimer timeLeft;
 	
-	private double currentSP = 0;
-	private long trainingTimeLeft = 0;
-	private double trainingSpeed = 0;
-
-	private boolean thereIsASkillTraining = false;
-	
-	private QTimer timer;
+	public Signal0 requestNeeded;
 
 	//////////////////
 	// constructors //
@@ -77,11 +62,6 @@ public class CharacterInfo extends QFrame {
 	// widget setup //
 	//////////////////
 	private void setupUi() {
-//		setFrameShape(QFrame.Shape.Panel);
-//		setFrameShadow(QFrame.Shadow.Sunken);
-//		QRect rect = new QRect(
-//				5,5,this.width()-10,this.height()-10);
-//		setFrameRect(rect);
 		
 		portrait = (QLabel) this.findChild(QLabel.class, "portrait");
 		info = (QLabel) this.findChild(QLabel.class, "info");
@@ -90,25 +70,25 @@ public class CharacterInfo extends QFrame {
 		memory = (QLabel) this.findChild(QLabel.class, "memory");
 		perception = (QLabel) this.findChild(QLabel.class, "perception");
 		willpower = (QLabel) this.findChild(QLabel.class, "willpower");
-		skillPoints = (QLabel) this.findChild(QLabel.class, "skillPoints");
-		skills = (QLabel) this.findChild(QLabel.class, "skills");
-		levelVSkills = (QLabel) this.findChild(QLabel.class, "levelVSkills");
-		
-		skillInTraining = (QLabel) this.findChild(QLabel.class, "skillInTraining");
-		timeLeft = (QLabel) this.findChild(QLabel.class, "timeLeft");
-		trainingEnd = (QLabel) this.findChild(QLabel.class, "trainingEnd");
-		
-		this.findChild(QGroupBox.class, "groupBox");
-		
-		timer = new QTimer(this);
-		timer.setObjectName("timer");
-		timer.timeout.connect(this, "updateValues()");
+		clock = (QLabel) this.findChild(QLabel.class, "clock");
+		clock.setAlignment(Qt.AlignmentFlag.AlignRight);
+		clock.setForegroundRole(ColorRole.Mid);
+		clock.setText("00:00");
 		
 		QPixmap image = new QPixmap();
 		image.load(Constants.BLANK_PORTRAIT);
 		
 		int size = portrait.size().height();
 		portrait.setPixmap(image.scaledToHeight(size));
+		
+		timerHour = new QTimer();
+		timerHour.timeout.connect(this, "emitRequestSignal()");
+		requestNeeded = new Signal0();
+		
+		timerSecond = new QTimer();
+		timerSecond.timeout.connect(this, "decrementOneSecond()");
+		
+		timeLeft = new CountdownTimer(60,0);
 	}
 
 	////////////////////
@@ -212,133 +192,70 @@ public class CharacterInfo extends QFrame {
 		willpower.setToolTip(willpowerText);
 	}
 	
-	/**
-	 * Sets up the skills info of the character
-	 * 
-	 * @param sheet
-	 * 			the character sheet
-	 */
-	public void loadSkills(CharacterSheet sheet){
-		// the amount of SP here is only calculated by summing the SP from all skills.
-		// it represents the total SP of character at the time of the XML file generation.
-		currentSP = sheet.getSkillPoints();
-		skillPoints.setText("<b>" 
-				+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
-		skillPoints.setToolTip(sheet.getCloneName() 
-				+ " (" + Formater.printLong(sheet.getCloneSkillPoints()) + " SP)");
-		
-		String levelVText = sheet.getLevel1Skills() + " skills at level I\n"
-							+ sheet.getLevel2Skills() + " skills at level II\n"
-							+ sheet.getLevel3Skills() + " skills at level III\n"
-							+ sheet.getLevel4Skills() + " skills at level IV\n"
-							+ sheet.getLevel5Skills() + " skills at level V";
-		
-		skills.setText("<b>" + sheet.getSkillCount() + " known skills</b>");
-		skills.setToolTip(levelVText);
-		
-		levelVSkills.setText("<b>" 
-				+ sheet.getLevel5Skills() + " skills at level V</b>");
-		levelVSkills.setToolTip(levelVText);
-	}
-	
-	/**
-	 * Sets up the skill in training info
-	 * 
-	 * @param inTraining
-	 * 				the skill actually in training
-	 * @throws PQException
-	 * 					if there's a problem accessing the skills database
-	 */
-	public void loadSkillInTraining(CharacterSheet sheet, SkillInTraining inTraining) throws PQException{
-		
-		String trainingText = "";
-		String timeText = "";
-		StringBuffer endText = new StringBuffer("");
-		String toolTipText = "";
-		SimpleDateFormat dateFormat 
-					= new SimpleDateFormat("EEE dd MMMMMMMMMM HH:mm:ss");
-		
-		
-
-		
-		if (inTraining.skillInTraining() == 0){
-			// if there's no skill in training
-			trainingText += "<b>no skill in training!</b>";
-			thereIsASkillTraining  = false;
-		} else {
-			// else we fill the fields
-			thereIsASkillTraining  = true;
-			trainingText += "<b>" + ItemDAO.getInstance().findItemById(inTraining.getTrainingTypeID()).getTypeName();
-			switch (inTraining.getTrainingToLevel()){
-				case 1 : trainingText += " I </b>("; break;
-				case 2 : trainingText += " II </b>("; break;
-				case 3 : trainingText += " III </b>("; break;
-				case 4 : trainingText += " IV </b>("; break;
-				case 5 : trainingText += " V </b>("; break;
-				default : trainingText += " 0 </b>(";
-			}
-			trainingText += Formater.printPercent(inTraining.calculateCompletion()) + "%)";
-			
-			// training end date
-			dateFormat.format(new Date(inTraining.getTrainingEndTime()), endText, new FieldPosition(0));
-			
-			// time left
-			long now = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
-			trainingTimeLeft = inTraining.getTrainingEndTime() - now;
-			if (trainingTimeLeft <= 0){
-				trainingTimeLeft = 0;
-			}
-			timeText += Formater.printTime(trainingTimeLeft);
-			
-			// calculation of the current SP.
-			// here, the correct amount of SP is calculated 
-			// by deducting the "last known" SP of skill in training (from the character sheet)
-			// and adding the current SP of it.
-			currentSP -= sheet.getSkill(inTraining.getTrainingTypeID()).getSkillPoints();
-			currentSP += inTraining.currentSP();
-
-			// setup of the current training speed (in SP / millisecond)
-			trainingSpeed = inTraining.trainingSpeed();
-			
-			// training speed tooltip
-			toolTipText += "Training at: " 
-				+ Math.round(trainingSpeed * Constants.HOUR) + " SP/hour";
-
-			// we start the timer only if there's a skill in training
-			timer.start(Constants.SECOND);
-		}
-		
-		skillInTraining.setText(trainingText);
-		timeLeft.setText(timeText);
-		trainingEnd.setText(endText.toString());
-		skillInTraining.setToolTip(toolTipText);
-		timeLeft.setToolTip(toolTipText);
-		trainingEnd.setToolTip(toolTipText);
-		
+	public void resetTimers(){
+		timeLeft.minutes = 60;
+		timeLeft.seconds = 0;
+		timerHour.start(Constants.HOUR);
+		timerSecond.start(Constants.SECOND);
 	}
 	
 	///////////
 	// slots //
 	///////////
-	/**
-	 * Updates total SP and time left fields every second
-	 */
+	
 	@SuppressWarnings("unused")
-	private void updateValues(){
-		if (thereIsASkillTraining) {
-			if (trainingTimeLeft >= Constants.SECOND){
-				currentSP += trainingSpeed * Constants.SECOND;			
-				skillPoints.setText("<b>" 
-						+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
-				
-				trainingTimeLeft -= Constants.SECOND;
-				timeLeft.setText(Formater.printTime(trainingTimeLeft));
+	private void emitRequestSignal(){
+		requestNeeded.emit();
+		// TODO : forcer le téléchargement de la sheet
+	}
+	
+	@SuppressWarnings("unused")
+	private void decrementOneSecond(){
+		timeLeft.decrementOneSecond();
+		clock.setText(timeLeft.printTime());
+	}
+	
+	private class CountdownTimer {
+		private int minutes;
+		private int seconds;
+		
+		public CountdownTimer(int minutes, int seconds) {
+			this.minutes = minutes;
+			this.seconds = seconds;
+		}
+		
+		public boolean decrementOneSecond(){
+			if(seconds == 0){
+				if(minutes == 0){
+					return false;
+				} else {
+					seconds = 59;
+					minutes--;
+				}
 			} else {
-				timer.stop();
-				trainingTimeLeft = 0;
-				thereIsASkillTraining = false;
-				timeLeft.setText(Formater.printTime(trainingTimeLeft));
+				seconds--;
 			}
+			return true;
+		}
+		
+		public String printTime(){
+			String time = "";
+			if(minutes < 10){
+				time += "0" + minutes;
+			} else {
+				time += minutes;
+			}
+			if(seconds < 10){
+				time += ":0" + seconds;
+			} else {
+				time += ":" + seconds;
+			}
+			return time;
 		}
 	}
+	
+	
+	
+	
+	
 }

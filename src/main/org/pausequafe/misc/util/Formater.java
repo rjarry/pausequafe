@@ -53,24 +53,28 @@ public class Formater {
 		
 		int temp = (int) (time / DAY);
 		switch (temp){
+			case 0 : break;
 			case 1 : timeString += temp + " day "; break;
 			default : timeString += temp + " days ";
 		}
 		
 		temp = (int) ((time % DAY) / HOUR);
 		switch (temp){
+			case 0 : break;
 			case 1 : timeString += temp + " hour "; break;
 			default : timeString += temp + " hours ";
 		}
 		
 		temp = (int) ((time % HOUR) / MINUTE);
 		switch (temp){
+			case 0 : break;
 			case 1 : timeString += temp + " minute "; break;
 			default : timeString += temp + " minutes ";
 		}
 		
 		temp = (int) ((time % MINUTE) / SECOND);
 		switch (temp){
+			case 0 : break;
 			case 1 : timeString += temp + " second "; break;
 			default : timeString += temp + " seconds ";
 		}

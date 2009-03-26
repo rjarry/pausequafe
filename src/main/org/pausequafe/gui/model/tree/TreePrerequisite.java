@@ -1,31 +1,46 @@
 package org.pausequafe.gui.model.tree;
 
+import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
 import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.misc.exceptions.PQException;
+import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QIcon;
 
 public class TreePrerequisite extends TreeGroup {
 
-	Item item;
-	int requiredLevel;
+	private Item item;
+	private int requiredLevel = -1;
+	private CharacterSheet sheet;
+	private boolean isRoot = true;
 	
-	public TreePrerequisite(Item toSkill,int requiredLevel) {
+	public TreePrerequisite(Item toSkill, CharacterSheet sheet) {
+		super();
+		this.item = toSkill;
+	}
+	
+	private TreePrerequisite(Item toSkill,int requiredLevel, CharacterSheet sheet, boolean isRoot) {
 		super();
 		this.item = toSkill;
 		this.requiredLevel = requiredLevel;
+		this.isRoot = isRoot;
 	}
 
 	@Override
-	public TreeElement ChildAt(int position) throws PQException {
+	public TreeElement childAt(int position) throws PQException {
 		TreeElement child = null;
 		Integer childId = item.getPreReqs().get(position).getTypeID();
 		int childReqLvl = item.getPreReqs().get(position).getRequiredLevel();
 		
 		Item childItem = ItemDAO.getInstance().findItemById(childId);
-		child = new TreePrerequisite(childItem,childReqLvl);
+		
+		if(requiredLevel == -1){
+			child = new TreePrerequisite(childItem,childReqLvl,sheet,true);
+		} else {
+			child = new TreePrerequisite(childItem,childReqLvl,sheet,false);
+		}
 		
 		return child;
 	}
@@ -37,14 +52,24 @@ public class TreePrerequisite extends TreeGroup {
 
 	@Override
 	public QFont getFont() {
-		// TODO Auto-generated method stub
-		return null;
+		QFont font = new QFont();
+		if(isRoot) font.setBold(true); 
+		else font.setItalic(true); 
+		
+		return font;
 	}
 
 	@Override
 	public QIcon getIcon() {
-		// TODO Auto-generated method stub
-		return null;
+		if(sheet != null && sheet.getSkills().containsKey(item.getTypeID())){
+			if(sheet.getSkill(item.getTypeID()).getLevel() >= requiredLevel){
+				return new QIcon(Constants.SKILL_OK);
+			} else {
+				return new QIcon(Constants.SKILL_KNOWN);
+			}
+		} else {
+			return new QIcon(Constants.SKILL_NOT_KNOWN);
+		}
 	}
 
 	@Override
@@ -62,7 +87,6 @@ public class TreePrerequisite extends TreeGroup {
 
 	@Override
 	public String getTooltip() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

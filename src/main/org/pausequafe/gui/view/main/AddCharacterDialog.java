@@ -10,7 +10,7 @@ import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
 import org.pausequafe.misc.exceptions.PQConfigException;
 import org.pausequafe.misc.exceptions.PQConnectionException;
-import org.pausequafe.misc.exceptions.PQDatabaseFileCorrupted;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQParseException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
@@ -79,7 +79,7 @@ public class AddCharacterDialog extends QDialog {
 		} catch (PQSQLDriverNotFoundException e) {
 			ErrorMessage error = new ErrorMessage(this,tr(Constants.DRIVER_NOT_FOUND_ERROR));
 			error.exec();
-		} catch (PQDatabaseFileCorrupted e) {
+		} catch (PQUserDatabaseFileCorrupted e) {
 			ErrorQuestion error = new ErrorQuestion(this,tr(Constants.USER_DB_CORRUPTED_ERROR));
 			error.exec();
 			if(error.result() == QDialog.DialogCode.Accepted.value()){
@@ -112,7 +112,7 @@ public class AddCharacterDialog extends QDialog {
     }
     
     @SuppressWarnings("unused")
-	private void fetchCharacters() throws PQSQLDriverNotFoundException, PQDatabaseFileCorrupted {
+	private void fetchCharacters() throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
     	int userID;
     	String apiKey;
 
