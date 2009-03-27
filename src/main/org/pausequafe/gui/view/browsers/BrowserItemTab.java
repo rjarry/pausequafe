@@ -11,8 +11,8 @@ import org.pausequafe.gui.model.tree.TreeMarketGroup;
 import org.pausequafe.gui.model.tree.TreeModel;
 import org.pausequafe.gui.model.tree.TreePrerequisite;
 import org.pausequafe.gui.view.misc.ErrorMessage;
-import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.QModelIndex;
@@ -22,14 +22,15 @@ import com.trolltech.qt.gui.QFrame;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QStyleFactory;
+import com.trolltech.qt.gui.QTableView;
 import com.trolltech.qt.gui.QTextBrowser;
 import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
-public class Browser extends QWidget {
+public class BrowserItemTab extends QWidget {
 
-    Ui_Browser ui = new Ui_Browser();
+    Ui_BrowserItemTab ui = new Ui_BrowserItemTab();
     
     private QTreeView itemTree;
     private QLabel iconLabel;
@@ -37,7 +38,7 @@ public class Browser extends QWidget {
     private QLabel itemNameLabel;
     private QTextBrowser itemDescription;
     private QTreeView prereqTree;
-    private TableView attributesTable;
+    private QTableView attributesTable;
     
 //    private QCheckBox tech13CheckBox;
 //    private QCheckBox tech2CheckBox;
@@ -53,23 +54,23 @@ public class Browser extends QWidget {
     public static void main(String[] args) {
         QApplication.initialize(args);
 
-        Browser testBrowser = new Browser();
+        BrowserItemTab testBrowser = new BrowserItemTab(4);
         testBrowser.show();
 
         QApplication.exec();
     }
 
-    public Browser() {
-        this(null);
+    public BrowserItemTab(int marketGroupID) {
+        this(null, marketGroupID);
     }
 
-    public Browser(QWidget parent) {
+    public BrowserItemTab(QWidget parent, int marketGroupID) {
         super(parent);
         setupUi();
 
         MarketGroup group=null;
         try {
-        	group = MarketGroupDAO.getInstance().findMarketGroupById(9);
+        	group = MarketGroupDAO.getInstance().findMarketGroupById(marketGroupID);
         } catch (PQSQLDriverNotFoundException e) {
         	ErrorMessage message = new ErrorMessage(tr(Constants.DRIVER_NOT_FOUND_ERROR));
         	message.exec();
@@ -87,15 +88,14 @@ public class Browser extends QWidget {
     
     private void setupUi(){
     	ui.setupUi(this);
+    	this.setStyle(QStyleFactory.create("plastique"));
     	
     	itemTree = (QTreeView) this.findChild(QTreeView.class, "itemTree");
 		itemTree.clicked.connect(this, "currentItemSelected(QModelIndex)");
 		itemTree.setSortingEnabled(true);
 		itemTree.sortByColumn(0, Qt.SortOrder.AscendingOrder);
-		itemTree.setStyle(QStyleFactory.create("WindowsXP"));
 		
 		prereqTree = (QTreeView) this.findChild(QTreeView.class, "prereqTree");
-		prereqTree.setStyle(QStyleFactory.create("WindowsXP"));
 		
 		itemDescription = (QTextBrowser) this.findChild(QTextBrowser.class, "itemDescription");
 		itemDescription.setAcceptRichText(true);
@@ -111,7 +111,7 @@ public class Browser extends QWidget {
 		tableLayout.setContentsMargins(0, 0, 0, 0);
 		attributeTableFrame.setLayout(tableLayout);
 		
-		attributesTable = new TableView();
+		attributesTable = new QTableView();
 		attributesTable.verticalHeader().setVisible(false);
 		tableLayout.addWidget(attributesTable);
 		
@@ -131,7 +131,7 @@ public class Browser extends QWidget {
 //	    deadspaceCheckBox.toggled.connect(proxyModel, "setDeadspaceShown(boolean)");
 //	    officerCheckBox.toggled.connect(proxyModel, "setOfficerShown(boolean)");
 		
-		this.resize(1100, 700);
+		this.resize(1000, 700);
     }
     
     @SuppressWarnings("unused")

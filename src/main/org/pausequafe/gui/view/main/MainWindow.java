@@ -12,13 +12,14 @@ import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.ServerStatus;
 import org.pausequafe.data.dao.SessionDAO;
+import org.pausequafe.gui.view.browsers.BrowsersWindow;
 import org.pausequafe.gui.view.character.CharacterTab;
 import org.pausequafe.gui.view.misc.AboutPQ;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
-import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.SQLConstants;
 import org.pausequafe.misc.util.ServerStatusRequest;
@@ -27,16 +28,19 @@ import com.trolltech.qt.QThread;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
+import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMovie;
+import com.trolltech.qt.gui.QPalette;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QStatusBar;
 import com.trolltech.qt.gui.QTabWidget;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
+import com.trolltech.qt.gui.QFrame.Shape;
 
 public class MainWindow extends QMainWindow {
 
@@ -59,6 +63,8 @@ public class MainWindow extends QMainWindow {
 
     private QLabel serverStatusIndicator;
     private QTimer serverStatusTimer;
+    
+    private BrowsersWindow browsers;
 	
     public Signal1<CharacterSheet> tabChanged = new Signal1<CharacterSheet>();
 	
@@ -75,7 +81,6 @@ public class MainWindow extends QMainWindow {
         super(parent);
         ui.setupUi(this);
         setupUi();
-        this.show();
         updateTime();
         requestServerStatus();
 
@@ -140,27 +145,32 @@ public class MainWindow extends QMainWindow {
     	
     	// Init status bar
     	statusBar = (QStatusBar) this.findChild(QStatusBar.class, "statusBar");
+    	QPalette pal = this.palette();
+    	pal.dark().setColor(QColor.transparent);
+    	statusBar.setPalette(pal);
 
     	serverStatusIndicator = new QLabel();
+    	serverStatusIndicator.setFrameShape(Shape.NoFrame);
     	serverStatusTimer = new QTimer();
     	serverStatusTimer.timeout.connect(this, "requestServerStatus()");
     	serverStatusTimer.start(5 * Constants.MINUTE);
     	updateServerStatus(new ServerStatus());
     	
     	eveTimeLabel = new QLabel();
+    	eveTimeLabel.setFrameShape(Shape.NoFrame);
     	TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
     	eveTimeTimer = new QTimer(this);
     	eveTimeTimer.timeout.connect(this, "updateTime()");
     	eveTimeTimer.start(Constants.MINUTE);
     	
     	apiActivityIcon = new QLabel();
+    	apiActivityIcon.setFrameShape(Shape.NoFrame);
 		apiActivityIcon.setPixmap(new QPixmap(Constants.IDLE_ICON));
 		
 		statusBar.addPermanentWidget(serverStatusIndicator, 1);
     	statusBar.addPermanentWidget(eveTimeLabel,1);
     	statusBar.addPermanentWidget(new QWidget(),100);
     	statusBar.addPermanentWidget(apiActivityIcon,1);
-
 	}
 	
 	/**
@@ -193,14 +203,14 @@ public class MainWindow extends QMainWindow {
 			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_ONLINE_ICON));
 			serverStatusIndicator.setToolTip("Tranquility Server Online (" + status.getPlayerCount() + " pilots)");
 		} else {
-			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_OFFLINE_ICON));
-			serverStatusIndicator.setToolTip("Tranquility Server Offline");
+			if(status.isUnknown()){
+				serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_UNKONWN_ICON));
+				serverStatusIndicator.setToolTip("Server Status Unknown");
+			} else {
+				serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_OFFLINE_ICON));
+				serverStatusIndicator.setToolTip("Tranquility Server Offline");
+			}
 		}
-		if(status.isUnknown()){
-			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_UNKONWN_ICON));
-		}
-		
-		
 	}
 	
 	/**
@@ -310,7 +320,13 @@ public class MainWindow extends QMainWindow {
 	 */
     @SuppressWarnings("unused")
 	private void openBrowsers(){
-    	
+    	if(browsers == null){
+    		browsers = new BrowsersWindow();
+    		browsers.show();
+    	} else {
+    		browsers.show();
+    		browsers.setFocus();
+    	}
     }
     
     

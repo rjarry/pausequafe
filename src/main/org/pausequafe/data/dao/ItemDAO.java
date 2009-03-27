@@ -91,9 +91,12 @@ public class ItemDAO  extends AbstractSqlDAO{
 				Integer itemId = res.getInt(SQLConstants.TYPEID_COL);
 				askedItem = memoryCache.get(itemId);
 				if(askedItem == null){
+					String description = res.getString(SQLConstants.DESCRIPTION_COL).replaceAll("\n", "<br>");
+					description = description.replaceAll("\t", "<br>");
+					
 					askedItem = new Item(itemId,
 							res.getString(SQLConstants.TYPENAME_COL),
-							res.getString(SQLConstants.DESCRIPTION_COL),
+							description,
 							res.getDouble(SQLConstants.BASEPRICE_COL),
 							res.getDouble(SQLConstants.RADIUS_COL),
 							res.getDouble(SQLConstants.MASS_COL),

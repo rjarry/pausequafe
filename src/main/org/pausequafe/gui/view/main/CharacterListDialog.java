@@ -43,6 +43,8 @@ public class CharacterListDialog extends QDialog {
     	}
     	
     	charListWidget.currentRowChanged.connect(this, "updateIndex()");
+    	charListWidget.doubleClicked.connect(this, "accept()");
+    	
     }
     
     @SuppressWarnings("unused")
