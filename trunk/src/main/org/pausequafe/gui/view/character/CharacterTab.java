@@ -56,6 +56,8 @@ public class CharacterTab extends QWidget {
 
 		skillsWidget.loadSkills(this.sheet);
 		skillsWidget.loadSkillInTraining(this.sheet, this.inTraining);
+		
+		
 	}
 	
 	///////////

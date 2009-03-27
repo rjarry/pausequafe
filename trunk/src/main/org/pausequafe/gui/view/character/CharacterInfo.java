@@ -11,6 +11,7 @@ import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QFrame;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.gui.QPalette.ColorRole;
 
@@ -35,6 +36,7 @@ public class CharacterInfo extends QFrame {
 	private QLabel memory;
 	private QLabel perception;
 	private QLabel willpower;
+	private QPushButton refreshButton;
 	
 	private QLabel clock;
 	
@@ -70,6 +72,9 @@ public class CharacterInfo extends QFrame {
 		memory = (QLabel) this.findChild(QLabel.class, "memory");
 		perception = (QLabel) this.findChild(QLabel.class, "perception");
 		willpower = (QLabel) this.findChild(QLabel.class, "willpower");
+		refreshButton = (QPushButton) this.findChild(QPushButton.class, "refreshButton");
+		refreshButton.clicked.connect(this, "emitRequestSignal()");
+		refreshButton.setEnabled(false);
 		clock = (QLabel) this.findChild(QLabel.class, "clock");
 		clock.setAlignment(Qt.AlignmentFlag.AlignRight);
 		clock.setForegroundRole(ColorRole.Mid);
@@ -197,6 +202,7 @@ public class CharacterInfo extends QFrame {
 		timeLeft.seconds = 0;
 		timerHour.start(Constants.HOUR);
 		timerSecond.start(Constants.SECOND);
+		refreshButton.setEnabled(true);
 	}
 	
 	///////////
@@ -205,8 +211,8 @@ public class CharacterInfo extends QFrame {
 	
 	@SuppressWarnings("unused")
 	private void emitRequestSignal(){
+		refreshButton.setEnabled(false);
 		requestNeeded.emit();
-		// TODO : forcer le téléchargement de la sheet
 	}
 	
 	@SuppressWarnings("unused")

@@ -82,10 +82,13 @@
          </size>
         </property>
         <property name="frameShape" >
-         <enum>com.trolltech.qt.gui.QFrame.Shape.StyledPanel</enum>
+         <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
         </property>
         <property name="frameShadow" >
-         <enum>com.trolltech.qt.gui.QFrame.Shadow.Raised</enum>
+         <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
+        </property>
+        <property name="lineWidth" >
+         <number>0</number>
         </property>
         <widget class="QLabel" name="trainingEnd" >
          <property name="geometry" >
@@ -116,6 +119,9 @@
          </property>
          <property name="frameShape" >
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+         </property>
+         <property name="lineWidth" >
+          <number>0</number>
          </property>
          <property name="text" >
           <string/>
@@ -151,6 +157,9 @@
          <property name="frameShape" >
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
+         <property name="lineWidth" >
+          <number>0</number>
+         </property>
          <property name="text" >
           <string/>
          </property>
@@ -184,6 +193,9 @@
          </property>
          <property name="frameShape" >
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+         </property>
+         <property name="lineWidth" >
+          <number>0</number>
          </property>
          <property name="text" >
           <string/>
@@ -219,6 +231,9 @@
          <property name="frameShape" >
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
+         <property name="lineWidth" >
+          <number>0</number>
+         </property>
          <property name="text" >
           <string/>
          </property>
@@ -252,6 +267,9 @@
          </property>
          <property name="frameShape" >
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+         </property>
+         <property name="lineWidth" >
+          <number>0</number>
          </property>
          <property name="text" >
           <string/>
@@ -287,6 +305,9 @@
          <property name="frameShape" >
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
+         <property name="lineWidth" >
+          <number>0</number>
+         </property>
          <property name="text" >
           <string/>
          </property>
@@ -298,8 +319,11 @@
         <property name="focusPolicy" >
          <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
         </property>
+        <property name="frameShadow" >
+         <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
+        </property>
         <property name="lineWidth" >
-         <number>2</number>
+         <number>1</number>
         </property>
         <property name="horizontalScrollBarPolicy" >
          <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff</enum>

@@ -1,24 +1,24 @@
 package org.pausequafe.data.business;
 
 public class ServerStatus {
-	private boolean isOnLine;
-	private boolean isUnknown;
+	private boolean onLine;
+	private boolean unknown;
 	private int playerCount;
 	
 	public ServerStatus(){
-		this.setUnknown(true);
-		this.isOnLine = false;
-		this.playerCount = 0;
+		unknown = true;
+		onLine = false;
+		playerCount = 0;
 	}
 
 	public ServerStatus(boolean isOnLine, int playerCount){
-		this.setUnknown(false);
-		this.isOnLine = isOnLine;
+		this.unknown = false;
+		this.onLine = isOnLine;
 		this.playerCount = playerCount;
 	}
 
 	public boolean isOnLine() {
-		return isOnLine;
+		return onLine;
 	}
 
 	public int getPlayerCount() {
@@ -26,7 +26,7 @@ public class ServerStatus {
 	}
 
 	public void setOnLine(boolean isOnLine) {
-		this.isOnLine = isOnLine;
+		this.onLine = isOnLine;
 	}
 
 	public void setPlayerCount(int playerCount) {
@@ -34,11 +34,11 @@ public class ServerStatus {
 	}
 
 	public void setUnknown(boolean isUnknown) {
-		this.isUnknown = isUnknown;
+		this.unknown = isUnknown;
 	}
 
 	public boolean isUnknown() {
-		return isUnknown;
+		return unknown;
 	}
 
 
