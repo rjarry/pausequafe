@@ -17,7 +17,6 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	private static final int TECH1_ID = 0;
 	private static final int NAMED_ID = 1;
 	private static final int TECH2_ID = 2;
-	
 	private static final int STORYLINE_ID = 3;
 	private static final int FACTION_ID = 4;
 	private static final int OFFICER_ID = 5;

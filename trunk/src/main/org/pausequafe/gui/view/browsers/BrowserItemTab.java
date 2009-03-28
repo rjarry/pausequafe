@@ -136,19 +136,21 @@ public class BrowserItemTab extends QWidget {
     
     @SuppressWarnings("unused")
 	private void currentItemSelected(QModelIndex index){
-    	TreeElement element = (TreeElement) itemTree.model().data(index);
+    	TreeElement element = (TreeElement) ((TreeModel) itemTree.model()).indexToValue(index);
     	
     	if (element.getItem() != null){
     		currentItemSelected = element.getItem();
     		
     		itemNameLabel.setText(currentItemSelected.getTypeName());
     		
-    		String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon();
+    		String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
     		File iconFile = new File(icon);
     		if(!iconFile.exists()) icon = Constants.NO_ITEM_SELECTED_ICON;
     		iconLabel.setPixmap(new QPixmap(icon));
-    		metaGroupIcon.setPixmap(new QPixmap(
-    				Constants.METAGROUP_ICONS_TAG[currentItemSelected.getMetaGroupID()]));
+    		
+    		String tagIconFile = Constants.METAGROUP_ICONS_TAG[currentItemSelected.getMetaGroupID()];
+    		metaGroupIcon.setPixmap(new QPixmap(tagIconFile));
+    		metaGroupIcon.raise();
     		
     		itemDescription.setText(currentItemSelected.getDescription());
     		

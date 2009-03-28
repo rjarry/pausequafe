@@ -55,9 +55,8 @@ public class TreeModel extends QTreeModel {
 
 	@Override
 	public String text(Object value) {
-//		String s =((TreeElement) value).getName(); 
-//		return s;
-		return null;
+		String s = ((TreeElement) value).getName(); 
+		return s;
 	}
 
 	
@@ -69,7 +68,7 @@ public class TreeModel extends QTreeModel {
 		Object result = null;
 		switch(role){
 		// text to display
-		case ItemDataRole.DisplayRole    : result = value; break;
+		case ItemDataRole.DisplayRole    : result =  elt.getName(); break;
 		// display font
 		case ItemDataRole.FontRole       : result =  elt.getFont(); break;
 		// the icon before the skills
@@ -82,5 +81,7 @@ public class TreeModel extends QTreeModel {
 		
 		return result;
 	}
+	
+	
 
 }

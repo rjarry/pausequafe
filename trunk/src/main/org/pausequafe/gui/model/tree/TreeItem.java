@@ -34,7 +34,7 @@ public class TreeItem extends TreeElement {
 
 	@Override
 	public String getName() {
-		return "" + item.getMetaLevel();
+		return item.getTypeName();
 	}
 
 	@Override
