@@ -103,6 +103,9 @@ public class ItemDAO  extends AbstractSqlDAO{
 							res.getDouble(SQLConstants.VOLUME_COL),
 							res.getDouble(SQLConstants.CAPACITY_COL)				
 					);
+					
+					askedItem.setIcon(res.getString(SQLConstants.ICON_COL));
+					askedItem.setMetaGroupID(res.getInt(SQLConstants.METAGROUPID_COL));
 
 					memoryCache.put(askedItem.getTypeID(), askedItem);
 				}
@@ -142,32 +145,6 @@ public class ItemDAO  extends AbstractSqlDAO{
 			}
 			res.close();
 
-			query = SQLConstants.QUERY_ICON_BY_TYPEID.replace("?", "" + typeIDrequired);
-			res = stat.executeQuery(query);
-			String icon = null;
-			while(res.next()){
-				icon = "icon" + res.getString(1) + ".png";
-			}
-			if(icon == null){
-				icon = askedItem.getTypeID() + ".png";
-			}
-			askedItem.setIcon(icon);
-			res.close();
-
-			query = SQLConstants.QUERY_METAGROUP_BY_TYPEID.replace("?", "" + typeIDrequired);
-			res = stat.executeQuery(query);
-			int metaGroupID = -1;
-			while(res.next()){
-				metaGroupID = res.getInt(1);
-			}
-			if(metaGroupID == -1){
-				metaGroupID = 0;
-			}
-			if(metaGroupID == 14){
-				metaGroupID = 7;
-			}
-			askedItem.setMetaGroupID(metaGroupID);
-			res.close();
 
 		} catch (SQLException e) {
 			throw new PQUserDatabaseFileCorrupted();

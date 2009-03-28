@@ -23,7 +23,8 @@ public class SQLConstants {
 	public static final String HASTYPE_COL = "hasTypes";
 	public static final String CHILDID_COL = "childID";
 	public static final String BASEPRICE_COL = "basePrice";
-	public static final String GRAPHICID_COL = "graphicID";
+	public static final String ICON_COL = "icon";
+	public static final String METAGROUPID_COL = "metaGroupID";
 	public static final String MASS_COL = "mass";
 	public static final String RADIUS_COL = "radius";
 	public static final String VOLUME_COL = "volume";
@@ -58,13 +59,11 @@ public class SQLConstants {
 		  + " union " +
 		  "select mk.*,t.typeID as " + CHILDID_COL + " from invMarketGroups mk,invTypes t where mk.marketGroupID in (?) and mk.marketGroupID=t.marketGroupID" ;
 
-	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice " +
+	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice " +
 													"FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u " +
 													"WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND ac.categoryName != 'NULL' AND at.unitID = u.unitID " +
 													"ORDER BY ac.categoryName ";
 	
-	public static final String QUERY_METAGROUP_BY_TYPEID = "SELECT metaGroupID FROM invMetaTypes WHERE typeID in (?)";
-	public static final String QUERY_ICON_BY_TYPEID = "SELECT g.icon FROM eveGraphics g, invTypes t WHERE t.graphicID = g.graphicID AND t.typeID IN (?)";
 	
 	
 	
