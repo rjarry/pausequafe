@@ -9,9 +9,7 @@ import org.pausequafe.misc.util.Formater;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QFrame;
-import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
-import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.gui.QPalette.ColorRole;
 
@@ -26,19 +24,6 @@ public class CharacterInfo extends QFrame {
 	// private fields //
 	////////////////////
 	private Ui_CharacterInfo ui = new Ui_CharacterInfo();
-	
-	private QLabel portrait;
-	
-	private QLabel info;
-	
-	private QLabel charisma;
-	private QLabel intelligence;
-	private QLabel memory;
-	private QLabel perception;
-	private QLabel willpower;
-	private QPushButton refreshButton;
-	
-	private QLabel clock;
 	
 	private QTimer timerHour;
 	private QTimer timerSecond;
@@ -65,26 +50,17 @@ public class CharacterInfo extends QFrame {
 	//////////////////
 	private void setupUi() {
 		
-		portrait = (QLabel) this.findChild(QLabel.class, "portrait");
-		info = (QLabel) this.findChild(QLabel.class, "info");
-		charisma = (QLabel) this.findChild(QLabel.class, "charisma");
-		intelligence = (QLabel) this.findChild(QLabel.class, "intelligence");
-		memory = (QLabel) this.findChild(QLabel.class, "memory");
-		perception = (QLabel) this.findChild(QLabel.class, "perception");
-		willpower = (QLabel) this.findChild(QLabel.class, "willpower");
-		refreshButton = (QPushButton) this.findChild(QPushButton.class, "refreshButton");
-		refreshButton.clicked.connect(this, "emitRequestSignal()");
-		refreshButton.setEnabled(false);
-		clock = (QLabel) this.findChild(QLabel.class, "clock");
-		clock.setAlignment(Qt.AlignmentFlag.AlignRight);
-		clock.setForegroundRole(ColorRole.Mid);
-		clock.setText("00:00");
+		ui.refreshButton.clicked.connect(this, "emitRequestSignal()");
+		ui.refreshButton.setEnabled(false);
+		ui.clock.setAlignment(Qt.AlignmentFlag.AlignRight);
+		ui.clock.setForegroundRole(ColorRole.Mid);
+		ui.clock.setText("00:00");
 		
 		QPixmap image = new QPixmap();
 		image.load(Constants.BLANK_PORTRAIT);
 		
-		int size = portrait.size().height();
-		portrait.setPixmap(image.scaledToHeight(size));
+		int size = ui.portrait.size().height();
+		ui.portrait.setPixmap(image.scaledToHeight(size));
 		
 		timerHour = new QTimer();
 		timerHour.timeout.connect(this, "emitRequestSignal()");
@@ -109,8 +85,8 @@ public class CharacterInfo extends QFrame {
 		QPixmap image = new QPixmap();
 		image.load(fileName);
 
-		int size = portrait.size().height();
-		portrait.setPixmap(image.scaledToHeight(size));
+		int size = ui.portrait.size().height();
+		ui.portrait.setPixmap(image.scaledToHeight(size));
 	}
 
 	/**
@@ -132,9 +108,9 @@ public class CharacterInfo extends QFrame {
 				corpTitles += titles.get(i) + "\n";
 			}
 			corpTitles += titles.get(titles.size() - 1);
-			info.setToolTip(corpTitles);
+			ui.info.setToolTip(corpTitles);
 		}
-		info.setText(textInfo);
+		ui.info.setText(textInfo);
 	}
 	
 	/**
@@ -157,11 +133,11 @@ public class CharacterInfo extends QFrame {
 		String willpowerText = "Willpower: " 
 			+ Formater.printDouble(sheet.getEffectiveAttributeValue("willpower"));
 		
-		charisma.setText(charismaText);
-		intelligence.setText(intelligenceText);
-		memory.setText(memoryText);
-		perception.setText(perceptionText);
-		willpower.setText(willpowerText);
+		ui.charisma.setText(charismaText);
+		ui.intelligence.setText(intelligenceText);
+		ui.memory.setText(memoryText);
+		ui.perception.setText(perceptionText);
+		ui.willpower.setText(willpowerText);
 		
 		// building of the tooltips
 		charismaText += " = [("	+ sheet.getCharisma() + " base + "
@@ -190,11 +166,11 @@ public class CharacterInfo extends QFrame {
 						+ " implants) * " + Formater.printDouble(sheet.getLearningBonus())
 						+ " from learning bonus]";
 		
-		charisma.setToolTip(charismaText);
-		intelligence.setToolTip(intelligenceText);
-		memory.setToolTip(memoryText);
-		perception.setToolTip(perceptionText);
-		willpower.setToolTip(willpowerText);
+		ui.charisma.setToolTip(charismaText);
+		ui.intelligence.setToolTip(intelligenceText);
+		ui.memory.setToolTip(memoryText);
+		ui.perception.setToolTip(perceptionText);
+		ui.willpower.setToolTip(willpowerText);
 	}
 	
 	public void resetTimers(){
@@ -202,7 +178,7 @@ public class CharacterInfo extends QFrame {
 		timeLeft.seconds = 0;
 		timerHour.start(Constants.HOUR);
 		timerSecond.start(Constants.SECOND);
-		refreshButton.setEnabled(true);
+		ui.refreshButton.setEnabled(true);
 	}
 	
 	///////////
@@ -211,14 +187,14 @@ public class CharacterInfo extends QFrame {
 	
 	@SuppressWarnings("unused")
 	private void emitRequestSignal(){
-		refreshButton.setEnabled(false);
+		ui.refreshButton.setEnabled(false);
 		requestNeeded.emit();
 	}
 	
 	@SuppressWarnings("unused")
 	private void decrementOneSecond(){
 		timeLeft.decrementOneSecond();
-		clock.setText(timeLeft.printTime());
+		ui.clock.setText(timeLeft.printTime());
 	}
 	
 	private class CountdownTimer {

@@ -1,7 +1,9 @@
 package org.pausequafe.gui.model.tree;
 
+import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
 import org.pausequafe.data.business.MarketGroup;
+import org.pausequafe.data.business.Skill;
 import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
@@ -14,11 +16,13 @@ import com.trolltech.qt.gui.QIcon;
 public class TreeSkillGroup extends TreeElement {
 
 	private MarketGroup marketGroup;
+	private CharacterSheet sheet;
 	
 
-	public TreeSkillGroup(MarketGroup marketGroup) {
+	public TreeSkillGroup(MarketGroup marketGroup, CharacterSheet sheet) {
 		super();
 		this.marketGroup = marketGroup;
+		this.sheet = sheet;
 	}
 
 	@Override
@@ -33,10 +37,10 @@ public class TreeSkillGroup extends TreeElement {
 		
 		if(!marketGroup.isItemContainer()){
 			MarketGroup group = MarketGroupDAO.getInstance().findMarketGroupById(childId);
-			child = new TreeMarketGroup(group);
+			child = new TreeSkillGroup(group,sheet);
 		} else {
-			Item item = ItemDAO.getInstance().findItemById(childId);
-			child = new TreeItem(item);
+			Skill skill = ItemDAO.getInstance().findSkillById(childId);
+			child = new TreeSkill(skill, this.sheet);
 		}
 			
 		return child;
@@ -62,7 +66,6 @@ public class TreeSkillGroup extends TreeElement {
 
 	@Override
 	public String getTooltip() {
-		// TODO skill group tooltip 
 		return null;
 	}
 

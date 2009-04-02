@@ -10,9 +10,8 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	///////////////
 	// constants //
 	///////////////
-	public static final int SORT_BY_META_LEVEL = 0;
-	public static final int SORT_BY_NAME_NORMAL = 1;
-	public static final int SORT_BY_NAME_REVERSE = 2;
+	public static final int SORT_BY_NAME = 0;
+	public static final int SORT_BY_META_LEVEL = 1;
 	
 	private static final int TECH1_ID = 0;
 	private static final int NAMED_ID = 1;
@@ -26,7 +25,7 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	////////////////////
 	// private fields //
 	////////////////////
-	private int sortMode = 1;
+	private int sortMode = 0;
 	private boolean tech1Shown = true;
 	private boolean namedShown = true;
 	private boolean tech2Shown = true;
@@ -42,16 +41,13 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	//////////////////////////////////////////////////
 	@Override
 	protected boolean lessThan(QModelIndex left, QModelIndex right) {
-		String leftString = ((TreeElement) sourceModel().data(left)).getName();
-		String rightString = ((TreeElement) sourceModel().data(right)).getName();
+		String leftString = ((TreeElement) ((TreeModel) sourceModel()).indexToValue(left)).getName();
+		String rightString = ((TreeElement) ((TreeModel) sourceModel()).indexToValue(right)).getName();
         
 		switch(sortMode){
-		case SORT_BY_NAME_REVERSE :
-	        return leftString.compareTo(rightString) > 0;
-		
 		case SORT_BY_META_LEVEL :
-			Object leftData = (TreeElement) sourceModel().data(left);
-			Object rightData = (TreeElement) sourceModel().data(right);
+			Object leftData = ((TreeElement) ((TreeModel) sourceModel()).indexToValue(left));
+			Object rightData = ((TreeElement) ((TreeModel) sourceModel()).indexToValue(right));
 			if(leftData instanceof TreeItem && rightData instanceof TreeItem){
 				int rankLeft = ((TreeElement) leftData).getItem().getMetaLevel();
 				int rankRight = ((TreeElement) rightData).getItem().getMetaLevel();
@@ -65,21 +61,20 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 		}
     }
 
+
+	
+	
 	//////////////////////////////////////////////////
 	// overridden method from QSortFilterProxyModel //
 	//////////////////////////////////////////////////
-	/*
+	
 	@Override
 	protected boolean filterAcceptsRow(int source_row, QModelIndex source_parent) {
-		TreeElement element = (TreeElement) sourceModel().data(source_parent);
+		TreeElement element = (TreeElement) sourceModel().data(source_parent, TreeModel.ValueRole);
 		
-		System.out.println(element.getClass());
-		
-		if(element.childCount() == 0){
+		if(element != null && element.childCount() != 0){
 			try {
-				int metaGroupID;
-				metaGroupID = ((TreeElement) element).childAt(source_row).getItem().getMetaGroupID();
-				return shown(metaGroupID);
+				return element.childAt(source_row).acceptRow();
 			} catch (PQException e) {
 				e.printStackTrace();
 				return true;
@@ -146,7 +141,7 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	}
 	public boolean isTech3Shown() {
 		return tech3Shown;
-	}*/
+	}
 
 	
 	/////////////
@@ -187,5 +182,6 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	public void setTech3Shown(boolean tech3Shown) {
 		this.tech3Shown = tech3Shown;
 	}
+
 
 }

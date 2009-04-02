@@ -19,12 +19,14 @@ public class TreePrerequisite extends TreeGroup {
 	public TreePrerequisite(Item toSkill, CharacterSheet sheet) {
 		super();
 		this.item = toSkill;
+		this.sheet = sheet;
 	}
 	
 	private TreePrerequisite(Item toSkill,int requiredLevel, CharacterSheet sheet, boolean isRoot) {
 		super();
 		this.item = toSkill;
 		this.requiredLevel = requiredLevel;
+		this.sheet = sheet;
 		this.isRoot = isRoot;
 	}
 

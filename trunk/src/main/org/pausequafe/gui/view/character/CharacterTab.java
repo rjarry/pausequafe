@@ -6,33 +6,32 @@ import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.misc.util.ApiRequest;
 
 import com.trolltech.qt.QThread;
-import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
 public class CharacterTab extends QWidget {
-	
+
+	////////////////////
+	// private fields //
+	////////////////////
+    Ui_CharacterTab ui = new Ui_CharacterTab();
+
 	private CharacterSheet sheet;
 	private SkillInTraining inTraining;
 	private String imageLocation;
 	
 	private CharacterInfo infoWidget;
 	private CharacterSkills skillsWidget;
+	private SkillPlanList plansWidget;
 	private ApiRequest request;
 	
 	public Signal0 requestStarted = new Signal0();
 	public Signal0 requestFinished = new Signal0();
 	
+	//////////////////
+	// constructors //
+	//////////////////
 	public CharacterTab(APIData data){
-		QVBoxLayout layout = new QVBoxLayout();
-		layout.setContentsMargins(0, 0, 0, 0);
-		layout.setSpacing(0);
-		this.setLayout(layout);
-		
-		infoWidget = new CharacterInfo();
-		skillsWidget = new CharacterSkills(null, null);
-		
-		layout.addWidget(infoWidget);
-		layout.addWidget(skillsWidget);
+		setupUi();
 		
 		request = new ApiRequest(data);
 		
@@ -45,6 +44,26 @@ public class CharacterTab extends QWidget {
 		requestInfo();
 	}
 	
+	//////////////////
+	// widget setup //
+	//////////////////
+	private void setupUi(){
+		ui.setupUi(this);
+		
+		infoWidget = new CharacterInfo(this);
+		skillsWidget = new CharacterSkills(this, null, null);
+		plansWidget = new SkillPlanList(this);
+
+		ui.scrollLayout.addWidget(skillsWidget);
+		ui.scrollLayout.addWidget(plansWidget);
+		ui.mainLayout.insertWidget(0,infoWidget);
+		
+		plansWidget.setEnabled(false);
+	}
+	
+	////////////////////
+	// public methods //
+	////////////////////
 	public void updateCharacterInfo(CharacterSheet sheet, SkillInTraining inTraining, String imageLocation){
 		this.sheet = sheet;
 		this.inTraining = inTraining;
@@ -56,8 +75,6 @@ public class CharacterTab extends QWidget {
 
 		skillsWidget.loadSkills(this.sheet);
 		skillsWidget.loadSkillInTraining(this.sheet, this.inTraining);
-		
-		
 	}
 	
 	///////////

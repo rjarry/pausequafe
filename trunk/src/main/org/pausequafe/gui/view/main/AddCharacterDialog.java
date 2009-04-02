@@ -10,18 +10,14 @@ import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
 import org.pausequafe.misc.exceptions.PQConfigException;
 import org.pausequafe.misc.exceptions.PQConnectionException;
-import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQParseException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.SQLConstants;
 
-import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QDialog;
-import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QLineEdit;
-import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QWidget;
 
 public class AddCharacterDialog extends QDialog {
@@ -30,15 +26,6 @@ public class AddCharacterDialog extends QDialog {
     
     private APIData chosenCharacter;
     
-    private QPushButton addButton;
-    private QPushButton cancelButton;
-    private QPushButton chooseCharButton;
-    
-    private QComboBox userIDCombo;
-    private QLineEdit apiKeyText;
-    
-    private QLabel characterLabel;
-
     public AddCharacterDialog() {
         this(null);
     }
@@ -52,21 +39,13 @@ public class AddCharacterDialog extends QDialog {
     	ui.setupUi(this);
     	this.setWindowTitle("Add New Character");
     	
-    	addButton = (QPushButton) this.findChild(QPushButton.class, "addButton");
-    	cancelButton = (QPushButton) this.findChild(QPushButton.class, "cancelButton");
-    	chooseCharButton = (QPushButton) this.findChild(QPushButton.class, "chooseCharButton");
+    	ui.characterLabel.setText("<i>no character chosen...</i>");
     	
-    	userIDCombo = (QComboBox) this.findChild(QComboBox.class, "userIDCombo");
-    	apiKeyText = (QLineEdit) this.findChild(QLineEdit.class, "apiKeyText");
+    	ui.cancelButton.clicked.connect(this, "reject()");
+    	ui.addButton.clicked.connect(this, "accept()");
+    	ui.chooseCharButton.clicked.connect(this, "fetchCharacters()");
     	
-    	characterLabel = (QLabel) this.findChild(QLabel.class, "characterLabel");
-    	characterLabel.setText("<i>no character chosen...</i>");
-    	
-    	cancelButton.clicked.connect(this, "reject()");
-    	addButton.clicked.connect(this, "accept()");
-    	chooseCharButton.clicked.connect(this, "fetchCharacters()");
-    	
-    	addButton.setEnabled(false);
+    	ui.addButton.setEnabled(false);
     	
     	fillUserIDCombo();
     }
@@ -87,12 +66,12 @@ public class AddCharacterDialog extends QDialog {
 				userDb.delete();
 			}
 		}
-		userIDCombo.addItem("");
+		ui.userIDCombo.addItem("");
 		for(APIData data : list){
-			userIDCombo.addItem("" + data.getUserID(), data);
+			ui.userIDCombo.addItem("" + data.getUserID(), data);
 		}
 		
-		userIDCombo.currentIndexChanged.connect(this, "updateApiKey()");
+		ui.userIDCombo.currentIndexChanged.connect(this, "updateApiKey()");
 		
 	}
 	
@@ -100,14 +79,14 @@ public class AddCharacterDialog extends QDialog {
     @SuppressWarnings("unused")
 	private void updateApiKey(){
     	try{
-    		if(userIDCombo.currentIndex() == 0){
-    			apiKeyText.setText("");
+    		if(ui.userIDCombo.currentIndex() == 0){
+    			ui.apiKeyText.setText("");
     		} else {
-    			apiKeyText.setText(((APIData) userIDCombo
-    					.itemData(userIDCombo.currentIndex())).getApiKey());
+    			ui.apiKeyText.setText(((APIData) ui.userIDCombo
+    					.itemData(ui.userIDCombo.currentIndex())).getApiKey());
     		}
     	} catch (IndexOutOfBoundsException e){
-    		apiKeyText.setText("");
+    		ui.apiKeyText.setText("");
     	}
     }
     
@@ -117,10 +96,10 @@ public class AddCharacterDialog extends QDialog {
     	String apiKey;
 
     	try {
-			if (userIDCombo.currentText().equals("") || apiKeyText.text().equals(""))
+			if (ui.userIDCombo.currentText().equals("") || ui.apiKeyText.text().equals(""))
 				throw new PQException();
-			userID = Integer.parseInt(userIDCombo.currentText());
-			apiKey = apiKeyText.text();
+			userID = Integer.parseInt(ui.userIDCombo.currentText());
+			apiKey = ui.apiKeyText.text();
 		} catch (NumberFormatException e1) {
 			ErrorMessage error = new ErrorMessage(this, "Please enter correct API details.");
 			error.exec();
@@ -165,8 +144,8 @@ public class AddCharacterDialog extends QDialog {
 				return;
 			}
 			chosenCharacter = characterList.get(index);
-			characterLabel.setText("<b>" + chosenCharacter.getCharacterName() + "</b>");
-			addButton.setEnabled(true);
+			ui.characterLabel.setText("<b>" + chosenCharacter.getCharacterName() + "</b>");
+			ui.addButton.setEnabled(true);
 		}
     }
 

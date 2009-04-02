@@ -14,6 +14,9 @@ import com.trolltech.qt.gui.QTreeModel;
 public class TreeModel extends QTreeModel {
 
 	private TreeElement root = null;
+	
+	public static final int ValueRole = 500000;
+	public static final int AcceptRole = 250000;
 
 	public TreeModel(TreeElement root){
 		this.root = root;
@@ -67,6 +70,9 @@ public class TreeModel extends QTreeModel {
 
 		Object result = null;
 		switch(role){
+		// text to display
+		case TreeModel.ValueRole    	 : result =  value; break;
+		
 		// text to display
 		case ItemDataRole.DisplayRole    : result =  elt.getName(); break;
 		// display font

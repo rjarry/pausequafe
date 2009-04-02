@@ -31,6 +31,7 @@ public class AboutPQ extends QDialog {
     private void setupUi(){
     	ui.setupUi(this);
     	
+    	
     	this.setWindowTitle("About Pause Quafé...");
     	
     	closeButton = (QPushButton) this.findChild(QPushButton.class, "closeButton");
@@ -42,11 +43,13 @@ public class AboutPQ extends QDialog {
     	textUp = (QLabel) this.findChild(QLabel.class, "textUp");
     	textUp.setAlignment(Qt.AlignmentFlag.AlignRight);
     	textUp.setForegroundRole(ColorRole.Base);
+    	
     	textUp.setText(Constants.ABOUT_TEXT);
     	
     	textDown = (QLabel) this.findChild(QLabel.class, "textDown");
-    	textDown.setAlignment(Qt.AlignmentFlag.AlignRight);
+    	textDown.setAlignment(Qt.AlignmentFlag.AlignLeft);
     	textDown.setForegroundRole(ColorRole.Base);
+    	
     	textDown.setText(Constants.SUGGESTIONS_TEXT);
     }
 

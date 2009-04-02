@@ -5,16 +5,11 @@ import java.util.List;
 import org.pausequafe.data.business.APIData;
 
 import com.trolltech.qt.gui.QDialog;
-import com.trolltech.qt.gui.QListWidget;
-import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QWidget;
 
 public class CharacterListDialog extends QDialog {
 
     Ui_CharacterListDialog ui = new Ui_CharacterListDialog();
-    
-    private QListWidget charListWidget;
-    private QPushButton chooseButton;
     
     List<APIData> characterList;
     
@@ -33,24 +28,22 @@ public class CharacterListDialog extends QDialog {
     
     private void setupUi(){
     	ui.setupUi(this);
-    	charListWidget = (QListWidget) this.findChild(QListWidget.class, "charListWidget");
-    	chooseButton = (QPushButton) this.findChild(QPushButton.class, "chooseButton");
-    	chooseButton.clicked.connect(this, "accept()");
-    	chooseButton.setEnabled(false);
+    	ui.chooseButton.clicked.connect(this, "accept()");
+    	ui.chooseButton.setEnabled(false);
     	
     	for(APIData character : characterList){
-    		charListWidget.addItem(character.getCharacterName());
+    		ui.charListWidget.addItem(character.getCharacterName());
     	}
     	
-    	charListWidget.currentRowChanged.connect(this, "updateIndex()");
-    	charListWidget.doubleClicked.connect(this, "accept()");
+    	ui.charListWidget.currentRowChanged.connect(this, "updateIndex()");
+    	ui.charListWidget.doubleClicked.connect(this, "accept()");
     	
     }
     
     @SuppressWarnings("unused")
 	private void updateIndex(){
-    	chosenCharacterIndex = charListWidget.currentIndex().row();
-    	chooseButton.setEnabled(true);
+    	chosenCharacterIndex = ui.charListWidget.currentIndex().row();
+    	ui.chooseButton.setEnabled(true);
     }
     
     public int getChosenCharacterIndex(){

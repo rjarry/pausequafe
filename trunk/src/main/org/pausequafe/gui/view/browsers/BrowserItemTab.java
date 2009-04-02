@@ -2,64 +2,44 @@ package org.pausequafe.gui.view.browsers;
 
 import java.io.File;
 
-import org.pausequafe.data.business.Item;
+import org.pausequafe.data.business.CharacterSheet;
+import org.pausequafe.data.business.ItemDetailed;
 import org.pausequafe.data.business.MarketGroup;
+import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.gui.model.table.AttributesTableModel;
 import org.pausequafe.gui.model.tree.TreeElement;
 import org.pausequafe.gui.model.tree.TreeMarketGroup;
 import org.pausequafe.gui.model.tree.TreeModel;
 import org.pausequafe.gui.model.tree.TreePrerequisite;
+import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
 import org.pausequafe.gui.view.misc.ErrorMessage;
+import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.Qt;
-import com.trolltech.qt.gui.QApplication;
-import com.trolltech.qt.gui.QFrame;
-import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
-import com.trolltech.qt.gui.QStyleFactory;
-import com.trolltech.qt.gui.QTableView;
-import com.trolltech.qt.gui.QTextBrowser;
-import com.trolltech.qt.gui.QTreeView;
-import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
 public class BrowserItemTab extends QWidget {
 
+	////////////////////
+	// private fields //
+	////////////////////
+	
     Ui_BrowserItemTab ui = new Ui_BrowserItemTab();
     
-    private QTreeView itemTree;
-    private QLabel iconLabel;
-    private QLabel metaGroupIcon;
-    private QLabel itemNameLabel;
-    private QTextBrowser itemDescription;
-    private QTreeView prereqTree;
-    private QTableView attributesTable;
-    
-//    private QCheckBox tech13CheckBox;
-//    private QCheckBox tech2CheckBox;
-//    private QCheckBox factionCheckBox;
-//    private QCheckBox deadspaceCheckBox;
-//    private QCheckBox officerCheckBox;
-//    private QCheckBox namedCheckBox;
-    
-    private Item currentItemSelected;
-    
-//    TreeSortFilterProxyModel proxyModel = new TreeSortFilterProxyModel();
+    private ItemDetailed currentItemSelected;
+    private TreeSortFilterProxyModel proxyModel = new TreeSortFilterProxyModel();
+	private CharacterSheet sheet = null;
 
-    public static void main(String[] args) {
-        QApplication.initialize(args);
 
-        BrowserItemTab testBrowser = new BrowserItemTab(4);
-        testBrowser.show();
-
-        QApplication.exec();
-    }
-
+	//////////////////
+	// constructors //
+	//////////////////
     public BrowserItemTab(int marketGroupID) {
         this(null, marketGroupID);
     }
@@ -80,48 +60,30 @@ public class BrowserItemTab extends QWidget {
         }
         TreeElement root = new TreeMarketGroup(group);
         TreeModel itemTreeModel = new TreeModel(root);
-//        proxyModel.setSourceModel(itemTreeModel);
-//        proxyModel.setDynamicSortFilter(true);
+        proxyModel.setSourceModel(itemTreeModel);
+        proxyModel.setDynamicSortFilter(true);
         
-        itemTree.setModel(itemTreeModel);
+        ui.itemTree.setModel(proxyModel);
     }
-    
+	//////////////////
+	// widget setup //
+	//////////////////
     private void setupUi(){
     	ui.setupUi(this);
-    	this.setStyle(QStyleFactory.create("plastique"));
     	
-    	itemTree = (QTreeView) this.findChild(QTreeView.class, "itemTree");
-		itemTree.clicked.connect(this, "currentItemSelected(QModelIndex)");
-		itemTree.setSortingEnabled(true);
-		itemTree.sortByColumn(0, Qt.SortOrder.AscendingOrder);
+    	ui.itemTree.clicked.connect(this, "currentItemSelected(QModelIndex)");
+    	ui.itemTree.setSortingEnabled(true);
+    	ui.itemTree.sortByColumn(0, Qt.SortOrder.AscendingOrder);
 		
-		prereqTree = (QTreeView) this.findChild(QTreeView.class, "prereqTree");
+		ui.itemDescription.setAcceptRichText(true);
 		
-		itemDescription = (QTextBrowser) this.findChild(QTextBrowser.class, "itemDescription");
-		itemDescription.setAcceptRichText(true);
+		ui.iconLabel.setPixmap(new QPixmap(Constants.NO_ITEM_SELECTED_ICON));
+		ui.itemNameLabel.setText("<font size=5>No item selected...</font>");
 		
-		iconLabel = (QLabel) this.findChild(QLabel.class, "iconLabel");
-		iconLabel.setPixmap(new QPixmap(Constants.NO_ITEM_SELECTED_ICON));
-		metaGroupIcon = (QLabel) this.findChild(QLabel.class, "metaGroupIcon");
-		itemNameLabel = (QLabel) this.findChild(QLabel.class, "itemNameLabel");
-		itemNameLabel.setText("No item selected...");
+		ui.attributesTable.verticalHeader().setVisible(false);
 		
-		QFrame attributeTableFrame = (QFrame) this.findChild(QFrame.class, "attributeTableFrame");
-		QVBoxLayout tableLayout = new QVBoxLayout();
-		tableLayout.setContentsMargins(0, 0, 0, 0);
-		attributeTableFrame.setLayout(tableLayout);
+		ui.sortComboBox.currentIndexChanged.connect(this, "setSortMode(int)");
 		
-		attributesTable = new QTableView();
-		attributesTable.verticalHeader().setVisible(false);
-		tableLayout.addWidget(attributesTable);
-		
-//		tech13CheckBox = (QCheckBox) this.findChild(QCheckBox.class, "tech13CheckBox");
-//	    tech2CheckBox = (QCheckBox) this.findChild(QCheckBox.class, "tech2CheckBox");
-//	    factionCheckBox = (QCheckBox) this.findChild(QCheckBox.class, "factionCheckBox");
-//	    deadspaceCheckBox = (QCheckBox) this.findChild(QCheckBox.class, "deadspaceCheckBox");
-//	    officerCheckBox = (QCheckBox) this.findChild(QCheckBox.class, "officerCheckBox");
-//	    namedCheckBox = (QCheckBox) this.findChild(QCheckBox.class, "namedCheckBox");
-//		
 //	    tech13CheckBox.toggled.connect(proxyModel, "setTech1Shown(boolean)");
 //	    tech13CheckBox.toggled.connect(proxyModel, "setTech3Shown(boolean)");
 //	    namedCheckBox.toggled.connect(proxyModel, "setNamedShown(boolean)");
@@ -130,42 +92,83 @@ public class BrowserItemTab extends QWidget {
 //	    factionCheckBox.toggled.connect(proxyModel, "setStorylineShown(boolean)");
 //	    deadspaceCheckBox.toggled.connect(proxyModel, "setDeadspaceShown(boolean)");
 //	    officerCheckBox.toggled.connect(proxyModel, "setOfficerShown(boolean)");
-		
-		this.resize(1000, 700);
     }
     
+	///////////
+	// slots //
+	///////////
     @SuppressWarnings("unused")
 	private void currentItemSelected(QModelIndex index){
-    	TreeElement element = (TreeElement) ((TreeModel) itemTree.model()).indexToValue(index);
+    
+    	TreeElement element = (TreeElement) ui.itemTree.model().data(index, TreeModel.ValueRole);
     	
     	if (element.getItem() != null){
-    		currentItemSelected = element.getItem();
+    		try {
+				currentItemSelected = ItemDAO.getInstance().getItemDetails(element.getItem());
+			} catch (PQUserDatabaseFileCorrupted e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (PQEveDatabaseNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (PQSQLDriverNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     		
-    		itemNameLabel.setText(currentItemSelected.getTypeName());
+			ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
     		
     		String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
     		File iconFile = new File(icon);
     		if(!iconFile.exists()) icon = Constants.NO_ITEM_SELECTED_ICON;
-    		iconLabel.setPixmap(new QPixmap(icon));
+    		ui.iconLabel.setPixmap(new QPixmap(icon));
     		
     		String tagIconFile = Constants.METAGROUP_ICONS_TAG[currentItemSelected.getMetaGroupID()];
-    		metaGroupIcon.setPixmap(new QPixmap(tagIconFile));
-    		metaGroupIcon.raise();
+    		ui.metaGroupIcon.setPixmap(new QPixmap(tagIconFile));
+    		ui.metaGroupIcon.raise();
     		
-    		itemDescription.setText(currentItemSelected.getDescription());
+    		ui.itemDescription.setText(currentItemSelected.getDescription());
     		
-    		TreeElement root = new TreePrerequisite(currentItemSelected,null);
+    		TreeElement root = new TreePrerequisite(currentItemSelected,sheet);
     		TreeModel prereqModel = new TreeModel(root);
-			prereqTree.setModel(prereqModel);
-			prereqTree.expandAll();
+    		ui.prereqTree.setModel(prereqModel);
 			
 			AttributesTableModel tableModel = new AttributesTableModel(currentItemSelected);
-			attributesTable.setModel(tableModel);
-			attributesTable.resizeColumnsToContents();
-			attributesTable.resizeRowsToContents();
+			ui.attributesTable.setModel(tableModel);
+			ui.attributesTable.resizeColumnsToContents();
+			ui.attributesTable.resizeRowsToContents();
 			
     	}
     }
+    
+    @SuppressWarnings("unused")
+	private void setSortMode(int sortMode){
+    	switch(sortMode){
+    	case 1 :
+    		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_NAME);
+    		break;
+    	case 2 :
+    		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_META_LEVEL);
+    		break;
+    	default :
+    		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_NAME);
+    	}
+    	ui.itemTree.sortByColumn(0, Qt.SortOrder.AscendingOrder);
+    	ui.itemTree.update();
+    }
+
+    
+    /////////////
+    // setters //
+    /////////////	
+    public void setSheet(CharacterSheet sheet) {
+		this.sheet = sheet;
+		if(currentItemSelected != null){
+			TreeElement root = new TreePrerequisite(currentItemSelected,sheet);
+			TreeModel prereqModel = new TreeModel(root);
+			ui.prereqTree.setModel(prereqModel);
+		}
+	}
     
     
 }

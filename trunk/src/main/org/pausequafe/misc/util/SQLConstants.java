@@ -44,6 +44,7 @@ public class SQLConstants {
 	public static final int REQUIRED_SKILL_2_LEVEL_ATTID = 278;
 	public static final int REQUIRED_SKILL_3_LEVEL_ATTID = 279;
 	public static final int METALEVEL_ATTID = 633;
+	public static final int RANK_ATTID = 275;
 	
 	// unit IDs
 	public static final int DURATION_MILLISECS_UNITID = 101;
@@ -59,11 +60,16 @@ public class SQLConstants {
 		  + " union " +
 		  "select mk.*,t.typeID as " + CHILDID_COL + " from invMarketGroups mk,invTypes t where mk.marketGroupID in (?) and mk.marketGroupID=t.marketGroupID" ;
 
-	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice " +
-													"FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u " +
-													"WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND ac.categoryName != 'NULL' AND at.unitID = u.unitID " +
-													"ORDER BY ac.categoryName ";
+	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.metaGroupID,t.typeName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value " +
+													"FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at " +
+													"WHERE t.typeID in (?) " +
+													"AND t.typeID = a.typeID " +
+													"AND a.attributeID = at.attributeID ";
 	
+	public static final String QUERY_ITEM_DETAILS_BY_ID =	"SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice " +
+															"FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u " +
+															"WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND ac.categoryName != 'NULL' AND at.unitID = u.unitID " +
+															"ORDER BY ac.categoryName ";
 	
 	
 	
