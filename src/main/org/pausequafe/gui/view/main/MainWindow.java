@@ -3,6 +3,7 @@ package org.pausequafe.gui.view.main;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,17 +27,15 @@ import org.pausequafe.misc.util.ServerStatusRequest;
 
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.core.QTimer;
+import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
-import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMovie;
-import com.trolltech.qt.gui.QPalette;
 import com.trolltech.qt.gui.QPixmap;
-import com.trolltech.qt.gui.QStatusBar;
 import com.trolltech.qt.gui.QTabWidget;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
@@ -46,7 +45,6 @@ public class MainWindow extends QMainWindow {
 
     private static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 	
-    private QStatusBar statusBar;
     private QTabWidget tabWidget;
 	
     private QAction actionAdd_Character;
@@ -144,11 +142,7 @@ public class MainWindow extends QMainWindow {
     	centralLayout.addWidget(tabWidget);
     	
     	// Init status bar
-    	statusBar = (QStatusBar) this.findChild(QStatusBar.class, "statusBar");
-    	QPalette pal = this.palette();
-    	pal.dark().setColor(QColor.transparent);
-    	statusBar.setPalette(pal);
-
+    	
     	serverStatusIndicator = new QLabel();
     	serverStatusIndicator.setFrameShape(Shape.NoFrame);
     	serverStatusTimer = new QTimer();
@@ -167,10 +161,13 @@ public class MainWindow extends QMainWindow {
     	apiActivityIcon.setFrameShape(Shape.NoFrame);
 		apiActivityIcon.setPixmap(new QPixmap(Constants.IDLE_ICON));
 		
-		statusBar.addPermanentWidget(serverStatusIndicator, 1);
-    	statusBar.addPermanentWidget(eveTimeLabel,1);
-    	statusBar.addPermanentWidget(new QWidget(),100);
-    	statusBar.addPermanentWidget(apiActivityIcon,1);
+		ui.statusBar.addPermanentWidget(serverStatusIndicator, 1);
+		ui.statusBar.addPermanentWidget(eveTimeLabel,1);
+		ui.statusBar.addPermanentWidget(new QWidget(),100);
+		ui.statusBar.addPermanentWidget(apiActivityIcon,1);
+		
+		this.resize(300, 700);
+		
 	}
 	
 	/**
@@ -193,7 +190,7 @@ public class MainWindow extends QMainWindow {
 	
 	/**
 	 * Updates server status icon
-	 * Invoqued by the <code>ServerStatusRequest.finished</code> signal
+	 * Invoqued by the <code>serverStatusRequest.finished</code> signal
 	 * 
 	 * @param status 
 	 * 			the server's status
@@ -221,9 +218,11 @@ public class MainWindow extends QMainWindow {
 	private synchronized void incrementRequestCount(){
 		if(requestCount==0){
 			QMovie movie = new QMovie(Constants.DOWNLOADING_ICON);
+			movie.setSpeed(90);
 			apiActivityIcon.setPixmap(null);
 			apiActivityIcon.setMovie(movie);
 			movie.start();
+			apiActivityIcon.setToolTip("Accessing data from EVE-Online API server");
 		}
 		requestCount++;
 	}
@@ -239,6 +238,7 @@ public class MainWindow extends QMainWindow {
 			QPixmap pixmap = new QPixmap(Constants.IDLE_ICON);
 			apiActivityIcon.setMovie(null);
 			apiActivityIcon.setPixmap(pixmap);
+			apiActivityIcon.setToolTip("API activity : idle");
 		}
 	}
 	
@@ -322,10 +322,20 @@ public class MainWindow extends QMainWindow {
 	private void openBrowsers(){
     	if(browsers == null){
     		browsers = new BrowsersWindow();
+    		browsers.setParent(this, Qt.WindowType.Window);
     		browsers.show();
+    		browsers.activateWindow();
     	} else {
+    		browsers.setParent(this, Qt.WindowType.Window);
     		browsers.show();
-    		browsers.setFocus();
+    		browsers.activateWindow();
+    	}
+    	if(requestCount == 0){
+	    	List<CharacterSheet> list = new ArrayList<CharacterSheet>();
+	    	for(int i=0 ; i<tabWidget.count() ; i++){
+	    		list.add(((CharacterTab) tabWidget.widget(i)).getSheet());
+	    	}
+	    	browsers.setSheetList(list);
     	}
     }
     

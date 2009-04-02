@@ -16,27 +16,21 @@ public class Skill extends Item {
 	////////////////////	
 	private int rank;
 	private String primaryAttribute;
+
 	private String secondaryAttribute;
 	
 	/////////////////
     // constructor //
     /////////////////
-    public Skill(){
-    	super();
-    }
+	public Skill(int typeID, String typeName) {
+		this.typeID = typeID;
+		this.typeName = typeName;
+	}
 
     ////////////////////
     // public methods //
     ////////////////////
-    // for test purposes
-	public String toString(){
-		String print = "";
-		print += typeName + " (rank " + rank + ") - " + "\n";
-		print += description + "\n";
-		print += "Primary attribute : " + primaryAttribute + "\n";
-		print += "Secondary attribute : " + secondaryAttribute + "\n";
-		return print;
-	}
+
 	
 	/////////////
     // getters //
@@ -44,11 +38,11 @@ public class Skill extends Item {
 	public int getRank() {
 		return rank;
 	}
-	public String getPrimaryAttribute() {
-		return primaryAttribute;
+	public void setPrimaryAttribute(String primaryAttribute) {
+		this.primaryAttribute = primaryAttribute;
 	}
-	public String getSecondaryAttribute() {
-		return secondaryAttribute;
+	public void setSecondaryAttribute(String secondaryAttribute) {
+		this.secondaryAttribute = secondaryAttribute;
 	}
 	
 	/////////////
@@ -57,11 +51,11 @@ public class Skill extends Item {
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
-	public void setPrimaryAttribute(String primaryAttribute) {
-		this.primaryAttribute = primaryAttribute;
+	public String getPrimaryAttribute() {
+		return this.primaryAttribute;
 	}
-	public void setSecondaryAttribute(String secondaryAttribute) {
-		this.secondaryAttribute = secondaryAttribute;
+	public String getSecondaryAttribute() {
+		return this.secondaryAttribute;
 	}
 
 }

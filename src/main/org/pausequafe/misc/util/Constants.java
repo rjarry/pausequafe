@@ -5,7 +5,7 @@ package org.pausequafe.misc.util;
 
 public class Constants {
 	///////////////////////////////////////////////
-	private static final String PQ_VERSION = "0.0";
+	public static final String PQ_VERSION = "0.0";
 	///////////////////////////////////////////////
 	
 	public static final String API_VERSION = "2";
@@ -48,8 +48,8 @@ public class Constants {
 	
 	public static final String ERROR_ICON_FILE = "resources/icons/JEVEMon/error.png";
 	public static final String QUESTION_ICON_FILE = "resources/icons/JEVEMon/question.png";
-	public static final String DOWNLOADING_ICON = "resources/icons/JEVEMon/rosace.gif";
-	public static final String IDLE_ICON = "resources/icons/JEVEMon/rosace.png";
+	public static final String DOWNLOADING_ICON = "resources/icons/JEVEMon/QuafeCan_active.mng";
+	public static final String IDLE_ICON = "resources/icons/JEVEMon/QuafeCan_idle.png";
 	public static final String SERVERSTATUS_ONLINE_ICON = "resources/icons/JEVEMon/serverStatus_online.png";
 	public static final String SERVERSTATUS_OFFLINE_ICON = "resources/icons/JEVEMon/serverStatus_offline.png";
 	public static final String SERVERSTATUS_UNKONWN_ICON = "resources/icons/JEVEMon/serverStatus_unknown.png";
@@ -100,11 +100,15 @@ public class Constants {
 	///////////////////
 	// misc messages //
 	///////////////////
-	public static final String ABOUT_TEXT = "<i>Pause Quafé®</i>  developped by <b>diabeteman</b> and <b>Kios Askoner</b><br>" +
-											"version " + PQ_VERSION + " - March 2009<br>";
+	public static final String ABOUT_TEXT = "<b>Pause Quafé®</b><br>" +
+											"<i>version " + PQ_VERSION + " - Copyright © 2009</i><br>" +
+											"This program is free software. You can redistribute it and/or modify it<br>" +
+											"under the terms of version 2 of the <a href=\"http://www.gnu.org/copyleft/gpl.html\">GNU General Public Licence</a>.<br><br>";
+													
 											
-	public static final String SUGGESTIONS_TEXT = "please enjoy this software, any suggestion and/or bug repport is encouraged<br>" +
-													"Donations in ISK are of course welcome \\o/";
+	public static final String SUGGESTIONS_TEXT = "Please enjoy this software. Any suggestion and/or bug repport is encouraged.<br>" +
+													"Donations in ISK are of course welcome \\o/<br><br>" +
+													"<i>Pause Quafé®</i> developped by <b>diabeteman</b> and <b>Kios Askoner</b>";
 	
 
 

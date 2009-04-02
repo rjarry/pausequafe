@@ -35,4 +35,8 @@ public abstract class TreeElement implements Comparable<TreeElement>{
 	
 	public abstract String toString();
 
+	public boolean acceptRow() {
+		return true;
+	}
+
 }

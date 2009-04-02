@@ -7,28 +7,32 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.pausequafe.data.business.CharacterSheet;
+import org.pausequafe.data.business.MarketGroup;
 import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.data.dao.ItemDAO;
+import org.pausequafe.data.dao.MarketGroupDAO;
+import org.pausequafe.gui.model.tree.TreeModel;
+import org.pausequafe.gui.model.tree.TreeSkillGroup;
+import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
+import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.misc.exceptions.PQException;
+import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.Formater;
 
+import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QTimer;
-import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.core.Qt.SortOrder;
 import com.trolltech.qt.gui.QWidget;
 
 public class CharacterSkills extends QWidget {
 
+	////////////////////
+	// private fields //
+	////////////////////
     private Ui_CharacterSkills ui = new Ui_CharacterSkills();
     
-	private QLabel skillPoints;
-	private QLabel skills;
-	private QLabel levelVSkills;
-	
-	private QLabel skillInTraining;
-	private QLabel timeLeft;
-	private QLabel trainingEnd;
-	
 	private double currentSP = 0;
 	private long trainingTimeLeft = 0;
 	private double trainingSpeed = 0;
@@ -37,6 +41,9 @@ public class CharacterSkills extends QWidget {
 	
 	private QTimer timer;
 
+	//////////////////
+	// constructors //
+	//////////////////
 	public CharacterSkills(CharacterSheet sheet, SkillInTraining inTraining) {
         this(null, sheet, inTraining);
     }
@@ -48,23 +55,24 @@ public class CharacterSkills extends QWidget {
         loadSkillInTraining(sheet, inTraining);
     }
     
-
-	private void setupUi(){
+	//////////////////
+	// widget setup //
+	//////////////////
+    private void setupUi(){
     	ui.setupUi(this);
     	
-    	skillPoints = (QLabel) this.findChild(QLabel.class, "skillPoints");
-		skills = (QLabel) this.findChild(QLabel.class, "skills");
-		levelVSkills = (QLabel) this.findChild(QLabel.class, "levelVSkills");
-		
-		skillInTraining = (QLabel) this.findChild(QLabel.class, "skillInTraining");
-		timeLeft = (QLabel) this.findChild(QLabel.class, "timeLeft");
-		trainingEnd = (QLabel) this.findChild(QLabel.class, "trainingEnd");
-		
 		timer = new QTimer(this);
 		timer.setObjectName("timer");
 		timer.timeout.connect(this, "updateValues()");
+		
+		ui.skillTree.setSortingEnabled(true);
+		ui.skillTree.sortByColumn(0, SortOrder.AscendingOrder);
+		ui.skillTree.setIconSize(new QSize(21,14));
     }
     
+    ////////////////////
+    // public methods //
+    ////////////////////
 	/**
 	 * Sets up the skills info of the character
 	 * 
@@ -77,9 +85,9 @@ public class CharacterSkills extends QWidget {
 		// the amount of SP here is only calculated by summing the SP from all skills.
 		// it represents the total SP of character at the time of the XML file generation.
 		currentSP = sheet.getSkillPoints();
-		skillPoints.setText("<b>" 
+		ui.skillPoints.setText("<b>" 
 				+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
-		skillPoints.setToolTip(sheet.getCloneName() 
+		ui.skillPoints.setToolTip(sheet.getCloneName() 
 				+ " (" + Formater.printLong(sheet.getCloneSkillPoints()) + " SP)");
 		
 		String levelVText = sheet.getLevel1Skills() + " skills at level I\n"
@@ -88,12 +96,29 @@ public class CharacterSkills extends QWidget {
 							+ sheet.getLevel4Skills() + " skills at level IV\n"
 							+ sheet.getLevel5Skills() + " skills at level V";
 		
-		skills.setText("<b>" + sheet.getSkillCount() + " known skills</b>");
-		skills.setToolTip(levelVText);
+		ui.skills.setText("<b>" + sheet.getSkillCount() + " known skills</b>");
+		ui.skills.setToolTip(levelVText);
 		
-		levelVSkills.setText("<b>" 
+		ui.levelVSkills.setText("<b>" 
 				+ sheet.getLevel5Skills() + " skills at level V</b>");
-		levelVSkills.setToolTip(levelVText);
+		ui.levelVSkills.setToolTip(levelVText);
+		
+		MarketGroup group=null;
+        try {
+        	group = MarketGroupDAO.getInstance().findMarketGroupById(150);
+        } catch (PQSQLDriverNotFoundException e) {
+        	ErrorMessage message = new ErrorMessage(tr(Constants.DRIVER_NOT_FOUND_ERROR));
+        	message.exec();
+        } catch (PQUserDatabaseFileCorrupted e) {
+        	ErrorMessage message = new ErrorMessage(tr(Constants.EVE_DB_CORRUPTED_ERROR));
+        	message.exec();
+        }
+        TreeSkillGroup root = new TreeSkillGroup(group, sheet);
+        TreeModel itemTreeModel = new TreeModel(root);
+        TreeSortFilterProxyModel proxyModel = new TreeSortFilterProxyModel();
+		proxyModel.setSourceModel(itemTreeModel);
+		ui.skillTree.setModel(proxyModel);
+        
 	}
 	
 	/**
@@ -125,7 +150,7 @@ public class CharacterSkills extends QWidget {
 			try {
 				trainingText += "<b>" + ItemDAO.getInstance().findItemById(inTraining.getTrainingTypeID()).getTypeName();
 			} catch (PQException e) {
-				trainingText += "<b>" +inTraining.getTrainingTypeID();
+				trainingText += "<b>" + inTraining.getTrainingTypeID();
 			}
 			
 			switch (inTraining.getTrainingToLevel()){
@@ -167,12 +192,12 @@ public class CharacterSkills extends QWidget {
 			timer.start(Constants.SECOND);
 		}
 		
-		skillInTraining.setText(trainingText);
-		timeLeft.setText(timeText);
-		trainingEnd.setText(endText.toString());
-		skillInTraining.setToolTip(toolTipText);
-		timeLeft.setToolTip(toolTipText);
-		trainingEnd.setToolTip(toolTipText);
+		ui.skillInTraining.setText(trainingText);
+		ui.timeLeft.setText(timeText);
+		ui.trainingEnd.setText(endText.toString());
+		ui.skillInTraining.setToolTip(toolTipText);
+		ui.timeLeft.setToolTip(toolTipText);
+		ui.trainingEnd.setToolTip(toolTipText);
 		
 	}
 	
@@ -187,16 +212,16 @@ public class CharacterSkills extends QWidget {
 		if (thereIsASkillTraining) {
 			if (trainingTimeLeft >= Constants.SECOND){
 				currentSP += trainingSpeed * Constants.SECOND;			
-				skillPoints.setText("<b>" 
+				ui.skillPoints.setText("<b>" 
 						+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
 				
 				trainingTimeLeft -= Constants.SECOND;
-				timeLeft.setText(Formater.printTime(trainingTimeLeft));
+				ui.timeLeft.setText(Formater.printTime(trainingTimeLeft));
 			} else {
 				timer.stop();
 				trainingTimeLeft = 0;
 				thereIsASkillTraining = false;
-				timeLeft.setText(Formater.printTime(trainingTimeLeft));
+				ui.timeLeft.setText(Formater.printTime(trainingTimeLeft));
 			}
 		}
 	}

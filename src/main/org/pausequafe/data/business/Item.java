@@ -2,9 +2,10 @@ package org.pausequafe.data.business;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * This is a generic class describing all Eve items.<br><br>
- * There's inheritage to add specific attributes to the differents categories of items :
+ * There's inheritage to add specific attributes to the different categories of items :
  * 
  * <ul><li>Skills
  * <li>Modules
@@ -13,25 +14,20 @@ import java.util.List;
  * 
  * @author diabeteman
  */
-public class Item implements Comparable<Item> {
+public class Item {
 	
 	//////////////////////
 	// protected fields //
 	//////////////////////	
 	protected int typeID;
 	protected String typeName;
-	protected String description;
-	protected double basePrice;
-	protected String icon;
 	protected int metaGroupID;
 	protected int metaLevel;
 	
-	protected List<ItemAttribute> attributeList = new ArrayList<ItemAttribute>();
-	
 	protected List<PreRequisite> preReqs = null;
-	private PreRequisite preRequisite1 = new PreRequisite();
-	private PreRequisite preRequisite2 = new PreRequisite();
-	private PreRequisite preRequisite3= new PreRequisite();
+	protected PreRequisite preRequisite1 = new PreRequisite();
+	protected PreRequisite preRequisite2 = new PreRequisite();
+	protected PreRequisite preRequisite3 = new PreRequisite();
 	
 
     /////////////////
@@ -40,25 +36,13 @@ public class Item implements Comparable<Item> {
     public Item(){
     }
 	
+ 
 
-
-	public Item(int typeID, String typeName, String description,
-								double basePrice, double radius, double mass,
-								double volume, double capacity) {
-		super();
+	public Item(int typeID, String typeName, int metaGroupID) {
 		this.typeID = typeID;
 		this.typeName = typeName;
-		this.description = description;
-		this.basePrice = basePrice;
-		
-		attributeList.add(new ItemAttribute("Radius", "Structure", radius, "m", 1));
-		attributeList.add(new ItemAttribute("Mass", "Structure", mass, "kg", 2));
-		attributeList.add(new ItemAttribute("Volume", "Structure", volume, "m3", 9));
-		attributeList.add(new ItemAttribute("Capacity", "Structure", capacity, "m3", 9));
-		
+		this.metaGroupID = metaGroupID;
 	}
-
-
 
 	////////////////////
     // public methods //
@@ -67,23 +51,6 @@ public class Item implements Comparable<Item> {
     	preReqs.add(preReq);
     }
     
-    /**
-     * Used for lexical sorting of the items when exporting sub-parts of the database.
-     * 
-     * @param o 
-     * 		The item to be compared with.
-     * 
-     * @return
-     * 		
-     * 		<li>A positive value if the Item o is "before" (in alphabetical order) the caller of the method.
-     * 		<li>A negative value if the Item o is "after" (in alphabetical order) the caller of the method.
-     * 		<li>0 if the Items have the same name.
-     */
-	public int compareTo(Item o) {
-		return this.typeName.compareTo(o.getTypeName());
-	}
-	
-	
     @Override
 	public String toString() {
     	String result = "";
@@ -99,9 +66,6 @@ public class Item implements Comparable<Item> {
     }
     public String getTypeName() {
     	return typeName;
-    }
-    public String getDescription() {
-    	return description;
     }
     public List<PreRequisite> getPreReqs() {
     	if(preReqs == null){
@@ -126,45 +90,20 @@ public class Item implements Comparable<Item> {
     	default : return null;
     	}
     }
-    
-    public double getBasePrice() {
-    	return basePrice;
-    }
-    public String getIcon() {
-    	return icon;
-    }
     public int getMetaGroupID(){
     	return metaGroupID;
     }
-    
-    public List<ItemAttribute> getAttributeList(){
-    	return attributeList;
+    public int getMetaLevel(){
+    	return metaLevel;
     }
 	/////////////
     // setters //
     /////////////
 
 
-	public void addAttribute(ItemAttribute attribute) {
-		attributeList.add(attribute);
-	}
-	
-	public void setIcon(String icon){
-		this.icon = icon;
-	}
-	
 	public void setMetaGroupID(int metaGroupID){
 		this.metaGroupID = metaGroupID;
 	}
-
-
-
-	public int getMetaLevel() {
-		return metaLevel;
-	}
-
-
-
 	public void setMetaLevel(int metaLevel) {
 		this.metaLevel = metaLevel;
 	}

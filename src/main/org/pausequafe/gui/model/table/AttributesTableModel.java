@@ -4,8 +4,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pausequafe.data.business.Item;
 import org.pausequafe.data.business.ItemAttribute;
+import org.pausequafe.data.business.ItemDetailed;
 import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.QModelIndex;
@@ -17,16 +17,14 @@ import com.trolltech.qt.gui.QAbstractTableModel;
 
 public class AttributesTableModel extends QAbstractTableModel {
 
-	Item item;
 	List<ItemAttribute> displayList = new ArrayList<ItemAttribute>();
 	
-	public AttributesTableModel(Item item) {
+	public AttributesTableModel(ItemDetailed item) {
 		this(null,item);
 	}
 
-	public AttributesTableModel(QObject parent, Item item) {
+	public AttributesTableModel(QObject parent, ItemDetailed item) {
 		super(parent);
-		this.item = item;
 		for(ItemAttribute att : item.getAttributeList()){
 			if(att.getValue() != 0){
 				displayList.add(att);

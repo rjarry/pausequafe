@@ -1,6 +1,9 @@
 package org.pausequafe.gui.model.tree;
 
+import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
+import org.pausequafe.data.business.PreRequisite;
+import org.pausequafe.data.business.Skill;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.gui.QFont;
@@ -8,11 +11,13 @@ import com.trolltech.qt.gui.QIcon;
 
 public class TreeSkill extends TreeElement {
 
-	private Item item;
+	private Skill skill;
+	private CharacterSheet sheet;
 	
-	public TreeSkill(Item item) {
+	public TreeSkill(Skill skill, CharacterSheet sheet) {
 		super();
-		this.item = item;
+		this.skill = skill;
+		this.sheet = sheet;
 	}
 
 	@Override
@@ -22,12 +27,30 @@ public class TreeSkill extends TreeElement {
 
 	@Override
 	public QIcon getIcon() {
-		return new QIcon(Constants.METAGROUP_ICONS_SMALL[item.getMetaGroupID()]);
+		if(sheet.getSkills().containsKey(skill.getTypeID())){
+			return new QIcon(Constants.SKILL_LEVEL_ICON[sheet.getSkill(skill.getTypeID()).getLevel()]);
+		} else {
+			if(skillIsTrainable()){
+				return new QIcon(Constants.SKILL_TRAINABLE);
+			} else {
+				return new QIcon(Constants.SKILL_NOT_TRAINABLE);
+			}
+		}
+	}
+
+	private boolean skillIsTrainable() {
+		boolean trainable = true;
+		for(PreRequisite req : skill.getPreReqs()){
+			trainable = sheet.getSkills().containsKey(req.getTypeID()) &&
+						sheet.getSkill(req.getTypeID()).getLevel() >= req.getRequiredLevel();
+			if(!trainable) break;
+		}
+		return trainable;
 	}
 
 	@Override
 	public String getName() {
-		return "" + item.getMetaLevel();
+		return skill.getTypeName() + " (x" + skill.getRank() + ")";
 	}
 
 	@Override
@@ -38,12 +61,19 @@ public class TreeSkill extends TreeElement {
 
 	@Override
 	public Item getItem() {
-		return item;
+		return skill;
 	}
 
 	@Override
 	public String toString() {
-		return item.getTypeName();
+		return skill.getTypeName();
 	}
+
+	@Override
+	public boolean acceptRow() {
+		return sheet.getSkills().containsKey(skill.getTypeID());
+	}
+	
+	
 
 }

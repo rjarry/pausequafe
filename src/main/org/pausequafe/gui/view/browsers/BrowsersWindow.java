@@ -1,28 +1,19 @@
 package org.pausequafe.gui.view.browsers;
 
-import com.trolltech.qt.gui.*;
+import java.util.List;
+
+import org.pausequafe.data.business.CharacterSheet;
+
+import com.trolltech.qt.gui.QWidget;
 
 public class BrowsersWindow extends QWidget {
 
     Ui_BrowsersWindow ui = new Ui_BrowsersWindow();
     
-    BrowserItemTab skillBrowser;
-    BrowserItemTab shipBrowser;
-    BrowserItemTab moduleBrowser;
+    private BrowserSkillTab skillBrowser;
+    private BrowserShipTab shipBrowser;
+    private BrowserItemTab moduleBrowser;
     
-    QTabWidget tabs;
-    
-    public QFrame frame;
-
-    public static void main(String[] args) {
-        QApplication.initialize(args);
-
-        BrowsersWindow testBrowsersWindow = new BrowsersWindow();
-        testBrowsersWindow.show();
-
-        QApplication.exec();
-    }
-
     public BrowsersWindow() {
         this(null);
     }
@@ -34,22 +25,41 @@ public class BrowsersWindow extends QWidget {
     
     private void setupUi(){
     	ui.setupUi(this);
-    	frame = (QFrame) this.findChild(QFrame.class, "frame");
-    	tabs = new QTabWidget(this);
+
+    	this.setWindowTitle("Browsers");
     	
-    	QVBoxLayout layout = new QVBoxLayout();
-    	layout.setContentsMargins(0, 0, 0, 0);
-    	layout.setSpacing(0);
-    	frame.setLayout(layout);
+    	ui.sheetCombo.addItem("no character");
+    	ui.sheetCombo.currentIndexChanged.connect(this, "changeCurrentCharacter(int)");
     	
-    	layout.addWidget(tabs);
-    	
-    	skillBrowser = new BrowserItemTab(this, 150);
-    	shipBrowser = new BrowserItemTab(this, 4);
+    	skillBrowser = new BrowserSkillTab(this, 150);
+    	shipBrowser = new BrowserShipTab(this, 4);
     	moduleBrowser = new BrowserItemTab(this, 9);
     	
-    	tabs.addTab(skillBrowser, "Skills");
-    	tabs.addTab(shipBrowser, "Ships");
-    	tabs.addTab(moduleBrowser, "Ship Equipement");
+    	ui.tabWidget.removeTab(0);
+    	
+    	ui.tabWidget.addTab(skillBrowser, "Skills");
+    	ui.tabWidget.addTab(shipBrowser, "Ships");
+    	ui.tabWidget.addTab(moduleBrowser, "Ship Equipement");
+    	
+    	this.resize(1100, 700);
     }
+
+    ///////////
+    // slots //
+    ///////////
+    @SuppressWarnings("unused")
+	private void changeCurrentCharacter(int index){
+    	int i = index;
+    	skillBrowser.setSheet((CharacterSheet) ui.sheetCombo.itemData(index));
+    	shipBrowser.setSheet((CharacterSheet) ui.sheetCombo.itemData(index));
+    	moduleBrowser.setSheet((CharacterSheet) ui.sheetCombo.itemData(index));
+    }
+    
+	public void setSheetList(List<CharacterSheet> sheetList) {
+		for(CharacterSheet sheet : sheetList){
+			ui.sheetCombo.addItem(sheet.getName(), sheet);
+		}
+	}
+
+
 }

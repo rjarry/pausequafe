@@ -11,8 +11,8 @@
   </property>
   <property name="minimumSize" >
    <size>
-    <width>410</width>
-    <height>410</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="baseSize" >
@@ -23,6 +23,9 @@
   </property>
   <property name="windowTitle" >
    <string>MainWindow</string>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac" >
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralWidget" />
   <widget class="QMenuBar" name="menuBar" >
