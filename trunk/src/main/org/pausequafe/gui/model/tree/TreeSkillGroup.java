@@ -9,6 +9,7 @@ import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
+import org.pausequafe.misc.util.Formater;
 
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QIcon;
@@ -61,7 +62,16 @@ public class TreeSkillGroup extends TreeElement {
 
 	@Override
 	public String getName() {
-		return marketGroup.getGroupName();
+		int groupSP = 0;
+		int skillCount = 0;
+		for(int typeID : marketGroup.getChildren()){
+			if(sheet.getSkills().containsKey(typeID)){
+				groupSP += sheet.getSkill(typeID).getSkillPoints();
+				skillCount++;
+			}
+		}
+			
+		return marketGroup.getGroupName() + ", " + Formater.printLong(groupSP) + " Points (" + skillCount + "/" + marketGroup.childCount() + " skills)";
 	}
 
 	@Override

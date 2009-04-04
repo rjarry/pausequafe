@@ -55,6 +55,9 @@ public class CharacterInfo extends QFrame {
 		ui.clock.setAlignment(Qt.AlignmentFlag.AlignRight);
 		ui.clock.setForegroundRole(ColorRole.Mid);
 		ui.clock.setText("00:00");
+		ui.cachedLabel.setAlignment(Qt.AlignmentFlag.AlignRight);
+		ui.cachedLabel.setText("<b>(Cached)</b>");
+		ui.cachedLabel.setVisible(false);
 		
 		QPixmap image = new QPixmap();
 		image.load(Constants.BLANK_PORTRAIT);
@@ -111,6 +114,7 @@ public class CharacterInfo extends QFrame {
 			ui.info.setToolTip(corpTitles);
 		}
 		ui.info.setText(textInfo);
+		ui.cachedLabel.setVisible(sheet.isCached());
 	}
 	
 	/**

@@ -78,11 +78,11 @@ public class BrowserItemTab extends QWidget {
 		ui.itemDescription.setAcceptRichText(true);
 		
 		ui.iconLabel.setPixmap(new QPixmap(Constants.NO_ITEM_SELECTED_ICON));
-		ui.itemNameLabel.setText("<font size=5>No item selected...</font>");
+		ui.itemNameLabel.setText("<b><font size=5>No item selected...</font></b>");
 		
 		ui.attributesTable.verticalHeader().setVisible(false);
 		
-		ui.sortComboBox.currentIndexChanged.connect(this, "setSortMode(int)");
+		ui.sortComboBox.activatedIndex.connect(this, "setSortMode(Integer)");
 		
 //	    tech13CheckBox.toggled.connect(proxyModel, "setTech1Shown(boolean)");
 //	    tech13CheckBox.toggled.connect(proxyModel, "setTech3Shown(boolean)");
@@ -116,7 +116,7 @@ public class BrowserItemTab extends QWidget {
 				e.printStackTrace();
 			}
     		
-			ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
+			ui.itemNameLabel.setText("<b><font size=5>" + currentItemSelected.getTypeName() + "</font></b>");
     		
     		String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
     		File iconFile = new File(icon);
@@ -142,17 +142,19 @@ public class BrowserItemTab extends QWidget {
     }
     
     @SuppressWarnings("unused")
-	private void setSortMode(int sortMode){
+	private void setSortMode(Integer sortMode){
     	switch(sortMode){
-    	case 1 :
+    	case 0 :
     		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_NAME);
     		break;
-    	case 2 :
+    	case 1 :
     		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_META_LEVEL);
     		break;
     	default :
     		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_NAME);
     	}
+    	
+        ui.itemTree.setModel(proxyModel);
     	ui.itemTree.sortByColumn(0, Qt.SortOrder.AscendingOrder);
     	ui.itemTree.update();
     }

@@ -12,7 +12,7 @@
   <property name="windowTitle" >
    <string>Browser</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout_4" >
    <property name="spacing" >
     <number>0</number>
    </property>
@@ -24,682 +24,725 @@
      <property name="orientation" >
       <enum>com.trolltech.qt.core.Qt.Orientation.Horizontal</enum>
      </property>
+     <property name="opaqueResize" >
+      <bool>false</bool>
+     </property>
      <property name="childrenCollapsible" >
       <bool>false</bool>
      </property>
-     <widget class="QSplitter" name="leftSplitter" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Expanding" hsizetype="Fixed" >
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+     <widget class="QFrame" name="rightArea" >
+      <property name="minimumSize" >
+       <size>
+        <width>240</width>
+        <height>0</height>
+       </size>
       </property>
-      <property name="orientation" >
-       <enum>com.trolltech.qt.core.Qt.Orientation.Vertical</enum>
+      <property name="frameShape" >
+       <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
       </property>
-      <property name="childrenCollapsible" >
-       <bool>false</bool>
+      <property name="frameShadow" >
+       <enum>com.trolltech.qt.gui.QFrame.Shadow.Raised</enum>
       </property>
-      <widget class="QFrame" name="filterFrame" >
-       <property name="minimumSize" >
-        <size>
-         <width>0</width>
-         <height>156</height>
-        </size>
+      <layout class="QVBoxLayout" name="verticalLayout" >
+       <property name="spacing" >
+        <number>5</number>
        </property>
-       <property name="maximumSize" >
-        <size>
-         <width>16777215</width>
-         <height>156</height>
-        </size>
-       </property>
-       <property name="frameShape" >
-        <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>com.trolltech.qt.gui.QFrame.Shadow.Raised</enum>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_2" >
-        <property name="horizontalSpacing" >
-         <number>0</number>
-        </property>
-        <property name="verticalSpacing" >
-         <number>3</number>
-        </property>
-        <property name="margin" >
-         <number>0</number>
-        </property>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="filterLabel" >
-          <property name="enabled" >
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>35</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>35</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text" >
-           <string> Filter :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" >
-         <widget class="QComboBox" name="filterComboBox" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="focusPolicy" >
-           <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
-          </property>
-          <item>
-           <property name="text" >
-            <string>All items</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="1" column="0" >
-         <widget class="QLabel" name="sortLabel" >
-          <property name="enabled" >
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>32</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>32</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text" >
-           <string> Sort :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1" >
-         <widget class="QComboBox" name="sortComboBox" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="focusPolicy" >
-           <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
-          </property>
-          <item>
-           <property name="text" >
-            <string>Sort by Item Name</string>
-           </property>
-          </item>
-          <item>
-           <property name="text" >
-            <string>Sort by Meta Level</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2" >
-         <widget class="QGroupBox" name="showGroupBox" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>221</width>
-            <height>87</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>16777215</width>
-            <height>87</height>
-           </size>
-          </property>
-          <property name="baseSize" >
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="title" >
-           <string>Show</string>
-          </property>
-          <widget class="QCheckBox" name="tech13CheckBox" >
-           <property name="geometry" >
-            <rect>
-             <x>10</x>
-             <y>20</y>
-             <width>81</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy" >
-            <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-           </property>
-           <property name="text" >
-            <string>Tech I &amp;&amp; III</string>
-           </property>
-           <property name="checked" >
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="tech2CheckBox" >
-           <property name="geometry" >
-            <rect>
-             <x>10</x>
-             <y>40</y>
-             <width>61</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>61</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>61</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="focusPolicy" >
-            <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-           </property>
-           <property name="text" >
-            <string>Tech II</string>
-           </property>
-           <property name="checked" >
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="factionCheckBox" >
-           <property name="geometry" >
-            <rect>
-             <x>103</x>
-             <y>20</y>
-             <width>111</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy" >
-            <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-           </property>
-           <property name="text" >
-            <string>Faction / Storyline</string>
-           </property>
-           <property name="checked" >
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="deadspaceCheckBox" >
-           <property name="geometry" >
-            <rect>
-             <x>103</x>
-             <y>40</y>
-             <width>81</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="focusPolicy" >
-            <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-           </property>
-           <property name="text" >
-            <string>DeadSpace</string>
-           </property>
-           <property name="checked" >
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="officerCheckBox" >
-           <property name="geometry" >
-            <rect>
-             <x>103</x>
-             <y>60</y>
-             <width>61</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>61</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>61</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="focusPolicy" >
-            <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-           </property>
-           <property name="text" >
-            <string>Officer</string>
-           </property>
-           <property name="checked" >
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="namedCheckBox" >
-           <property name="geometry" >
-            <rect>
-             <x>10</x>
-             <y>60</y>
-             <width>61</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>61</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>61</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="focusPolicy" >
-            <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-           </property>
-           <property name="text" >
-            <string>Named</string>
-           </property>
-           <property name="checked" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="3" column="0" >
-         <widget class="QLabel" name="sortLabel_2" >
-          <property name="enabled" >
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>45</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>45</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text" >
-           <string> Search :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1" >
-         <widget class="QLineEdit" name="lineEdit" >
-          <property name="minimumSize" >
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="focusPolicy" >
-           <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-          </property>
-          <property name="inputMask" >
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QTreeView" name="itemTree" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-         <horstretch>5</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>0</width>
-         <height>200</height>
-        </size>
-       </property>
-       <property name="focusPolicy" >
-        <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy" >
-        <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAsNeeded</enum>
-       </property>
-       <property name="showDropIndicator" stdset="0" >
-        <bool>false</bool>
-       </property>
-       <property name="dragEnabled" >
-        <bool>true</bool>
-       </property>
-       <property name="dragDropMode" >
-        <enum>com.trolltech.qt.gui.QAbstractItemView.DragDropMode.DragOnly</enum>
-       </property>
-       <property name="indentation" >
-        <number>20</number>
-       </property>
-       <property name="uniformRowHeights" >
-        <bool>true</bool>
-       </property>
-       <property name="sortingEnabled" >
-        <bool>true</bool>
-       </property>
-       <property name="headerHidden" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QSplitter" name="centerSplitter" >
-      <property name="orientation" >
-       <enum>com.trolltech.qt.core.Qt.Orientation.Vertical</enum>
-      </property>
-      <property name="childrenCollapsible" >
-       <bool>false</bool>
-      </property>
-      <widget class="QFrame" name="itemHeaderFrame" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>4</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>325</width>
-         <height>74</height>
-        </size>
-       </property>
-       <property name="maximumSize" >
-        <size>
-         <width>16777215</width>
-         <height>74</height>
-        </size>
-       </property>
-       <property name="frameShape" >
-        <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
-       </property>
-       <property name="lineWidth" >
+       <property name="margin" >
         <number>0</number>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" >
-        <property name="spacing" >
-         <number>5</number>
-        </property>
-        <property name="margin" >
-         <number>5</number>
-        </property>
-        <item>
-         <widget class="QFrame" name="iconFrame" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>64</width>
-            <height>64</height>
-           </size>
-          </property>
-          <property name="maximumSize" >
-           <size>
-            <width>64</width>
-            <height>64</height>
-           </size>
-          </property>
-          <property name="frameShape" >
-           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
-          </property>
-          <property name="frameShadow" >
-           <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
-          </property>
-          <property name="lineWidth" >
+       <item>
+        <widget class="QFrame" name="filterFrame" >
+         <property name="minimumSize" >
+          <size>
+           <width>0</width>
+           <height>156</height>
+          </size>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>16777215</width>
+           <height>156</height>
+          </size>
+         </property>
+         <property name="frameShape" >
+          <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>com.trolltech.qt.gui.QFrame.Shadow.Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2" >
+          <property name="horizontalSpacing" >
            <number>0</number>
           </property>
-          <widget class="QLabel" name="metaGroupIcon" >
-           <property name="geometry" >
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>64</width>
-             <height>64</height>
-            </rect>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-           <property name="autoFillBackground" >
-            <bool>false</bool>
-           </property>
-           <property name="frameShape" >
-            <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
-           </property>
-           <property name="text" >
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="iconLabel" >
-           <property name="geometry" >
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>64</width>
-             <height>64</height>
-            </rect>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-           <property name="maximumSize" >
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-           <property name="autoFillBackground" >
-            <bool>false</bool>
-           </property>
-           <property name="frameShape" >
-            <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
-           </property>
-           <property name="text" >
-            <string/>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="itemNameLabel" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+          <property name="verticalSpacing" >
+           <number>3</number>
           </property>
-          <property name="minimumSize" >
-           <size>
-            <width>246</width>
-            <height>64</height>
-           </size>
+          <property name="margin" >
+           <number>0</number>
           </property>
-          <property name="maximumSize" >
-           <size>
-            <width>16777215</width>
-            <height>64</height>
-           </size>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="filterLabel" >
+            <property name="enabled" >
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>35</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>35</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string> Filter :</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="QComboBox" name="filterComboBox" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="focusPolicy" >
+             <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+            </property>
+            <item>
+             <property name="text" >
+              <string>All items</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="sortLabel" >
+            <property name="enabled" >
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>32</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>32</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string> Sort :</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QComboBox" name="sortComboBox" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="focusPolicy" >
+             <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+            </property>
+            <item>
+             <property name="text" >
+              <string>Sort by Item Name</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Sort by Meta Level</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2" >
+           <widget class="QGroupBox" name="showGroupBox" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>221</width>
+              <height>87</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>16777215</width>
+              <height>87</height>
+             </size>
+            </property>
+            <property name="baseSize" >
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="title" >
+             <string>Show</string>
+            </property>
+            <widget class="QCheckBox" name="tech13CheckBox" >
+             <property name="geometry" >
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>85</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="focusPolicy" >
+              <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+             </property>
+             <property name="text" >
+              <string>Tech I &amp;&amp; III</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="tech2CheckBox" >
+             <property name="geometry" >
+              <rect>
+               <x>10</x>
+               <y>40</y>
+               <width>65</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>65</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>65</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="focusPolicy" >
+              <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+             </property>
+             <property name="text" >
+              <string>Tech II</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="factionCheckBox" >
+             <property name="geometry" >
+              <rect>
+               <x>103</x>
+               <y>20</y>
+               <width>121</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>121</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>121</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="focusPolicy" >
+              <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+             </property>
+             <property name="text" >
+              <string>Faction / Storyline</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="deadspaceCheckBox" >
+             <property name="geometry" >
+              <rect>
+               <x>103</x>
+               <y>40</y>
+               <width>85</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>85</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>85</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="focusPolicy" >
+              <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+             </property>
+             <property name="text" >
+              <string>DeadSpace</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="officerCheckBox" >
+             <property name="geometry" >
+              <rect>
+               <x>103</x>
+               <y>60</y>
+               <width>66</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>66</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>66</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="focusPolicy" >
+              <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+             </property>
+             <property name="text" >
+              <string>Officer</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="namedCheckBox" >
+             <property name="geometry" >
+              <rect>
+               <x>10</x>
+               <y>60</y>
+               <width>65</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>65</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>65</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="focusPolicy" >
+              <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+             </property>
+             <property name="text" >
+              <string>Named</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="sortLabel_2" >
+            <property name="enabled" >
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>45</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>45</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string> Search :</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="QLineEdit" name="lineEdit" >
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="focusPolicy" >
+             <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+            </property>
+            <property name="inputMask" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTreeView" name="itemTree" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+           <horstretch>5</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>0</width>
+           <height>200</height>
+          </size>
+         </property>
+         <property name="focusPolicy" >
+          <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy" >
+          <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAsNeeded</enum>
+         </property>
+         <property name="showDropIndicator" stdset="0" >
+          <bool>false</bool>
+         </property>
+         <property name="dragEnabled" >
+          <bool>true</bool>
+         </property>
+         <property name="dragDropMode" >
+          <enum>com.trolltech.qt.gui.QAbstractItemView.DragDropMode.DragOnly</enum>
+         </property>
+         <property name="indentation" >
+          <number>20</number>
+         </property>
+         <property name="uniformRowHeights" >
+          <bool>true</bool>
+         </property>
+         <property name="sortingEnabled" >
+          <bool>true</bool>
+         </property>
+         <property name="headerHidden" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QFrame" name="centerArea" >
+      <property name="frameShape" >
+       <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+      </property>
+      <property name="frameShadow" >
+       <enum>com.trolltech.qt.gui.QFrame.Shadow.Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3" >
+       <property name="spacing" >
+        <number>2</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="itemHeaderFrame" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+           <horstretch>4</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>325</width>
+           <height>74</height>
+          </size>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>16777215</width>
+           <height>74</height>
+          </size>
+         </property>
+         <property name="frameShape" >
+          <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
+         </property>
+         <property name="lineWidth" >
+          <number>0</number>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" >
+          <property name="spacing" >
+           <number>5</number>
           </property>
-          <property name="font" >
-           <font>
-            <family>Lucida Sans Unicode</family>
-            <pointsize>11</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
+          <property name="margin" >
+           <number>5</number>
           </property>
-          <property name="text" >
-           <string>Item Name</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QTableView" name="attributesTable" >
-       <property name="focusPolicy" >
-        <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy" >
-        <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="alternatingRowColors" >
-        <bool>true</bool>
-       </property>
-       <property name="selectionMode" >
-        <enum>com.trolltech.qt.gui.QAbstractItemView.SelectionMode.ExtendedSelection</enum>
-       </property>
-       <property name="selectionBehavior" >
-        <enum>com.trolltech.qt.gui.QAbstractItemView.SelectionBehavior.SelectRows</enum>
-       </property>
-       <property name="sortingEnabled" >
-        <bool>true</bool>
-       </property>
-      </widget>
+          <item>
+           <widget class="QFrame" name="iconFrame" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>64</width>
+              <height>64</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>64</width>
+              <height>64</height>
+             </size>
+            </property>
+            <property name="frameShape" >
+             <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+            </property>
+            <property name="frameShadow" >
+             <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
+            </property>
+            <property name="lineWidth" >
+             <number>0</number>
+            </property>
+            <widget class="QLabel" name="metaGroupIcon" >
+             <property name="geometry" >
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>64</width>
+               <height>64</height>
+              </rect>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="autoFillBackground" >
+              <bool>false</bool>
+             </property>
+             <property name="frameShape" >
+              <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+            <widget class="QLabel" name="iconLabel" >
+             <property name="geometry" >
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>64</width>
+               <height>64</height>
+              </rect>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="autoFillBackground" >
+              <bool>false</bool>
+             </property>
+             <property name="frameShape" >
+              <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="itemNameLabel" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>246</width>
+              <height>64</height>
+             </size>
+            </property>
+            <property name="maximumSize" >
+             <size>
+              <width>16777215</width>
+              <height>64</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string>Item Name</string>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableView" name="attributesTable" >
+         <property name="focusPolicy" >
+          <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy" >
+          <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="alternatingRowColors" >
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode" >
+          <enum>com.trolltech.qt.gui.QAbstractItemView.SelectionMode.ExtendedSelection</enum>
+         </property>
+         <property name="selectionBehavior" >
+          <enum>com.trolltech.qt.gui.QAbstractItemView.SelectionBehavior.SelectRows</enum>
+         </property>
+         <property name="sortingEnabled" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
      <widget class="QSplitter" name="rightSplitter" >
       <property name="sizePolicy" >
@@ -947,7 +990,7 @@
             <number>5</number>
            </property>
            <property name="topMargin" >
-            <number>5</number>
+            <number>0</number>
            </property>
            <property name="rightMargin" >
             <number>5</number>

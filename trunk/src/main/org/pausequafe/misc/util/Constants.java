@@ -41,53 +41,53 @@ public class Constants {
 	// icons //
 	///////////
 	
-	public static final String BLANK_PORTRAIT = "resources/icons/JEVEMon/blank_portrait.jpg";
-	public static final String WINDOW_ICON = "resources/icons/JEVEMon/pauseQuafe_windowIcon.png";
+	public static final String BLANK_PORTRAIT = "resources/icons/PauseQuafe/blank_portrait.jpg";
+	public static final String WINDOW_ICON = "resources/icons/PauseQuafe/pauseQuafe_windowIcon.png";
 	
-	public static final String SPLASH_SCREEN = "resources/icons/JEVEMon/PauseQuafe_Splash.jpg";
+	public static final String SPLASH_SCREEN = "resources/icons/PauseQuafe/PauseQuafe_Splash.jpg";
 	
-	public static final String ERROR_ICON_FILE = "resources/icons/JEVEMon/error.png";
-	public static final String QUESTION_ICON_FILE = "resources/icons/JEVEMon/question.png";
-	public static final String DOWNLOADING_ICON = "resources/icons/JEVEMon/QuafeCan_active.mng";
-	public static final String IDLE_ICON = "resources/icons/JEVEMon/QuafeCan_idle.png";
-	public static final String SERVERSTATUS_ONLINE_ICON = "resources/icons/JEVEMon/serverStatus_online.png";
-	public static final String SERVERSTATUS_OFFLINE_ICON = "resources/icons/JEVEMon/serverStatus_offline.png";
-	public static final String SERVERSTATUS_UNKONWN_ICON = "resources/icons/JEVEMon/serverStatus_unknown.png";
+	public static final String ERROR_ICON_FILE = "resources/icons/PauseQuafe/error.png";
+	public static final String QUESTION_ICON_FILE = "resources/icons/PauseQuafe/question.png";
+	public static final String DOWNLOADING_ICON = "resources/icons/PauseQuafe/QuafeCan_active.mng";
+	public static final String IDLE_ICON = "resources/icons/PauseQuafe/QuafeCan_idle.png";
+	public static final String SERVERSTATUS_ONLINE_ICON = "resources/icons/PauseQuafe/serverStatus_online.png";
+	public static final String SERVERSTATUS_OFFLINE_ICON = "resources/icons/PauseQuafe/serverStatus_offline.png";
+	public static final String SERVERSTATUS_UNKONWN_ICON = "resources/icons/PauseQuafe/serverStatus_unknown.png";
 	
 	// prerequisites
-	public static final String SKILL_OK = "resources/icons/JEVEMon/skill_ok.png";
-	public static final String SKILL_KNOWN = "resources/icons/JEVEMon/skill_known.png";
-	public static final String SKILL_NOT_KNOWN = "resources/icons/JEVEMon/skill_not_known.png";
+	public static final String SKILL_OK = "resources/icons/PauseQuafe/skill_ok.png";
+	public static final String SKILL_KNOWN = "resources/icons/PauseQuafe/skill_known.png";
+	public static final String SKILL_NOT_KNOWN = "resources/icons/PauseQuafe/skill_not_known.png";
 	
 	// skill tree
-	public static final String[] SKILL_LEVEL_ICON = {"resources/icons/JEVEMon/skill_level_0.png",
-													"resources/icons/JEVEMon/skill_level_1.png",
-													"resources/icons/JEVEMon/skill_level_2.png",
-													"resources/icons/JEVEMon/skill_level_3.png",
-													"resources/icons/JEVEMon/skill_level_4.png",
-													"resources/icons/JEVEMon/skill_level_5.png"};
+	public static final String[] SKILL_LEVEL_ICON = {"resources/icons/PauseQuafe/skill_level_0.png",
+													"resources/icons/PauseQuafe/skill_level_1.png",
+													"resources/icons/PauseQuafe/skill_level_2.png",
+													"resources/icons/PauseQuafe/skill_level_3.png",
+													"resources/icons/PauseQuafe/skill_level_4.png",
+													"resources/icons/PauseQuafe/skill_level_5.png"};
 	
-	public static final String SKILL_TRAINABLE = "resources/icons/JEVEMon/skill_trainable.png";
-	public static final String SKILL_NOT_TRAINABLE = "resources/icons/JEVEMon/skill_not_trainable.png";
+	public static final String SKILL_TRAINABLE = "resources/icons/PauseQuafe/skill_trainable.png";
+	public static final String SKILL_NOT_TRAINABLE = "resources/icons/PauseQuafe/skill_not_trainable.png";
 	
 	// item tree
-	public static final String NO_ITEM_SELECTED_ICON = "resources/icons/JEVEMon/no_item_selected.png";
-	public static final String[] METAGROUP_ICONS_TAG = {"resources/icons/JEVEMon/tech1_no_tag.png",
-														"resources/icons/JEVEMon/tech1_no_tag.png",
-														"resources/icons/JEVEMon/tag_tech2.png",
-														"resources/icons/JEVEMon/tag_storyline",
-														"resources/icons/JEVEMon/tag_faction.png",
-														"resources/icons/JEVEMon/tag_officer.png",
-														"resources/icons/JEVEMon/tag_deadspace.png",
-														"resources/icons/JEVEMon/tag_tech3.png"};
-	public static final String[] METAGROUP_ICONS_SMALL = {"resources/icons/JEVEMon/tag_tech1_small.png",
-														"resources/icons/JEVEMon/tag_named_small.png",
-														"resources/icons/JEVEMon/tag_tech2_small.png",
-														"resources/icons/JEVEMon/tag_storyline_small.png",
-														"resources/icons/JEVEMon/tag_faction_small.png",
-														"resources/icons/JEVEMon/tag_officer_small.png",
-														"resources/icons/JEVEMon/tag_deadspace_small.png",
-														"resources/icons/JEVEMon/tag_tech3_small.png"};
+	public static final String NO_ITEM_SELECTED_ICON = "resources/icons/PauseQuafe/no_item_selected.png";
+	public static final String[] METAGROUP_ICONS_TAG = {"resources/icons/PauseQuafe/tech1_no_tag.png",
+														"resources/icons/PauseQuafe/tech1_no_tag.png",
+														"resources/icons/PauseQuafe/tag_tech2.png",
+														"resources/icons/PauseQuafe/tag_storyline",
+														"resources/icons/PauseQuafe/tag_faction.png",
+														"resources/icons/PauseQuafe/tag_officer.png",
+														"resources/icons/PauseQuafe/tag_deadspace.png",
+														"resources/icons/PauseQuafe/tag_tech3.png"};
+	public static final String[] METAGROUP_ICONS_SMALL = {"resources/icons/PauseQuafe/tag_tech1_small.png",
+														"resources/icons/PauseQuafe/tag_named_small.png",
+														"resources/icons/PauseQuafe/tag_tech2_small.png",
+														"resources/icons/PauseQuafe/tag_storyline_small.png",
+														"resources/icons/PauseQuafe/tag_faction_small.png",
+														"resources/icons/PauseQuafe/tag_officer_small.png",
+														"resources/icons/PauseQuafe/tag_deadspace_small.png",
+														"resources/icons/PauseQuafe/tag_tech3_small.png"};
 	
 	
 	////////////////////

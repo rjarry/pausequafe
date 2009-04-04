@@ -93,6 +93,9 @@ public class MarketGroup {
 	public int getGroupID() {
 		return groupID;
 	}
+	public List<Integer> getChildren(){
+		return children;
+	}
 	
 
 	// ///////////
