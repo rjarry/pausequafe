@@ -1,5 +1,6 @@
 package org.pausequafe.gui.model.tree;
 
+import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.misc.exceptions.PQException;
 
 import com.trolltech.qt.core.Qt.ItemDataRole;
@@ -14,15 +15,20 @@ import com.trolltech.qt.gui.QTreeModel;
 public class TreeModel extends QTreeModel {
 
 	private TreeElement root = null;
+	private CharacterSheet sheet = null;
 	
-	public static final int ValueRole = 500000;
-	public static final int AcceptRole = 250000;
-
+	public TreeModel() {
+		super();
+	}
+	
 	public TreeModel(TreeElement root){
+		super();
 		this.root = root;
 	}
+	
 
-	public TreeModel() {
+	public void setSheet(CharacterSheet sheet) {
+		this.sheet = sheet;
 	}
 
 	@Override
@@ -71,14 +77,11 @@ public class TreeModel extends QTreeModel {
 		Object result = null;
 		switch(role){
 		// text to display
-		case TreeModel.ValueRole    	 : result =  value; break;
-		
-		// text to display
 		case ItemDataRole.DisplayRole    : result =  elt.getName(); break;
 		// display font
 		case ItemDataRole.FontRole       : result =  elt.getFont(); break;
 		// the icon before the skills
-		case ItemDataRole.DecorationRole : result =  elt.getIcon(); break;
+		case ItemDataRole.DecorationRole : result =  elt.getIcon(sheet); break;
 		// tool tips on the skills
 		case ItemDataRole.ToolTipRole    : result =  elt.getTooltip(); break;
 
@@ -88,6 +91,4 @@ public class TreeModel extends QTreeModel {
 		return result;
 	}
 	
-	
-
 }

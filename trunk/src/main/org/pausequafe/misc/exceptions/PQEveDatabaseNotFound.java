@@ -1,7 +1,7 @@
 package org.pausequafe.misc.exceptions;
 
 @SuppressWarnings("serial")
-public class PQEveDatabaseNotFound extends PQException {
+public class PQEveDatabaseNotFound extends PQException{
 
 	public PQEveDatabaseNotFound() {
 	}

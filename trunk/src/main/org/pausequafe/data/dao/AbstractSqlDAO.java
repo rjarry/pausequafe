@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 
 /**
  * An abstract class for DAOs that use SQL to retrieve data
@@ -20,7 +20,7 @@ public abstract class AbstractSqlDAO {
 	protected Statement stat;
 	protected PreparedStatement prep;
 	
-	protected void initConnection(String dataBaseName) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
+	protected void initConnection(String dataBaseName) throws  PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		if (conn == null){
 			try {
 				Class.forName("org.sqlite.JDBC");

@@ -9,39 +9,36 @@ import org.pausequafe.misc.util.Constants;
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QIcon;
 
-public class TreePrerequisite extends TreeGroup {
+public class PrerequisiteElement extends GroupElement {
 
 	private Item item;
 	private int requiredLevel = -1;
-	private CharacterSheet sheet;
 	private boolean isRoot = true;
 	
-	public TreePrerequisite(Item toSkill, CharacterSheet sheet) {
+	public PrerequisiteElement(Item toSkill) {
 		super();
 		this.item = toSkill;
-		this.sheet = sheet;
 	}
 	
-	private TreePrerequisite(Item toSkill,int requiredLevel, CharacterSheet sheet, boolean isRoot) {
+	private PrerequisiteElement(Item toSkill,int requiredLevel, boolean isRoot) {
 		super();
 		this.item = toSkill;
 		this.requiredLevel = requiredLevel;
-		this.sheet = sheet;
 		this.isRoot = isRoot;
 	}
 
 	@Override
 	public TreeElement childAt(int position) throws PQException {
 		TreeElement child = null;
-		Integer childId = item.getPreReqs().get(position).getTypeID();
+		int childId = item.getPreReqs().get(position).getTypeID();
 		int childReqLvl = item.getPreReqs().get(position).getRequiredLevel();
 		
 		Item childItem = ItemDAO.getInstance().findItemById(childId);
 		
 		if(requiredLevel == -1){
-			child = new TreePrerequisite(childItem,childReqLvl,sheet,true);
+			child = new PrerequisiteElement(childItem,childReqLvl,true);
 		} else {
-			child = new TreePrerequisite(childItem,childReqLvl,sheet,false);
+			child = new PrerequisiteElement(childItem,childReqLvl,false);
 		}
 		
 		return child;
@@ -60,18 +57,20 @@ public class TreePrerequisite extends TreeGroup {
 		
 		return font;
 	}
-
+	
 	@Override
-	public QIcon getIcon() {
+	public QIcon getIcon(CharacterSheet sheet) {
+		QIcon result;
 		if(sheet != null && sheet.getSkills().containsKey(item.getTypeID())){
 			if(sheet.getSkill(item.getTypeID()).getLevel() >= requiredLevel){
-				return new QIcon(Constants.SKILL_OK);
+				result = new QIcon(Constants.SKILL_OK);
 			} else {
-				return new QIcon(Constants.SKILL_KNOWN);
+				result = new QIcon(Constants.SKILL_KNOWN);
 			}
 		} else {
-			return new QIcon(Constants.SKILL_NOT_KNOWN);
+			result = new QIcon(Constants.SKILL_NOT_KNOWN);
 		}
+		return result;
 	}
 
 	@Override
@@ -85,11 +84,6 @@ public class TreePrerequisite extends TreeGroup {
 			case 5: name += " V"; break;
 		}
 		return name;
-	}
-
-	@Override
-	public String getTooltip() {
-		return null;
 	}
 
 	@Override

@@ -2,14 +2,14 @@ package org.pausequafe.gui.model.tree;
 
 import org.pausequafe.data.business.Item;
 import org.pausequafe.data.business.MarketGroup;
+import org.pausequafe.data.business.Skill;
 import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.data.dao.MarketGroupDAO;
-import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 
 import com.trolltech.qt.gui.QFont;
-import com.trolltech.qt.gui.QIcon;
 
 /**
  * This class implements a tree node.
@@ -18,12 +18,12 @@ import com.trolltech.qt.gui.QIcon;
  * 
  * @author Gobi
  */
-public class TreeMarketGroup extends TreeGroup {
+public class MarketGroupElement extends GroupElement {
 
-	private MarketGroup marketGroup;
+	protected MarketGroup marketGroup;
 	
 
-	public TreeMarketGroup(MarketGroup marketGroup) {
+	public MarketGroupElement(MarketGroup marketGroup) {
 		super();
 		this.marketGroup = marketGroup;
 	}
@@ -40,21 +40,20 @@ public class TreeMarketGroup extends TreeGroup {
 		
 		if(!marketGroup.isItemContainer()){
 			MarketGroup group = MarketGroupDAO.getInstance().findMarketGroupById(childId);
-			child = new TreeMarketGroup(group);
+			child = new MarketGroupElement(group);
 		} else {
 			Item item = ItemDAO.getInstance().findItemById(childId);
-			child = new TreeItem(item);
+			if(Skill.class.isInstance(item)){
+				child = new SkillElement((Skill)item);
+			} else {
+				child = new ItemElement(item);
+			}
 		}
 			
 		return child;
 	}
 	
 	
-	@Override
-	public QIcon getIcon() {
-		return null;
-	}
-
 	@Override
 	public QFont getFont() {
 		QFont font = new QFont();
@@ -65,16 +64,6 @@ public class TreeMarketGroup extends TreeGroup {
 	@Override
 	public String getName() {
 		return marketGroup.getGroupName();
-	}
-
-	@Override
-	public String getTooltip() {
-		return null;
-	}
-
-	@Override
-	public Item getItem() {
-		return null;
 	}
 
 	@Override

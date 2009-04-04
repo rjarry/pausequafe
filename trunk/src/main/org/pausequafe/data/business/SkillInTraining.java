@@ -89,7 +89,7 @@ public class SkillInTraining {
 		print += " training to level " + trainingToLevel;
 		print += "\nCurrent SP : " + currentSP();
 		print += "\nDone : " + calculateCompletion()*100 + " %";
-		System.out.println(trainingSpeed()*1000*60*60 + " SP / h");
+//		System.out.println(trainingSpeed()*1000*60*60 + " SP / h");
 		
     	return print;
     }

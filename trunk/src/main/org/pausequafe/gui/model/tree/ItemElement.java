@@ -1,6 +1,8 @@
 package org.pausequafe.gui.model.tree;
 
+import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
+import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.gui.QFont;
@@ -13,43 +15,47 @@ import com.trolltech.qt.gui.QIcon;
  * 
  * @author Gobi
  */
-public class TreeItem extends TreeElement {
+public class ItemElement implements TreeElement {
 
-	private Item item;
+	protected Item item;
 	
-	public TreeItem(Item item) {
+	public ItemElement(Item item) {
 		super();
 		this.item = item;
 	}
 
-	@Override
 	public QFont getFont() {
 		return null;
 	}
 
-	@Override
 	public QIcon getIcon() {
-		return new QIcon(Constants.METAGROUP_ICONS_SMALL[item.getMetaGroupID()]);
+		return getIcon(null);
 	}
 
 	@Override
+	public QIcon getIcon(CharacterSheet sheet) {
+		return new QIcon(Constants.METAGROUP_ICONS_SMALL[item.getMetaGroupID()]);
+	}
+	
 	public String getName() {
 		return item.getTypeName();
 	}
 
-	@Override
 	public String getTooltip() {
 		return null;
 	}
 
-	@Override
 	public Item getItem() {
 		return item;
 	}
 
-	@Override
-	public String toString() {
-		return item.getTypeName();
+	public TreeElement childAt(int position) throws PQException {
+		throw new PQException("Leafs don't have children");
 	}
+
+	public int childCount() {
+		return 0;
+	}
+
 
 }

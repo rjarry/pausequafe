@@ -35,6 +35,8 @@ public class SQLConstants {
 	public static final String ATTRIBUTEID_COL = "attributeID";
 	public static final String UNIT_COL = "unit";
 	public static final String UNITID_COL = "unitID";
+	public static final String CATEGORYNAME_COL = "categoryName";
+	public static final String PARENTGRPID_COL = "parentGroupID";
 	
 	// attributes ids
 	public static final int REQUIRED_SKILL_1_ATTID = 182;
@@ -54,17 +56,32 @@ public class SQLConstants {
 
 	// Queries
 //	public static final String QUERY_TYPES_BY_ID = "select * from invTypes where typeID in (?)";
-	public static final String QUERY_MARKETGRP_BY_ID = "select * from invMarketGroups where marketGroupID in (?)";
+	public static final String QUERY_MARKETGRP_BY_ID = "select "+MARKETGRPID_COL+","+MARKETGRPNAME_COL+","+HASTYPE_COL+
+	                                                   " from invMarketGroups where marketGroupID in (?)";
+	public static final String QUERY_MARKETGRP_BY_PARENT = "select "+MARKETGRPID_COL+","+MARKETGRPNAME_COL+","+HASTYPE_COL+","+PARENTGRPID_COL+
+			                                               " from invMarketGroups where parentGroupID in (?)";
 	public static final String QUERY_MARKETGRP_BY_ID_WITHCHILDREN
-		= "select mk1.*,mk2.marketGroupID as " + CHILDID_COL + " from invMarketGroups mk1,invMarketGroups mk2 where mk1.marketGroupID in (?) and mk1.marketGroupID=mk2.parentGroupID"
+		= "select mk1."+MARKETGRPID_COL+" as "+MARKETGRPID_COL+",mk1."+MARKETGRPNAME_COL+" as "+MARKETGRPNAME_COL+",mk1."+HASTYPE_COL+" as "+HASTYPE_COL+",mk2.marketGroupID as " + CHILDID_COL + " from invMarketGroups mk1,invMarketGroups mk2 where mk1.marketGroupID in (?) and mk1.marketGroupID=mk2.parentGroupID"
 		  + " union " +
-		  "select mk.*,t.typeID as " + CHILDID_COL + " from invMarketGroups mk,invTypes t where mk.marketGroupID in (?) and mk.marketGroupID=t.marketGroupID" ;
+		  "select mk1."+MARKETGRPID_COL+" as "+MARKETGRPID_COL+",mk1."+MARKETGRPNAME_COL+" as "+MARKETGRPNAME_COL+",mk1."+HASTYPE_COL+" as "+HASTYPE_COL+",t.typeID as " + CHILDID_COL + " from invMarketGroups mk1,invTypes t where mk1.marketGroupID in (?) and mk1.marketGroupID=t.marketGroupID" ;
 
-	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.metaGroupID,t.typeName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value " +
-													"FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at " +
+	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.metaGroupID,t.typeName,c.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value  " +
+													"FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at, invGroups g, invCategories c " +
 													"WHERE t.typeID in (?) " +
 													"AND t.typeID = a.typeID " +
-													"AND a.attributeID = at.attributeID ";
+													"AND a.attributeID = at.attributeID " +
+													"AND t.groupID=g.groupID " +
+													"AND g.categoryID=c.categoryID " +
+													"AND at.attributeID in ("+REQUIRED_SKILL_1_ATTID+","+REQUIRED_SKILL_2_ATTID+","+REQUIRED_SKILL_3_ATTID+","+REQUIRED_SKILL_1_LEVEL_ATTID+","+REQUIRED_SKILL_2_LEVEL_ATTID+","+REQUIRED_SKILL_3_LEVEL_ATTID+","+METALEVEL_ATTID+","+RANK_ATTID+") ";
+	
+	public static final String QUERY_TYPE_BY_PARENT = "SELECT t.typeID,t.marketGroupID,t.metaGroupID,t.typeName,c.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value  " +
+	                                                  "FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at, invGroups g, invCategories c " +
+	                                                  "WHERE t.marketGroupID in (?) " +
+	                                                  "AND t.typeID = a.typeID " +
+	                                                  "AND a.attributeID = at.attributeID " +
+	                                                  "AND t.groupID=g.groupID " +
+	                                                  "AND g.categoryID=c.categoryID " +
+	                                                  "AND at.attributeID in ("+REQUIRED_SKILL_1_ATTID+","+REQUIRED_SKILL_2_ATTID+","+REQUIRED_SKILL_3_ATTID+","+REQUIRED_SKILL_1_LEVEL_ATTID+","+REQUIRED_SKILL_2_LEVEL_ATTID+","+REQUIRED_SKILL_3_LEVEL_ATTID+","+METALEVEL_ATTID+","+RANK_ATTID+") ";;
 	
 	public static final String QUERY_ITEM_DETAILS_BY_ID =	"SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice " +
 															"FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u " +
@@ -83,6 +100,7 @@ public class SQLConstants {
 	public static final String CHARACTERNAME_COL = "characterName";
 	public static final String USERID_COL = "userID";
 	public static final String APIKEY_COL = "apiKey";
+
 	
 	// Queries
 	public static final String QUERY_MONITORED_CHARACTERS = "SELECT * FROM monitoredCharacters WHERE isMonitored=1";
