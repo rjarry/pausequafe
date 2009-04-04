@@ -4,16 +4,29 @@ import java.util.List;
 
 import org.pausequafe.data.business.CharacterSheet;
 
+import com.trolltech.qt.gui.QComboBox;
+import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QToolBar;
 import com.trolltech.qt.gui.QWidget;
 
 public class BrowsersWindow extends QWidget {
 
     Ui_BrowsersWindow ui = new Ui_BrowsersWindow();
     
+    ////////////////////
+    // private fields //
+    ////////////////////
     private BrowserSkillTab skillBrowser;
     private BrowserShipTab shipBrowser;
     private BrowserItemTab moduleBrowser;
     
+    private QToolBar toolBar;
+    private QComboBox sheetCombo;
+    
+    
+    //////////////////
+    // constructors //
+    //////////////////
     public BrowsersWindow() {
         this(null);
     }
@@ -23,13 +36,23 @@ public class BrowsersWindow extends QWidget {
         setupUi();
     }
     
+    //////////////////
+    // widget setup //
+    //////////////////
     private void setupUi(){
     	ui.setupUi(this);
 
     	this.setWindowTitle("Browsers");
     	
-    	ui.sheetCombo.addItem("no character");
-    	ui.sheetCombo.currentIndexChanged.connect(this, "changeCurrentCharacter(int)");
+    	toolBar = new QToolBar(this);
+    	ui.verticalLayout.insertWidget(0,toolBar);
+    	
+    	sheetCombo = new QComboBox(this);
+    	toolBar.addWidget(new QLabel(" Active Character : "));
+    	toolBar.addWidget(sheetCombo);
+    	
+    	sheetCombo.addItem("no character");
+    	sheetCombo.currentIndexChanged.connect(this, "changeCurrentCharacter(int)");
     	
     	skillBrowser = new BrowserSkillTab(this, 150);
     	shipBrowser = new BrowserShipTab(this, 4);
@@ -50,14 +73,14 @@ public class BrowsersWindow extends QWidget {
     @SuppressWarnings("unused")
 	private void changeCurrentCharacter(int index){
     	int i = index;
-    	skillBrowser.setSheet((CharacterSheet) ui.sheetCombo.itemData(index));
-    	shipBrowser.setSheet((CharacterSheet) ui.sheetCombo.itemData(index));
-    	moduleBrowser.setSheet((CharacterSheet) ui.sheetCombo.itemData(index));
+    	skillBrowser.setSheet((CharacterSheet) sheetCombo.itemData(index));
+    	shipBrowser.setSheet((CharacterSheet) sheetCombo.itemData(index));
+    	moduleBrowser.setSheet((CharacterSheet) sheetCombo.itemData(index));
     }
     
 	public void setSheetList(List<CharacterSheet> sheetList) {
 		for(CharacterSheet sheet : sheetList){
-			ui.sheetCombo.addItem(sheet.getName(), sheet);
+			sheetCombo.addItem(sheet.getName(), sheet);
 		}
 	}
 

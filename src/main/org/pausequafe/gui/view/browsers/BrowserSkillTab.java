@@ -70,7 +70,7 @@ public class BrowserSkillTab extends QWidget {
 		ui.itemDescription.setAcceptRichText(true);
 		
 		ui.iconLabel.setPixmap(new QPixmap(Constants.NO_ITEM_SELECTED_ICON));
-		ui.itemNameLabel.setText("<font size=5>No item selected...</font>");
+		ui.itemNameLabel.setText("<b><font size=5>No item selected...</font></b>");
 		
 		ui.attributesTable.verticalHeader().setVisible(false);
     }
@@ -97,7 +97,7 @@ public class BrowserSkillTab extends QWidget {
 				e.printStackTrace();
 			}
     		
-			ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
+			ui.itemNameLabel.setText("<b><font size=5>" + currentItemSelected.getTypeName() + "</font></b>");
     		
     		String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
     		File iconFile = new File(icon);

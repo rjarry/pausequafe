@@ -4,27 +4,23 @@ QWidget {
 }
 
 QTreeView {
-    show-decoration-selected: 1;
+	show-decoration-selected: 0;
 }
 
 QTreeView::item {
-	margin : 1px 0px 1px 0px;
 	border : 1px solid transparent;
-	border-left : 0px;
-	border-right : 0px;
+	border-radius : 3px;
+
 }
 
 QTreeView::item:hover {
+	border: 1px solid #ffc8f6;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
 		stop: 0 #ffe0fa, stop: 1 #ffc8f6);
-
-
 }
 
 QTreeView::item:selected {
-	border: 1px solid #ff5ee5;
-	border-left : 0px;
-	border-right : 0px;
+	border: 1px solid #ff84ec;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
 		stop: 0 #ffb8e9, stop: 1 #ff84ec);
 	color : black;
