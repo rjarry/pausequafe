@@ -11,10 +11,10 @@ import org.pausequafe.data.business.MarketGroup;
 import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.data.dao.MarketGroupDAO;
+import org.pausequafe.gui.model.tree.MarketGroupElement;
 import org.pausequafe.gui.model.tree.TreeModel;
-import org.pausequafe.gui.model.tree.TreeSkillGroup;
-import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
 import org.pausequafe.gui.view.misc.ErrorMessage;
+import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
@@ -41,6 +41,8 @@ public class CharacterSkills extends QWidget {
 	
 	private QTimer timer;
 
+	private TreeModel itemTreeModel;
+
 	//////////////////
 	// constructors //
 	//////////////////
@@ -51,6 +53,27 @@ public class CharacterSkills extends QWidget {
     public CharacterSkills(QWidget parent, CharacterSheet sheet, SkillInTraining inTraining) {
         super(parent);
         setupUi();
+        
+        MarketGroup group=null;
+        try {
+        	group = MarketGroupDAO.getInstance().findMarketGroupById(150);
+        } catch (PQSQLDriverNotFoundException e) {
+        	ErrorMessage message = new ErrorMessage(tr(Constants.DRIVER_NOT_FOUND_ERROR));
+        	message.exec();
+        } catch (PQUserDatabaseFileCorrupted e) {
+        	ErrorMessage message = new ErrorMessage(tr(Constants.USER_DB_CORRUPTED_ERROR));
+        	message.exec();
+        } catch (PQEveDatabaseNotFound e) {
+        	ErrorMessage message = new ErrorMessage(tr(Constants.EVE_DB_CORRUPTED_ERROR));
+        	message.exec();
+        }
+        MarketGroupElement root = new MarketGroupElement(group);
+        itemTreeModel = new TreeModel(root);
+        ui.skillTree.setModel(itemTreeModel);
+//        TreeSortFilterProxyModel proxyModel = new TreeSortFilterProxyModel();
+//		proxyModel.setSourceModel(itemTreeModel);
+//		ui.skillTree.setModel(proxyModel);
+        
         loadSkills(sheet);
         loadSkillInTraining(sheet, inTraining);
     }
@@ -68,6 +91,7 @@ public class CharacterSkills extends QWidget {
 		ui.skillTree.setSortingEnabled(true);
 		ui.skillTree.sortByColumn(0, SortOrder.AscendingOrder);
 		ui.skillTree.setIconSize(new QSize(21,14));
+		
     }
     
     ////////////////////
@@ -102,22 +126,7 @@ public class CharacterSkills extends QWidget {
 		ui.levelVSkills.setText("<b>" 
 				+ sheet.getLevel5Skills() + " skills at level V</b>");
 		ui.levelVSkills.setToolTip(levelVText);
-		
-		MarketGroup group=null;
-        try {
-        	group = MarketGroupDAO.getInstance().findMarketGroupById(150);
-        } catch (PQSQLDriverNotFoundException e) {
-        	ErrorMessage message = new ErrorMessage(tr(Constants.DRIVER_NOT_FOUND_ERROR));
-        	message.exec();
-        } catch (PQUserDatabaseFileCorrupted e) {
-        	ErrorMessage message = new ErrorMessage(tr(Constants.EVE_DB_CORRUPTED_ERROR));
-        	message.exec();
-        }
-        TreeSkillGroup root = new TreeSkillGroup(group, sheet);
-        TreeModel itemTreeModel = new TreeModel(root);
-        TreeSortFilterProxyModel proxyModel = new TreeSortFilterProxyModel();
-		proxyModel.setSourceModel(itemTreeModel);
-		ui.skillTree.setModel(proxyModel);
+		itemTreeModel.setSheet(sheet);
         
 	}
 	

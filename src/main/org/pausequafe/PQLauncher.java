@@ -18,11 +18,9 @@ public class PQLauncher {
         QApplication.setApplicationName("Pause Quafé");
         QApplication.setApplicationVersion(Constants.PQ_VERSION);
         
-//        QApplication.setStyle("plastique");
-        
         QFile file = new QFile("D:/Eclipse Workspace/PauseQuafé/resources/ui/quafeStyleSheet.qss");
         file.open(OpenModeFlag.ReadOnly);
-        String styleSheet = file.readAll().toString();
+         String styleSheet = file.readAll().toString();
                 
         MainWindow mainWindow = new MainWindow();
         mainWindow.setStyleSheet(styleSheet);

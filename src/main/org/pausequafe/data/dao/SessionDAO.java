@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pausequafe.data.business.APIData;
-import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.SQLConstants;
 
 public class SessionDAO extends AbstractSqlDAO {

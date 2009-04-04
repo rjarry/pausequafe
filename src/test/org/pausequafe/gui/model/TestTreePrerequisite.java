@@ -2,12 +2,12 @@ package org.pausequafe.gui.model;
 
 import org.pausequafe.data.business.Item;
 import org.pausequafe.data.dao.ItemDAO;
+import org.pausequafe.gui.model.tree.PrerequisiteElement;
 import org.pausequafe.gui.model.tree.TreeElement;
 import org.pausequafe.gui.model.tree.TreeModel;
-import org.pausequafe.gui.model.tree.TreePrerequisite;
-import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
+import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QTreeView;
@@ -30,7 +30,7 @@ public class TestTreePrerequisite {
 		} catch (PQEveDatabaseNotFound e) {
 			e.printStackTrace();
 		}
-		TreeElement root = new TreePrerequisite(item,null);
+		TreeElement root = new PrerequisiteElement(item);
 		TreeModel preReqTree = new TreeModel(root);
 		
 		QTreeView view = new QTreeView();

@@ -1,6 +1,6 @@
 package org.pausequafe.gui.view.character;
 
-import com.trolltech.qt.gui.*;
+import com.trolltech.qt.gui.QWidget;
 
 public class SkillPlanList extends QWidget {
 

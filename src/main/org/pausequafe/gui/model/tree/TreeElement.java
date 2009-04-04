@@ -1,5 +1,6 @@
 package org.pausequafe.gui.model.tree;
 
+import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
 import org.pausequafe.misc.exceptions.PQException;
 
@@ -12,31 +13,16 @@ import com.trolltech.qt.gui.QIcon;
  * 
  * @author Gobi
  */
-public abstract class TreeElement implements Comparable<TreeElement>{
+public interface TreeElement {
 	
-	public int childCount(){
-		return 0;
-	}
+	public int childCount();
+	public TreeElement childAt(int position) throws PQException;
 	
-	public TreeElement childAt(int position) throws PQException{
-		throw new PQException("Leafs don't have children");
-	}
+	public String getName();
+	public QFont getFont();
+	public String getTooltip();
+	public QIcon getIcon();
+	public QIcon getIcon(CharacterSheet sheet);
+	public Item getItem();
 	
-	public abstract String getName();
-	public abstract QFont getFont();
-	public abstract String getTooltip();
-	public abstract QIcon getIcon();
-	
-	public int compareTo(TreeElement o) {
-		return this.getName().compareTo(o.getName());
-	}
-
-	public abstract Item getItem();
-	
-	public abstract String toString();
-
-	public boolean acceptRow() {
-		return true;
-	}
-
 }
