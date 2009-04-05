@@ -22,7 +22,7 @@ public class SkillElement extends ItemElement{
 		Skill skill = (Skill) item;
 		QIcon result;
 		if(sheet==null){
-			result = null;
+			result = new QIcon(Constants.SKILL_NOT_TRAINABLE);
 		} else if(sheet.getSkills().containsKey(skill.getTypeID())){
 			result = new QIcon(Constants.SKILL_LEVEL_ICON[sheet.getSkill(skill.getTypeID()).getLevel()]);
 		} else {

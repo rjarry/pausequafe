@@ -190,7 +190,7 @@ public class ItemDAO  extends AbstractSqlDAO{
 		}
 		String query = SQLConstants.QUERY_TYPES_BY_ID;
 		query = query.replace("?", inClause);
-		System.out.println(query); // for convenience : uncomment to see DB queries
+//		System.out.println(query); // for convenience : uncomment to see DB queries
 		
 		try {
 			ResultSet res = stat.executeQuery(query);
@@ -277,7 +277,7 @@ public class ItemDAO  extends AbstractSqlDAO{
 		
 		String query = SQLConstants.QUERY_TYPE_BY_PARENT;
 		query = query.replace("?", inClause);
-		System.out.println(query); // for convenience : uncomment to see DB queries
+//		System.out.println(query); // for convenience : uncomment to see DB queries
 		
 		try {
 			ResultSet res = stat.executeQuery(query);

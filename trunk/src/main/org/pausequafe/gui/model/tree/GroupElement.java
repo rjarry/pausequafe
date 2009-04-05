@@ -14,23 +14,19 @@ import com.trolltech.qt.gui.QIcon;
  */
 public abstract class GroupElement implements TreeElement {
 	
-	@Override
 	public String getTooltip() {
 		return null;
 	}
 	
-	@Override
 	public Item getItem() {
 		return null;
 	}
 	
-	@Override
 	public QIcon getIcon() {
 		return getIcon(null);
 		
 	}
 
-	@Override
 	public QIcon getIcon(CharacterSheet sheet) {
 		return null;
 	}

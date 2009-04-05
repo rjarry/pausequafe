@@ -100,10 +100,11 @@ public class Constants {
 	///////////////////
 	// misc messages //
 	///////////////////
-	public static final String ABOUT_TEXT = "<b>Pause Quafé®</b><br>" +
+	public static final String ABOUT_TEXT = "<style>a { color: #ff66e0; font-weight : bold; } a:visited { color: #ff66e0; font-weight : bold; } </style>" +
+											"<b>Pause Quafé®</b><br>" +
 											"<i>version " + PQ_VERSION + " - Copyright © 2009</i><br>" +
 											"This program is free software. You can redistribute it and/or modify it<br>" +
-											"under the terms of version 2 of the <a href=\"http://www.gnu.org/copyleft/gpl.html\">GNU General Public Licence</a>.<br><br>";
+											"under the terms of version 2 of the <u><a href=\"http://www.gnu.org/copyleft/gpl.html\">GNU General Public Licence</a></u>.<br><br>";
 													
 											
 	public static final String SUGGESTIONS_TEXT = "Please enjoy this software. Any suggestion and/or bug repport is encouraged.<br>" +

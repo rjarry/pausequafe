@@ -32,7 +32,6 @@ public class ItemElement implements TreeElement {
 		return getIcon(null);
 	}
 
-	@Override
 	public QIcon getIcon(CharacterSheet sheet) {
 		return new QIcon(Constants.METAGROUP_ICONS_SMALL[item.getMetaGroupID()]);
 	}

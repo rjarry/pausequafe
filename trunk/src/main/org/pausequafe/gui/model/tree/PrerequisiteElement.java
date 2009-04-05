@@ -27,7 +27,6 @@ public class PrerequisiteElement extends GroupElement {
 		this.isRoot = isRoot;
 	}
 
-	@Override
 	public TreeElement childAt(int position) throws PQException {
 		TreeElement child = null;
 		int childId = item.getPreReqs().get(position).getTypeID();
@@ -44,12 +43,10 @@ public class PrerequisiteElement extends GroupElement {
 		return child;
 	}
 
-	@Override
 	public int childCount() {
 		return item.getPreReqs().size();
 	}
 
-	@Override
 	public QFont getFont() {
 		QFont font = new QFont();
 		if(isRoot) font.setBold(true); 
@@ -58,7 +55,6 @@ public class PrerequisiteElement extends GroupElement {
 		return font;
 	}
 	
-	@Override
 	public QIcon getIcon(CharacterSheet sheet) {
 		QIcon result;
 		if(sheet != null && sheet.getSkills().containsKey(item.getTypeID())){
@@ -73,7 +69,6 @@ public class PrerequisiteElement extends GroupElement {
 		return result;
 	}
 
-	@Override
 	public String getName() {
 		String name = item.getTypeName();
 		switch(requiredLevel){

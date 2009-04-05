@@ -34,7 +34,6 @@ import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMainWindow;
-import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QMovie;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
@@ -71,6 +70,8 @@ public class MainWindow extends QMainWindow {
 	
     private Ui_MainWindow ui = new Ui_MainWindow();
 
+	public Signal0 browserBuilt = new Signal0();
+
     //////////////////
     // constructors //
     //////////////////
@@ -79,12 +80,12 @@ public class MainWindow extends QMainWindow {
     }
 
     public MainWindow(QWidget parent) {
-        super(parent);
+        super(parent,Qt.WindowType.Window);
         ui.setupUi(this);
         setupUi();
         updateTime();
         requestServerStatus();
-
+        browserBuilt .emit();
         
 		try {
 			List<APIData> list = SessionDAO.getInstance().getMonitoredCharacters();
@@ -332,14 +333,12 @@ public class MainWindow extends QMainWindow {
 	private void openBrowsers(){
     	if(browsers == null){
     		browsers = new BrowsersWindow();
-    		browsers.setParent(this, Qt.WindowType.Window);
-    		browsers.show();
-    		browsers.activateWindow();
-    	} else {
-    		browsers.setParent(this, Qt.WindowType.Window);
-    		browsers.show();
-    		browsers.activateWindow();
     	}
+    	browsers.setWindowIcon(this.windowIcon());
+    	browsers.setStyleSheet(this.styleSheet());
+    	browsers.show();
+    	browsers.activateWindow();
+
     	if(requestCount == 0){
 	    	List<CharacterSheet> list = new ArrayList<CharacterSheet>();
 	    	for(int i=0 ; i<tabWidget.count() ; i++){

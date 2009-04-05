@@ -56,7 +56,7 @@ public class FileHandler {
 			try {
 				if(out != null) out.close();
 			} catch (Exception e) {
-				System.out.println("Failed to close stream\n"+e.getMessage());
+//				System.out.println("Failed to close stream\n"+e.getMessage());
 			}
 		}
 	}

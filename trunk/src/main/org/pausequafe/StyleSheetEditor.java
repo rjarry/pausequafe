@@ -26,7 +26,7 @@ public class StyleSheetEditor extends QDialog {
         ui.saveButton.setShortcut("Ctrl+s");
         this.setWindowTitle("StyleSheet");
         
-        QFile file = new QFile("D:/Eclipse Workspace/PauseQuafé/resources/ui/quafeStyleSheet.qss");
+        QFile file = new QFile("resources/ui/quafeStyleSheet.qss");
     	        file.open(OpenModeFlag.ReadOnly);
     	String styleSheet = file.readAll().toString();
     	ui.styleTextEdit.setPlainText(styleSheet);
@@ -50,7 +50,7 @@ public class StyleSheetEditor extends QDialog {
     }
     
     void saveStyleSheet(){
-    	QFile file = new QFile("D:/Eclipse Workspace/PauseQuafé/resources/ui/quafeStyleSheet.qss");
+    	QFile file = new QFile("resources/ui/quafeStyleSheet.qss");
     	file.open(OpenModeFlag.WriteOnly);
     	String styleSheet = ui.styleTextEdit.toPlainText();
     	QByteArray data = new QByteArray(styleSheet);

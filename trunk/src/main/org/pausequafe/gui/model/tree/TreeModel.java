@@ -29,6 +29,7 @@ public class TreeModel extends QTreeModel {
 
 	public void setSheet(CharacterSheet sheet) {
 		this.sheet = sheet;
+		this.dataChanged.emit(null, null);
 	}
 
 	@Override
