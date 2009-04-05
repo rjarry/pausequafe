@@ -28,12 +28,10 @@ public class MarketGroupElement extends GroupElement {
 		this.marketGroup = marketGroup;
 	}
 
-	@Override
 	public int childCount(){
 		return marketGroup.childCount();
 	}
 
-	@Override
 	public TreeElement childAt(int position) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
 		TreeElement child = null;
 		Integer childId = marketGroup.childAt(position);
@@ -54,19 +52,16 @@ public class MarketGroupElement extends GroupElement {
 	}
 	
 	
-	@Override
 	public QFont getFont() {
 		QFont font = new QFont();
 		font.setBold(true);
 		return font;
 	}
 
-	@Override
 	public String getName() {
 		return marketGroup.getGroupName();
 	}
 
-	@Override
 	public String toString() {
 		return marketGroup.getGroupName();
 	}

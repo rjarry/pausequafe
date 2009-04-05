@@ -115,7 +115,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 		
 		String query = SQLConstants.QUERY_MARKETGRP_BY_ID;
 		query = query.replace("?", inClause);
-		System.out.println(query); // for convenience : uncomment to see DB queries
+//		System.out.println(query); // for convenience : uncomment to see DB queries
 		
 		List<MarketGroup> result = new ArrayList<MarketGroup>();
 		List<MarketGroup> itemContainerParents = new ArrayList<MarketGroup>();
@@ -168,7 +168,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 		
 		String query = SQLConstants.QUERY_MARKETGRP_BY_PARENT;
 		query = query.replace("?", inClause);
-		System.out.println(query); // for convenience : uncomment to see DB queries
+//		System.out.println(query); // for convenience : uncomment to see DB queries
 		
 		List<MarketGroup> itemContainerParents = new ArrayList<MarketGroup>();
 		List<MarketGroup> groupContainerParents = new ArrayList<MarketGroup>();
