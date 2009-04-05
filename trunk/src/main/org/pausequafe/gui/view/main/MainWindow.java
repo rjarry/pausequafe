@@ -34,8 +34,10 @@ import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMainWindow;
+import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QMovie;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QTabWidget;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
@@ -57,6 +59,7 @@ public class MainWindow extends QMainWindow {
     private QTimer eveTimeTimer;
     
     private QLabel apiActivityIcon;
+    QPushButton refreshAllButton;
     private int requestCount = 0;
 
     private QLabel serverStatusIndicator;
@@ -161,9 +164,14 @@ public class MainWindow extends QMainWindow {
     	apiActivityIcon.setFrameShape(Shape.NoFrame);
 		apiActivityIcon.setPixmap(new QPixmap(Constants.IDLE_ICON));
 		
+		refreshAllButton = new QPushButton();
+		refreshAllButton.setVisible(true);
+		refreshAllButton.clicked.connect(this, "refreshAllTabs()");
+		
 		ui.statusBar.addPermanentWidget(serverStatusIndicator, 1);
 		ui.statusBar.addPermanentWidget(eveTimeLabel,1);
 		ui.statusBar.addPermanentWidget(new QWidget(),100);
+		ui.statusBar.addPermanentWidget(refreshAllButton,1);
 		ui.statusBar.addPermanentWidget(apiActivityIcon,1);
 		
 		this.resize(300, 700);
@@ -217,6 +225,7 @@ public class MainWindow extends QMainWindow {
 	@SuppressWarnings("unused")
 	private synchronized void incrementRequestCount(){
 		if(requestCount==0){
+			refreshAllButton.setEnabled(false);
 			QMovie movie = new QMovie(Constants.DOWNLOADING_ICON);
 			movie.setSpeed(90);
 			apiActivityIcon.setPixmap(null);
@@ -235,6 +244,7 @@ public class MainWindow extends QMainWindow {
 	private synchronized void decrementRequestCount(){
 		requestCount--;
 		if(requestCount==0){
+			refreshAllButton.setEnabled(true);
 			QPixmap pixmap = new QPixmap(Constants.IDLE_ICON);
 			apiActivityIcon.setMovie(null);
 			apiActivityIcon.setPixmap(pixmap);
@@ -336,6 +346,14 @@ public class MainWindow extends QMainWindow {
 	    		list.add(((CharacterTab) tabWidget.widget(i)).getSheet());
 	    	}
 	    	browsers.setSheetList(list);
+    	}
+    }
+    
+    @SuppressWarnings("unused")
+	private void refreshAllTabs(){
+    	
+    	for(int i=0 ; i < tabWidget.count() ; i++){
+    		((CharacterTab) tabWidget.widget(i)).requestInfo();
     	}
     }
     

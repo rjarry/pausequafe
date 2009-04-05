@@ -80,7 +80,7 @@ public class CharacterTab extends QWidget {
 	///////////
 	// slots //
 	///////////
-	private void requestInfo(){
+	public void requestInfo(){
 		QThread thread = new QThread(request);
 		thread.start();
 	}
