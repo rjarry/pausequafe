@@ -40,6 +40,7 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 
 	public TreeSortFilterProxyModel() {
 		super();
+		this.setDynamicSortFilter(true);
 	}
 
 	public QTreeModel getSourceModel() {
@@ -49,6 +50,7 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	public void setSourceModel(QTreeModel sourceModel) {
 		this.sourceModel=sourceModel;
 		super.setSourceModel(sourceModel);
+		this.sourceModel().dataChanged.connect(this.dataChanged);
 	}
 
 	public TreeElement indexToValue(QModelIndex index) {
@@ -58,27 +60,27 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	//////////////////////////////////////////////////
 	// overridden method from QSortFilterProxyModel //
 	//////////////////////////////////////////////////
-//	@Override
-//	protected boolean lessThan(QModelIndex left, QModelIndex right) {
-//		boolean result;
-//		TreeElement leftElement = (TreeElement) sourceModel.indexToValue(left);
-//		TreeElement rightElement = (TreeElement) sourceModel.indexToValue(right);
-//
-//		switch(sortMode){
-//			case SORT_BY_META_LEVEL :
-//				if(leftElement instanceof ItemElement && rightElement instanceof ItemElement){
-//					result = leftElement.getItem().getMetaLevel() < rightElement.getItem().getMetaLevel();
-//				} else {
-//					result = leftElement.getName().compareTo(rightElement.getName()) < 0;
-//				}
-//				break;
-//	
-//			default :
-//				result = leftElement.getName().compareTo(rightElement.getName()) < 0;
-//				break;
-//		}
-//		return result;
-//	}
+	@Override
+	protected boolean lessThan(QModelIndex left, QModelIndex right) {
+		boolean result;
+		TreeElement leftElement = (TreeElement) sourceModel.indexToValue(left);
+		TreeElement rightElement = (TreeElement) sourceModel.indexToValue(right);
+
+		switch(sortMode){
+			case SORT_BY_META_LEVEL :
+				if(leftElement instanceof ItemElement && rightElement instanceof ItemElement){
+					result = leftElement.getItem().getMetaLevel() < rightElement.getItem().getMetaLevel();
+				} else {
+					result = leftElement.getName().compareTo(rightElement.getName()) < 0;
+				}
+				break;
+	
+			default :
+				result = leftElement.getName().compareTo(rightElement.getName()) < 0;
+				break;
+		}
+		return result;
+	}
 
 	/////////////
 	// getters //

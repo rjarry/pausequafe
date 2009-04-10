@@ -7,12 +7,16 @@ import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 
+import be.fomp.jeve.core.config.Configuration;
+
 import com.trolltech.qt.core.QFile;
 import com.trolltech.qt.core.QIODevice.OpenModeFlag;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QColor;
+import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QSplashScreen;
+import com.trolltech.qt.gui.QSystemTrayIcon;
 
 
 
@@ -38,6 +42,8 @@ public class PQLauncher {
 			MarketGroupDAO.getInstance().findMarketGroupById(9);
 			splash.showMessage("Loading skill database...", 120, QColor.white);
 			MarketGroupDAO.getInstance().findMarketGroupById(150);
+			splash.showMessage("Loading proxy configuration...", 120, QColor.white);
+			Configuration.setConfigurationFilePath(Constants.PROXY_CONFIG_FILE_PATH);
 		} catch (PQSQLDriverNotFoundException e) {
 			e.printStackTrace();
 		} catch (PQUserDatabaseFileCorrupted e) {
@@ -47,16 +53,18 @@ public class PQLauncher {
 		}
 		
 		MainWindow mainWindow = new MainWindow();
+
+		QSystemTrayIcon tray = new QSystemTrayIcon(new QIcon(Constants.WINDOW_ICON));
+		tray.activated.connect(mainWindow, "show()");
 		
 		QFile file = new QFile("resources/ui/quafeStyleSheet.qss");
 		file.open(OpenModeFlag.ReadOnly);
 		String styleSheet = file.readAll().toString();
 		mainWindow.setStyleSheet(styleSheet);
-//		StyleSheetEditor styleSheetEditor = new StyleSheetEditor(mainWindow);
-//    	styleSheetEditor.show();
-
+		
 		splash.finish(mainWindow);
 		mainWindow.show();
+		tray.show();
 
         QApplication.exec();
     }

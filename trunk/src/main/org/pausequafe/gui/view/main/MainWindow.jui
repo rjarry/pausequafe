@@ -57,6 +57,9 @@
      <string>?</string>
     </property>
     <addaction name="actionAbout_PQ" />
+    <addaction name="separator" />
+    <addaction name="action_Settings" />
+    <addaction name="action_Stylesheet_editor" />
    </widget>
    <addaction name="menu_File" />
    <addaction name="menu_Items" />
@@ -86,6 +89,16 @@
   <action name="actionAbout_PQ" >
    <property name="text" >
     <string>About Pause Quafé...</string>
+   </property>
+  </action>
+  <action name="action_Settings" >
+   <property name="text" >
+    <string>&amp;Settings</string>
+   </property>
+  </action>
+  <action name="action_Stylesheet_editor" >
+   <property name="text" >
+    <string>&amp;Stylesheet editor</string>
    </property>
   </action>
  </widget>

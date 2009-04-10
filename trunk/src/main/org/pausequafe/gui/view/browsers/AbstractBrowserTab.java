@@ -58,7 +58,7 @@ public abstract class AbstractBrowserTab extends QWidget {
         TreeElement root = new MarketGroupElement(group);
         browserTreeModel = new TreeModel(root);
         proxyModel.setSourceModel(browserTreeModel);
-        proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_META_LEVEL);
+        proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_NAME);
         proxyModel.setDynamicSortFilter(true);
         itemTree.setModel(proxyModel);
     }
@@ -84,13 +84,10 @@ public abstract class AbstractBrowserTab extends QWidget {
     		try {
 				currentItemSelected = ItemDAO.getInstance().getItemDetails(element.getItem());
 			} catch (PQUserDatabaseFileCorrupted e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (PQEveDatabaseNotFound e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (PQSQLDriverNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		

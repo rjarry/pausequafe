@@ -6,8 +6,8 @@ public class SQLConstants {
 	
 	public static final String EVE_DATABASE = "jdbc:sqlite:resources/eve-online.db";
 	public static final String EVE_DATABASE_FILE = "resources/eve-online.db";;
-	public static final String USER_DATABASE = "jdbc:sqlite:resources/user.db";
-	public static final String USER_DATABASE_FILE = "resources/user.db";
+	public static final String USER_DATABASE = "jdbc:sqlite:settings/user.db";
+	public static final String USER_DATABASE_FILE = "settings/user.db";
 	
 	
 	/*

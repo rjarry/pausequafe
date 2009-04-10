@@ -69,12 +69,15 @@ public class BrowserItemTab extends AbstractBrowserTab {
     	switch(sortMode){
     	case 1 :
     		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_NAME);
+    		proxyModel.sort(0);
     		break;
     	case 2 :
     		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_META_LEVEL);
+    		proxyModel.sort(0);
     		break;
     	default :
     		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_NAME);
+    		proxyModel.sort(0);
     		break;
     	}
     }
