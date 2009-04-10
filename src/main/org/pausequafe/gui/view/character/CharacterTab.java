@@ -6,6 +6,7 @@ import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.misc.util.ApiRequest;
 
 import com.trolltech.qt.QThread;
+import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
 public class CharacterTab extends QWidget {
@@ -54,9 +55,19 @@ public class CharacterTab extends QWidget {
 		skillsWidget = new CharacterSkills(this, null, null);
 		plansWidget = new SkillPlanList(this);
 
-		ui.scrollLayout.addWidget(skillsWidget);
-		ui.scrollLayout.addWidget(plansWidget);
-		ui.mainLayout.insertWidget(0,infoWidget);
+		ui.verticalLayout.insertWidget(0,infoWidget);
+		
+		QVBoxLayout layout1 = new QVBoxLayout();
+		layout1.setContentsMargins(0, 0, 0, 0);
+		
+		QVBoxLayout layout2 = new QVBoxLayout();
+		layout2.setContentsMargins(0, 0, 0, 0);
+		
+		ui.skillsFrame.setLayout(layout1);
+		ui.plansFrame.setLayout(layout2);
+		
+		ui.skillsFrame.layout().addWidget(skillsWidget);
+		ui.plansFrame.layout().addWidget(plansWidget);
 		
 		plansWidget.setEnabled(false);
 	}

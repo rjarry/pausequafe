@@ -7,8 +7,8 @@ public class Constants {
 	///////////////////////////////////////////////
 	public static final String PQ_VERSION = "0.0";
 	///////////////////////////////////////////////
-	
 	public static final String API_VERSION = "2";
+	///////////////////////////////////////////////
 	
 	// misc constants
 	public static final int PORTRAIT_FILE_SIZE = 256;
@@ -36,6 +36,7 @@ public class Constants {
 	///////////
 	public static final String CHAR_SHEET_PATH = "cache/CharacterSheets/";
 	public static final String EVE_ICONS_PATH = "resources/icons/EVE/";
+	public static final String PROXY_CONFIG_FILE_PATH = "settings/proxy.configuration";
 	
 	///////////
 	// icons //

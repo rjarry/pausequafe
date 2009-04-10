@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.pausequafe.StyleSheetEditor;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.ServerStatus;
@@ -30,13 +31,14 @@ import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
+import com.trolltech.qt.gui.QCursor;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMainWindow;
+import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMovie;
 import com.trolltech.qt.gui.QPixmap;
-import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QTabWidget;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
@@ -53,13 +55,15 @@ public class MainWindow extends QMainWindow {
     private QAction actionQuit;
     private QAction actionOpen_Browsers;
     private QAction actionAbout_PQ;
+    private QAction action_Settings;
+    private QAction action_Stylesheet_editor;
 
     private QLabel eveTimeLabel;
     private QTimer eveTimeTimer;
     
     private QLabel apiActivityIcon;
-    QPushButton refreshAllButton;
     private int requestCount = 0;
+    private QMenu refreshMenu;
 
     private QLabel serverStatusIndicator;
     private QTimer serverStatusTimer;
@@ -113,23 +117,30 @@ public class MainWindow extends QMainWindow {
 		this.setWindowTitle("Pause Quafé");
 		
 		// Init menu actions
-		actionQuit = (QAction) this.findChild(QAction.class, "actionQuit");
+		actionQuit = ui.actionQuit;
 		actionQuit.triggered.connect(QApplication.instance(), "quit()");
 		actionQuit.setShortcut("Ctrl+Q");
 		
-    	actionAdd_Character = (QAction) this.findChild(QAction.class, "actionAdd_Character");
+    	actionAdd_Character = ui.actionAdd_Character;
     	actionAdd_Character.triggered.connect(this, "addCharacterDialog()");
     	actionAdd_Character.setShortcut("Ctrl+N");
     	
-    	actionDelete_Current_Character = (QAction) this.findChild(QAction.class, "actionDelete_Current_Character");
+    	actionDelete_Current_Character = ui.actionDelete_Current_Character;
     	actionDelete_Current_Character.triggered.connect(this, "deleteCharacterDialog()");
     	actionDelete_Current_Character.setShortcut("Ctrl+W");
 
-    	actionOpen_Browsers = (QAction) this.findChild(QAction.class, "actionOpen_Browsers");
+    	actionOpen_Browsers = ui.actionOpen_Browsers;
     	actionOpen_Browsers.triggered.connect(this, "openBrowsers()");
     	actionOpen_Browsers.setShortcut("Ctrl+B");
     	
-    	actionAbout_PQ = (QAction) this.findChild(QAction.class, "actionAbout_PQ");
+    	action_Settings = ui.action_Settings;
+    	action_Settings.triggered.connect(this, "openSettingsWindow()");
+    	action_Settings.setShortcut("Ctrl+P");
+    	
+    	action_Stylesheet_editor = ui.action_Stylesheet_editor;
+    	action_Stylesheet_editor.triggered.connect(this, "openStylesheetEditor()");
+    	
+    	actionAbout_PQ = ui.actionAbout_PQ;
     	actionAbout_PQ.triggered.connect(this, "aboutPQ()");
     	
     	
@@ -165,19 +176,23 @@ public class MainWindow extends QMainWindow {
     	apiActivityIcon.setFrameShape(Shape.NoFrame);
 		apiActivityIcon.setPixmap(new QPixmap(Constants.IDLE_ICON));
 		
-		refreshAllButton = new QPushButton();
-		refreshAllButton.setVisible(true);
-		refreshAllButton.clicked.connect(this, "refreshAllTabs()");
+    	refreshMenu = new QMenu(this);
+    	refreshMenu.addAction("Refresh All Characters", this, "refreshAllTabs()");
+    	
+    	apiActivityIcon.customContextMenuRequested.connect(this, "popupRefreshMenu()");
 		
 		ui.statusBar.addPermanentWidget(serverStatusIndicator, 1);
 		ui.statusBar.addPermanentWidget(eveTimeLabel,1);
 		ui.statusBar.addPermanentWidget(new QWidget(),100);
-		ui.statusBar.addPermanentWidget(refreshAllButton,1);
 		ui.statusBar.addPermanentWidget(apiActivityIcon,1);
 		
 		this.resize(300, 700);
-		
+
 	}
+	
+	
+	
+	
 	
 	/**
 	 * Updates the eve time label
@@ -226,7 +241,7 @@ public class MainWindow extends QMainWindow {
 	@SuppressWarnings("unused")
 	private synchronized void incrementRequestCount(){
 		if(requestCount==0){
-			refreshAllButton.setEnabled(false);
+			refreshMenu.setEnabled(false);
 			QMovie movie = new QMovie(Constants.DOWNLOADING_ICON);
 			movie.setSpeed(90);
 			apiActivityIcon.setPixmap(null);
@@ -245,11 +260,11 @@ public class MainWindow extends QMainWindow {
 	private synchronized void decrementRequestCount(){
 		requestCount--;
 		if(requestCount==0){
-			refreshAllButton.setEnabled(true);
 			QPixmap pixmap = new QPixmap(Constants.IDLE_ICON);
 			apiActivityIcon.setMovie(null);
 			apiActivityIcon.setPixmap(pixmap);
-			apiActivityIcon.setToolTip("API activity : idle");
+			apiActivityIcon.setToolTip("API activity : <b>idle</b> Right click to refresh all characters.");
+			refreshMenu.setEnabled(true);
 		}
 	}
 	
@@ -348,13 +363,31 @@ public class MainWindow extends QMainWindow {
     	}
     }
     
+    public void popupRefreshMenu() {
+		refreshMenu.exec(QCursor.pos());
+    }
+    
+    
+    
+    
     @SuppressWarnings("unused")
 	private void refreshAllTabs(){
-    	
     	for(int i=0 ; i < tabWidget.count() ; i++){
     		((CharacterTab) tabWidget.widget(i)).requestInfo();
     	}
     }
     
+    
+    @SuppressWarnings("unused")
+	private void openSettingsWindow(){
+    	SettingsDialog settings = new SettingsDialog(this);
+    	settings.show();
+    }
+    
+    @SuppressWarnings("unused")
+	private void openStylesheetEditor(){
+    	StyleSheetEditor editor = new StyleSheetEditor(this);
+    	editor.show();
+    }
     
 }
