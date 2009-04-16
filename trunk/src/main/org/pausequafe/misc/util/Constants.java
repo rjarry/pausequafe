@@ -31,6 +31,18 @@ public class Constants {
 	public static final int PRESENCE = 12383;
 	public static final int SPATIAL_AWARENESS = 3379;
 
+    ////////////////////
+	// Meta Groups ID //
+	////////////////////
+	public static final int TECH1_METAGROUP = 0;
+	public static final int NAMED_METAGROUP = 1;
+	public static final int TECH2_METAGROUP = 2;
+	public static final int STORYLINE_METAGROUP = 3;
+	public static final int FACTION_METAGROUP = 4;
+	public static final int OFFICER_METAGROUP = 5;
+	public static final int DEADSPACE_METAGROUP = 6;
+	public static final int TECH3_METAGROUP = 7;
+
 	///////////
 	// paths //
 	///////////
@@ -73,6 +85,8 @@ public class Constants {
 	
 	// item tree
 	public static final String NO_ITEM_SELECTED_ICON = "resources/icons/PauseQuafe/no_item_selected.png";
+	
+	
 	public static final String[] METAGROUP_ICONS_TAG = {"resources/icons/PauseQuafe/tech1_no_tag.png",
 														"resources/icons/PauseQuafe/tech1_no_tag.png",
 														"resources/icons/PauseQuafe/tag_tech2.png",

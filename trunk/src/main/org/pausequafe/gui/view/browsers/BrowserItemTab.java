@@ -9,8 +9,9 @@ import org.pausequafe.gui.model.tree.TreeModel;
 import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
 import org.pausequafe.misc.util.Constants;
 
-import com.trolltech.qt.core.Qt;
+import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QWidget;
 
 public class BrowserItemTab extends AbstractBrowserTab {
@@ -18,9 +19,12 @@ public class BrowserItemTab extends AbstractBrowserTab {
 	////////////////////
 	// private fields //
 	////////////////////
-    private Ui_BrowserItemTab ui;
-    
+	private QTreeView prereqTree;
+	private Ui_BrowserItemTab ui;
 
+	////////////////////
+	// constructors   //
+	////////////////////
 	public BrowserItemTab(int marketGroupID) {
 		super(marketGroupID);
 	}
@@ -32,81 +36,81 @@ public class BrowserItemTab extends AbstractBrowserTab {
 	//////////////////
 	// widget setup //
 	//////////////////
+	
     protected  void setupUi(){
     	ui = new Ui_BrowserItemTab();
     	ui.setupUi(this);
     	
     	itemTree=ui.itemTree;
-    	itemTree.clicked.connect(this, "currentItemSelected(QModelIndex)");
-    	itemTree.setSortingEnabled(true);
-    	itemTree.sortByColumn(0, Qt.SortOrder.AscendingOrder);
-		
+    	itemDescription = ui.itemDescription;
+    	prereqTree = ui.prereqTree;
+    	filterLineEdit = ui.lineEdit;
+
 		ui.itemDescription.setAcceptRichText(true);
-		
 		ui.iconLabel.setPixmap(new QPixmap(Constants.NO_ITEM_SELECTED_ICON));
 		ui.itemNameLabel.setText("<font size=5>No item selected...</font>");
-		
 		ui.attributesTable.verticalHeader().setVisible(false);
 		
-		ui.sortComboBox.currentIndexChanged.connect(this, "setSortMode(int)");
-//	    tech13CheckBox.toggled.connect(proxyModel, "setTech1Shown(boolean)");
-//	    tech13CheckBox.toggled.connect(proxyModel, "setTech3Shown(boolean)");
-//	    namedCheckBox.toggled.connect(proxyModel, "setNamedShown(boolean)");
-//	    tech2CheckBox.toggled.connect(proxyModel, "setTech2Shown(boolean)");
-//	    factionCheckBox.toggled.connect(proxyModel, "setFactionShown(boolean)");
-//	    factionCheckBox.toggled.connect(proxyModel, "setStorylineShown(boolean)");
-//	    deadspaceCheckBox.toggled.connect(proxyModel, "setDeadspaceShown(boolean)");
-//	    officerCheckBox.toggled.connect(proxyModel, "setOfficerShown(boolean)");
+    }
+    
+	protected void initConnection() {
+    	super.initConnection();
+    	ui.sortComboBox.currentIndexChanged.connect(this, "sort()");
+    	ui.tech13CheckBox.toggled.connect(proxyModel, "setTech1Shown(boolean)");
+    	ui.tech13CheckBox.toggled.connect(proxyModel, "setTech3Shown(boolean)");
+    	ui.namedCheckBox.toggled.connect(proxyModel, "setNamedShown(boolean)");
+    	ui.tech2CheckBox.toggled.connect(proxyModel, "setTech2Shown(boolean)");
+    	ui.factionCheckBox.toggled.connect(proxyModel, "setFactionShown(boolean)");
+    	ui.factionCheckBox.toggled.connect(proxyModel, "setStorylineShown(boolean)");
+    	ui.deadspaceCheckBox.toggled.connect(proxyModel, "setDeadspaceShown(boolean)");
+    	ui.officerCheckBox.toggled.connect(proxyModel, "setOfficerShown(boolean)");
     }
     
 	///////////
 	// slots //
 	///////////
- 
-    
-    @SuppressWarnings("unused")
-	private void setSortMode(int sortMode){
+	protected void sort(){
+    	int sortMode = ui.sortComboBox.currentIndex();
     	switch(sortMode){
-    	case 1 :
-    		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_NAME);
-    		proxyModel.sort(0);
+    	case 0 :
+    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_NAME);
     		break;
-    	case 2 :
-    		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_META_LEVEL);
-    		proxyModel.sort(0);
+    	case 1 :
+    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_META_LEVEL);
     		break;
     	default :
-    		proxyModel.setSortRole(TreeSortFilterProxyModel.SORT_BY_NAME);
-    		proxyModel.sort(0);
+    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_NAME);
     		break;
     	}
     }
     
-	@Override
-	public void changeItemSelected() {
-		ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
-		
-		String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
-		File iconFile = new File(icon);
-		if(!iconFile.exists()) icon = Constants.NO_ITEM_SELECTED_ICON;
-		ui.iconLabel.setPixmap(new QPixmap(icon));
-		
-		String tagIconFile = Constants.METAGROUP_ICONS_TAG[currentItemSelected.getMetaGroupID()];
-		ui.metaGroupIcon.setPixmap(new QPixmap(tagIconFile));
-		ui.metaGroupIcon.raise();
-		
-		ui.itemDescription.setText(currentItemSelected.getDescription());
-		
-		TreeElement root = new PrerequisiteElement(currentItemSelected);
-		prereqModel = new TreeModel(root);
-		prereqModel.setSheet(sheet);
-		ui.prereqTree.setModel(prereqModel);
-		
-		AttributesTableModel tableModel = new AttributesTableModel(currentItemSelected);
-		ui.attributesTable.setModel(tableModel);
-		ui.attributesTable.resizeColumnsToContents();
+	protected void currentItemSelected(QModelIndex index) {
+		super.currentItemSelected(index);
+
+		if(currentItemSelected != null){
+			ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
+			
+			String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
+			File iconFile = new File(icon);
+			if(!iconFile.exists()) icon = Constants.NO_ITEM_SELECTED_ICON;
+			ui.iconLabel.setPixmap(new QPixmap(icon));
+			
+			String tagIconFile = Constants.METAGROUP_ICONS_TAG[currentItemSelected.getMetaGroupID()];
+			ui.metaGroupIcon.setPixmap(new QPixmap(tagIconFile));
+			ui.metaGroupIcon.raise();
+			
+			itemDescription.setText(currentItemSelected.getDescription());
+			
+			TreeElement root = new PrerequisiteElement(currentItemSelected);
+			prereqModel = new TreeModel(root);
+			prereqModel.setSheet(sheet);
+			prereqTree.setModel(prereqModel);
+			
+			AttributesTableModel tableModel = new AttributesTableModel(currentItemSelected);
+			ui.attributesTable.setModel(tableModel);
+			ui.attributesTable.resizeColumnsToContents();
+		}
 		ui.attributesTable.resizeRowsToContents();
-		
 	}
 
 }

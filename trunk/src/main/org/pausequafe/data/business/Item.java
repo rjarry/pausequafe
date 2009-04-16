@@ -35,8 +35,6 @@ public class Item {
     /////////////////
     public Item(){
     }
-	
- 
 
 	public Item(int typeID, String typeName, int metaGroupID) {
 		this.typeID = typeID;
@@ -49,6 +47,11 @@ public class Item {
     ////////////////////
     public void addPreRequisite(PreRequisite preReq){
     	preReqs.add(preReq);
+    }
+    
+    public int getRemainingTrainingTime(CharacterSheet sheet){
+    	//TODO implements this to sort by training time
+    	return 0;
     }
     
     @Override
@@ -64,9 +67,11 @@ public class Item {
     public int getTypeID() {
     	return typeID;
     }
+    
     public String getTypeName() {
     	return typeName;
     }
+    
     public List<PreRequisite> getPreReqs() {
     	if(preReqs == null){
     		preReqs = new ArrayList<PreRequisite>();
@@ -82,6 +87,7 @@ public class Item {
     	}
     	return preReqs;
     }
+    
     public PreRequisite youDontWantToKnowWhatThisIs(int i){
     	switch(i){
     	case 1 : return preRequisite1 ;
@@ -90,20 +96,22 @@ public class Item {
     	default : return null;
     	}
     }
+    
     public int getMetaGroupID(){
     	return metaGroupID;
     }
+    
     public int getMetaLevel(){
     	return metaLevel;
     }
+    
 	/////////////
     // setters //
     /////////////
-
-
 	public void setMetaGroupID(int metaGroupID){
 		this.metaGroupID = metaGroupID;
 	}
+	
 	public void setMetaLevel(int metaLevel) {
 		this.metaLevel = metaLevel;
 	}

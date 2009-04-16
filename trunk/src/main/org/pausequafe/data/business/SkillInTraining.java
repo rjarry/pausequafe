@@ -69,12 +69,7 @@ public class SkillInTraining {
     	double completion = (double)(currentSP() - calculateLevelStartSP())
     					   /(double)(trainingDestinationSP - calculateLevelStartSP());
     	
-    	if (completion > 1){
-    		return 1;
-    	} else {
-    		return completion;
-    	}
-    	
+    	return Math.min(1, completion);
     }
     
     public String toString(){

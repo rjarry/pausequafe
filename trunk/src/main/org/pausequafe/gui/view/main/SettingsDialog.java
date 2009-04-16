@@ -101,6 +101,7 @@ public class SettingsDialog extends QDialog {
 		try {
 			Configuration.getInstance().setProxyconfiguration(useProxy, proxyType, proxyHost, proxyPort, useProxyAuth, proxyUser, proxyPass);
 			Configuration.getInstance().storeConfiguration();
+			Configuration.getInstance().loadConfiguration();
 		} catch (JEveConnectionException e) {
 			// not possible JEVECore absurdity
 			e.printStackTrace();

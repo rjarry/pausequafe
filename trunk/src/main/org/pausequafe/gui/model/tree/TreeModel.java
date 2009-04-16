@@ -25,15 +25,18 @@ public class TreeModel extends QTreeModel {
 		super();
 		this.root = root;
 	}
-	
 
 	public void setSheet(CharacterSheet sheet) {
 		this.sheet = sheet;
 		this.dataChanged.emit(null, null);
 	}
+	
+	public CharacterSheet getSheet() {
+		return sheet;
+	}
 
 	@Override
-	public Object child(Object parent, int index) {
+	public TreeElement child(Object parent, int index) {
 		TreeElement treeElement; 
 		if(parent==null){
 			treeElement = root;
@@ -68,8 +71,6 @@ public class TreeModel extends QTreeModel {
 		String s = ((TreeElement) value).getName(); 
 		return s;
 	}
-
-	
 	
 	@Override
 	public Object data(Object value, int role){
@@ -91,5 +92,5 @@ public class TreeModel extends QTreeModel {
 		
 		return result;
 	}
-	
+
 }
