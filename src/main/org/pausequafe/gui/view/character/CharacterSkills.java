@@ -13,6 +13,7 @@ import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.gui.model.tree.MarketGroupElement;
 import org.pausequafe.gui.model.tree.TreeModel;
+import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQException;
@@ -41,7 +42,7 @@ public class CharacterSkills extends QWidget {
 	
 	private QTimer timer;
 
-	private TreeModel itemTreeModel;
+	private TreeSortFilterProxyModel proxyModel;
 
 	//////////////////
 	// constructors //
@@ -68,11 +69,11 @@ public class CharacterSkills extends QWidget {
         	message.exec();
         }
         MarketGroupElement root = new MarketGroupElement(group);
-        itemTreeModel = new TreeModel(root);
-        ui.skillTree.setModel(itemTreeModel);
-//        TreeSortFilterProxyModel proxyModel = new TreeSortFilterProxyModel();
-//		proxyModel.setSourceModel(itemTreeModel);
-//		ui.skillTree.setModel(proxyModel);
+        TreeModel itemTreeModel = new TreeModel(root);
+        proxyModel = new TreeSortFilterProxyModel();
+		proxyModel.setSourceModel(itemTreeModel);
+		ui.skillTree.setModel(proxyModel);
+		proxyModel.setUnknownShown(false);
         
         loadSkills(sheet);
         loadSkillInTraining(sheet, inTraining);
@@ -104,29 +105,30 @@ public class CharacterSkills extends QWidget {
 	 * 			the character sheet
 	 */
 	public void loadSkills(CharacterSheet sheet){
-		if(sheet == null) return;
+		if(sheet != null){
+			// the amount of SP here is only calculated by summing the SP from all skills.
+			// it represents the total SP of character at the time of the XML file generation.
+			currentSP = sheet.getSkillPoints();
+			ui.skillPoints.setText("<b>" 
+					+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
+			ui.skillPoints.setToolTip(sheet.getCloneName() 
+					+ " (" + Formater.printLong(sheet.getCloneSkillPoints()) + " SP)");
+			
+			String levelVText = sheet.getLevel1Skills() + " skills at level I\n"
+			+ sheet.getLevel2Skills() + " skills at level II\n"
+			+ sheet.getLevel3Skills() + " skills at level III\n"
+			+ sheet.getLevel4Skills() + " skills at level IV\n"
+			+ sheet.getLevel5Skills() + " skills at level V";
+			
+			ui.skills.setText("<b>" + sheet.getSkillCount() + " known skills</b>");
+			ui.skills.setToolTip(levelVText);
+			
+			ui.levelVSkills.setText("<b>" 
+					+ sheet.getLevel5Skills() + " skills at level V</b>");
+			ui.levelVSkills.setToolTip(levelVText);
+			proxyModel.setSheet(sheet);
+		}
 		
-		// the amount of SP here is only calculated by summing the SP from all skills.
-		// it represents the total SP of character at the time of the XML file generation.
-		currentSP = sheet.getSkillPoints();
-		ui.skillPoints.setText("<b>" 
-				+ Formater.printLong(Math.round(currentSP)) + " total SP</b>");
-		ui.skillPoints.setToolTip(sheet.getCloneName() 
-				+ " (" + Formater.printLong(sheet.getCloneSkillPoints()) + " SP)");
-		
-		String levelVText = sheet.getLevel1Skills() + " skills at level I\n"
-							+ sheet.getLevel2Skills() + " skills at level II\n"
-							+ sheet.getLevel3Skills() + " skills at level III\n"
-							+ sheet.getLevel4Skills() + " skills at level IV\n"
-							+ sheet.getLevel5Skills() + " skills at level V";
-		
-		ui.skills.setText("<b>" + sheet.getSkillCount() + " known skills</b>");
-		ui.skills.setToolTip(levelVText);
-		
-		ui.levelVSkills.setText("<b>" 
-				+ sheet.getLevel5Skills() + " skills at level V</b>");
-		ui.levelVSkills.setToolTip(levelVText);
-		itemTreeModel.setSheet(sheet);
         
 	}
 	
@@ -139,75 +141,74 @@ public class CharacterSkills extends QWidget {
 	 * 					if there's a problem accessing the skills database
 	 */
 	public void loadSkillInTraining(CharacterSheet sheet, SkillInTraining inTraining) {
-		if(sheet == null) return;
-		
-		String trainingText = "";
-		String timeText = "";
-		StringBuffer endText = new StringBuffer("");
-		String toolTipText = "";
-		SimpleDateFormat dateFormat 
-					= new SimpleDateFormat("EEE dd MMMMMMMMMM HH:mm:ss");
+		if(sheet != null) {
+			String trainingText = "";
+			String timeText = "";
+			StringBuffer endText = new StringBuffer("");
+			String toolTipText = "";
+			SimpleDateFormat dateFormat 
+			= new SimpleDateFormat("EEE dd MMMMMMMMMM HH:mm:ss");
 
-		if (inTraining == null || inTraining.skillInTraining() == 0){
-			// if there's no skill in training
-			trainingText += "<b>no skill in training!</b>";
-			thereIsASkillTraining  = false;
-		} else {
-			// else we fill the fields
-			thereIsASkillTraining  = true;
-			
-			try {
-				trainingText += "<b>" + ItemDAO.getInstance().findItemById(inTraining.getTrainingTypeID()).getTypeName();
-			} catch (PQException e) {
-				trainingText += "<b>" + inTraining.getTrainingTypeID();
-			}
-			
-			switch (inTraining.getTrainingToLevel()){
+			if (inTraining == null || inTraining.skillInTraining() == 0){
+				// if there's no skill in training
+				trainingText += "<b>no skill in training!</b>";
+				thereIsASkillTraining  = false;
+			} else {
+				// else we fill the fields
+				thereIsASkillTraining  = true;
+
+				try {
+					trainingText += "<b>" + ItemDAO.getInstance().findItemById(inTraining.getTrainingTypeID()).getTypeName();
+				} catch (PQException e) {
+					trainingText += "<b>" + inTraining.getTrainingTypeID();
+				}
+
+				switch (inTraining.getTrainingToLevel()){
 				case 1 : trainingText += " I </b>("; break;
 				case 2 : trainingText += " II </b>("; break;
 				case 3 : trainingText += " III </b>("; break;
 				case 4 : trainingText += " IV </b>("; break;
 				case 5 : trainingText += " V </b>("; break;
 				default : trainingText += " 0 </b>(";
-			}
-			trainingText += Formater.printPercent(inTraining.calculateCompletion()) + "%)";
-			
-			// training end date
-			dateFormat.format(new Date(inTraining.getTrainingEndTime()), endText, new FieldPosition(0));
-			
-			// time left
-			long now = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
-			trainingTimeLeft = inTraining.getTrainingEndTime() - now;
-			if (trainingTimeLeft <= 0){
-				trainingTimeLeft = 0;
-			}
-			timeText += Formater.printTime(trainingTimeLeft);
-			
-			// calculation of the current SP.
-			// here, the correct amount of SP is calculated 
-			// by deducting the "last known" SP of skill in training (from the character sheet)
-			// and adding the current SP of it.
-			currentSP -= sheet.getSkill(inTraining.getTrainingTypeID()).getSkillPoints();
-			currentSP += inTraining.currentSP();
+				}
+				trainingText += Formater.printPercent(inTraining.calculateCompletion()) + "%)";
 
-			// setup of the current training speed (in SP / millisecond)
-			trainingSpeed = inTraining.trainingSpeed();
-			
-			// training speed tooltip
-			toolTipText += "Training at: " 
-				+ Math.round(trainingSpeed * Constants.HOUR) + " SP/hour";
+				// training end date
+				dateFormat.format(new Date(inTraining.getTrainingEndTime()), endText, new FieldPosition(0));
 
-			// we start the timer only if there's a skill in training
-			timer.start(Constants.SECOND);
-		}
-		
-		ui.skillInTraining.setText(trainingText);
-		ui.timeLeft.setText(timeText);
-		ui.trainingEnd.setText(endText.toString());
-		ui.skillInTraining.setToolTip(toolTipText);
-		ui.timeLeft.setToolTip(toolTipText);
-		ui.trainingEnd.setToolTip(toolTipText);
-		
+				// time left
+				long now = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
+				trainingTimeLeft = inTraining.getTrainingEndTime() - now;
+				if (trainingTimeLeft <= 0){
+					trainingTimeLeft = 0;
+				}
+				timeText += Formater.printTime(trainingTimeLeft);
+
+				// calculation of the current SP.
+				// here, the correct amount of SP is calculated 
+				// by deducting the "last known" SP of skill in training (from the character sheet)
+				// and adding the current SP of it.
+				currentSP -= sheet.getSkill(inTraining.getTrainingTypeID()).getSkillPoints();
+				currentSP += inTraining.currentSP();
+
+				// setup of the current training speed (in SP / millisecond)
+				trainingSpeed = inTraining.trainingSpeed();
+
+				// training speed tooltip
+				toolTipText += "Training at: " 
+					+ Math.round(trainingSpeed * Constants.HOUR) + " SP/hour";
+
+				// we start the timer only if there's a skill in training
+				timer.start(Constants.SECOND);
+			}
+
+			ui.skillInTraining.setText(trainingText);
+			ui.timeLeft.setText(timeText);
+			ui.trainingEnd.setText(endText.toString());
+			ui.skillInTraining.setToolTip(toolTipText);
+			ui.timeLeft.setToolTip(toolTipText);
+			ui.trainingEnd.setToolTip(toolTipText);
+		}		
 	}
 	
 	///////////

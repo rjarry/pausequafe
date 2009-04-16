@@ -16,6 +16,9 @@ import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.QModelIndex;
+import com.trolltech.qt.core.QTimer;
+import com.trolltech.qt.gui.QLineEdit;
+import com.trolltech.qt.gui.QTextBrowser;
 import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QWidget;
 
@@ -25,80 +28,109 @@ public abstract class AbstractBrowserTab extends QWidget {
 	protected CharacterSheet sheet;
 	
 	protected TreeModel prereqModel;
-	protected TreeSortFilterProxyModel proxyModel = new TreeSortFilterProxyModel();
-	protected TreeModel browserTreeModel;
+	protected TreeSortFilterProxyModel proxyModel;
 	
 	protected QTreeView itemTree;
+	protected QTextBrowser itemDescription;
+	
+	protected QLineEdit filterLineEdit;
+	
+	private QTimer delayBeforeUpdtingFilter;
+
 	
 	//////////////////
 	// constructors //
 	//////////////////
-
     public AbstractBrowserTab(int marketGroupID) {
         this(null, marketGroupID);
     }
 
     public AbstractBrowserTab(QWidget parent, int marketGroupID) {
         super(parent);
+        delayBeforeUpdtingFilter = new QTimer();
+        delayBeforeUpdtingFilter.setInterval(200);
+        delayBeforeUpdtingFilter.setSingleShot(true);
+        
         setupUi();
-
-        MarketGroup group=null;
-        try {
-        	group = MarketGroupDAO.getInstance().findMarketGroupById(marketGroupID);
-        } catch (PQSQLDriverNotFoundException e) {
-        	ErrorMessage message = new ErrorMessage(tr(Constants.DRIVER_NOT_FOUND_ERROR));
-        	message.exec();
-        } catch (PQUserDatabaseFileCorrupted e) {
-        	ErrorMessage message = new ErrorMessage(tr(Constants.USER_DB_CORRUPTED_ERROR));
-        	message.exec();
-        } catch (PQEveDatabaseNotFound e) {
-        	ErrorMessage message = new ErrorMessage(tr(Constants.EVE_DB_CORRUPTED_ERROR));
-        	message.exec();
-		}
-        TreeElement root = new MarketGroupElement(group);
-        browserTreeModel = new TreeModel(root);
-        proxyModel.setSourceModel(browserTreeModel);
-        proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_NAME);
-        proxyModel.setDynamicSortFilter(true);
-        itemTree.setModel(proxyModel);
+        initModels(marketGroupID);
+        initConnection();
     }
 
-
-	/////////////
-    // setters //
-    /////////////
+    ///////////////////////////////
+    // protected (to be overiden //
+    ///////////////////////////////
     public void setSheet(CharacterSheet sheet) {
-		this.sheet = sheet;
-		browserTreeModel.setSheet(sheet);
-		if(prereqModel != null){
-			prereqModel.setSheet(sheet);
-		}
-	}
-    
-    @SuppressWarnings("unused")
-	private void currentItemSelected(QModelIndex index){
-    
-    	TreeElement element = proxyModel.indexToValue(index);
-    	
-    	if (element.getItem() != null){
-    		try {
-				currentItemSelected = ItemDAO.getInstance().getItemDetails(element.getItem());
-			} catch (PQUserDatabaseFileCorrupted e) {
-				e.printStackTrace();
-			} catch (PQEveDatabaseNotFound e) {
-				e.printStackTrace();
-			} catch (PQSQLDriverNotFoundException e) {
-				e.printStackTrace();
-			}
-    		
-			changeItemSelected();
+    	this.sheet = sheet;
+    	proxyModel.setSheet(sheet);
+    	if(prereqModel != null){
+    		prereqModel.setSheet(sheet);
     	}
     }
     
-	//////////////
-    // abstract //
-    //////////////
-	public abstract void changeItemSelected();
-	protected abstract void setupUi();
+    protected abstract void setupUi();
     
+	protected void initModels(int marketGroupID) {
+		MarketGroup group=null;
+		try {
+			group = MarketGroupDAO.getInstance().findMarketGroupById(marketGroupID);
+		} catch (PQSQLDriverNotFoundException e) {
+			ErrorMessage message = new ErrorMessage(tr(Constants.DRIVER_NOT_FOUND_ERROR));
+			message.exec();
+		} catch (PQUserDatabaseFileCorrupted e) {
+			ErrorMessage message = new ErrorMessage(tr(Constants.USER_DB_CORRUPTED_ERROR));
+			message.exec();
+		} catch (PQEveDatabaseNotFound e) {
+			ErrorMessage message = new ErrorMessage(tr(Constants.EVE_DB_CORRUPTED_ERROR));
+			message.exec();
+		}
+		proxyModel = new TreeSortFilterProxyModel();
+		TreeElement root = new MarketGroupElement(group);
+		TreeModel browserTreeModel = new TreeModel(root);
+		proxyModel.setSourceModel(browserTreeModel);
+		itemTree.setModel(proxyModel);
+		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_META_LEVEL);
+		sort();
+	}
+	
+	protected void initConnection(){
+		itemTree.selectionModel().currentChanged.connect(this, "currentItemSelected(QModelIndex)");
+		filterLineEdit.textChanged.connect(delayBeforeUpdtingFilter,"start()");
+		delayBeforeUpdtingFilter.timeout.connect(this,"changeFilteringText()");
+//		filterLineEdit.textChanged.connect(this,"changeFilteringText()");
+	}
+
+
+	///////////
+	// slots //
+	///////////
+	protected abstract void sort();
+	
+    protected void changeFilteringText(){
+    	String filteringText = filterLineEdit.text();
+    	proxyModel.setFilterString(filteringText);
+    	if(!filteringText.equals("")){
+    		itemTree.expandAll();
+    	} else {
+    		itemTree.collapseAll();
+    	}
+    }
+    
+    protected void currentItemSelected(QModelIndex index){
+    	TreeElement element = proxyModel.indexToValue(index);
+    	
+    	if (element!=null && element.getItem() != null){
+    		try {
+				currentItemSelected = ItemDAO.getInstance().getItemDetails(element.getItem());
+			} catch (PQUserDatabaseFileCorrupted e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (PQEveDatabaseNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (PQSQLDriverNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    }
 }

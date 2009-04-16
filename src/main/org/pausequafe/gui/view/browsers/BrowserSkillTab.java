@@ -6,17 +6,26 @@ import org.pausequafe.gui.model.table.AttributesTableModel;
 import org.pausequafe.gui.model.tree.PrerequisiteElement;
 import org.pausequafe.gui.model.tree.TreeElement;
 import org.pausequafe.gui.model.tree.TreeModel;
+import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
 import org.pausequafe.misc.util.Constants;
 
+import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.QSize;
-import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QWidget;
 
 public class BrowserSkillTab extends AbstractBrowserTab {
 
-    private Ui_BrowserSkillTab ui;
+	////////////////////
+	// private fields //
+	////////////////////
+	private QTreeView prereqTree;
+	private Ui_BrowserSkillTab ui;
 
+	////////////////////
+	// constructors   //
+	////////////////////
     public BrowserSkillTab(int marketGroupID) {
     	super(marketGroupID);
     }
@@ -31,13 +40,13 @@ public class BrowserSkillTab extends AbstractBrowserTab {
     protected void setupUi(){
     	ui = new Ui_BrowserSkillTab();
     	ui.setupUi(this);
-    	
+
     	itemTree=ui.itemTree;
-    	itemTree.clicked.connect(this, "currentItemSelected(QModelIndex)");
     	itemTree.setIconSize(new QSize(21,14));
-    	itemTree.setSortingEnabled(true);
-    	itemTree.sortByColumn(0, Qt.SortOrder.AscendingOrder);
-		
+    	itemDescription = ui.itemDescription;
+    	prereqTree = ui.prereqTree;
+    	filterLineEdit = ui.lineEdit;
+    	
 		ui.itemDescription.setAcceptRichText(true);
 		
 		ui.iconLabel.setPixmap(new QPixmap(Constants.NO_ITEM_SELECTED_ICON));
@@ -46,30 +55,57 @@ public class BrowserSkillTab extends AbstractBrowserTab {
 		ui.attributesTable.verticalHeader().setVisible(false);
     }
 
-	@Override
-	public void changeItemSelected() {
-		ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
-		
-		String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
-		File iconFile = new File(icon);
-		if(!iconFile.exists()) icon = Constants.NO_ITEM_SELECTED_ICON;
-		ui.iconLabel.setPixmap(new QPixmap(icon));
-		
-		String tagIconFile = Constants.METAGROUP_ICONS_TAG[currentItemSelected.getMetaGroupID()];
-		ui.metaGroupIcon.setPixmap(new QPixmap(tagIconFile));
-		ui.metaGroupIcon.raise();
-		
-		ui.itemDescription.setText(currentItemSelected.getDescription());
-		
-		TreeElement root = new PrerequisiteElement(currentItemSelected);
-		prereqModel = new TreeModel(root);
-		prereqModel.setSheet(sheet);
-		ui.prereqTree.setModel(prereqModel);
-		
-		AttributesTableModel tableModel = new AttributesTableModel(currentItemSelected);
-		ui.attributesTable.setModel(tableModel);
-		ui.attributesTable.resizeColumnsToContents();
-		ui.attributesTable.resizeRowsToContents();
+    protected void initConnection() {
+    	super.initConnection();
+    	ui.sortComboBox.currentIndexChanged.connect(this, "sort()");
+    	
+    }
+    
+	///////////
+	// slots //
+	///////////
+    protected void sort() {
+    	int sortMode = ui.sortComboBox.currentIndex();
+    	switch(sortMode){
+    	case 0 :
+    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_NAME);
+    		break;
+    	case 1 :
+    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_REMAINING_TRAINING_TIME);
+    		break;
+    	default :
+    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_NAME);
+    		break;
+    	}    	
+    }
+    
+	public void currentItemSelected(QModelIndex index) {
+		super.currentItemSelected(index);
+
+		if(currentItemSelected != null){
+			ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
+
+			String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
+			File iconFile = new File(icon);
+			if(!iconFile.exists()) icon = Constants.NO_ITEM_SELECTED_ICON;
+			ui.iconLabel.setPixmap(new QPixmap(icon));
+
+			String tagIconFile = Constants.METAGROUP_ICONS_TAG[currentItemSelected.getMetaGroupID()];
+			ui.metaGroupIcon.setPixmap(new QPixmap(tagIconFile));
+			ui.metaGroupIcon.raise();
+
+			itemDescription.setText(currentItemSelected.getDescription());
+
+			TreeElement root = new PrerequisiteElement(currentItemSelected);
+			prereqModel = new TreeModel(root);
+			prereqModel.setSheet(sheet);
+			prereqTree.setModel(prereqModel);
+
+			AttributesTableModel tableModel = new AttributesTableModel(currentItemSelected);
+			ui.attributesTable.setModel(tableModel);
+			ui.attributesTable.resizeColumnsToContents();
+			ui.attributesTable.resizeRowsToContents();
+		}
 	}
     
 }

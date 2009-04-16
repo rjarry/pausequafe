@@ -1,7 +1,11 @@
 package org.pausequafe.gui.model.tree;
 
 
+import org.pausequafe.data.business.CharacterSheet;
+import org.pausequafe.misc.util.Constants;
+
 import com.trolltech.qt.core.QModelIndex;
+import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QSortFilterProxyModel;
 import com.trolltech.qt.gui.QTreeModel;
 
@@ -12,49 +16,110 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	///////////////
 	public static final int SORT_BY_NAME = 0;
 	public static final int SORT_BY_META_LEVEL = 1;
-
-//	private static final int TECH1_ID = 0;
-//	private static final int NAMED_ID = 1;
-//	private static final int TECH2_ID = 2;
-//	private static final int STORYLINE_ID = 3;
-//	private static final int FACTION_ID = 4;
-//	private static final int OFFICER_ID = 5;
-//	private static final int DEADSPACE_ID = 6;
-//	private static final int TECH3_ID = 7;
+	public static final int SORT_BY_REMAINING_TRAINING_TIME = 2;
 
 	////////////////////
 	// private fields //
 	////////////////////
-	private QTreeModel sourceModel;
-	private int sortMode = 0;
-
+	private TreeModel sourceModel;
+	private int sortMode = SORT_BY_NAME;
+	
 	private boolean tech1Shown = true;
-	private boolean namedShown = true;
 	private boolean tech2Shown = true;
-	private boolean storylineShown = true;
-	private boolean factionShown = true;
-	private boolean officerShown = true;
-	private boolean deadspaceShown = true;
 	private boolean tech3Shown = true;
+	private boolean namedShown = true;
+	private boolean factionShown = true;
+	private boolean storylineShown = true;
+	private boolean deadspaceShown = true;
+	private boolean officerShown = true;
+	
+	private boolean unknownShown = true;
+	
 
 
+	////////////////////
+	// constructors   //
+	////////////////////
 	public TreeSortFilterProxyModel() {
 		super();
-		this.setDynamicSortFilter(true);
+		setFilterCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive);
 	}
 
+	////////////////////
+	// public methods //
+	////////////////////
+	public TreeElement indexToValue(QModelIndex index) {
+		return (TreeElement) sourceModel.indexToValue(mapToSource(index));
+	}
+	
 	public QTreeModel getSourceModel() {
 		return sourceModel;
 	}
 
-	public void setSourceModel(QTreeModel sourceModel) {
-		this.sourceModel=sourceModel;
+	public void setSheet(CharacterSheet sheet) {
+		sourceModel.setSheet(sheet);
+	}
+	
+	public void setSourceModel(TreeModel sourceModel) {
+		this.sourceModel= sourceModel;
+		sourceModel.dataChanged.connect(this.dataChanged);
 		super.setSourceModel(sourceModel);
-		this.sourceModel().dataChanged.connect(this.dataChanged);
 	}
 
-	public TreeElement indexToValue(QModelIndex index) {
-		return (TreeElement) sourceModel.indexToValue(mapToSource(index));
+	public void setSortMode(int sortMode) {
+		this.sortMode = sortMode;
+		setSortRole(sortMode); // sort role has to be change in order to trigger the sorting
+		sort(0); // trigger sorting
+	}
+
+	public void setFilterString(String pattern) {
+		super.setFilterFixedString(pattern);
+		invalidateFilter();
+	}
+
+	public void setTech1Shown(boolean tech1Shown) {
+		this.tech1Shown = tech1Shown;
+		invalidateFilter();
+	}
+	
+	public void setTech2Shown(boolean tech2Shown) {
+		this.tech2Shown = tech2Shown;
+		invalidateFilter();
+	}
+	
+	public void setTech3Shown(boolean tech3Shown) {
+		this.tech3Shown = tech3Shown;
+		invalidateFilter();
+	}
+	
+	public void setNamedShown(boolean namedShown) {
+		this.namedShown = namedShown;
+		invalidateFilter();
+	}
+	
+	public void setFactionShown(boolean factionShown) {
+		this.factionShown = factionShown;
+		invalidateFilter();
+	}
+	
+	public void setStorylineShown(boolean storylineShown) {
+		this.storylineShown = storylineShown;
+		invalidateFilter();
+	}
+	
+	public void setDeadspaceShown(boolean deadspaceShown) {
+		this.deadspaceShown = deadspaceShown;
+		invalidateFilter();
+	}
+	
+	public void setOfficerShown(boolean officerShown) {
+		this.officerShown = officerShown;
+		invalidateFilter();
+	}
+
+	public void setUnknownShown(boolean unknownShown) {
+		this.unknownShown = unknownShown;
+		invalidateFilter();
 	}
 
 	//////////////////////////////////////////////////
@@ -62,95 +127,97 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	//////////////////////////////////////////////////
 	@Override
 	protected boolean lessThan(QModelIndex left, QModelIndex right) {
-		boolean result;
+		boolean result = true;
 		TreeElement leftElement = (TreeElement) sourceModel.indexToValue(left);
 		TreeElement rightElement = (TreeElement) sourceModel.indexToValue(right);
 
 		switch(sortMode){
 			case SORT_BY_META_LEVEL :
 				if(leftElement instanceof ItemElement && rightElement instanceof ItemElement){
-					result = leftElement.getItem().getMetaLevel() < rightElement.getItem().getMetaLevel();
+					// items are ordered by Meta level or by name if meta levels are equal
+					result = (leftElement.getItem().getMetaLevel() < rightElement.getItem().getMetaLevel()) 
+					      || (    leftElement.getItem().getMetaLevel() == rightElement.getItem().getMetaLevel() 
+					    	   && leftElement.getName().compareTo(rightElement.getName()) < 0 );
+				} else {
+					// other TreeElement like market groups are ordered by name
+					result = leftElement.getName().compareTo(rightElement.getName()) < 0;
+				}
+				break;
+			case SORT_BY_REMAINING_TRAINING_TIME :
+				if(leftElement instanceof ItemElement && rightElement instanceof ItemElement){
+					result = leftElement.getItem().getRemainingTrainingTime(sourceModel.getSheet())
+					       < rightElement.getItem().getRemainingTrainingTime(sourceModel.getSheet());
 				} else {
 					result = leftElement.getName().compareTo(rightElement.getName()) < 0;
 				}
 				break;
-	
+			case SORT_BY_NAME :
+				// always order by name in this case
+				result = leftElement.getName().compareTo(rightElement.getName()) < 0;
+				break;
 			default :
+				// should not go here
 				result = leftElement.getName().compareTo(rightElement.getName()) < 0;
 				break;
 		}
 		return result;
 	}
 
-	/////////////
-	// getters //
-	/////////////
-	public int getSortMode() {
-		return sortMode;
-	}
-	public boolean isTech1Shown() {
-		return tech1Shown;
-	}
-	public boolean isNamedShown() {
-		return namedShown;
-	}
-	public boolean isTech2Shown() {
-		return tech2Shown;
-	}
-	public boolean isStorylineShown() {
-		return storylineShown;
-	}
-	public boolean isFactionShown() {
-		return factionShown;
-	}
-	public boolean isOfficerShown() {
-		return officerShown;
-	}
-	public boolean isDeadspaceShown() {
-		return deadspaceShown;
-	}
-	public boolean isTech3Shown() {
-		return tech3Shown;
-	}
-
-
-	/////////////
-	// setters //
-	/////////////
-	public void setSortMode(int sortMode) {
-		this.sortMode = sortMode;
-	}
-
-	public void setTech1Shown(boolean tech1Shown) {
-		this.tech1Shown = tech1Shown;
-	}
-
-	public void setNamedShown(boolean namedShown) {
-		this.namedShown = namedShown;
-	}
-
-	public void setTech2Shown(boolean tech2Shown) {
-		this.tech2Shown = tech2Shown;
-	}
-
-	public void setStorylineShown(boolean storylineShown) {
-		this.storylineShown = storylineShown;
-	}
-
-	public void setFactionShown(boolean factionShown) {
-		this.factionShown = factionShown;
+	@Override
+	protected boolean filterAcceptsRow(int source_row, QModelIndex source_parent) {
+		boolean result = false;
+		TreeElement element = sourceModel.child(sourceModel.indexToValue(source_parent), source_row);
+		QModelIndex elementIndex = sourceModel.index(source_row , 0 , source_parent);
+		
+		if(element instanceof ItemElement){
+			result = super.filterAcceptsRow(source_row, source_parent);
+			switch(element.getItem().getMetaGroupID()){
+				case Constants.TECH1_METAGROUP :
+					result = result && tech1Shown;
+					break;
+				case Constants.NAMED_METAGROUP :
+					result = result && namedShown;
+					break;
+				case Constants.TECH2_METAGROUP :
+					result = result && tech2Shown;
+					break;
+				case Constants.STORYLINE_METAGROUP :
+					result = result && storylineShown;
+					break;
+				case Constants.FACTION_METAGROUP :
+					result = result && factionShown;
+					break;
+				case Constants.OFFICER_METAGROUP :
+					result = result && officerShown;
+					break;
+				case Constants.DEADSPACE_METAGROUP :
+					result = result && deadspaceShown;
+					break;
+				case Constants.TECH3_METAGROUP :
+					result = result && tech3Shown;
+					break;
+				default :
+					break;
+			}
+		} else {
+//			result = super.filterAcceptsRow(source_row, source_parent);
+			for(int row=0;row<sourceModel.childCount(element);row++) {
+				result = result || filterAcceptsRow(row, elementIndex);
+			}
+		}
+		
+		// hide unknown skills if filter unknownShown is false
+		if(element instanceof SkillElement && !unknownShown){
+			CharacterSheet sheet = sourceModel.getSheet();
+			if(sheet != null){
+				boolean isSkillKnown = ( sheet.getSkills().containsKey(element.getItem().getTypeID()) );
+				result = result && isSkillKnown;
+			}
+		}
+		
+		return result;
 	}
 
-	public void setOfficerShown(boolean officerShown) {
-		this.officerShown = officerShown;
-	}
 
-	public void setDeadspaceShown(boolean deadspaceShown) {
-		this.deadspaceShown = deadspaceShown;
-	}
-
-	public void setTech3Shown(boolean tech3Shown) {
-		this.tech3Shown = tech3Shown;
-	}
 
 }
