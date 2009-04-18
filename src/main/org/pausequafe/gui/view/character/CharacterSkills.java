@@ -73,7 +73,6 @@ public class CharacterSkills extends QWidget {
         proxyModel = new TreeSortFilterProxyModel();
 		proxyModel.setSourceModel(itemTreeModel);
 		ui.skillTree.setModel(proxyModel);
-		proxyModel.setUnknownShown(false);
         
         loadSkills(sheet);
         loadSkillInTraining(sheet, inTraining);
@@ -127,8 +126,8 @@ public class CharacterSkills extends QWidget {
 					+ sheet.getLevel5Skills() + " skills at level V</b>");
 			ui.levelVSkills.setToolTip(levelVText);
 			proxyModel.setSheet(sheet);
+			proxyModel.setUnknownShown(false);
 		}
-		
         
 	}
 	
