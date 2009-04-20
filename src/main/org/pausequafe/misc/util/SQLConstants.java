@@ -13,6 +13,7 @@ public class SQLConstants {
 	/*
 	 * EVE database queries
 	 */
+	public static final double WARP_SPEED_BASE = 3.0;
 	
 	// Columns name
 	public static final String TYPEID_COL = "typeID";
@@ -47,6 +48,62 @@ public class SQLConstants {
 	public static final int REQUIRED_SKILL_3_LEVEL_ATTID = 279;
 	public static final int METALEVEL_ATTID = 633;
 	public static final int RANK_ATTID = 275;
+	// armor
+	public static final int ARMOR_HP_ATTID = 265;
+	public static final int ARMOR_EM_RESIST_ATTID = 267;
+	public static final int ARMOR_EXPLO_RESIST_ATTID = 268;
+	public static final int ARMOR_KINE_RESIST_ATTID = 269;
+	public static final int ARMOR_THERM_RESIST_ATTID = 270;
+	// capa
+	public static final int CAPACITOR_CAPACITY_ATTID = 482;
+	public static final int CAPACITOR_RECHARGE_TIME_ATTID = 55;
+	// fitting
+	public static final int CPU_OUTPUT_ATTID = 48;
+	public static final int GUN_HARDPOINTS_ATTID = 102;
+	public static final int LAUNCHER_HARDPOINTS_ATTID = 101;
+	public static final int RIG_SLOTS_ATTID = 1154;
+	public static final int CALIBRATION_PONTS_ATTID = 1132;
+	public static final int LOW_SLOTS_ATTID = 12;
+	public static final int MED_SLOTS_ATTID = 13;
+	public static final int HI_SLOTS_ATTID = 14;
+	public static final int POWERGRID_OUTPUT_ATTID = 11;
+	// shield
+	public static final int SHIELD_HP_ATTID = 263;
+	public static final int SHIELD_RECHARGE_TIME_ATTID = 479;
+	public static final int SHIELD_EM_RESIST_ATTID = 271;
+	public static final int SHIELD_EXPLO_RESIST_ATTID = 272;
+	public static final int SHIELD_KINE_RESIST_ATTID = 273;
+	public static final int SHIELD_THERM_RESIST_ATTID = 274;
+	// structure
+	public static final int STRUCT_HP_ATTID = 9;
+	public static final int STRUCT_EM_RESIST_ATTID = 113;
+	public static final int STRUCT_EXPLO_RESIST_ATTID = 111;
+	public static final int STRUCT_KINE_RESIST_ATTID = 109;
+	public static final int STRUCT_THERM_RESIST_ATTID = 110;
+	public static final int RADIUS_ATTID = 162;
+	public static final int MASS_ATTID = 4;
+	public static final int VOLUME_ATTID = 161;
+	public static final int CAPACITY_ATTID = 38;
+	// drones
+	public static final int DRONEBAY_CAPACITY_ATTID = 283;
+	public static final int DRONE_BANDWIDTH = 1271;
+	// propulsion
+	public static final int MAX_VELOCITY_ATTID = 37;
+	public static final int AGILITY_ATTID = 70;
+	public static final int WARP_SPEED_MULTUPLIER_ATTID = 600;	
+	// targeting
+	public static final int TARGETING_RANGE_ATTID = 76;
+	public static final int TARGET_COUNT_ATTID = 192;
+	public static final int SCAN_RESOLUTION_ATTID = 564;
+	public static final int SIGNATURE_RADIUS_ATTID = 552;
+	public static final int SENSOR_RADAR_ATTID = 208;	
+	public static final int SENSOR_LADAR_ATTID = 209;	
+	public static final int SENSOR_MAGNETO_ATTID = 210;	
+	public static final int SENSOR_GRAVI_ATTID = 211;	
+	
+	
+	
+	
 	
 	// unit IDs
 	public static final int DURATION_MILLISECS_UNITID = 101;
@@ -85,7 +142,7 @@ public class SQLConstants {
 	
 	public static final String QUERY_ITEM_DETAILS_BY_ID =	"SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice " +
 															"FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u " +
-															"WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND ac.categoryName != 'NULL' AND at.unitID = u.unitID " +
+															"WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND at.unitID = u.unitID " +
 															"ORDER BY ac.categoryName ";
 	
 	

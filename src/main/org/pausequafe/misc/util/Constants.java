@@ -3,6 +3,7 @@ package org.pausequafe.misc.util;
 
 
 
+
 public class Constants {
 	///////////////////////////////////////////////
 	public static final String PQ_VERSION = "0.0";
@@ -66,6 +67,43 @@ public class Constants {
 	public static final String SERVERSTATUS_ONLINE_ICON = "resources/icons/PauseQuafe/serverStatus_online.png";
 	public static final String SERVERSTATUS_OFFLINE_ICON = "resources/icons/PauseQuafe/serverStatus_offline.png";
 	public static final String SERVERSTATUS_UNKONWN_ICON = "resources/icons/PauseQuafe/serverStatus_unknown.png";
+	
+	
+	public static final String ARMOR_ICON = "resources/icons/PauseQuafe/ShipAttributes/armor.png";
+	public static final String CAPA_ICON = "resources/icons/PauseQuafe/ShipAttributes/capacitor.png";
+	public static final String CAPA_RECHARGE_ICON = "resources/icons/PauseQuafe/ShipAttributes/capa_recharge.png";
+	public static final String CARGO_ICON = "resources/icons/PauseQuafe/ShipAttributes/cargo.png";
+	public static final String CPU_ICON = "resources/icons/PauseQuafe/ShipAttributes/CPU.png";
+	public static final String DRONES_ICON = "resources/icons/PauseQuafe/ShipAttributes/drones.png";
+	public static final String EM_ICON = "resources/icons/PauseQuafe/ShipAttributes/EM_resistance.png";
+	public static final String EXPLO_ICON = "resources/icons/PauseQuafe/ShipAttributes/explosive_resistance.png";
+	public static final String GUN_ICON = "resources/icons/PauseQuafe/ShipAttributes/gun_hardpoint.png";
+	public static final String HI_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/hi_slots.png";
+	public static final String INERTIA_ICON = "resources/icons/PauseQuafe/ShipAttributes/inertia.png";
+	public static final String KINETIC_ICON = "resources/icons/PauseQuafe/ShipAttributes/kinetic_resistance.png";
+	public static final String LOW_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/low_slots.png";
+	public static final String MASS_ICON = "resources/icons/PauseQuafe/ShipAttributes/mass.png";
+	public static final String MED_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/med_slots.png";
+	public static final String MISSILE_ICON = "resources/icons/PauseQuafe/ShipAttributes/launcher_hardpoint.png";
+	public static final String PWG_ICON = "resources/icons/PauseQuafe/ShipAttributes/powergrid.png";
+	public static final String RADIUS_ICON = "resources/icons/PauseQuafe/ShipAttributes/signature_radius.png";
+	public static final String RANGE_ICON = "resources/icons/PauseQuafe/ShipAttributes/range.png";
+	public static final String RIG_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/rig_slot.png";
+	public static final String SCAN_RES_ICON = "resources/icons/PauseQuafe/ShipAttributes/resolution.png";
+	public static final String SENSOR_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_magneto.png";
+	public static final String SHIELD_ICON = "resources/icons/PauseQuafe/ShipAttributes/shield.png";
+	public static final String SHIELD_RECHARGE_ICON = "resources/icons/PauseQuafe/ShipAttributes/shield_recharge.png";
+	public static final String STRUCTURE_ICON = "resources/icons/PauseQuafe/ShipAttributes/structure.png";
+	public static final String TARGET_COUNT_ICON = "resources/icons/PauseQuafe/ShipAttributes/target_count.png";
+	public static final String THERMIC_ICON = "resources/icons/PauseQuafe/ShipAttributes/thermal_resistance.png";
+	public static final String VELOCITY_ICON = "resources/icons/PauseQuafe/ShipAttributes/velocity.png";
+	public static final String VOLUME_ICON = "resources/icons/PauseQuafe/ShipAttributes/volume.png";
+	public static final String WARP_ICON = "resources/icons/PauseQuafe/ShipAttributes/warp_velocity.png";
+	
+	
+	
+	
+	
 	
 	// prerequisites
 	public static final String SKILL_OK = "resources/icons/PauseQuafe/skill_ok.png";
