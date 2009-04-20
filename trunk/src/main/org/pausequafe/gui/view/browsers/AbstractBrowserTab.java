@@ -25,6 +25,7 @@ import com.trolltech.qt.gui.QWidget;
 public abstract class AbstractBrowserTab extends QWidget {
 	
 	protected ItemDetailed currentItemSelected;
+	protected QModelIndex currentIndexSelected;
 	protected CharacterSheet sheet;
 	
 	protected TreeModel prereqModel;
@@ -116,6 +117,7 @@ public abstract class AbstractBrowserTab extends QWidget {
     }
     
     protected void currentItemSelected(QModelIndex index){
+    	currentIndexSelected = index;
     	TreeElement element = proxyModel.indexToValue(index);
     	
     	if (element!=null && element.getItem() != null){

@@ -3,6 +3,8 @@ package org.pausequafe.data.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pausequafe.misc.util.SQLConstants;
+
 public class ItemDetailed extends Item {
 
 
@@ -33,10 +35,10 @@ public class ItemDetailed extends Item {
 		this.basePrice = basePrice;
 		this.description = description;
 		
-		attributeList.add(new ItemAttribute("Radius", "Structure", radius, "m", 1));
-		attributeList.add(new ItemAttribute("Mass", "Structure", mass, "kg", 2));
-		attributeList.add(new ItemAttribute("Volume", "Structure", volume, "m3", 9));
-		attributeList.add(new ItemAttribute("Capacity", "Structure", capacity, "m3", 9));
+		attributeList.add(new ItemAttribute(SQLConstants.RADIUS_ATTID, "Radius", "Structure", radius, "m", 1));
+		attributeList.add(new ItemAttribute(SQLConstants.MASS_ATTID, "Mass", "Structure", mass, "kg", 2));
+		attributeList.add(new ItemAttribute(SQLConstants.VOLUME_ATTID, "Volume", "Structure", volume, "m3", 9));
+		attributeList.add(new ItemAttribute(SQLConstants.CAPACITY_ATTID, "Capacity", "Structure", capacity, "m3", 9));
 	}
 
 	////////////////////

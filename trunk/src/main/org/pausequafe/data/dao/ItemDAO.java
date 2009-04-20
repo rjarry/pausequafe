@@ -151,7 +151,7 @@ public class ItemDAO  extends AbstractSqlDAO{
 					double attributeValue = res.getDouble(SQLConstants.ATTRIBUTE_VALUE_COL);
 					String unit = res.getString(SQLConstants.UNIT_COL);
 					int unitID = res.getInt(SQLConstants.UNITID_COL);
-					ItemAttribute attribute = new ItemAttribute(attributeName, attributeCategory, attributeValue, unit, unitID);
+					ItemAttribute attribute = new ItemAttribute(attributeID, attributeName, attributeCategory, attributeValue, unit, unitID);
 					askedItem.addAttribute(attribute);
 				}
 			}

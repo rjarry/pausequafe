@@ -103,10 +103,10 @@ public class SettingsDialog extends QDialog {
 			Configuration.getInstance().storeConfiguration();
 			Configuration.getInstance().loadConfiguration();
 		} catch (JEveConnectionException e) {
-			// not possible JEVECore absurdity
+			// FIXME : not possible JEVECore absurdity
 			e.printStackTrace();
 		} catch (JEveConfigurationException e) {
-			// I/O exception when reading config file (shouldn't happen)
+			// FIXME : I/O exception when reading config file (shouldn't happen)
 			e.printStackTrace();
 		}
 		
