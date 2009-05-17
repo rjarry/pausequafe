@@ -4,6 +4,7 @@ package org.pausequafe.misc.util;
 
 
 
+
 public class Constants {
 	///////////////////////////////////////////////
 	public static final String PQ_VERSION = "0.0";
@@ -99,6 +100,9 @@ public class Constants {
 	public static final String VELOCITY_ICON = "resources/icons/PauseQuafe/ShipAttributes/velocity.png";
 	public static final String VOLUME_ICON = "resources/icons/PauseQuafe/ShipAttributes/volume.png";
 	public static final String WARP_ICON = "resources/icons/PauseQuafe/ShipAttributes/warp_velocity.png";
+	
+	public static final String ADD_ICON = "resources/icons/PauseQuafe/add.png";
+	public static final String MINUS_ICON = "resources/icons/PauseQuafe/minus.png";
 	
 	
 	

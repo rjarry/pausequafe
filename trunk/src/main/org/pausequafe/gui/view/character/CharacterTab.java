@@ -1,7 +1,7 @@
 package org.pausequafe.gui.view.character;
 
-import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.CharacterSheet;
+import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.misc.util.ApiRequest;
 
@@ -16,13 +16,13 @@ public class CharacterTab extends QWidget {
 	////////////////////
     Ui_CharacterTab ui = new Ui_CharacterTab();
 
-	private CharacterSheet sheet;
+	private MonitoredCharacter monChar;
 	private SkillInTraining inTraining;
 	private String imageLocation;
 	
 	private CharacterInfo infoWidget;
 	private CharacterSkills skillsWidget;
-	private SkillPlanList plansWidget;
+	private SkillPlanListView plansWidget;
 	private ApiRequest request;
 	
 	public Signal0 requestStarted = new Signal0();
@@ -31,10 +31,12 @@ public class CharacterTab extends QWidget {
 	//////////////////
 	// constructors //
 	//////////////////
-	public CharacterTab(APIData data){
+	public CharacterTab(MonitoredCharacter character){
 		setupUi();
 		
-		request = new ApiRequest(data);
+		monChar = character;
+		
+		request = new ApiRequest(character.getApi());
 		
 		request.requestStarted.connect(this,"emitRequestStarted()");
 		request.dataRetrieved.connect(this,"emitRequestFinished()");
@@ -53,7 +55,7 @@ public class CharacterTab extends QWidget {
 		
 		infoWidget = new CharacterInfo(this);
 		skillsWidget = new CharacterSkills(this, null, null);
-		plansWidget = new SkillPlanList(this);
+		plansWidget = new SkillPlanListView(this);
 
 		ui.verticalLayout.insertWidget(0,infoWidget);
 		
@@ -69,23 +71,22 @@ public class CharacterTab extends QWidget {
 		ui.skillsFrame.layout().addWidget(skillsWidget);
 		ui.plansFrame.layout().addWidget(plansWidget);
 		
-		plansWidget.setEnabled(false);
 	}
 	
 	////////////////////
 	// public methods //
 	////////////////////
 	public void updateCharacterInfo(CharacterSheet sheet, SkillInTraining inTraining, String imageLocation){
-		this.sheet = sheet;
+		this.monChar.setSheet(sheet);
 		this.inTraining = inTraining;
 		this.imageLocation = imageLocation;
 		
-		infoWidget.loadInfo(this.sheet);
-		infoWidget.loadAttributes(this.sheet);
+		infoWidget.loadInfo(this.monChar.getSheet());
+		infoWidget.loadAttributes(this.monChar.getSheet());
 		infoWidget.loadPortrait(this.imageLocation);
 
-		skillsWidget.loadSkills(this.sheet);
-		skillsWidget.loadSkillInTraining(this.sheet, this.inTraining);
+		skillsWidget.loadSkills(this.monChar.getSheet());
+		skillsWidget.loadSkillInTraining(this.monChar.getSheet(), this.inTraining);
 	}
 	
 	///////////
@@ -109,8 +110,8 @@ public class CharacterTab extends QWidget {
 	/////////////
 	// getters //
 	/////////////
-	public CharacterSheet getSheet() {
-		return sheet;
+	public MonitoredCharacter getCharacter() {
+		return monChar;
 	}
 	public SkillInTraining getInTraining() {
 		return inTraining;
@@ -123,8 +124,8 @@ public class CharacterTab extends QWidget {
 	/////////////
 	// setters //
 	/////////////
-	public void setSheet(CharacterSheet sheet) {
-		this.sheet = sheet;
+	public void setSheet(MonitoredCharacter character) {
+		this.monChar = character;
 	}
 	public void setInTraining(SkillInTraining inTraining) {
 		this.inTraining = inTraining;
