@@ -91,7 +91,10 @@ public class Constants {
 	public static final String RANGE_ICON = "resources/icons/PauseQuafe/ShipAttributes/range.png";
 	public static final String RIG_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/rig_slot.png";
 	public static final String SCAN_RES_ICON = "resources/icons/PauseQuafe/ShipAttributes/resolution.png";
-	public static final String SENSOR_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_magneto.png";
+	public static final String SENSOR_MAGNETO_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_magneto.png";
+	public static final String SENSOR_RADAR_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_radar.png";
+	public static final String SENSOR_LADAR_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_ladar.png";
+	public static final String SENSOR_GRAVI_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_gravi.png";
 	public static final String SHIELD_ICON = "resources/icons/PauseQuafe/ShipAttributes/shield.png";
 	public static final String SHIELD_RECHARGE_ICON = "resources/icons/PauseQuafe/ShipAttributes/shield_recharge.png";
 	public static final String STRUCTURE_ICON = "resources/icons/PauseQuafe/ShipAttributes/structure.png";

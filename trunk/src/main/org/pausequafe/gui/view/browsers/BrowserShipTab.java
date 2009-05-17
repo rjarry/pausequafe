@@ -80,7 +80,7 @@ public class BrowserShipTab extends AbstractBrowserTab {
     	ui.rangeIcon.setPixmap(new QPixmap(Constants.RANGE_ICON));
     	ui.resolutionIcon.setPixmap(new QPixmap(Constants.SCAN_RES_ICON));
     	ui.rigIcon.setPixmap(new QPixmap(Constants.RIG_SLOT_ICON));
-    	ui.sensorIcon.setPixmap(new QPixmap(Constants.SENSOR_ICON));
+    	ui.sensorIcon.setPixmap(new QPixmap(Constants.SENSOR_MAGNETO_ICON));
     	ui.sizeIcon.setPixmap(new QPixmap(Constants.VOLUME_ICON));
     	ui.shieldIcon.setPixmap(new QPixmap(Constants.SHIELD_ICON));
     	ui.shieldRechargeIcon.setPixmap(new QPixmap(Constants.SHIELD_RECHARGE_ICON));
@@ -226,24 +226,32 @@ public class BrowserShipTab extends AbstractBrowserTab {
 				if(att.getValue() > sensor){
 					sensor = att.getValue();
 					ui.sensorStrength.setText((int) sensor + " points");
+					ui.sensorStrength.setToolTip("Gravimetric Sensor Strength");
+					ui.sensorIcon.setPixmap(new QPixmap(Constants.SENSOR_GRAVI_ICON));
 				}
 				break;
 			case SQLConstants.SENSOR_LADAR_ATTID :
 				if(att.getValue() > sensor){
 					sensor = att.getValue();
 					ui.sensorStrength.setText((int) sensor + " points");
+					ui.sensorStrength.setToolTip("LADAR Sensor Strength");
+					ui.sensorIcon.setPixmap(new QPixmap(Constants.SENSOR_LADAR_ICON));
 				}
 				break;
 			case SQLConstants.SENSOR_MAGNETO_ATTID :
 				if(att.getValue() > sensor){
 					sensor = att.getValue();
 					ui.sensorStrength.setText((int) sensor + " points");
+					ui.sensorStrength.setToolTip("Magnetometric Sensor Strength");
+					ui.sensorIcon.setPixmap(new QPixmap(Constants.SENSOR_MAGNETO_ICON));
 				}
 				break;
 			case SQLConstants.SENSOR_RADAR_ATTID :
 				if(att.getValue() > sensor){
 					sensor = att.getValue();
 					ui.sensorStrength.setText((int) sensor + " points");
+					ui.sensorStrength.setToolTip("RADAR Sensor Strength");
+					ui.sensorIcon.setPixmap(new QPixmap(Constants.SENSOR_RADAR_ICON));
 				}
 				break;
 			case SQLConstants.SHIELD_EM_RESIST_ATTID :
