@@ -81,14 +81,13 @@
      <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">Enter the &lt;span style=" font-weight:600;">User ID&lt;/span> and the &lt;span style=" font-weight:600;">limited API key&lt;/span> for the character &lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">you want to monitor.&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">You can find the API details from the link below: &lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;a href="http://www.eveonline.com/api/">&lt;span style=" text-decoration: underline; color:#0000ff;">http://www.eveonline.com/api/&lt;/span>&lt;/a>&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;">&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#0000ff;">&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body>
+&lt;p>Enter the &lt;span style=" font-weight:600;">User ID&lt;/span> and the &lt;span style=" font-weight:600;">limited API key&lt;/span> for the character &lt;/p>
+&lt;p>you want to monitor.&lt;/p>
+&lt;p>&lt;/p>
+&lt;p>You can find the API details from the link below: &lt;/p>
+&lt;p>&lt;a href="http://www.eveonline.com/api/">&lt;span style=" text-decoration: underline; color:#0000ff;">http://www.eveonline.com/api/&lt;/span>&lt;/a>&lt;/p>
+&lt;/body>&lt;/html></string>
     </property>
     <property name="openExternalLinks" >
      <bool>true</bool>

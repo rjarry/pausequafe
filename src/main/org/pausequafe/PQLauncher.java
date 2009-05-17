@@ -31,8 +31,13 @@ public class PQLauncher {
                
 		QPixmap pix = new QPixmap(Constants.SPLASH_SCREEN);
 		
+		QFile file = new QFile("resources/ui/quafeStyleSheet.qss");
+		file.open(OpenModeFlag.ReadOnly);
+		String styleSheet = file.readAll().toString();
+		
 		QSplashScreen splash = new QSplashScreen(pix);
-        splash.show();
+        splash.setStyleSheet(styleSheet);
+		splash.show();
         QApplication.processEvents();
 
         try {
@@ -56,10 +61,6 @@ public class PQLauncher {
 
 		QSystemTrayIcon tray = new QSystemTrayIcon(new QIcon(Constants.WINDOW_ICON));
 		tray.activated.connect(mainWindow, "show()");
-		
-		QFile file = new QFile("resources/ui/quafeStyleSheet.qss");
-		file.open(OpenModeFlag.ReadOnly);
-		String styleSheet = file.readAll().toString();
 		mainWindow.setStyleSheet(styleSheet);
 		
 		splash.finish(mainWindow);

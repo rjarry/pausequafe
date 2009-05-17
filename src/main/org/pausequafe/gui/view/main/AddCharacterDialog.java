@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.dao.CharacterListFactory;
-import org.pausequafe.data.dao.SessionDAO;
+import org.pausequafe.data.dao.MonitoredCharacterDAO;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
 import org.pausequafe.misc.exceptions.PQConfigException;
@@ -54,7 +54,7 @@ public class AddCharacterDialog extends QDialog {
 	    List<APIData> list = null;
 	    
 		try {
-			list = SessionDAO.getInstance().getDistinctApiData();
+			list = MonitoredCharacterDAO.getInstance().getDistinctApiData();
 		} catch (PQSQLDriverNotFoundException e) {
 			ErrorMessage error = new ErrorMessage(this,tr(Constants.DRIVER_NOT_FOUND_ERROR));
 			error.exec();
@@ -138,7 +138,7 @@ public class AddCharacterDialog extends QDialog {
 				error.exec();
 				return;
 			}
-			if(SessionDAO.getInstance().isMonitored(characterList.get(index))){
+			if(MonitoredCharacterDAO.getInstance().isMonitored(characterList.get(index))){
 				ErrorMessage error = new ErrorMessage(this, "This character is already monitored.");
 				error.exec();
 				return;

@@ -12,8 +12,9 @@ import java.util.TimeZone;
 import org.pausequafe.StyleSheetEditor;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.CharacterSheet;
+import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.ServerStatus;
-import org.pausequafe.data.dao.SessionDAO;
+import org.pausequafe.data.dao.MonitoredCharacterDAO;
 import org.pausequafe.gui.view.browsers.BrowsersWindow;
 import org.pausequafe.gui.view.character.CharacterTab;
 import org.pausequafe.gui.view.misc.AboutPQ;
@@ -29,14 +30,11 @@ import org.pausequafe.misc.util.ServerStatusRequest;
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.core.Qt;
-import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
-import com.trolltech.qt.gui.QCursor;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMainWindow;
-import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMovie;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QTabWidget;
@@ -47,34 +45,23 @@ import com.trolltech.qt.gui.QFrame.Shape;
 public class MainWindow extends QMainWindow {
 
     private static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
+    private Ui_MainWindow ui = new Ui_MainWindow();
 	
     private QTabWidget tabWidget;
-	
-    private QAction actionAdd_Character;
-    private QAction actionDelete_Current_Character;
-    private QAction actionQuit;
-    private QAction actionOpen_Browsers;
-    private QAction actionAbout_PQ;
-    private QAction action_Settings;
-    private QAction action_Stylesheet_editor;
-
     private QLabel eveTimeLabel;
     private QTimer eveTimeTimer;
-    
+
     private QLabel apiActivityIcon;
     private int requestCount = 0;
-    private QMenu refreshMenu;
-
+    
     private QLabel serverStatusIndicator;
     private QTimer serverStatusTimer;
     
     private BrowsersWindow browsers;
 	
-    public Signal1<CharacterSheet> tabChanged = new Signal1<CharacterSheet>();
+    private MonitoredCharacterList characterList;
 	
-    private Ui_MainWindow ui = new Ui_MainWindow();
 
-	public Signal0 browserBuilt = new Signal0();
 
     //////////////////
     // constructors //
@@ -89,12 +76,15 @@ public class MainWindow extends QMainWindow {
         setupUi();
         updateTime();
         requestServerStatus();
-        browserBuilt .emit();
+        
+        characterList = new MonitoredCharacterList();
         
 		try {
-			List<APIData> list = SessionDAO.getInstance().getMonitoredCharacters();
+			List<APIData> list = MonitoredCharacterDAO.getInstance().getMonitoredCharacters();
 			for(APIData data : list){
-				addTab(data);
+				MonitoredCharacter character = new MonitoredCharacter(data);
+				characterList.addCharacter(character);
+				addTab(character);
 			}
 		} catch (PQSQLDriverNotFoundException e) {
 			ErrorMessage error = new ErrorMessage(this,tr(Constants.DRIVER_NOT_FOUND_ERROR));
@@ -117,36 +107,30 @@ public class MainWindow extends QMainWindow {
 		this.setWindowTitle("Pause Quafé");
 		
 		// Init menu actions
-		actionQuit = ui.actionQuit;
-		actionQuit.triggered.connect(QApplication.instance(), "quit()");
-		actionQuit.setShortcut("Ctrl+Q");
+		ui.actionQuit.triggered.connect(QApplication.instance(), "quit()");
+		ui.actionQuit.setShortcut("Ctrl+Q");
 		
-    	actionAdd_Character = ui.actionAdd_Character;
-    	actionAdd_Character.triggered.connect(this, "addCharacterDialog()");
-    	actionAdd_Character.setShortcut("Ctrl+N");
+		ui.actionAdd_Character.triggered.connect(this, "addCharacterDialog()");
+    	ui.actionAdd_Character.setShortcut("Ctrl+N");
     	
-    	actionDelete_Current_Character = ui.actionDelete_Current_Character;
-    	actionDelete_Current_Character.triggered.connect(this, "deleteCharacterDialog()");
-    	actionDelete_Current_Character.setShortcut("Ctrl+W");
+    	ui.actionReorder_Characters.triggered.connect(this, "reorderCharactersDialog()");
+    	
+    	ui.actionDelete_Current_Character.triggered.connect(this, "deleteCharacterDialog()");
+    	ui.actionDelete_Current_Character.setShortcut("Ctrl+W");
 
-    	actionOpen_Browsers = ui.actionOpen_Browsers;
-    	actionOpen_Browsers.triggered.connect(this, "openBrowsers()");
-    	actionOpen_Browsers.setShortcut("Ctrl+B");
+    	ui.actionOpen_Browsers.triggered.connect(this, "openBrowsers()");
+    	ui.actionOpen_Browsers.setShortcut("Ctrl+B");
     	
-    	action_Settings = ui.action_Settings;
-    	action_Settings.triggered.connect(this, "openSettingsWindow()");
-    	action_Settings.setShortcut("Ctrl+P");
+    	ui.action_Settings.triggered.connect(this, "openSettingsWindow()");
+    	ui.action_Settings.setShortcut("Ctrl+P");
     	
-    	action_Stylesheet_editor = ui.action_Stylesheet_editor;
-    	action_Stylesheet_editor.triggered.connect(this, "openStylesheetEditor()");
+    	ui.action_Stylesheet_editor.triggered.connect(this, "openStylesheetEditor()");
     	
-    	actionAbout_PQ = ui.actionAbout_PQ;
-    	actionAbout_PQ.triggered.connect(this, "aboutPQ()");
+    	ui.actionAbout_PQ.triggered.connect(this, "aboutPQ()");
     	
     	
     	// Init central widget
     	tabWidget = new QTabWidget();
-    	tabWidget.currentChanged.connect(this, "currentTabChanged(Integer)");
     	
     	QWidget centralWidget = (QWidget) this.findChild(QWidget.class, "centralWidget");
     	QVBoxLayout centralLayout = new QVBoxLayout();
@@ -176,11 +160,6 @@ public class MainWindow extends QMainWindow {
     	apiActivityIcon.setFrameShape(Shape.NoFrame);
 		apiActivityIcon.setPixmap(new QPixmap(Constants.IDLE_ICON));
 		
-    	refreshMenu = new QMenu(this);
-    	refreshMenu.addAction("Refresh All Characters", this, "refreshAllTabs()");
-    	
-    	apiActivityIcon.customContextMenuRequested.connect(this, "popupRefreshMenu()");
-		
 		ui.statusBar.addPermanentWidget(serverStatusIndicator, 1);
 		ui.statusBar.addPermanentWidget(eveTimeLabel,1);
 		ui.statusBar.addPermanentWidget(new QWidget(),100);
@@ -190,6 +169,9 @@ public class MainWindow extends QMainWindow {
 
 	}
 	
+	void connard(Integer moncul){
+		System.out.println("mon cul sur la commode");
+	}
 	
 	
 	
@@ -241,7 +223,6 @@ public class MainWindow extends QMainWindow {
 	@SuppressWarnings("unused")
 	private synchronized void incrementRequestCount(){
 		if(requestCount==0){
-			refreshMenu.setEnabled(false);
 			QMovie movie = new QMovie(Constants.DOWNLOADING_ICON);
 			movie.setSpeed(90);
 			apiActivityIcon.setPixmap(null);
@@ -264,7 +245,6 @@ public class MainWindow extends QMainWindow {
 			apiActivityIcon.setMovie(null);
 			apiActivityIcon.setPixmap(pixmap);
 			apiActivityIcon.setToolTip("API activity : <b>idle</b> Right click to refresh all characters.");
-			refreshMenu.setEnabled(true);
 		}
 	}
 	
@@ -281,7 +261,9 @@ public class MainWindow extends QMainWindow {
 		if(addCharDialog.result() == QDialog.DialogCode.Accepted.value()){
 			APIData data = addCharDialog.getChosenCharacter();
 			try {
-				addTab(data);
+				MonitoredCharacter character = new MonitoredCharacter(data);
+				characterList.addCharacter(character);
+				addTab(character);
 			} catch (PQSQLDriverNotFoundException e) {
 				ErrorMessage error = new ErrorMessage(this,tr(Constants.DRIVER_NOT_FOUND_ERROR));
 				error.exec();
@@ -297,15 +279,23 @@ public class MainWindow extends QMainWindow {
 	}
 	
 	
-	private void addTab(APIData data) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted{
-		CharacterTab tab = new CharacterTab(data);
+	private void addTab(MonitoredCharacter character){
+		CharacterTab tab = new CharacterTab(character);
 		tab.requestStarted.connect(this, "incrementRequestCount()");
 		tab.requestFinished.connect(this, "decrementRequestCount()");
-		tabWidget.addTab(tab, data.getCharacterName());
-		
-		SessionDAO.getInstance().addMonitoredCharacter(data);
+		tabWidget.addTab(tab, character.getApi().getCharacterName());
 	}
 	
+	/**
+	 * Invoked by the menu action "Reorder Characters..."
+	 * 
+	 * @throws PQException
+	 * @throws IOException
+	 */
+	@SuppressWarnings("unused")
+	private void reorderCharactersDialog(){
+		
+	}
 	
 	@SuppressWarnings("unused")
 	private void deleteCharacterDialog() throws PQException, IOException{
@@ -314,22 +304,11 @@ public class MainWindow extends QMainWindow {
 		delCharDialog.exec();
 		
 		if(delCharDialog.result() == QDialog.DialogCode.Accepted.value()){
-			removeTab();
+			characterList.removeCharacter(tabWidget.currentIndex());
+			tabWidget.removeTab(tabWidget.currentIndex());
 		}
 	}
 	
-	
-	private void removeTab() throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted{
-		int characterID = ((CharacterTab) tabWidget.currentWidget()).getSheet().getCharacterID();
-			SessionDAO.getInstance().removeMonitoredCharacter(characterID);
-		tabWidget.removeTab(tabWidget.currentIndex());
-	}
-    
-    @SuppressWarnings("unused")
-	private void currentTabChanged(Integer tabIndex){
-    	tabChanged.emit(((CharacterTab) tabWidget.widget(tabIndex)).getSheet());
-    }
-    
     /**
 	 * Invoked by the menu action "About Pause Quafé..."
 	 * 
@@ -357,17 +336,11 @@ public class MainWindow extends QMainWindow {
     	if(requestCount == 0){
 	    	List<CharacterSheet> list = new ArrayList<CharacterSheet>();
 	    	for(int i=0 ; i<tabWidget.count() ; i++){
-	    		list.add(((CharacterTab) tabWidget.widget(i)).getSheet());
+	    		list.add(((CharacterTab) tabWidget.widget(i)).getCharacter().getSheet());
 	    	}
 	    	browsers.setSheetList(list);
     	}
     }
-    
-    public void popupRefreshMenu() {
-		refreshMenu.exec(QCursor.pos());
-    }
-    
-    
     
     
     @SuppressWarnings("unused")
