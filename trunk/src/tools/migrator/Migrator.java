@@ -9,7 +9,7 @@ public class Migrator {
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		Class.forName("org.sqlite.JDBC");
 		
-		File dbFile = new File("ressources/eve-online.db");
+		File dbFile = new File("resources/eve-online.db");
 		if (dbFile.exists()){
 			System.out.println("eve-online.db already exists, deleting...");
 			dbFile.delete();
@@ -22,7 +22,7 @@ public class Migrator {
 				"databaseName=EVE;" +
 				"user=SA;" +
 				"password=connard;");
-		Connection conSQLite = DriverManager.getConnection("jdbc:sqlite:eve-online.db");
+		Connection conSQLite = DriverManager.getConnection("jdbc:sqlite:resources/eve-online.db");
 
 		System.out.println("Connected");
 
@@ -1426,6 +1426,7 @@ System.out.print("Generating invFlags... ");
 		statSQLite.executeUpdate("UPDATE invTypes SET metaGroupID=0 WHERE metaGroupID IS NULL");
 		statSQLite.executeUpdate("UPDATE invTypes SET metaGroupID=7 WHERE metaGroupID=14");
 		statSQLite.executeUpdate("UPDATE invTypes SET icon=typeID WHERE groupID IN (SELECT groupID FROM invGroups WHERE categoryID=9) AND icon LIKE 'icon%'");
+		statSQLite.executeUpdate("UPDATE invTypes SET icon=typeID WHERE typeID IN (29984,29986,29988,29990)");
 		statSQLite.executeUpdate("UPDATE invGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
 		statSQLite.executeUpdate("UPDATE invCategories SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
 		statSQLite.executeUpdate("UPDATE invMarketGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
