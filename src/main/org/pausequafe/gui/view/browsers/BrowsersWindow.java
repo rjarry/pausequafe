@@ -3,6 +3,7 @@ package org.pausequafe.gui.view.browsers;
 import java.util.List;
 
 import org.pausequafe.data.business.CharacterSheet;
+import org.pausequafe.data.business.MonitoredCharacter;
 
 import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QLabel;
@@ -78,9 +79,10 @@ public class BrowsersWindow extends QWidget {
     	moduleBrowser.setSheet((CharacterSheet) sheetCombo.itemData(index));
     }
     
-	public void setSheetList(List<CharacterSheet> sheetList) {
-		for(CharacterSheet sheet : sheetList){
-			sheetCombo.addItem(sheet.getName(), sheet);
+	public void setSheetList(List<MonitoredCharacter> list) {
+		sheetCombo.clear();
+		for(MonitoredCharacter character : list){
+			sheetCombo.addItem(character.getSheet().getName(), character.getSheet());
 		}
 	}
 

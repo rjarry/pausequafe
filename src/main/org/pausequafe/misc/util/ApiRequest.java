@@ -18,9 +18,6 @@ public class ApiRequest extends QSignalEmitter implements Runnable {
 	////////////////////
 	
 	private APIData data;
-	private CharacterSheet sheet;
-	private SkillInTraining inTraining;
-	private String imageLocation;
 	
 	public Signal0 requestStarted;
 	public Signal3<CharacterSheet, SkillInTraining, String> dataRetrieved;
@@ -40,9 +37,9 @@ public class ApiRequest extends QSignalEmitter implements Runnable {
 	public void run(){
 		try {
 			requestStarted.emit();
-			sheet = CharacterSheetFactory.getCharacterSheet(data);
-			imageLocation = CharacterSheetFactory.getPortrait(data, false);
-			inTraining = SkillInTrainingFactory.getSkillInTraining(data);
+			CharacterSheet sheet = CharacterSheetFactory.getCharacterSheet(data);
+			String imageLocation = CharacterSheetFactory.getPortrait(data, false);
+			SkillInTraining inTraining = SkillInTrainingFactory.getSkillInTraining(data);
 			dataRetrieved.emit(sheet ,inTraining, imageLocation);
 		} catch (PQException e) {
 			e.printStackTrace();
@@ -51,21 +48,4 @@ public class ApiRequest extends QSignalEmitter implements Runnable {
 		}
 	}
 
-
-	public APIData getData() {
-		return data;
-	}
-
-	public CharacterSheet getSheet() {
-		return sheet;
-	}
-
-	public void setData(APIData data) {
-		this.data = data;
-	}
-
-	public void setSheet(CharacterSheet sheet) {
-		this.sheet = sheet;
-	}
-	
 }

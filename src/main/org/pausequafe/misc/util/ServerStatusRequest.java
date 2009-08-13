@@ -8,15 +8,17 @@ import com.trolltech.qt.QSignalEmitter;
 public class ServerStatusRequest extends QSignalEmitter implements Runnable {
 
 	private ServerStatus status;
-	public Signal1<ServerStatus> finished;
+	public Signal0 requestStarted = new Signal0();
+	public Signal1<ServerStatus> requestFinished;
 	
 	public ServerStatusRequest(){
-		finished = new Signal1<ServerStatus>();
+		requestFinished = new Signal1<ServerStatus>();
 	}
 	
 	public void run() {
+		requestStarted.emit();
 		status = ServerStatusFactory.getStatus();
-		finished.emit(status);
+		requestFinished.emit(status);
 	}
 
 }

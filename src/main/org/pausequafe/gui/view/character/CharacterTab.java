@@ -17,8 +17,6 @@ public class CharacterTab extends QWidget {
     Ui_CharacterTab ui = new Ui_CharacterTab();
 
 	private MonitoredCharacter monChar;
-	private SkillInTraining inTraining;
-	private String imageLocation;
 	
 	private CharacterInfo infoWidget;
 	private CharacterSkills skillsWidget;
@@ -78,15 +76,15 @@ public class CharacterTab extends QWidget {
 	////////////////////
 	public void updateCharacterInfo(CharacterSheet sheet, SkillInTraining inTraining, String imageLocation){
 		this.monChar.setSheet(sheet);
-		this.inTraining = inTraining;
-		this.imageLocation = imageLocation;
+		this.monChar.setInTraining(inTraining);
+		this.monChar.setImageLocation(imageLocation);
 		
 		infoWidget.loadInfo(this.monChar.getSheet());
 		infoWidget.loadAttributes(this.monChar.getSheet());
-		infoWidget.loadPortrait(this.imageLocation);
+		infoWidget.loadPortrait(this.monChar.getImageLocation());
 
 		skillsWidget.loadSkills(this.monChar.getSheet());
-		skillsWidget.loadSkillInTraining(this.monChar.getSheet(), this.inTraining);
+		skillsWidget.loadSkillInTraining(this.monChar.getSheet(), this.monChar.getInTraining());
 	}
 	
 	///////////
@@ -113,24 +111,5 @@ public class CharacterTab extends QWidget {
 	public MonitoredCharacter getCharacter() {
 		return monChar;
 	}
-	public SkillInTraining getInTraining() {
-		return inTraining;
-	}
-	public String getImageLocation() {
-		return imageLocation;
-	}
 
-
-	/////////////
-	// setters //
-	/////////////
-	public void setSheet(MonitoredCharacter character) {
-		this.monChar = character;
-	}
-	public void setInTraining(SkillInTraining inTraining) {
-		this.inTraining = inTraining;
-	}
-	public void setImageLocation(String imageLocation) {
-		this.imageLocation = imageLocation;
-	}
 }

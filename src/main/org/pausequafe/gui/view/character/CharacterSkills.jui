@@ -250,7 +250,7 @@
            <x>127</x>
            <y>0</y>
            <width>255</width>
-           <height>13</height>
+           <height>16</height>
           </rect>
          </property>
          <property name="sizePolicy" >
@@ -262,13 +262,13 @@
          <property name="minimumSize" >
           <size>
            <width>255</width>
-           <height>13</height>
+           <height>16</height>
           </size>
          </property>
          <property name="maximumSize" >
           <size>
            <width>255</width>
-           <height>13</height>
+           <height>16</height>
           </size>
          </property>
          <property name="frameShape" >
