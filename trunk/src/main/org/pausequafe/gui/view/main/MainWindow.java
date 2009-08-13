@@ -3,7 +3,6 @@ package org.pausequafe.gui.view.main;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -11,8 +10,8 @@ import java.util.TimeZone;
 
 import org.pausequafe.StyleSheetEditor;
 import org.pausequafe.data.business.APIData;
-import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.MonitoredCharacter;
+import org.pausequafe.data.business.MonitoredCharacterList;
 import org.pausequafe.data.business.ServerStatus;
 import org.pausequafe.data.dao.MonitoredCharacterDAO;
 import org.pausequafe.gui.view.browsers.BrowsersWindow;
@@ -30,7 +29,7 @@ import org.pausequafe.misc.util.ServerStatusRequest;
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.core.Qt;
-import com.trolltech.qt.gui.QApplication;
+import com.trolltech.qt.gui.QCloseEvent;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
@@ -38,9 +37,8 @@ import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMovie;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QTabWidget;
-import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
-import com.trolltech.qt.gui.QFrame.Shape;
+import com.trolltech.qt.gui.QSystemTrayIcon.ActivationReason;
 
 public class MainWindow extends QMainWindow {
 
@@ -52,15 +50,20 @@ public class MainWindow extends QMainWindow {
     private QTimer eveTimeTimer;
 
     private QLabel apiActivityIcon;
-    private int requestCount = 0;
+    private int requestCount;
     
     private QLabel serverStatusIndicator;
     private QTimer serverStatusTimer;
+    private ServerStatus status;
     
     private BrowsersWindow browsers;
 	
-    private MonitoredCharacterList characterList;
-	
+    private MonitoredCharacterList characterList = new MonitoredCharacterList();
+    
+    // used to close properly the system tray icon when the application quits
+    public Signal0 aboutToQuit = new Signal0();
+    // used to update the system tray icon's tooltip
+    public Signal2<MonitoredCharacterList,ServerStatus> dataUpdated = new Signal2<MonitoredCharacterList,ServerStatus>();;
 
 
     //////////////////
@@ -76,8 +79,6 @@ public class MainWindow extends QMainWindow {
         setupUi();
         updateTime();
         requestServerStatus();
-        
-        characterList = new MonitoredCharacterList();
         
 		try {
 			List<APIData> list = MonitoredCharacterDAO.getInstance().getMonitoredCharacters();
@@ -97,8 +98,6 @@ public class MainWindow extends QMainWindow {
 				userDb.delete();
 			}
 		}
-        
-        
     }
 
 	private void setupUi() {
@@ -107,7 +106,7 @@ public class MainWindow extends QMainWindow {
 		this.setWindowTitle("Pause Quafé");
 		
 		// Init menu actions
-		ui.actionQuit.triggered.connect(QApplication.instance(), "quit()");
+		ui.actionQuit.triggered.connect(this, "quit()");
 		ui.actionQuit.setShortcut("Ctrl+Q");
 		
 		ui.actionAdd_Character.triggered.connect(this, "addCharacterDialog()");
@@ -127,54 +126,38 @@ public class MainWindow extends QMainWindow {
     	ui.action_Stylesheet_editor.triggered.connect(this, "openStylesheetEditor()");
     	
     	ui.actionAbout_PQ.triggered.connect(this, "aboutPQ()");
-    	
-    	
-    	// Init central widget
-    	tabWidget = new QTabWidget();
-    	
-    	QWidget centralWidget = (QWidget) this.findChild(QWidget.class, "centralWidget");
-    	QVBoxLayout centralLayout = new QVBoxLayout();
-    	centralWidget.setLayout(centralLayout);
-    	centralLayout.setContentsMargins(0,0,0,0);
-    	centralLayout.setSpacing(0);
-    	
-    	centralLayout.addWidget(tabWidget);
-    	
+    	    	
+    	tabWidget = ui.tabWidget;
+    	tabWidget.removeTab(0); // parce que le ui creator met un tab par défaut ce con.
+    	    	
     	// Init status bar
     	
     	serverStatusIndicator = new QLabel();
-    	serverStatusIndicator.setFrameShape(Shape.NoFrame);
     	serverStatusTimer = new QTimer();
     	serverStatusTimer.timeout.connect(this, "requestServerStatus()");
     	serverStatusTimer.start(5 * Constants.MINUTE);
-    	updateServerStatus(new ServerStatus());
+    	status = new ServerStatus();
     	
     	eveTimeLabel = new QLabel();
-    	eveTimeLabel.setFrameShape(Shape.NoFrame);
     	TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
     	eveTimeTimer = new QTimer(this);
     	eveTimeTimer.timeout.connect(this, "updateTime()");
     	eveTimeTimer.start(Constants.MINUTE);
     	
     	apiActivityIcon = new QLabel();
-    	apiActivityIcon.setFrameShape(Shape.NoFrame);
 		apiActivityIcon.setPixmap(new QPixmap(Constants.IDLE_ICON));
 		
 		ui.statusBar.addPermanentWidget(serverStatusIndicator, 1);
 		ui.statusBar.addPermanentWidget(eveTimeLabel,1);
 		ui.statusBar.addPermanentWidget(new QWidget(),100);
 		ui.statusBar.addPermanentWidget(apiActivityIcon,1);
+
+		requestCount = 1; // pour que le premier appel ne passe pas le request count à -1.
+		updateServerStatus(status);
 		
 		this.resize(300, 700);
 
 	}
-	
-	void connard(Integer moncul){
-		System.out.println("mon cul sur la commode");
-	}
-	
-	
-	
 	
 	/**
 	 * Updates the eve time label
@@ -190,7 +173,8 @@ public class MainWindow extends QMainWindow {
 	private void requestServerStatus(){
 		ServerStatusRequest request = new ServerStatusRequest();
 		QThread thread = new QThread(request);
-		request.finished.connect(this, "updateServerStatus(ServerStatus)");
+		request.requestStarted.connect(this, "incrementRequestCount()");
+		request.requestFinished.connect(this, "updateServerStatus(ServerStatus)");
 		thread.start();
 	}
 	
@@ -202,6 +186,8 @@ public class MainWindow extends QMainWindow {
 	 * 			the server's status
 	 */
 	private void updateServerStatus(ServerStatus status){
+		this.status = status;
+		
 		if(status.isOnLine()){
 			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_ONLINE_ICON));
 			serverStatusIndicator.setToolTip("Tranquility Server Online (" + status.getPlayerCount() + " pilots)");
@@ -214,6 +200,7 @@ public class MainWindow extends QMainWindow {
 				serverStatusIndicator.setToolTip("Tranquility Server Offline");
 			}
 		}
+		decrementRequestCount();
 	}
 	
 	/**
@@ -237,7 +224,6 @@ public class MainWindow extends QMainWindow {
 	 * Updates fetching indicator
 	 * Invoqued by the <code>CharacterTab.requestFinished</code> signal
 	 */
-	@SuppressWarnings("unused")
 	private synchronized void decrementRequestCount(){
 		requestCount--;
 		if(requestCount==0){
@@ -245,6 +231,7 @@ public class MainWindow extends QMainWindow {
 			apiActivityIcon.setMovie(null);
 			apiActivityIcon.setPixmap(pixmap);
 			apiActivityIcon.setToolTip("API activity : <b>idle</b> Right click to refresh all characters.");
+			dataUpdated.emit(characterList, status);
 		}
 	}
 	
@@ -320,7 +307,7 @@ public class MainWindow extends QMainWindow {
     }
     
     /**
-	 * Invoked by the menu action "About Pause Quafé..."
+	 * Invoked by the menu action "Open Browsers"
 	 * 
 	 */
     @SuppressWarnings("unused")
@@ -334,11 +321,11 @@ public class MainWindow extends QMainWindow {
     	browsers.activateWindow();
 
     	if(requestCount == 0){
-	    	List<CharacterSheet> list = new ArrayList<CharacterSheet>();
+	    	/*List<CharacterSheet> list = new ArrayList<CharacterSheet>();
 	    	for(int i=0 ; i<tabWidget.count() ; i++){
 	    		list.add(((CharacterTab) tabWidget.widget(i)).getCharacter().getSheet());
-	    	}
-	    	browsers.setSheetList(list);
+	    	}*/
+	    	browsers.setSheetList(characterList.getCharacterList());
     	}
     }
     
@@ -362,5 +349,23 @@ public class MainWindow extends QMainWindow {
     	StyleSheetEditor editor = new StyleSheetEditor(this);
     	editor.show();
     }
+    
+    
+    @SuppressWarnings("unused")
+	private void quit(){
+    	aboutToQuit.emit();
+    }
+    
+    
+    public void closeEvent(QCloseEvent event){
+        this.hide();
+    }
+    
+    public void showWindow(ActivationReason reason){
+    	if(reason == ActivationReason.DoubleClick){
+    		this.show();
+    	}
+    }
+
     
 }

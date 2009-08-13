@@ -24,6 +24,7 @@ import org.pausequafe.misc.util.Formater;
 
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QTimer;
+import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.core.Qt.SortOrder;
 import com.trolltech.qt.gui.QWidget;
 
@@ -200,7 +201,8 @@ public class CharacterSkills extends QWidget {
 				// we start the timer only if there's a skill in training
 				timer.start(Constants.SECOND);
 			}
-
+			ui.skillInTraining.setAlignment(Qt.AlignmentFlag.AlignTop);
+			ui.skillInTraining.setAlignment(Qt.AlignmentFlag.AlignLeft);
 			ui.skillInTraining.setText(trainingText);
 			ui.timeLeft.setText(timeText);
 			ui.trainingEnd.setText(endText.toString());

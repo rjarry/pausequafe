@@ -14,6 +14,7 @@ import com.trolltech.qt.core.QIODevice.OpenModeFlag;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QIcon;
+import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QSplashScreen;
 import com.trolltech.qt.gui.QSystemTrayIcon;
@@ -22,6 +23,7 @@ import com.trolltech.qt.gui.QSystemTrayIcon;
 
 public class PQLauncher {
 
+	
 	public static void main(String[] args) {
         QApplication.initialize(args);
         QApplication.setOrganizationName("Diabete© Studios");
@@ -39,6 +41,7 @@ public class PQLauncher {
         splash.setStyleSheet(styleSheet);
 		splash.show();
         QApplication.processEvents();
+        QApplication.setQuitOnLastWindowClosed(false);
 
         try {
         	splash.showMessage("Loading item database...", 120, QColor.white);
@@ -58,10 +61,29 @@ public class PQLauncher {
 		}
 		
 		MainWindow mainWindow = new MainWindow();
-
+		
+		QApplication.setActiveWindow(mainWindow);
+		
 		QSystemTrayIcon tray = new QSystemTrayIcon(new QIcon(Constants.WINDOW_ICON));
-		tray.activated.connect(mainWindow, "show()");
+		// différenciation pour le clic gauche 
+		// j'ai été obligé de faire une méthode dans MainWindow car ici on est en static -> pas de slot
+		tray.activated.connect(mainWindow, "showWindow(com.trolltech.qt.gui.QSystemTrayIcon$ActivationReason)");
+
+		
+		
+		
+		
+		
+		
+		// system tray menu
+		QMenu menu = new QMenu();
+		menu.addAction("Show Main Window...", mainWindow, "show()");
+		menu.addAction("Quit", QApplication.instance(), "quit()");
+		tray.setContextMenu(menu);
+		
 		mainWindow.setStyleSheet(styleSheet);
+		mainWindow.aboutToQuit.connect(tray, "dispose()");
+		mainWindow.aboutToQuit.connect(QApplication.instance(), "quit()");
 		
 		splash.finish(mainWindow);
 		mainWindow.show();
