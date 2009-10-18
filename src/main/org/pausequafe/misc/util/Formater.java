@@ -75,11 +75,34 @@ public class Formater {
 		temp = (int) ((time % MINUTE) / SECOND);
 		switch (temp){
 			case 0 : break;
-			case 1 : timeString += temp + " second "; break;
-			default : timeString += temp + " seconds ";
+			case 1 : timeString += temp + " second"; break;
+			default : timeString += temp + " seconds";
 		}
 
 		return timeString;
 	}
 	
+	public static String printLevel(int level) {
+		String romanNumber;
+		switch (level) {
+		case 1:
+			romanNumber = "I";
+			break;
+		case 2:
+			romanNumber = "II";
+			break;
+		case 3:
+			romanNumber = "III";
+			break;
+		case 4:
+			romanNumber = "IV";
+			break;
+		case 5:
+			romanNumber = "V";
+			break;
+		default:
+			romanNumber = "0";
+		}
+		return romanNumber;
+	}
 }

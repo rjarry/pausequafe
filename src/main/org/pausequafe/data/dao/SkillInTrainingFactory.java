@@ -20,7 +20,7 @@ import be.fomp.jeve.core.exceptions.JEveParseException;
 
 public class SkillInTrainingFactory {
 	
-	public static synchronized SkillInTraining getSkillInTraining(APIData data) throws PQException {
+	public static synchronized SkillInTraining getSkillInTraining(APIData data) throws PQException, IOException {
 		LimitedAPI con = null;
 		boolean isCached = false;
 		
@@ -43,8 +43,7 @@ public class SkillInTrainingFactory {
 			doc = readCachedFile(data.getCharacterName());
 			isCached = true;
 		} catch (JEveParseException e) {
-			doc = readCachedFile(data.getCharacterName());
-			isCached = true;
+			throw new PQException("API Authentication error");
 		}
 		
 		// create skill in training from XML parse
@@ -52,7 +51,7 @@ public class SkillInTrainingFactory {
 		return result;
 	}
 
-	private static Document readCachedFile(String name) throws PQException {
+	private static Document readCachedFile(String name) throws IOException, PQException {
 		File file = new File(Constants.CHAR_SHEET_PATH + name + "InTraining.xml");
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = null;
@@ -60,8 +59,6 @@ public class SkillInTrainingFactory {
 			doc = builder.build(file);
 		} catch (JDOMException e) {
 			throw new PQException("parsing error");
-		} catch (IOException e) {
-			throw new PQException("file not present");
 		}
 		return doc;
 	}

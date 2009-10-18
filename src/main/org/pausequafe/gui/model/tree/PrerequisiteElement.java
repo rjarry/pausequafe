@@ -5,6 +5,7 @@ import org.pausequafe.data.business.Item;
 import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
+import org.pausequafe.misc.util.Formater;
 
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QIcon;
@@ -70,15 +71,7 @@ public class PrerequisiteElement extends GroupElement {
 	}
 
 	public String getName() {
-		String name = item.getTypeName();
-		switch(requiredLevel){
-			case 1: name += " I"; break;
-			case 2: name += " II"; break;
-			case 3: name += " III"; break;
-			case 4: name += " IV"; break;
-			case 5: name += " V"; break;
-		}
-		return name;
+		return item.getTypeName() + Formater.printLevel(requiredLevel);
 	}
 
 	@Override
@@ -88,15 +81,7 @@ public class PrerequisiteElement extends GroupElement {
 
 	@Override
 	public String toString() {
-		String name = item.getTypeName();
-		switch(requiredLevel){
-			case 1: name += " I"; break;
-			case 2: name += " II"; break;
-			case 3: name += " III"; break;
-			case 4: name += " IV"; break;
-			case 5: name += " V"; break;
-		}
-		return name;
+		return getName();
 	}
 
 }

@@ -55,8 +55,7 @@ public class CharacterSheetFactory {
 			doc = readCachedFile(data.getCharacterName());
 			isCached = true;
 		} catch (JEveParseException e) {
-			doc = readCachedFile(data.getCharacterName());
-			isCached = true;
+			throw new PQException("API Authentication error");
 		}
 
 		// create character sheet from XML parse

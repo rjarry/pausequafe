@@ -11,7 +11,6 @@ import org.pausequafe.gui.view.misc.ErrorQuestion;
 import org.pausequafe.misc.exceptions.PQConfigException;
 import org.pausequafe.misc.exceptions.PQConnectionException;
 import org.pausequafe.misc.exceptions.PQException;
-import org.pausequafe.misc.exceptions.PQParseException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
@@ -122,7 +121,7 @@ public class AddCharacterDialog extends QDialog {
 			ErrorMessage error = new ErrorMessage(this, "Could not connect to EVE-Online API server.");
 			error.exec();
 			return;
-		} catch (PQParseException e) {
+		} catch (PQException e) {
 			ErrorMessage error = new ErrorMessage(this, "Wrong API Key.");
 			error.exec();
 			return;

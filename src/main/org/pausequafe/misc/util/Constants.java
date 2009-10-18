@@ -156,7 +156,8 @@ public class Constants {
 	public static final String DRIVER_NOT_FOUND_ERROR = "File \"/lib/sqlitejdbc-v054.jar\" not found.\nPlease check your installation.";
 	public static final String EVE_DB_CORRUPTED_ERROR = "File \"/resources/eve-online.db\" corrupted.\nPlease check your installation.";
 	public static final String USER_DB_CORRUPTED_ERROR = "File \"/resources/user.db\" corrupted.\nReset user settings?";
-	
+	public static final String API_AUTHENTICATION_ERROR = "The API details you provided for ? are incorrect.";
+	public static final String CONNECTION_ERROR = "Impossible to connect to the API server.";
 	///////////////////
 	// misc messages //
 	///////////////////

@@ -1,103 +1,104 @@
-<ui version="4.0" language="jambi" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0" language="jambi">
  <class>CharacterSkills</class>
- <widget class="QWidget" name="CharacterSkills" >
-  <property name="geometry" >
+ <widget class="QWidget" name="CharacterSkills">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
-    <height>300</height>
+    <width>435</width>
+    <height>717</height>
    </rect>
   </property>
-  <property name="minimumSize" >
+  <property name="minimumSize">
    <size>
     <width>0</width>
     <height>0</height>
    </size>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" >
-   <property name="spacing" >
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
     <number>0</number>
    </property>
-   <property name="leftMargin" >
+   <property name="leftMargin">
     <number>5</number>
    </property>
-   <property name="topMargin" >
+   <property name="topMargin">
     <number>0</number>
    </property>
-   <property name="rightMargin" >
+   <property name="rightMargin">
     <number>5</number>
    </property>
-   <property name="bottomMargin" >
+   <property name="bottomMargin">
     <number>5</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="minimumSize" >
+    <widget class="QGroupBox" name="groupBox">
+     <property name="minimumSize">
       <size>
        <width>0</width>
        <height>0</height>
       </size>
      </property>
-     <property name="title" >
+     <property name="title">
       <string>Skills</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout" >
-      <property name="spacing" >
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
        <number>5</number>
       </property>
-      <property name="leftMargin" >
+      <property name="leftMargin">
        <number>5</number>
       </property>
-      <property name="topMargin" >
+      <property name="topMargin">
        <number>0</number>
       </property>
-      <property name="rightMargin" >
+      <property name="rightMargin">
        <number>5</number>
       </property>
-      <property name="bottomMargin" >
+      <property name="bottomMargin">
        <number>5</number>
       </property>
       <item>
-       <widget class="QFrame" name="inTrainingFrame" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+       <widget class="QFrame" name="inTrainingFrame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>301</width>
           <height>39</height>
          </size>
         </property>
-        <property name="maximumSize" >
+        <property name="maximumSize">
          <size>
           <width>16777215</width>
           <height>39</height>
          </size>
         </property>
-        <property name="baseSize" >
+        <property name="baseSize">
          <size>
           <width>301</width>
           <height>39</height>
          </size>
         </property>
-        <property name="frameShape" >
+        <property name="frameShape">
          <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
         </property>
-        <property name="frameShadow" >
+        <property name="frameShadow">
          <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
         </property>
-        <property name="lineWidth" >
+        <property name="lineWidth">
          <number>0</number>
         </property>
-        <widget class="QLabel" name="trainingEnd" >
-         <property name="geometry" >
+        <widget class="QLabel" name="trainingEnd">
+         <property name="geometry">
           <rect>
            <x>127</x>
            <y>26</y>
@@ -105,36 +106,36 @@
            <height>13</height>
           </rect>
          </property>
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize" >
+         <property name="minimumSize">
           <size>
            <width>255</width>
            <height>13</height>
           </size>
          </property>
-         <property name="maximumSize" >
+         <property name="maximumSize">
           <size>
            <width>255</width>
            <height>13</height>
           </size>
          </property>
-         <property name="frameShape" >
+         <property name="frameShape">
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
-         <property name="lineWidth" >
+         <property name="lineWidth">
           <number>0</number>
          </property>
-         <property name="text" >
+         <property name="text">
           <string/>
          </property>
         </widget>
-        <widget class="QLabel" name="skills" >
-         <property name="geometry" >
+        <widget class="QLabel" name="skills">
+         <property name="geometry">
           <rect>
            <x>0</x>
            <y>13</y>
@@ -142,36 +143,36 @@
            <height>13</height>
           </rect>
          </property>
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize" >
+         <property name="minimumSize">
           <size>
            <width>120</width>
            <height>13</height>
           </size>
          </property>
-         <property name="maximumSize" >
+         <property name="maximumSize">
           <size>
            <width>120</width>
            <height>13</height>
           </size>
          </property>
-         <property name="frameShape" >
+         <property name="frameShape">
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
-         <property name="lineWidth" >
+         <property name="lineWidth">
           <number>0</number>
          </property>
-         <property name="text" >
+         <property name="text">
           <string/>
          </property>
         </widget>
-        <widget class="QLabel" name="timeLeft" >
-         <property name="geometry" >
+        <widget class="QLabel" name="timeLeft">
+         <property name="geometry">
           <rect>
            <x>127</x>
            <y>13</y>
@@ -179,36 +180,36 @@
            <height>13</height>
           </rect>
          </property>
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize" >
+         <property name="minimumSize">
           <size>
            <width>255</width>
            <height>13</height>
           </size>
          </property>
-         <property name="maximumSize" >
+         <property name="maximumSize">
           <size>
            <width>255</width>
            <height>13</height>
           </size>
          </property>
-         <property name="frameShape" >
+         <property name="frameShape">
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
-         <property name="lineWidth" >
+         <property name="lineWidth">
           <number>0</number>
          </property>
-         <property name="text" >
+         <property name="text">
           <string/>
          </property>
         </widget>
-        <widget class="QLabel" name="levelVSkills" >
-         <property name="geometry" >
+        <widget class="QLabel" name="levelVSkills">
+         <property name="geometry">
           <rect>
            <x>0</x>
            <y>26</y>
@@ -216,36 +217,36 @@
            <height>13</height>
           </rect>
          </property>
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize" >
+         <property name="minimumSize">
           <size>
            <width>120</width>
            <height>13</height>
           </size>
          </property>
-         <property name="maximumSize" >
+         <property name="maximumSize">
           <size>
            <width>120</width>
            <height>13</height>
           </size>
          </property>
-         <property name="frameShape" >
+         <property name="frameShape">
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
-         <property name="lineWidth" >
+         <property name="lineWidth">
           <number>0</number>
          </property>
-         <property name="text" >
+         <property name="text">
           <string/>
          </property>
         </widget>
-        <widget class="QLabel" name="skillInTraining" >
-         <property name="geometry" >
+        <widget class="QLabel" name="skillInTraining">
+         <property name="geometry">
           <rect>
            <x>127</x>
            <y>0</y>
@@ -253,36 +254,36 @@
            <height>16</height>
           </rect>
          </property>
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize" >
+         <property name="minimumSize">
           <size>
            <width>255</width>
            <height>16</height>
           </size>
          </property>
-         <property name="maximumSize" >
+         <property name="maximumSize">
           <size>
            <width>255</width>
            <height>16</height>
           </size>
          </property>
-         <property name="frameShape" >
+         <property name="frameShape">
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
-         <property name="lineWidth" >
+         <property name="lineWidth">
           <number>0</number>
          </property>
-         <property name="text" >
+         <property name="text">
           <string/>
          </property>
         </widget>
-        <widget class="QLabel" name="skillPoints" >
-         <property name="geometry" >
+        <widget class="QLabel" name="skillPoints">
+         <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
@@ -290,72 +291,72 @@
            <height>13</height>
           </rect>
          </property>
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize" >
+         <property name="minimumSize">
           <size>
            <width>120</width>
            <height>13</height>
           </size>
          </property>
-         <property name="maximumSize" >
+         <property name="maximumSize">
           <size>
            <width>120</width>
            <height>13</height>
           </size>
          </property>
-         <property name="frameShape" >
+         <property name="frameShape">
           <enum>com.trolltech.qt.gui.QFrame.Shape.NoFrame</enum>
          </property>
-         <property name="lineWidth" >
+         <property name="lineWidth">
           <number>0</number>
          </property>
-         <property name="text" >
+         <property name="text">
           <string/>
          </property>
         </widget>
        </widget>
       </item>
       <item>
-       <widget class="QTreeView" name="skillTree" >
-        <property name="minimumSize" >
+       <widget class="QTreeView" name="skillTree">
+        <property name="minimumSize">
          <size>
           <width>0</width>
           <height>0</height>
          </size>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
         </property>
-        <property name="frameShadow" >
+        <property name="frameShadow">
          <enum>com.trolltech.qt.gui.QFrame.Shadow.Plain</enum>
         </property>
-        <property name="lineWidth" >
+        <property name="lineWidth">
          <number>1</number>
         </property>
-        <property name="horizontalScrollBarPolicy" >
+        <property name="horizontalScrollBarPolicy">
          <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff</enum>
         </property>
-        <property name="showDropIndicator" stdset="0" >
+        <property name="showDropIndicator" stdset="0">
          <bool>false</bool>
         </property>
-        <property name="indentation" >
+        <property name="indentation">
          <number>20</number>
         </property>
-        <property name="rootIsDecorated" >
+        <property name="rootIsDecorated">
          <bool>true</bool>
         </property>
-        <property name="uniformRowHeights" >
+        <property name="uniformRowHeights">
          <bool>true</bool>
         </property>
-        <property name="sortingEnabled" >
+        <property name="sortingEnabled">
          <bool>true</bool>
         </property>
-        <property name="headerHidden" >
+        <property name="headerHidden">
          <bool>true</bool>
         </property>
        </widget>

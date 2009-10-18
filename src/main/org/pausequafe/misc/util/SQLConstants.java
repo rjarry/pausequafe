@@ -165,7 +165,7 @@ public class SQLConstants {
 	public static final String ADD_MONITORED_CHARACTER = "INSERT INTO " +
 				"monitoredCharacters(characterID,characterName,userID,apiKey,isMonitored) VALUES (?,?,?,?,1)";
 	public static final String REMOVE_MONITORED_CHARACTER = "UPDATE monitoredCharacters SET isMonitored=0 WHERE characterID=?";
-	public static final String UPDATE_MONITORED_CHARACTER = "UPDATE monitoredCharacters SET isMonitored=1 WHERE characterID=?";
+	public static final String UPDATE_MONITORED_CHARACTER = "UPDATE monitoredCharacters SET isMonitored=?, characterName=?, userID=?, apiKey=? WHERE characterID=?";
 	public static final String CREATE_USER_DATABASE = 
 									"CREATE TABLE monitoredCharacters " +
 									"(" +
