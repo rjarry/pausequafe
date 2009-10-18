@@ -155,7 +155,12 @@ public class MonitoredCharacterDAO extends AbstractSqlDAO {
 			if (rs.next()){
 				rs.close();
 				initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.UPDATE_MONITORED_CHARACTER);
-				prep.setInt(1, data.getCharacterID());
+				prep.setInt(1, 1);
+				prep.setString(2, data.getCharacterName());
+				prep.setInt(3, data.getUserID());
+				prep.setString(4, data.getApiKey());
+
+				prep.setInt(5, data.getCharacterID());
 				prep.executeUpdate();
 			} else {
 				rs.close();

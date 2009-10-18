@@ -11,6 +11,8 @@ public class MonitoredCharacter {
 	private SkillPlanList skillPlanList;
 	
 	private SkillInTraining inTraining;
+	private SkillQueue queue;
+
 	private String imageLocation;
 	
 	/////////////////
@@ -41,6 +43,9 @@ public class MonitoredCharacter {
 	public SkillInTraining getInTraining() {
 		return inTraining;
 	}
+	public SkillQueue getQueue() {
+		return queue;
+	}
 	public String getImageLocation() {
 		return imageLocation;
 	}
@@ -60,6 +65,9 @@ public class MonitoredCharacter {
 	}
 	public void setInTraining(SkillInTraining inTraining) {
 		this.inTraining = inTraining;
+	}
+	public void setQueue(SkillQueue queue) {
+		this.queue = queue;
 	}
 	public void setImageLocation(String imageLocation) {
 		this.imageLocation = imageLocation;

@@ -11,7 +11,7 @@ import java.util.LinkedList;
 public class Migrator {
 
 	public static void main(String[] args) throws Exception {
-		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		Class.forName("org.sqlite.JDBC");
 		
 		File dbFile = new File("resources/eve-online.db");
@@ -21,12 +21,13 @@ public class Migrator {
 		}
 
 		System.out.print("Establishing connections to the databases... ");
-		Connection conMSSQL = DriverManager.getConnection(	"jdbc:sqlserver:" +
-				"//localhost\\EVE;" +
-				"instanceName=EVE;" +
-				"databaseName=EVE;" +
-				"user=SA;" +
-				"password=connard;");
+//		Connection conMSSQL = DriverManager.getConnection(	"jdbc:sqlserver:" +
+//				"//localhost\\EVE;" +
+//				"instanceName=EVE;" +
+//				"databaseName=EVE;" +
+//				"user=SA;" +
+//				"password=connard;");
+		Connection conMSSQL = DriverManager.getConnection("jdbc:sqlite:resources/apo15-sqlite3-v1.db");
 		Connection conSQLite = DriverManager.getConnection("jdbc:sqlite:resources/eve-online.db");
 
 		System.out.println("Connected");

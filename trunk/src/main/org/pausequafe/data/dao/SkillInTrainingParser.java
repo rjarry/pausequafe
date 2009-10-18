@@ -68,17 +68,17 @@ public class SkillInTrainingParser {
 			cal.setTime(dateFormat.parse(result.getChild("currentTQTime").getValue()));
 			inTraining.setCurrentTQTime(cal.getTimeInMillis());
 			cal.setTime(dateFormat.parse(result.getChild("trainingEndTime").getValue()));
-			inTraining.setTrainingEndTime(cal.getTimeInMillis());
+			inTraining.setEndTime(cal.getTimeInMillis());
 			cal.setTime(dateFormat.parse(result.getChild("trainingStartTime").getValue()));
-			inTraining.setTrainingStartTime(cal.getTimeInMillis());
+			inTraining.setStartTime(cal.getTimeInMillis());
 		} catch (ParseException e) {
 			throw new PQException("date parsing error");
 		}
 		
-		inTraining.setTrainingTypeID(Integer.parseInt(result.getChild("trainingTypeID").getValue()));
-		inTraining.setTrainingStartSP(Integer.parseInt(result.getChild("trainingStartSP").getValue()));
-		inTraining.setTrainingDestinationSP(Integer.parseInt(result.getChild("trainingDestinationSP").getValue()));
-		inTraining.setTrainingToLevel(Integer.parseInt(result.getChild("trainingToLevel").getValue()));
+		inTraining.setTypeID(Integer.parseInt(result.getChild("trainingTypeID").getValue()));
+		inTraining.setStartSP(Integer.parseInt(result.getChild("trainingStartSP").getValue()));
+		inTraining.setEndSP(Integer.parseInt(result.getChild("trainingDestinationSP").getValue()));
+		inTraining.setLevel(Integer.parseInt(result.getChild("trainingToLevel").getValue()));
 		
 		return inTraining;
 	}

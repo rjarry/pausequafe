@@ -6,7 +6,7 @@ import org.jdom.Document;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.misc.exceptions.PQConfigException;
 import org.pausequafe.misc.exceptions.PQConnectionException;
-import org.pausequafe.misc.exceptions.PQParseException;
+import org.pausequafe.misc.exceptions.PQException;
 
 import be.fomp.jeve.core.api.LimitedAPI;
 import be.fomp.jeve.core.api.connectors.JEveConnectionFactory;
@@ -17,9 +17,7 @@ import be.fomp.jeve.core.exceptions.JEveParseException;
 public class CharacterListFactory {
 	
 	public static List<APIData> getCharList(int userID, String apiKey) throws 
-																PQConfigException, 
-																PQConnectionException, 
-																PQParseException {
+																PQException {
 		LimitedAPI connection = null;
 		Document doc = null;
 		
@@ -35,7 +33,7 @@ public class CharacterListFactory {
 		} catch (JEveConnectionException e) {
 			throw new PQConnectionException("Connection error");
 		} catch (JEveParseException e) {
-			throw new PQParseException("Parsing error");
+			throw new PQException("API Authentication error");
 		}
 		
 		// parse the character list and return it

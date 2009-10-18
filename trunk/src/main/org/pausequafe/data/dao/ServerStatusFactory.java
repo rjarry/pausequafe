@@ -17,13 +17,13 @@ public class ServerStatusFactory {
 		try {
 			connection = JEveConnectionFactory.createFactory().getStandardConnection();
 		} catch (JEveConfigurationException e) {
-			return new ServerStatus();
+			return null;
 		}
 		// get server status and put it into a Document
 		try {
 			doc = connection.getServerStatus();
 		} catch (Exception e) {
-			return new ServerStatus();
+			return null;
 		} 
 
 		// parse the server status and return it

@@ -82,12 +82,12 @@ public class CharacterSumup extends QWidget {
 			thereIsASkillTraining  = true;
 
 			try {
-				trainingText += ItemDAO.getInstance().findItemById(character.getInTraining().getTrainingTypeID()).getTypeName();
+				trainingText += ItemDAO.getInstance().findItemById(character.getInTraining().getTypeID()).getTypeName();
 			} catch (PQException e) {
-				trainingText += character.getInTraining().getTrainingTypeID();
+				trainingText += character.getInTraining().getTypeID();
 			}
 
-			switch (character.getInTraining().getTrainingToLevel()){
+			switch (character.getInTraining().getLevel()){
 			case 1 : trainingText += " I ("; break;
 			case 2 : trainingText += " II ("; break;
 			case 3 : trainingText += " III ("; break;
@@ -99,7 +99,7 @@ public class CharacterSumup extends QWidget {
 
 			// time left
 			long now = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
-			trainingTimeLeft = character.getInTraining().getTrainingEndTime() - now;
+			trainingTimeLeft = character.getInTraining().getEndTime() - now;
 			if (trainingTimeLeft <= 0){
 				trainingTimeLeft = 0;
 			}

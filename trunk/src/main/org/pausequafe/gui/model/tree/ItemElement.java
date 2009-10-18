@@ -9,16 +9,15 @@ import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QIcon;
 
 /**
- * This class implements a tree leaf.
- * It's used by the TreeModel to access the data 
- * from an Item instance
+ * This class implements a tree leaf. It's used by the TreeModel to access the
+ * data from an Item instance
  * 
  * @author Gobi
  */
 public class ItemElement implements TreeElement {
 
 	protected Item item;
-	
+
 	public ItemElement(Item item) {
 		super();
 		this.item = item;
@@ -35,7 +34,7 @@ public class ItemElement implements TreeElement {
 	public QIcon getIcon(CharacterSheet sheet) {
 		return new QIcon(Constants.METAGROUP_ICONS_SMALL[item.getMetaGroupID()]);
 	}
-	
+
 	public String getName() {
 		return item.getTypeName();
 	}
@@ -55,6 +54,5 @@ public class ItemElement implements TreeElement {
 	public int childCount() {
 		return 0;
 	}
-
 
 }

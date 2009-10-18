@@ -1,5 +1,6 @@
 package org.pausequafe.model.skillintraining;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,6 +42,9 @@ public class TestSkillInTraining {
 			System.out.println("error, could not get character list");
 			System.out.println(e.getMessage());
 			System.exit(0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		System.out.println(train);
