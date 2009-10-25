@@ -2,11 +2,11 @@ package org.pausequafe.gui.view.browsers;
 
 import java.io.File;
 
-import org.pausequafe.gui.model.table.AttributesTableModel;
-import org.pausequafe.gui.model.tree.PrerequisiteElement;
-import org.pausequafe.gui.model.tree.TreeElement;
-import org.pausequafe.gui.model.tree.TreeModel;
-import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
+import org.pausequafe.gui.model.browsers.AttributesTableModel;
+import org.pausequafe.gui.model.browsers.ItemPrerequisiteElement;
+import org.pausequafe.gui.model.browsers.ItemTreeElement;
+import org.pausequafe.gui.model.browsers.ItemTreeModel;
+import org.pausequafe.gui.model.browsers.ItemTreeSortFilterProxyModel;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.QModelIndex;
@@ -68,13 +68,13 @@ public class BrowserSkillTab extends AbstractBrowserTab {
     	int sortMode = ui.sortComboBox.currentIndex();
     	switch(sortMode){
     	case 0 :
-    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_NAME);
+    		proxyModel.setSortMode(ItemTreeSortFilterProxyModel.SORT_BY_NAME);
     		break;
     	case 1 :
-    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_REMAINING_TRAINING_TIME);
+    		proxyModel.setSortMode(ItemTreeSortFilterProxyModel.SORT_BY_REMAINING_TRAINING_TIME);
     		break;
     	default :
-    		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_NAME);
+    		proxyModel.setSortMode(ItemTreeSortFilterProxyModel.SORT_BY_NAME);
     		break;
     	}    	
     }
@@ -96,8 +96,8 @@ public class BrowserSkillTab extends AbstractBrowserTab {
 
 			itemDescription.setText(currentItemSelected.getDescription());
 
-			TreeElement root = new PrerequisiteElement(currentItemSelected);
-			prereqModel = new TreeModel(root);
+			ItemTreeElement root = new ItemPrerequisiteElement(currentItemSelected);
+			prereqModel = new ItemTreeModel(root);
 			prereqModel.setSheet(sheet);
 			prereqTree.setModel(prereqModel);
 

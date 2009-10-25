@@ -1,7 +1,5 @@
 package org.pausequafe.gui.view.misc;
 
-import org.pausequafe.gui.view.misc.Ui_StyleSheetEditor;
-
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QFile;
 import com.trolltech.qt.core.QIODevice.OpenModeFlag;

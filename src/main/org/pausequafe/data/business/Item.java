@@ -50,7 +50,7 @@ public class Item {
     }
     
     public int getRemainingTrainingTime(CharacterSheet sheet){
-    	//TODO implements this to sort by training time
+    	//TODO implement to sort by training time
     	return 0;
     }
     

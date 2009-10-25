@@ -17,13 +17,13 @@ public class SkillPlanList {
 	public void addPlan(SkillPlan plan){
 		list.add(plan);
 		
-		// TODO : ajout dans la base
+		// TODO : ajout skillplan dans la base
 	}
 	
 	public void deletePlan(int index){
 		list.remove(index);
 		
-		// TODO : suppresion de la base
+		// TODO : suppresion du skillplan de la base
 	}
 	
 	public void swapPlans(int index1, int index2){

@@ -14,6 +14,10 @@ import com.trolltech.qt.gui.QWidget;
 
 public class CharacterSumupToolTip extends QWidget {
 
+
+	
+	
+	
 	
 	////////////
 	// fields //

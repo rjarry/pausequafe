@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.tree;
+package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.data.business.Item;
 import org.pausequafe.data.business.MarketGroup;
@@ -30,9 +30,9 @@ public class MarketGroupElement extends GroupElement {
 		return marketGroup.childCount();
 	}
 
-	public TreeElement childAt(int position) throws PQSQLDriverNotFoundException,
+	public ItemTreeElement childAt(int position) throws PQSQLDriverNotFoundException,
 			PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
-		TreeElement child = null;
+		ItemTreeElement child = null;
 		Integer childId = marketGroup.childAt(position);
 
 		if (!marketGroup.isItemContainer()) {

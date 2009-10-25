@@ -1,10 +1,5 @@
 package org.pausequafe.misc.util;
 
-
-
-
-
-
 public class Constants {
 	///////////////////////////////////////////////
 	public static final String PQ_VERSION = "0.0";
@@ -48,64 +43,65 @@ public class Constants {
 	///////////
 	// paths //
 	///////////
-	public static final String CHAR_SHEET_PATH = "cache/CharacterSheets/";
-	public static final String EVE_ICONS_PATH = "resources/icons/EVE/";
-	public static final String PROXY_CONFIG_FILE_PATH = "settings/proxy.configuration";
+	public static final String CP = "";
+	public static final String CHAR_SHEET_PATH = CP + "cache/CharacterSheets/";
+	public static final String EVE_ICONS_PATH = CP + "resources/icons/EVE/";
+	public static final String PROXY_CONFIG_FILE_PATH = CP + "settings/proxy.configuration";
 	
 	///////////
 	// icons //
 	///////////
 	
-	public static final String BLANK_PORTRAIT = "resources/icons/PauseQuafe/blank_portrait.jpg";
-	public static final String WINDOW_ICON = "resources/icons/PauseQuafe/pauseQuafe_windowIcon.png";
+	public static final String BLANK_PORTRAIT = CP + "resources/icons/PauseQuafe/blank_portrait.jpg";
+	public static final String WINDOW_ICON = CP + "resources/icons/PauseQuafe/pauseQuafe_windowIcon.png";
 	
-	public static final String SPLASH_SCREEN = "resources/icons/PauseQuafe/PauseQuafe_Splash.jpg";
+	public static final String SPLASH_SCREEN = CP + "resources/icons/PauseQuafe/PauseQuafe_Splash.jpg";
 	
-	public static final String ERROR_ICON_FILE = "resources/icons/PauseQuafe/error.png";
-	public static final String QUESTION_ICON_FILE = "resources/icons/PauseQuafe/question.png";
-	public static final String DOWNLOADING_ICON = "resources/icons/PauseQuafe/QuafeCan_active.mng";
-	public static final String IDLE_ICON = "resources/icons/PauseQuafe/QuafeCan_idle.png";
-	public static final String SERVERSTATUS_ONLINE_ICON = "resources/icons/PauseQuafe/serverStatus_online.png";
-	public static final String SERVERSTATUS_OFFLINE_ICON = "resources/icons/PauseQuafe/serverStatus_offline.png";
-	public static final String SERVERSTATUS_UNKONWN_ICON = "resources/icons/PauseQuafe/serverStatus_unknown.png";
+	public static final String ERROR_ICON_FILE = CP + "resources/icons/PauseQuafe/error.png";
+	public static final String QUESTION_ICON_FILE = CP + "resources/icons/PauseQuafe/question.png";
+	public static final String DOWNLOADING_ICON = CP + "resources/icons/PauseQuafe/QuafeCan_active.mng";
+	public static final String IDLE_ICON = CP + "resources/icons/PauseQuafe/QuafeCan_idle.png";
+	public static final String SERVERSTATUS_ONLINE_ICON = CP + "resources/icons/PauseQuafe/serverStatus_online.png";
+	public static final String SERVERSTATUS_OFFLINE_ICON = CP + "resources/icons/PauseQuafe/serverStatus_offline.png";
+	public static final String SERVERSTATUS_UNKONWN_ICON = CP + "resources/icons/PauseQuafe/serverStatus_unknown.png";
 	
 	
-	public static final String ARMOR_ICON = "resources/icons/PauseQuafe/ShipAttributes/armor.png";
-	public static final String CAPA_ICON = "resources/icons/PauseQuafe/ShipAttributes/capacitor.png";
-	public static final String CAPA_RECHARGE_ICON = "resources/icons/PauseQuafe/ShipAttributes/capa_recharge.png";
-	public static final String CARGO_ICON = "resources/icons/PauseQuafe/ShipAttributes/cargo.png";
-	public static final String CPU_ICON = "resources/icons/PauseQuafe/ShipAttributes/CPU.png";
-	public static final String DRONES_ICON = "resources/icons/PauseQuafe/ShipAttributes/drones.png";
-	public static final String EM_ICON = "resources/icons/PauseQuafe/ShipAttributes/EM_resistance.png";
-	public static final String EXPLO_ICON = "resources/icons/PauseQuafe/ShipAttributes/explosive_resistance.png";
-	public static final String GUN_ICON = "resources/icons/PauseQuafe/ShipAttributes/gun_hardpoint.png";
-	public static final String HI_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/hi_slots.png";
-	public static final String INERTIA_ICON = "resources/icons/PauseQuafe/ShipAttributes/inertia.png";
-	public static final String KINETIC_ICON = "resources/icons/PauseQuafe/ShipAttributes/kinetic_resistance.png";
-	public static final String LOW_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/low_slots.png";
-	public static final String MASS_ICON = "resources/icons/PauseQuafe/ShipAttributes/mass.png";
-	public static final String MED_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/med_slots.png";
-	public static final String MISSILE_ICON = "resources/icons/PauseQuafe/ShipAttributes/launcher_hardpoint.png";
-	public static final String PWG_ICON = "resources/icons/PauseQuafe/ShipAttributes/powergrid.png";
-	public static final String RADIUS_ICON = "resources/icons/PauseQuafe/ShipAttributes/signature_radius.png";
-	public static final String RANGE_ICON = "resources/icons/PauseQuafe/ShipAttributes/range.png";
-	public static final String RIG_SLOT_ICON = "resources/icons/PauseQuafe/ShipAttributes/rig_slot.png";
-	public static final String SCAN_RES_ICON = "resources/icons/PauseQuafe/ShipAttributes/resolution.png";
-	public static final String SENSOR_MAGNETO_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_magneto.png";
-	public static final String SENSOR_RADAR_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_radar.png";
-	public static final String SENSOR_LADAR_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_ladar.png";
-	public static final String SENSOR_GRAVI_ICON = "resources/icons/PauseQuafe/ShipAttributes/sensor_gravi.png";
-	public static final String SHIELD_ICON = "resources/icons/PauseQuafe/ShipAttributes/shield.png";
-	public static final String SHIELD_RECHARGE_ICON = "resources/icons/PauseQuafe/ShipAttributes/shield_recharge.png";
-	public static final String STRUCTURE_ICON = "resources/icons/PauseQuafe/ShipAttributes/structure.png";
-	public static final String TARGET_COUNT_ICON = "resources/icons/PauseQuafe/ShipAttributes/target_count.png";
-	public static final String THERMIC_ICON = "resources/icons/PauseQuafe/ShipAttributes/thermal_resistance.png";
-	public static final String VELOCITY_ICON = "resources/icons/PauseQuafe/ShipAttributes/velocity.png";
-	public static final String VOLUME_ICON = "resources/icons/PauseQuafe/ShipAttributes/volume.png";
-	public static final String WARP_ICON = "resources/icons/PauseQuafe/ShipAttributes/warp_velocity.png";
+	public static final String ARMOR_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/armor.png";
+	public static final String CAPA_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/capacitor.png";
+	public static final String CAPA_RECHARGE_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/capa_recharge.png";
+	public static final String CARGO_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/cargo.png";
+	public static final String CPU_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/CPU.png";
+	public static final String DRONES_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/drones.png";
+	public static final String EM_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/EM_resistance.png";
+	public static final String EXPLO_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/explosive_resistance.png";
+	public static final String GUN_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/gun_hardpoint.png";
+	public static final String HI_SLOT_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/hi_slots.png";
+	public static final String INERTIA_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/inertia.png";
+	public static final String KINETIC_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/kinetic_resistance.png";
+	public static final String LOW_SLOT_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/low_slots.png";
+	public static final String MASS_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/mass.png";
+	public static final String MED_SLOT_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/med_slots.png";
+	public static final String MISSILE_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/launcher_hardpoint.png";
+	public static final String PWG_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/powergrid.png";
+	public static final String RADIUS_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/signature_radius.png";
+	public static final String RANGE_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/range.png";
+	public static final String RIG_SLOT_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/rig_slot.png";
+	public static final String SCAN_RES_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/resolution.png";
+	public static final String SENSOR_MAGNETO_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/sensor_magneto.png";
+	public static final String SENSOR_RADAR_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/sensor_radar.png";
+	public static final String SENSOR_LADAR_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/sensor_ladar.png";
+	public static final String SENSOR_GRAVI_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/sensor_gravi.png";
+	public static final String SHIELD_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/shield.png";
+	public static final String SHIELD_RECHARGE_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/shield_recharge.png";
+	public static final String STRUCTURE_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/structure.png";
+	public static final String TARGET_COUNT_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/target_count.png";
+	public static final String THERMIC_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/thermal_resistance.png";
+	public static final String VELOCITY_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/velocity.png";
+	public static final String VOLUME_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/volume.png";
+	public static final String WARP_ICON = CP + "resources/icons/PauseQuafe/ShipAttributes/warp_velocity.png";
 	
-	public static final String ADD_ICON = "resources/icons/PauseQuafe/add.png";
-	public static final String MINUS_ICON = "resources/icons/PauseQuafe/minus.png";
+	public static final String ADD_ICON = CP + "resources/icons/PauseQuafe/add.png";
+	public static final String MINUS_ICON = CP + "resources/icons/PauseQuafe/minus.png";
 	
 	
 	
@@ -113,41 +109,41 @@ public class Constants {
 	
 	
 	// prerequisites
-	public static final String SKILL_OK = "resources/icons/PauseQuafe/skill_ok.png";
-	public static final String SKILL_KNOWN = "resources/icons/PauseQuafe/skill_known.png";
-	public static final String SKILL_NOT_KNOWN = "resources/icons/PauseQuafe/skill_not_known.png";
+	public static final String SKILL_OK = CP + "resources/icons/PauseQuafe/skill_ok.png";
+	public static final String SKILL_KNOWN = CP + "resources/icons/PauseQuafe/skill_known.png";
+	public static final String SKILL_NOT_KNOWN = CP + "resources/icons/PauseQuafe/skill_not_known.png";
 	
 	// skill tree
-	public static final String[] SKILL_LEVEL_ICON = {"resources/icons/PauseQuafe/skill_level_0.png",
-													"resources/icons/PauseQuafe/skill_level_1.png",
-													"resources/icons/PauseQuafe/skill_level_2.png",
-													"resources/icons/PauseQuafe/skill_level_3.png",
-													"resources/icons/PauseQuafe/skill_level_4.png",
-													"resources/icons/PauseQuafe/skill_level_5.png"};
+	public static final String[] SKILL_LEVEL_ICON = {CP + "resources/icons/PauseQuafe/skill_level_0.png",
+		CP + "resources/icons/PauseQuafe/skill_level_1.png",
+		CP + "resources/icons/PauseQuafe/skill_level_2.png",
+		CP + "resources/icons/PauseQuafe/skill_level_3.png",
+		CP + "resources/icons/PauseQuafe/skill_level_4.png",
+		CP + "resources/icons/PauseQuafe/skill_level_5.png"};
 	
-	public static final String SKILL_TRAINABLE = "resources/icons/PauseQuafe/skill_trainable.png";
-	public static final String SKILL_NOT_TRAINABLE = "resources/icons/PauseQuafe/skill_not_trainable.png";
+	public static final String SKILL_TRAINABLE = CP + "resources/icons/PauseQuafe/skill_trainable.png";
+	public static final String SKILL_NOT_TRAINABLE = CP + "resources/icons/PauseQuafe/skill_not_trainable.png";
 	
 	// item tree
-	public static final String NO_ITEM_SELECTED_ICON = "resources/icons/PauseQuafe/no_item_selected.png";
+	public static final String NO_ITEM_SELECTED_ICON = CP + "resources/icons/PauseQuafe/no_item_selected.png";
 	
 	
-	public static final String[] METAGROUP_ICONS_TAG = {"resources/icons/PauseQuafe/tech1_no_tag.png",
-														"resources/icons/PauseQuafe/tech1_no_tag.png",
-														"resources/icons/PauseQuafe/tag_tech2.png",
-														"resources/icons/PauseQuafe/tag_storyline",
-														"resources/icons/PauseQuafe/tag_faction.png",
-														"resources/icons/PauseQuafe/tag_officer.png",
-														"resources/icons/PauseQuafe/tag_deadspace.png",
-														"resources/icons/PauseQuafe/tag_tech3.png"};
-	public static final String[] METAGROUP_ICONS_SMALL = {"resources/icons/PauseQuafe/tag_tech1_small.png",
-														"resources/icons/PauseQuafe/tag_named_small.png",
-														"resources/icons/PauseQuafe/tag_tech2_small.png",
-														"resources/icons/PauseQuafe/tag_storyline_small.png",
-														"resources/icons/PauseQuafe/tag_faction_small.png",
-														"resources/icons/PauseQuafe/tag_officer_small.png",
-														"resources/icons/PauseQuafe/tag_deadspace_small.png",
-														"resources/icons/PauseQuafe/tag_tech3_small.png"};
+	public static final String[] METAGROUP_ICONS_TAG = {CP + "resources/icons/PauseQuafe/tech1_no_tag.png",
+		CP + "resources/icons/PauseQuafe/tech1_no_tag.png",
+		CP + "resources/icons/PauseQuafe/tag_tech2.png",
+		CP + "resources/icons/PauseQuafe/tag_storyline",
+		CP + "resources/icons/PauseQuafe/tag_faction.png",
+		CP + "resources/icons/PauseQuafe/tag_officer.png",
+		CP + "resources/icons/PauseQuafe/tag_deadspace.png",
+		CP + "resources/icons/PauseQuafe/tag_tech3.png"};
+	public static final String[] METAGROUP_ICONS_SMALL = {CP + "resources/icons/PauseQuafe/tag_tech1_small.png",
+		CP + "resources/icons/PauseQuafe/tag_named_small.png",
+		CP + "resources/icons/PauseQuafe/tag_tech2_small.png",
+		CP + "resources/icons/PauseQuafe/tag_storyline_small.png",
+		CP + "resources/icons/PauseQuafe/tag_faction_small.png",
+		CP + "resources/icons/PauseQuafe/tag_officer_small.png",
+		CP + "resources/icons/PauseQuafe/tag_deadspace_small.png",
+		CP + "resources/icons/PauseQuafe/tag_tech3_small.png"};
 	
 	
 	////////////////////
@@ -155,9 +151,9 @@ public class Constants {
 	////////////////////
 	public static final String DRIVER_NOT_FOUND_ERROR = "File \"/lib/sqlitejdbc-v054.jar\" not found.\nPlease check your installation.";
 	public static final String EVE_DB_CORRUPTED_ERROR = "File \"/resources/eve-online.db\" corrupted.\nPlease check your installation.";
-	public static final String USER_DB_CORRUPTED_ERROR = "File \"/resources/user.db\" corrupted.\nReset user settings?";
+	public static final String USER_DB_CORRUPTED_ERROR = "File \"/settings/user.db\" corrupted.\nReset user settings?";
 	public static final String API_AUTHENTICATION_ERROR = "The API details you provided for ? are incorrect.";
-	public static final String CONNECTION_ERROR = "Impossible to connect to the API server.";
+	public static final String CONNECTION_ERROR = "Unable to connect to the API server. Please Check your network connection and proxy settings.";
 	///////////////////
 	// misc messages //
 	///////////////////

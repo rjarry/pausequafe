@@ -3,10 +3,10 @@ package org.pausequafe.gui.view.browsers;
 import java.io.File;
 
 import org.pausequafe.data.business.ItemAttribute;
-import org.pausequafe.gui.model.table.AttributesTableModel;
-import org.pausequafe.gui.model.tree.PrerequisiteElement;
-import org.pausequafe.gui.model.tree.TreeElement;
-import org.pausequafe.gui.model.tree.TreeModel;
+import org.pausequafe.gui.model.browsers.AttributesTableModel;
+import org.pausequafe.gui.model.browsers.ItemPrerequisiteElement;
+import org.pausequafe.gui.model.browsers.ItemTreeElement;
+import org.pausequafe.gui.model.browsers.ItemTreeModel;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.Formater;
 import org.pausequafe.misc.util.SQLConstants;
@@ -104,8 +104,7 @@ public class BrowserShipTab extends AbstractBrowserTab {
 	// slots //
 	///////////
     protected void sort() {
-    	// TODO Auto-generated method stub
-    	
+    	return;    	
     }
     
 	public void currentItemSelected(QModelIndex index) {
@@ -125,8 +124,8 @@ public class BrowserShipTab extends AbstractBrowserTab {
 
 			itemDescription.setText(currentItemSelected.getDescription());
 
-			TreeElement root = new PrerequisiteElement(currentItemSelected);
-			prereqModel = new TreeModel(root);
+			ItemTreeElement root = new ItemPrerequisiteElement(currentItemSelected);
+			prereqModel = new ItemTreeModel(root);
 			prereqModel.setSheet(sheet);
 			prereqTree.setModel(prereqModel);
 

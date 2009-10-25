@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.table;
+package org.pausequafe.gui.model.browsers;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.pausequafe.data.business.ItemAttribute;
 import org.pausequafe.data.business.ItemDetailed;
+import org.pausequafe.data.dao.ItemDAO;
+import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.QModelIndex;
@@ -95,6 +97,29 @@ public class AttributesTableModel extends QAbstractTableModel {
 				case 3 : unitName = "L"; break;
 				case 4 : unitName = "XL"; break;
 			}
+			break;
+		case SQLConstants.ATTRIBUTEID_UNITID :
+			switch ((int) value) {
+			case 164 : return "Charisma";
+			case 165 : return "Intelligence";
+			case 166 : return "Memory";
+			case 167 : return "Perception";
+			case 168 : return "Willpower";
+			}
+		case SQLConstants.GROUPID_UNITID :
+			try {// FIXME : gettype name
+				return MarketGroupDAO.getInstance().getGroupName((int) value);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}		
+			break;
+		case SQLConstants.TYPEID_UNITID :
+			try {
+				return ItemDAO.getInstance().getItemName((int) value);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
 		default :
 			return value + " " + unitName;
 		}

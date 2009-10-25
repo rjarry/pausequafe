@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.tree;
+package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.misc.exceptions.PQException;
@@ -12,16 +12,16 @@ import com.trolltech.qt.gui.QTreeModel;
  * 
  * @author Gobi
  */
-public class TreeModel extends QTreeModel {
+public class ItemTreeModel extends QTreeModel {
 
-	private TreeElement root = null;
+	private ItemTreeElement root = null;
 	private CharacterSheet sheet = null;
 
-	public TreeModel() {
+	public ItemTreeModel() {
 		super();
 	}
 
-	public TreeModel(TreeElement root) {
+	public ItemTreeModel(ItemTreeElement root) {
 		super();
 		this.root = root;
 	}
@@ -36,15 +36,15 @@ public class TreeModel extends QTreeModel {
 	}
 
 	@Override
-	public TreeElement child(Object parent, int index) {
-		TreeElement treeElement;
+	public ItemTreeElement child(Object parent, int index) {
+		ItemTreeElement treeElement;
 		if (parent == null) {
 			treeElement = root;
 		} else {
-			treeElement = (TreeElement) parent;
+			treeElement = (ItemTreeElement) parent;
 		}
 
-		TreeElement child = null;
+		ItemTreeElement child = null;
 		try {
 			child = treeElement.childAt(index);
 		} catch (PQException e) {
@@ -56,11 +56,11 @@ public class TreeModel extends QTreeModel {
 
 	@Override
 	public int childCount(Object parent) {
-		TreeElement treeElement;
+		ItemTreeElement treeElement;
 		if (parent == null) {
 			treeElement = root;
 		} else {
-			treeElement = (TreeElement) parent;
+			treeElement = (ItemTreeElement) parent;
 		}
 
 		return treeElement.childCount();
@@ -68,13 +68,13 @@ public class TreeModel extends QTreeModel {
 
 	@Override
 	public String text(Object value) {
-		String s = ((TreeElement) value).getName();
+		String s = ((ItemTreeElement) value).getName();
 		return s;
 	}
 
 	@Override
 	public Object data(Object value, int role) {
-		TreeElement elt = (TreeElement) value;
+		ItemTreeElement elt = (ItemTreeElement) value;
 
 		Object result = null;
 		switch (role) {
@@ -101,5 +101,4 @@ public class TreeModel extends QTreeModel {
 
 		return result;
 	}
-
 }

@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.tree;
+package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
@@ -11,7 +11,7 @@ import com.trolltech.qt.gui.QIcon;
  * 
  * @author Gobi
  */
-public abstract class GroupElement implements TreeElement {
+public abstract class GroupElement implements ItemTreeElement {
 
 	public String getTooltip() {
 		return null;

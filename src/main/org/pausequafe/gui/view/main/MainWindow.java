@@ -5,17 +5,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.MonitoredCharacter;
-import org.pausequafe.data.business.MonitoredCharacterList;
 import org.pausequafe.data.business.ServerStatus;
-import org.pausequafe.data.dao.MonitoredCharacterDAO;
+import org.pausequafe.gui.model.characters.MonitoredCharactersModel;
 import org.pausequafe.gui.view.browsers.BrowsersWindow;
 import org.pausequafe.gui.view.character.CharacterTab;
 import org.pausequafe.gui.view.misc.AboutPQ;
+import org.pausequafe.gui.view.misc.ErrorAPICorrupted;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
 import org.pausequafe.gui.view.misc.StyleSheetEditor;
@@ -59,12 +58,10 @@ public class MainWindow extends QMainWindow {
 
 	private BrowsersWindow browsers;
 
-	private MonitoredCharacterList characterList = new MonitoredCharacterList();
-
 	// used to close properly the system tray icon when the application quits
 	public Signal0 aboutToQuit = new Signal0();
 	// used to update the system tray icon's tooltip
-	public Signal2<MonitoredCharacterList, ServerStatus> dataUpdated = new Signal2<MonitoredCharacterList, ServerStatus>();;
+	public Signal1<ServerStatus> dataUpdated = new Signal1<ServerStatus>();;
 
 	// ////////////////
 	// constructors //
@@ -79,24 +76,14 @@ public class MainWindow extends QMainWindow {
 		setupUi();
 		updateTime();
 		requestServerStatus();
-
 		try {
-			List<APIData> list = MonitoredCharacterDAO.getInstance().getMonitoredCharacters();
-			for (APIData data : list) {
-				MonitoredCharacter character = new MonitoredCharacter(data);
-				characterList.addCharacter(character);
+			for (MonitoredCharacter character : MonitoredCharactersModel.getInstance().getList()) {
 				addTab(character);
 			}
 		} catch (PQSQLDriverNotFoundException e) {
-			ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
-			error.exec();
+			popSQLDriverError();
 		} catch (PQUserDatabaseFileCorrupted e) {
-			ErrorQuestion error = new ErrorQuestion(this, tr(Constants.USER_DB_CORRUPTED_ERROR));
-			error.exec();
-			if (error.result() == QDialog.DialogCode.Accepted.value()) {
-				File userDb = new File(SQLConstants.USER_DATABASE_FILE);
-				userDb.delete();
-			}
+			popUserDBCorrupt();
 		}
 	}
 
@@ -129,7 +116,7 @@ public class MainWindow extends QMainWindow {
 
 		tabWidget = ui.tabWidget;
 		tabWidget.removeTab(0); // parce que le ui creator met un tab par defaut
-								// ce con.
+		// ce con.
 
 		// Init status bar
 
@@ -154,7 +141,7 @@ public class MainWindow extends QMainWindow {
 		ui.statusBar.addPermanentWidget(apiActivityIcon, 1);
 
 		requestCount = 1; // pour que le premier appel ne passe pas le request
-							// count à -1.
+		// count à -1.
 		updateServerStatus(status);
 
 		this.resize(300, 700);
@@ -233,7 +220,7 @@ public class MainWindow extends QMainWindow {
 	 * <code>CharacterTab.requestFinished</code> signal
 	 * 
 	 */
-	private synchronized void decrementRequestCount(Integer requestCode, String charName) {
+	private synchronized void decrementRequestCount(Integer returnCode, MonitoredCharacter monChar) {
 		requestCount--;
 		if (requestCount == 0) {
 			QPixmap pixmap = new QPixmap(Constants.IDLE_ICON);
@@ -241,23 +228,17 @@ public class MainWindow extends QMainWindow {
 			apiActivityIcon.setPixmap(pixmap);
 			apiActivityIcon
 					.setToolTip("API activity : <b>idle</b> Right click to refresh all characters.");
-			dataUpdated.emit(characterList, status);
+			dataUpdated.emit(status);
 		}
-		if (requestCode == ApiRequest.AUTHENTICATION_ERROR) {
-			ErrorMessage error = new ErrorMessage(this, tr(Constants.API_AUTHENTICATION_ERROR
-					.replace("?", charName)));
-			error.exec();
-		} else if (requestCode == ApiRequest.CONNECTION_ERROR) {
-			ErrorMessage error = new ErrorMessage(this, tr(Constants.CONNECTION_ERROR));
-			error.exec();
+		if (returnCode == ApiRequest.AUTHENTICATION_ERROR) {
+			popApiError(monChar);
+		} else if (returnCode == ApiRequest.CONNECTION_ERROR) {
+			popConnectionError();
 		}
 	}
 
 	/**
 	 * Invoked by the menu action "Add Character..."
-	 * 
-	 * @throws PQException
-	 * @throws IOException
 	 */
 	@SuppressWarnings("unused")
 	private void addCharacterDialog() {
@@ -267,18 +248,12 @@ public class MainWindow extends QMainWindow {
 			APIData data = addCharDialog.getChosenCharacter();
 			try {
 				MonitoredCharacter character = new MonitoredCharacter(data);
-				characterList.addCharacter(character);
+				MonitoredCharactersModel.getInstance().addCharacter(character);
 				addTab(character);
 			} catch (PQSQLDriverNotFoundException e) {
-				ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
-				error.exec();
+				popSQLDriverError();
 			} catch (PQUserDatabaseFileCorrupted e) {
-				ErrorQuestion error = new ErrorQuestion(this, tr(Constants.USER_DB_CORRUPTED_ERROR));
-				error.exec();
-				if (error.result() == QDialog.DialogCode.Accepted.value()) {
-					File userDb = new File(SQLConstants.USER_DATABASE_FILE);
-					userDb.delete();
-				}
+				popUserDBCorrupt();
 			}
 		}
 	}
@@ -286,7 +261,7 @@ public class MainWindow extends QMainWindow {
 	private void addTab(MonitoredCharacter character) {
 		CharacterTab tab = new CharacterTab(character);
 		tab.requestStarted.connect(this, "incrementRequestCount()");
-		tab.requestFinished.connect(this, "decrementRequestCount(Integer,String)");
+		tab.requestFinished.connect(this, "decrementRequestCount(Integer,MonitoredCharacter)");
 		tabWidget.addTab(tab, character.getApi().getCharacterName());
 	}
 
@@ -308,7 +283,7 @@ public class MainWindow extends QMainWindow {
 		delCharDialog.exec();
 
 		if (delCharDialog.result() == QDialog.DialogCode.Accepted.value()) {
-			characterList.removeCharacter(tabWidget.currentIndex());
+			MonitoredCharactersModel.getInstance().removeCharacter(tabWidget.currentIndex());
 			tabWidget.removeTab(tabWidget.currentIndex());
 		}
 	}
@@ -331,15 +306,11 @@ public class MainWindow extends QMainWindow {
 	private void openBrowsers() {
 		if (browsers == null) {
 			browsers = new BrowsersWindow();
+			browsers.setWindowIcon(this.windowIcon());
 		}
-		browsers.setWindowIcon(this.windowIcon());
 		browsers.setStyleSheet(this.styleSheet());
 		browsers.show();
 		browsers.activateWindow();
-
-		if (requestCount == 0) {
-			browsers.setSheetList(characterList.getCharacterList());
-		}
 	}
 
 	@SuppressWarnings("unused")
@@ -366,6 +337,40 @@ public class MainWindow extends QMainWindow {
 		aboutToQuit.emit();
 	}
 
+	private void popConnectionError() {
+		ErrorMessage error = new ErrorMessage(this, tr(Constants.CONNECTION_ERROR));
+		error.exec();
+	}
+
+	private void popUserDBCorrupt() {
+		ErrorQuestion error = new ErrorQuestion(this, tr(Constants.USER_DB_CORRUPTED_ERROR));
+		error.exec();
+		if (error.result() == QDialog.DialogCode.Accepted.value()) {
+			File userDb = new File(SQLConstants.USER_DATABASE_FILE);
+			userDb.delete();
+		}
+	}
+
+	private void popApiError(MonitoredCharacter monChar) {
+		ErrorAPICorrupted error = new ErrorAPICorrupted(this, monChar);
+		error.exec();
+		if (error.result() == QDialog.DialogCode.Accepted.value()) {
+			for (int i = 0; i < tabWidget.count(); i++) {
+				CharacterTab tab = ((CharacterTab) tabWidget.widget(i));
+				if (tab.getCharacter().getApi().getCharacterID() == monChar.getApi()
+						.getCharacterID()) {
+					tab.requestInfo();
+				}
+			}
+		}
+	}
+
+	private void popSQLDriverError() {
+		ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
+		error.exec();
+	}
+
+	@Override
 	public void closeEvent(QCloseEvent event) {
 		this.hide();
 	}
