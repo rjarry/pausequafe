@@ -7,10 +7,10 @@ import org.pausequafe.data.business.ItemDetailed;
 import org.pausequafe.data.business.MarketGroup;
 import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.data.dao.MarketGroupDAO;
-import org.pausequafe.gui.model.tree.MarketGroupElement;
-import org.pausequafe.gui.model.tree.TreeElement;
-import org.pausequafe.gui.model.tree.TreeModel;
-import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
+import org.pausequafe.gui.model.browsers.ItemTreeElement;
+import org.pausequafe.gui.model.browsers.ItemTreeModel;
+import org.pausequafe.gui.model.browsers.ItemTreeSortFilterProxyModel;
+import org.pausequafe.gui.model.browsers.MarketGroupElement;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
@@ -33,8 +33,8 @@ public abstract class AbstractBrowserTab extends QWidget {
 	protected QModelIndex currentIndexSelected;
 	protected CharacterSheet sheet;
 
-	protected TreeModel prereqModel;
-	protected TreeSortFilterProxyModel proxyModel;
+	protected ItemTreeModel prereqModel;
+	protected ItemTreeSortFilterProxyModel proxyModel;
 
 	protected QTreeView itemTree;
 	protected QTextBrowser itemDescription;
@@ -88,12 +88,12 @@ public abstract class AbstractBrowserTab extends QWidget {
 			ErrorMessage message = new ErrorMessage(tr(Constants.EVE_DB_CORRUPTED_ERROR));
 			message.exec();
 		}
-		proxyModel = new TreeSortFilterProxyModel();
-		TreeElement root = new MarketGroupElement(group);
-		TreeModel browserTreeModel = new TreeModel(root);
+		proxyModel = new ItemTreeSortFilterProxyModel();
+		ItemTreeElement root = new MarketGroupElement(group);
+		ItemTreeModel browserTreeModel = new ItemTreeModel(root);
 		proxyModel.setSourceModel(browserTreeModel);
 		itemTree.setModel(proxyModel);
-		proxyModel.setSortMode(TreeSortFilterProxyModel.SORT_BY_META_LEVEL);
+		proxyModel.setSortMode(ItemTreeSortFilterProxyModel.SORT_BY_META_LEVEL);
 		sort();
 	}
 
@@ -121,7 +121,7 @@ public abstract class AbstractBrowserTab extends QWidget {
 
 	protected void currentItemSelected(QModelIndex index) {
 		currentIndexSelected = index;
-		TreeElement element = proxyModel.indexToValue(index);
+		ItemTreeElement element = proxyModel.indexToValue(index);
 
 		if (element != null && element.getItem() != null) {
 			try {

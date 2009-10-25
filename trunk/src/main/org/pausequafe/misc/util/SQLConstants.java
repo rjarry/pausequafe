@@ -1,23 +1,21 @@
 package org.pausequafe.misc.util;
 
-
-
 public class SQLConstants {
-	
+
 	public static final String EVE_DATABASE = "jdbc:sqlite:resources/eve-online.db";
 	public static final String EVE_DATABASE_FILE = "resources/eve-online.db";;
 	public static final String USER_DATABASE = "jdbc:sqlite:settings/user.db";
 	public static final String USER_DATABASE_FILE = "settings/user.db";
-	
-	
+
 	/*
 	 * EVE database queries
 	 */
 	public static final double WARP_SPEED_BASE = 3.0;
-	
+
 	// Columns name
 	public static final String TYPEID_COL = "typeID";
 	public static final String TYPENAME_COL = "typeName";
+	public static final String GROUPNAME_COL = "groupName";
 	public static final String DESCRIPTION_COL = "description";
 	public static final String MARKETGRPID_COL = "marketGroupID";
 	public static final String MARKETGRPNAME_COL = "marketGroupName";
@@ -38,7 +36,7 @@ public class SQLConstants {
 	public static final String UNITID_COL = "unitID";
 	public static final String CATEGORYNAME_COL = "categoryName";
 	public static final String PARENTGRPID_COL = "parentGroupID";
-	
+
 	// attributes ids
 	public static final int REQUIRED_SKILL_1_ATTID = 182;
 	public static final int REQUIRED_SKILL_2_ATTID = 183;
@@ -90,95 +88,146 @@ public class SQLConstants {
 	// propulsion
 	public static final int MAX_VELOCITY_ATTID = 37;
 	public static final int AGILITY_ATTID = 70;
-	public static final int WARP_SPEED_MULTUPLIER_ATTID = 600;	
+	public static final int WARP_SPEED_MULTUPLIER_ATTID = 600;
 	// targeting
 	public static final int TARGETING_RANGE_ATTID = 76;
 	public static final int TARGET_COUNT_ATTID = 192;
 	public static final int SCAN_RESOLUTION_ATTID = 564;
 	public static final int SIGNATURE_RADIUS_ATTID = 552;
-	public static final int SENSOR_RADAR_ATTID = 208;	
-	public static final int SENSOR_LADAR_ATTID = 209;	
-	public static final int SENSOR_MAGNETO_ATTID = 210;	
-	public static final int SENSOR_GRAVI_ATTID = 211;	
-	
-	
-	
-	
-	
+	public static final int SENSOR_RADAR_ATTID = 208;
+	public static final int SENSOR_LADAR_ATTID = 209;
+	public static final int SENSOR_MAGNETO_ATTID = 210;
+	public static final int SENSOR_GRAVI_ATTID = 211;
+
 	// unit IDs
 	public static final int DURATION_MILLISECS_UNITID = 101;
 	public static final int DAMAGE_RESISTANCE_UNITID = 108;
 	public static final int PERCENT_MULTIPLIER_UNITID = 109;
+	public static final int GROUPID_UNITID = 115;
+	public static final int TYPEID_UNITID = 116;
 	public static final int SIZECLASS_UNITID = 117;
+	public static final int ATTRIBUTEID_UNITID = 119;
 
 	// Queries
-//	public static final String QUERY_TYPES_BY_ID = "select * from invTypes where typeID in (?)";
-	public static final String QUERY_MARKETGRP_BY_ID = "select "+MARKETGRPID_COL+","+MARKETGRPNAME_COL+","+HASTYPE_COL+
-	                                                   " from invMarketGroups where marketGroupID in (?)";
-	public static final String QUERY_MARKETGRP_BY_PARENT = "select "+MARKETGRPID_COL+","+MARKETGRPNAME_COL+","+HASTYPE_COL+","+PARENTGRPID_COL+
-			                                               " from invMarketGroups where parentGroupID in (?)";
-	public static final String QUERY_MARKETGRP_BY_ID_WITHCHILDREN
-		= "select mk1."+MARKETGRPID_COL+" as "+MARKETGRPID_COL+",mk1."+MARKETGRPNAME_COL+" as "+MARKETGRPNAME_COL+",mk1."+HASTYPE_COL+" as "+HASTYPE_COL+",mk2.marketGroupID as " + CHILDID_COL + " from invMarketGroups mk1,invMarketGroups mk2 where mk1.marketGroupID in (?) and mk1.marketGroupID=mk2.parentGroupID"
-		  + " union " +
-		  "select mk1."+MARKETGRPID_COL+" as "+MARKETGRPID_COL+",mk1."+MARKETGRPNAME_COL+" as "+MARKETGRPNAME_COL+",mk1."+HASTYPE_COL+" as "+HASTYPE_COL+",t.typeID as " + CHILDID_COL + " from invMarketGroups mk1,invTypes t where mk1.marketGroupID in (?) and mk1.marketGroupID=t.marketGroupID" ;
+	// public static final String QUERY_TYPES_BY_ID =
+	// "select * from invTypes where typeID in (?)";
+	public static final String QUERY_MARKETGRP_BY_ID = "select " + MARKETGRPID_COL + ","
+			+ MARKETGRPNAME_COL + "," + HASTYPE_COL
+			+ " from invMarketGroups where marketGroupID in (?)";
+	public static final String QUERY_MARKETGRP_BY_PARENT = "select " + MARKETGRPID_COL + ","
+			+ MARKETGRPNAME_COL + "," + HASTYPE_COL + "," + PARENTGRPID_COL
+			+ " from invMarketGroups where parentGroupID in (?)";
+	public static final String QUERY_MARKETGRP_BY_ID_WITHCHILDREN = "select mk1."
+			+ MARKETGRPID_COL
+			+ " as "
+			+ MARKETGRPID_COL
+			+ ",mk1."
+			+ MARKETGRPNAME_COL
+			+ " as "
+			+ MARKETGRPNAME_COL
+			+ ",mk1."
+			+ HASTYPE_COL
+			+ " as "
+			+ HASTYPE_COL
+			+ ",mk2.marketGroupID as "
+			+ CHILDID_COL
+			+ " from invMarketGroups mk1,invMarketGroups mk2 where mk1.marketGroupID in (?) and mk1.marketGroupID=mk2.parentGroupID"
+			+ " union "
+			+ "select mk1."
+			+ MARKETGRPID_COL
+			+ " as "
+			+ MARKETGRPID_COL
+			+ ",mk1."
+			+ MARKETGRPNAME_COL
+			+ " as "
+			+ MARKETGRPNAME_COL
+			+ ",mk1."
+			+ HASTYPE_COL
+			+ " as "
+			+ HASTYPE_COL
+			+ ",t.typeID as "
+			+ CHILDID_COL
+			+ " from invMarketGroups mk1,invTypes t where mk1.marketGroupID in (?) and mk1.marketGroupID=t.marketGroupID";
 
-	public static final String QUERY_TYPES_BY_ID =	"SELECT t.typeID,t.metaGroupID,t.typeName,c.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value  " +
-													"FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at, invGroups g, invCategories c " +
-													"WHERE t.typeID in (?) " +
-													"AND t.typeID = a.typeID " +
-													"AND a.attributeID = at.attributeID " +
-													"AND t.groupID=g.groupID " +
-													"AND g.categoryID=c.categoryID " +
-													"AND at.attributeID in ("+REQUIRED_SKILL_1_ATTID+","+REQUIRED_SKILL_2_ATTID+","+REQUIRED_SKILL_3_ATTID+","+REQUIRED_SKILL_1_LEVEL_ATTID+","+REQUIRED_SKILL_2_LEVEL_ATTID+","+REQUIRED_SKILL_3_LEVEL_ATTID+","+METALEVEL_ATTID+","+RANK_ATTID+") ";
-	
-	public static final String QUERY_TYPE_BY_PARENT = "SELECT t.typeID,t.marketGroupID,t.metaGroupID,t.typeName,c.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value  " +
-	                                                  "FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at, invGroups g, invCategories c " +
-	                                                  "WHERE t.marketGroupID in (?) " +
-	                                                  "AND t.typeID = a.typeID " +
-	                                                  "AND a.attributeID = at.attributeID " +
-	                                                  "AND t.groupID=g.groupID " +
-	                                                  "AND g.categoryID=c.categoryID " +
-	                                                  "AND at.attributeID in ("+REQUIRED_SKILL_1_ATTID+","+REQUIRED_SKILL_2_ATTID+","+REQUIRED_SKILL_3_ATTID+","+REQUIRED_SKILL_1_LEVEL_ATTID+","+REQUIRED_SKILL_2_LEVEL_ATTID+","+REQUIRED_SKILL_3_LEVEL_ATTID+","+METALEVEL_ATTID+","+RANK_ATTID+") ";;
-	
-	public static final String QUERY_ITEM_DETAILS_BY_ID =	"SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice " +
-															"FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u " +
-															"WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND at.unitID = u.unitID " +
-															"ORDER BY ac.categoryName ";
-	
-	
-	
-	
+	public static final String QUERY_TYPES_BY_ID = "SELECT t.typeID,t.metaGroupID,t.typeName,c.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value  "
+			+ "FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at, invGroups g, invCategories c "
+			+ "WHERE t.typeID in (?) "
+			+ "AND t.typeID = a.typeID "
+			+ "AND a.attributeID = at.attributeID "
+			+ "AND t.groupID=g.groupID "
+			+ "AND g.categoryID=c.categoryID "
+			+ "AND at.attributeID in ("
+			+ REQUIRED_SKILL_1_ATTID
+			+ ","
+			+ REQUIRED_SKILL_2_ATTID
+			+ ","
+			+ REQUIRED_SKILL_3_ATTID
+			+ ","
+			+ REQUIRED_SKILL_1_LEVEL_ATTID
+			+ ","
+			+ REQUIRED_SKILL_2_LEVEL_ATTID
+			+ ","
+			+ REQUIRED_SKILL_3_LEVEL_ATTID + "," + METALEVEL_ATTID + "," + RANK_ATTID + ") ";
+
+	public static final String QUERY_TYPE_BY_PARENT = "SELECT t.typeID,t.marketGroupID,t.metaGroupID,t.typeName,c.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value  "
+			+ "FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at, invGroups g, invCategories c "
+			+ "WHERE t.marketGroupID in (?) "
+			+ "AND t.typeID = a.typeID "
+			+ "AND a.attributeID = at.attributeID "
+			+ "AND t.groupID=g.groupID "
+			+ "AND g.categoryID=c.categoryID "
+			+ "AND at.attributeID in ("
+			+ REQUIRED_SKILL_1_ATTID
+			+ ","
+			+ REQUIRED_SKILL_2_ATTID
+			+ ","
+			+ REQUIRED_SKILL_3_ATTID
+			+ ","
+			+ REQUIRED_SKILL_1_LEVEL_ATTID
+			+ ","
+			+ REQUIRED_SKILL_2_LEVEL_ATTID
+			+ ","
+			+ REQUIRED_SKILL_3_LEVEL_ATTID + "," + METALEVEL_ATTID + "," + RANK_ATTID + ") ";;
+
+	public static final String QUERY_ITEM_DETAILS_BY_ID = "SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice "
+			+ "FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u "
+			+ "WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND at.unitID = u.unitID "
+			+ "ORDER BY ac.categoryName ";
+
+	public static final String QUERY_GROUP_NAME_BY_ID = "SELECT groupName FROM invGroups WHERE groupID IN (?)";
+	public static final String QUERY_TYPE_NAME_BY_ID = "SELECT typeName FROM invTypes WHERE typeID IN (?)";
+
 	/*
 	 * User database queries
 	 */
-	
+
 	// Columns name
+	public static final String CHARACTERS_TABLE = "monitoredCharacters";
 	public static final String CHARACTERID_COL = "characterID";
 	public static final String CHARACTERNAME_COL = "characterName";
 	public static final String USERID_COL = "userID";
 	public static final String APIKEY_COL = "apiKey";
+	public static final String ISMONITORED_COL = "isMonitored";
 
-	
 	// Queries
-	public static final String QUERY_MONITORED_CHARACTERS = "SELECT * FROM monitoredCharacters WHERE isMonitored=1";
-	public static final String QUERY_DISTINCT_API = "SELECT DISTINCT userID, apiKey FROM monitoredCharacters";
-	public static final String ADD_MONITORED_CHARACTER = "INSERT INTO " +
-				"monitoredCharacters(characterID,characterName,userID,apiKey,isMonitored) VALUES (?,?,?,?,1)";
-	public static final String REMOVE_MONITORED_CHARACTER = "UPDATE monitoredCharacters SET isMonitored=0 WHERE characterID=?";
-	public static final String UPDATE_MONITORED_CHARACTER = "UPDATE monitoredCharacters SET isMonitored=?, characterName=?, userID=?, apiKey=? WHERE characterID=?";
-	public static final String CREATE_USER_DATABASE = 
-									"CREATE TABLE monitoredCharacters " +
-									"(" +
-										"characterID int NOT NULL UNIQUE,"+
-										"characterName nvarchar(256),"+
-										"userID int,"+
-										"apiKey nvarchar(256)," +
-										"isMonitored bit," +
-									
-										"CONSTRAINT characterID_PK PRIMARY KEY (characterID)"+
-									")";
-	public static final String CHARACTER_EXISTS = "SELECT isMonitored FROM monitoredCharacters WHERE characterID=?";
-
-
+	public static final String QUERY_MONITORED_CHARACTERS = "SELECT * FROM " + CHARACTERS_TABLE
+			+ " WHERE " + ISMONITORED_COL + "=1";
+	public static final String QUERY_DISTINCT_API = "SELECT DISTINCT " + USERID_COL + ", "
+			+ APIKEY_COL + " FROM " + CHARACTERS_TABLE;
+	public static final String ADD_MONITORED_CHARACTER = "INSERT INTO " + CHARACTERS_TABLE + "("
+			+ CHARACTERID_COL + "," + CHARACTERNAME_COL + "," + USERID_COL + "," + APIKEY_COL + ","
+			+ ISMONITORED_COL + ") VALUES (?,?,?,?,1)";
+	public static final String REMOVE_MONITORED_CHARACTER = "UPDATE " + CHARACTERS_TABLE + " SET "
+			+ ISMONITORED_COL + "=0 WHERE " + CHARACTERID_COL + " IN (?)";
+	public static final String UPDATE_MONITORED_CHARACTER = "UPDATE " + CHARACTERS_TABLE + " SET "
+			+ ISMONITORED_COL + "=1 WHERE " + CHARACTERID_COL + " IN (?)";
+	public static final String CREATE_USER_DATABASE = "CREATE TABLE monitoredCharacters " + "("
+			+ CHARACTERID_COL + " int NOT NULL UNIQUE," + CHARACTERNAME_COL + " nvarchar(256),"
+			+ USERID_COL + " int," + APIKEY_COL + " nvarchar(256)," + ISMONITORED_COL + " bit,"
+			+ "CONSTRAINT characterID_PK PRIMARY KEY (" + CHARACTERID_COL + ")" + ")";
+	public static final String UPDATE_API_KEY_FROM_USERID = "UPDATE " + CHARACTERS_TABLE + " SET "
+			+ APIKEY_COL + "=? WHERE " + USERID_COL + " in (?)";
+	public static final String UPDATE_API_KEY_FROM_CHARID = "UPDATE " + CHARACTERS_TABLE + " SET "
+			+ APIKEY_COL + "=? WHERE " + CHARACTERID_COL + " in (?)";
 
 }

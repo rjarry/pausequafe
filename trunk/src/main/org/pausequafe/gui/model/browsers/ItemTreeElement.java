@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.tree;
+package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
@@ -13,11 +13,11 @@ import com.trolltech.qt.gui.QIcon;
  * 
  * @author Gobi
  */
-public interface TreeElement {
+public interface ItemTreeElement {
 
 	public int childCount();
 
-	public TreeElement childAt(int position) throws PQException;
+	public ItemTreeElement childAt(int position) throws PQException;
 
 	public String getName();
 

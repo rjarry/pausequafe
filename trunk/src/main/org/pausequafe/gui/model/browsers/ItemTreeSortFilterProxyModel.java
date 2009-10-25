@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.tree;
+package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.misc.util.Constants;
@@ -8,7 +8,7 @@ import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QSortFilterProxyModel;
 import com.trolltech.qt.gui.QTreeModel;
 
-public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
+public class ItemTreeSortFilterProxyModel extends QSortFilterProxyModel {
 
 	// /////////////
 	// constants //
@@ -20,7 +20,7 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	// //////////////////
 	// private fields //
 	// //////////////////
-	private TreeModel sourceModel;
+	private ItemTreeModel sourceModel;
 	private int sortMode = SORT_BY_NAME;
 
 	private boolean tech1Shown = true;
@@ -37,7 +37,7 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	// //////////////////
 	// constructors //
 	// //////////////////
-	public TreeSortFilterProxyModel() {
+	public ItemTreeSortFilterProxyModel() {
 		super();
 		setFilterCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive);
 	}
@@ -45,8 +45,8 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	// //////////////////
 	// public methods //
 	// //////////////////
-	public TreeElement indexToValue(QModelIndex index) {
-		return (TreeElement) sourceModel.indexToValue(mapToSource(index));
+	public ItemTreeElement indexToValue(QModelIndex index) {
+		return (ItemTreeElement) sourceModel.indexToValue(mapToSource(index));
 	}
 
 	public QTreeModel getSourceModel() {
@@ -57,7 +57,7 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 		sourceModel.setSheet(sheet);
 	}
 
-	public void setSourceModel(TreeModel sourceModel) {
+	public void setSourceModel(ItemTreeModel sourceModel) {
 		this.sourceModel = sourceModel;
 		sourceModel.dataChanged.connect(this.dataChanged);
 		super.setSourceModel(sourceModel);
@@ -126,8 +126,8 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	@Override
 	protected boolean lessThan(QModelIndex left, QModelIndex right) {
 		boolean result = true;
-		TreeElement leftElement = (TreeElement) sourceModel.indexToValue(left);
-		TreeElement rightElement = (TreeElement) sourceModel.indexToValue(right);
+		ItemTreeElement leftElement = (ItemTreeElement) sourceModel.indexToValue(left);
+		ItemTreeElement rightElement = (ItemTreeElement) sourceModel.indexToValue(right);
 
 		switch (sortMode) {
 		case SORT_BY_META_LEVEL:
@@ -167,7 +167,7 @@ public class TreeSortFilterProxyModel extends QSortFilterProxyModel {
 	@Override
 	protected boolean filterAcceptsRow(int source_row, QModelIndex source_parent) {
 		boolean result = false;
-		TreeElement element = sourceModel
+		ItemTreeElement element = sourceModel
 				.child(sourceModel.indexToValue(source_parent), source_row);
 		QModelIndex elementIndex = sourceModel.index(source_row, 0, source_parent);
 

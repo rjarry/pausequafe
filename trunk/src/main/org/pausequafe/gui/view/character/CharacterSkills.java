@@ -12,9 +12,9 @@ import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.data.business.SkillQueue;
 import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.data.dao.MarketGroupDAO;
-import org.pausequafe.gui.model.tree.MarketGroupElement;
-import org.pausequafe.gui.model.tree.TreeModel;
-import org.pausequafe.gui.model.tree.TreeSortFilterProxyModel;
+import org.pausequafe.gui.model.browsers.ItemTreeModel;
+import org.pausequafe.gui.model.browsers.ItemTreeSortFilterProxyModel;
+import org.pausequafe.gui.model.browsers.MarketGroupElement;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQException;
@@ -44,7 +44,7 @@ public class CharacterSkills extends QWidget {
 
 	private QTimer timer;
 
-	private TreeSortFilterProxyModel proxyModel;
+	private ItemTreeSortFilterProxyModel proxyModel;
 
 	// ////////////////
 	// constructors //
@@ -72,8 +72,8 @@ public class CharacterSkills extends QWidget {
 			message.exec();
 		}
 		MarketGroupElement root = new MarketGroupElement(group);
-		TreeModel itemTreeModel = new TreeModel(root);
-		proxyModel = new TreeSortFilterProxyModel();
+		ItemTreeModel itemTreeModel = new ItemTreeModel(root);
+		proxyModel = new ItemTreeSortFilterProxyModel();
 		proxyModel.setSourceModel(itemTreeModel);
 		ui.skillTree.setModel(proxyModel);
 

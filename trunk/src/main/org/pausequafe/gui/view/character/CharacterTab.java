@@ -25,7 +25,7 @@ public class CharacterTab extends QWidget {
 	private ApiRequest request;
 
 	public Signal0 requestStarted = new Signal0();
-	public Signal2<Integer, String> requestFinished = new Signal2<Integer, String>();
+	public Signal2<Integer, MonitoredCharacter> requestFinished = new Signal2<Integer, MonitoredCharacter>();
 
 	// ////////////////
 	// constructors //
@@ -38,8 +38,6 @@ public class CharacterTab extends QWidget {
 		request = new ApiRequest(character.getApi());
 
 		request.requestStarted.connect(this, "emitRequestStarted()");
-		request.dataRetrieved.connect(this,
-				"emitRequestFinished(CharacterSheet, SkillInTraining, SkillQueue, String)");
 		request.dataRetrieved.connect(infoWidget, "resetTimers()");
 		request.dataRetrieved.connect(this,
 				"updateCharacterInfo(CharacterSheet, SkillInTraining, SkillQueue, String)");
@@ -90,7 +88,17 @@ public class CharacterTab extends QWidget {
 		infoWidget.loadPortrait(monChar.getImageLocation());
 
 		skillsWidget.loadSkills(monChar.getSheet());
-		skillsWidget.loadSkillInTraining(monChar.getSheet(), monChar.getInTraining(), monChar.getQueue());
+		skillsWidget.loadSkillInTraining(monChar.getSheet(), monChar.getInTraining(), monChar
+				.getQueue());
+
+		int returnCode = ApiRequest.OK;
+		if (sheet != null && sheet.getCharacterID() == ApiRequest.AUTHENTICATION_ERROR) {
+			returnCode = ApiRequest.AUTHENTICATION_ERROR;
+		} else if (sheet == null
+				|| (sheet != null && sheet.getCharacterID() == ApiRequest.CONNECTION_ERROR)) {
+			returnCode = ApiRequest.CONNECTION_ERROR;
+		}
+		requestFinished.emit(returnCode, monChar);
 	}
 
 	// /////////
@@ -104,18 +112,6 @@ public class CharacterTab extends QWidget {
 	@SuppressWarnings("unused")
 	private void emitRequestStarted() {
 		requestStarted.emit();
-	}
-
-	@SuppressWarnings("unused")
-	private void emitRequestFinished(CharacterSheet sheet, SkillInTraining inTraining,
-			SkillQueue queue, String imageLocation) {
-		if ((sheet != null && sheet.getCharacterID() == ApiRequest.AUTHENTICATION_ERROR)) {
-			requestFinished.emit(ApiRequest.AUTHENTICATION_ERROR, sheet.getName());
-		} else if (sheet != null && sheet.getCharacterID() == ApiRequest.CONNECTION_ERROR){
-			requestFinished.emit(ApiRequest.CONNECTION_ERROR, sheet.getName());
-		} else {
-			requestFinished.emit(ApiRequest.OK, sheet.getName());
-		}
 	}
 
 	// ///////////

@@ -2,9 +2,9 @@ package org.pausequafe.gui.model;
 
 import org.pausequafe.data.business.MarketGroup;
 import org.pausequafe.data.dao.MarketGroupDAO;
-import org.pausequafe.gui.model.tree.MarketGroupElement;
-import org.pausequafe.gui.model.tree.TreeElement;
-import org.pausequafe.gui.model.tree.TreeModel;
+import org.pausequafe.gui.model.browsers.ItemTreeElement;
+import org.pausequafe.gui.model.browsers.ItemTreeModel;
+import org.pausequafe.gui.model.browsers.MarketGroupElement;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
@@ -30,8 +30,8 @@ public class TestTreeModel {
 		} catch (PQEveDatabaseNotFound e) {
 			e.printStackTrace();
 		}
-		TreeElement root = new MarketGroupElement(group);
-		TreeModel ships = new TreeModel(root);
+		ItemTreeElement root = new MarketGroupElement(group);
+		ItemTreeModel ships = new ItemTreeModel(root);
 		
 		QTreeView view = new QTreeView();
 		view.setModel(ships);

@@ -43,7 +43,6 @@ public class TestSkillInTraining {
 			System.out.println(e.getMessage());
 			System.exit(0);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

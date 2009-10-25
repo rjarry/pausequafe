@@ -32,7 +32,7 @@ public class SettingsDialog extends QDialog {
     //////////////////
     private void setupUi(){
     	ui.setupUi(this);
-    	this.accepted.connect(this, "acceptChanges()");
+    	this.accepted.connect(this, "saveProxySettings()");
     	this.setWindowTitle("Pause Quafé Settings");
     	this.setWindowFlags(Qt.WindowType.Window);
     	ui.buttonBox.accepted.connect(this, "accept()");
@@ -64,7 +64,8 @@ public class SettingsDialog extends QDialog {
 		}
 	}
     
-    private void saveProxySettings() {
+    @SuppressWarnings("unused")
+	private void saveProxySettings() {
     	
     	boolean useProxy = ui.proxyCustomRadioButton.isChecked();
     	boolean useProxyAuth = ui.authenticationCheckBox.isChecked();
@@ -103,24 +104,13 @@ public class SettingsDialog extends QDialog {
 			Configuration.getInstance().storeConfiguration();
 			Configuration.getInstance().loadConfiguration();
 		} catch (JEveConnectionException e) {
-			// FIXME : not possible JEVECore absurdity
+			// XXX : not possible JEVECore absurdity
 			e.printStackTrace();
 		} catch (JEveConfigurationException e) {
-			// FIXME : I/O exception when reading config file (shouldn't happen)
+			// XXX : I/O exception when reading config file (shouldn't happen)
 			e.printStackTrace();
 		}
 		
 	}
-    
-    ///////////
-    // slots //
-    ///////////
-    @SuppressWarnings("unused")
-	private void acceptChanges(){
-    	saveProxySettings();
-    }
-
-	
-    
     
 }

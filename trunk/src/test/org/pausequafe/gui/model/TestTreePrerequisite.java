@@ -2,9 +2,9 @@ package org.pausequafe.gui.model;
 
 import org.pausequafe.data.business.Item;
 import org.pausequafe.data.dao.ItemDAO;
-import org.pausequafe.gui.model.tree.PrerequisiteElement;
-import org.pausequafe.gui.model.tree.TreeElement;
-import org.pausequafe.gui.model.tree.TreeModel;
+import org.pausequafe.gui.model.browsers.ItemPrerequisiteElement;
+import org.pausequafe.gui.model.browsers.ItemTreeElement;
+import org.pausequafe.gui.model.browsers.ItemTreeModel;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
@@ -30,8 +30,8 @@ public class TestTreePrerequisite {
 		} catch (PQEveDatabaseNotFound e) {
 			e.printStackTrace();
 		}
-		TreeElement root = new PrerequisiteElement(item);
-		TreeModel preReqTree = new TreeModel(root);
+		ItemTreeElement root = new ItemPrerequisiteElement(item);
+		ItemTreeModel preReqTree = new ItemTreeModel(root);
 		
 		QTreeView view = new QTreeView();
 		view.setModel(preReqTree);

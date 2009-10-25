@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.tree;
+package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.PreRequisite;

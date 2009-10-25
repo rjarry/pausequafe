@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.tree;
+package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
@@ -10,35 +10,35 @@ import org.pausequafe.misc.util.Formater;
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QIcon;
 
-public class PrerequisiteElement extends GroupElement {
+public class ItemPrerequisiteElement extends GroupElement {
 
 	private Item item;
 	private int requiredLevel = -1;
 	private boolean isRoot = true;
 	
-	public PrerequisiteElement(Item toSkill) {
+	public ItemPrerequisiteElement(Item toSkill) {
 		super();
 		this.item = toSkill;
 	}
 	
-	private PrerequisiteElement(Item toSkill,int requiredLevel, boolean isRoot) {
+	private ItemPrerequisiteElement(Item toSkill,int requiredLevel, boolean isRoot) {
 		super();
 		this.item = toSkill;
 		this.requiredLevel = requiredLevel;
 		this.isRoot = isRoot;
 	}
 
-	public TreeElement childAt(int position) throws PQException {
-		TreeElement child = null;
+	public ItemTreeElement childAt(int position) throws PQException {
+		ItemTreeElement child = null;
 		int childId = item.getPreReqs().get(position).getTypeID();
 		int childReqLvl = item.getPreReqs().get(position).getRequiredLevel();
 		
 		Item childItem = ItemDAO.getInstance().findItemById(childId);
 		
 		if(requiredLevel == -1){
-			child = new PrerequisiteElement(childItem,childReqLvl,true);
+			child = new ItemPrerequisiteElement(childItem,childReqLvl,true);
 		} else {
-			child = new PrerequisiteElement(childItem,childReqLvl,false);
+			child = new ItemPrerequisiteElement(childItem,childReqLvl,false);
 		}
 		
 		return child;

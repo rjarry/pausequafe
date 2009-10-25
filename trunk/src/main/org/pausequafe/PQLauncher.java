@@ -2,6 +2,7 @@ package org.pausequafe;
 
 import java.io.File;
 
+import org.pausequafe.data.business.ServerStatus;
 import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.gui.view.main.MainWindow;
 import org.pausequafe.gui.view.misc.ErrorMessage;
@@ -77,7 +78,7 @@ public class PQLauncher {
 
 		QApplication.setActiveWindow(mainWindow);
 
-		QSystemTrayIcon tray = new QSystemTrayIcon(new QIcon(Constants.WINDOW_ICON));
+		PQSystemTray tray = new PQSystemTray(new QIcon(Constants.WINDOW_ICON));
 		// différenciation pour le clic gauche
 		// j'ai été obligé de faire une méthode dans MainWindow car ici on est
 		// en static -> pas de slot
@@ -93,12 +94,25 @@ public class PQLauncher {
 		mainWindow.setStyleSheet(styleSheet);
 		mainWindow.aboutToQuit.connect(tray, "dispose()");
 		mainWindow.aboutToQuit.connect(QApplication.instance(), "quit()");
+		mainWindow.dataUpdated.connect(tray,
+				"changeTrayToolTip(ServerStatus)");
 
 		splash.finish(mainWindow);
 		mainWindow.show();
 		tray.show();
 
 		QApplication.exec();
+	}
+}
+
+class PQSystemTray extends QSystemTrayIcon {
+
+	PQSystemTray(QIcon icon) {
+		super(icon);
+	}
+
+	void changeTrayToolTip(ServerStatus status) {
+		this.setToolTip("ok ça marche");
 	}
 
 }

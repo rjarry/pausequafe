@@ -1,4 +1,4 @@
-package org.pausequafe.gui.model.tree;
+package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
@@ -14,7 +14,7 @@ import com.trolltech.qt.gui.QIcon;
  * 
  * @author Gobi
  */
-public class ItemElement implements TreeElement {
+public class ItemElement implements ItemTreeElement {
 
 	protected Item item;
 
@@ -47,7 +47,7 @@ public class ItemElement implements TreeElement {
 		return item;
 	}
 
-	public TreeElement childAt(int position) throws PQException {
+	public ItemTreeElement childAt(int position) throws PQException {
 		throw new PQException("Leafs don't have children");
 	}
 
