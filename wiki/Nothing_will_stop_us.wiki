@@ -6,6 +6,8 @@ Tired of having to install wine or similar to have a real character monitoring t
 
 Well this is for you...
 
+http://pagesperso-orange.fr/woodenship/PauseQuafe_Splash.jpg
+
 A few months ago, one of my friends and me decided to code a Java clone of EVEMon. 
 We don't intend to make something as complex as EVEMon but be sure that the crucial features will be well covered.
 
