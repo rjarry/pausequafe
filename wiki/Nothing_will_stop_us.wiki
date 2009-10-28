@@ -15,4 +15,4 @@ We don't intend to make something as complex as EVEMon but be sure that the cruc
 
 We use Qt for the GUI of the program. It will be integrated with the installation packages once we have a working version.
 
-[http://doc.trolltech.com/qtjambi-4.4/html/com/trolltech/qt/ Qt reference documentation]
+[http://doc.trolltech.com/ Qt reference documentation]
