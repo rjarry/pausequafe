@@ -1,0 +1,26 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\dev\PauseQuafé\build\libs\pause-1.0.jar</jar>
+  <outfile>C:\dev\PauseQuafé\toto.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon></icon>
+  <classPath>
+    <mainClass>org.pausequafe.PQLauncher</mainClass>
+    <cp>.\lib\*.jar</cp>
+  </classPath>
+  <jre>
+    <path></path>
+    <minVersion>1.5.0_14</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>jdkOnly</jdkPreference>
+  </jre>
+</launch4jConfig>
