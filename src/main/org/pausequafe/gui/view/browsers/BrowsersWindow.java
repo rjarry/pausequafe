@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.MonitoredCharacter;
-import org.pausequafe.gui.model.characters.MonitoredCharactersModel;
+import org.pausequafe.gui.model.characters.MonitoredCharactersAndSkillPlansModel;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
@@ -44,7 +44,7 @@ public class BrowsersWindow extends QWidget {
 		super(parent);
 		setupUi();
 		try {
-			MonitoredCharactersModel.getInstance().listUpdated.connect(this,
+			MonitoredCharactersAndSkillPlansModel.getInstance().listUpdated.connect(this,
 					"setSheetList(List<MonitoredCharacter>)");
 		} catch (PQSQLDriverNotFoundException e) {
 			popSQLDriverError();

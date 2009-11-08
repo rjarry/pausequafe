@@ -100,25 +100,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="3">
-       <widget class="QTableView" name="skillPlanList">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="focusPolicy">
-         <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -131,6 +112,9 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="QListView" name="skillPlanList"/>
       </item>
      </layout>
     </widget>

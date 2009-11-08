@@ -53,7 +53,7 @@ public class AddCharacterDialog extends QDialog {
 	    List<APIData> list = null;
 	    
 		try {
-			list = MonitoredCharacterDAO.getInstance().getDistinctApiData();
+			list = MonitoredCharacterDAO.getInstance().findDistinctApiData();
 		} catch (PQSQLDriverNotFoundException e) {
 			ErrorMessage error = new ErrorMessage(this,tr(Constants.DRIVER_NOT_FOUND_ERROR));
 			error.exec();

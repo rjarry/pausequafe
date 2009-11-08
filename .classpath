@@ -9,11 +9,11 @@
 	<classpathentry kind="lib" path="lib/sqljdbc.jar"/>
 	<classpathentry kind="lib" path="lib/qtjambi-4.5.2_01.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="file:/D:/dev/lib/qtjambi-win32-lgpl-4.5.2_01/doc/html"/>
+			<attribute name="javadoc_location" value="file:/H:/Trolltech/qtjambi-win32-lgpl-4.5.2_01/doc/html/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/qtjambi-win32-msvc2005-4.5.2_01.jar"/>
-	<classpathentry kind="lib" path="lib/JEveCore_Modified_2.0.jar"/>
+	<classpathentry kind="lib" path="lib/JEveCore_Modified-2.0.jar"/>
 	<classpathentry kind="src" path="Generated JUIC files"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

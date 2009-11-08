@@ -119,16 +119,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 
 		initConnection(SQLConstants.EVE_DATABASE);
 
-		String inClause = "";
-		boolean first = true;
-		for (Integer typeID : toBeQueried) {
-			if (first) {
-				first = false;
-			} else {
-				inClause += ",";
-			}
-			inClause += typeID;
-		}
+		String inClause = buildInClause(toBeQueried);
 
 		String query = SQLConstants.QUERY_MARKETGRP_BY_ID;
 		query = query.replace("?", inClause);
