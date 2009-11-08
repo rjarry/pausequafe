@@ -154,13 +154,24 @@ public class CharacterSkills extends QWidget {
 			if (inTraining == null || inTraining.skillInTraining() == 0) {
 				// if there's no skill in training
 				thereIsASkillTraining = false;
-				trainingText.append("<b>no skill in training!</b>");
+				ui.skillInTraining.resize(450, 48);
+				ui.skillInTraining.move(127,3);
+				ui.timeLeft.move(165, 13);
+				trainingText.append("<img src=\"" + Constants.WARNING_SMALL_ICON + "\" />");
+				timeText.append("<font color=\"#CC0000\"><b>NO SKILL IN TRAINING!</b></font>");
+				if (queue.getSkillList().size() > 0) {
+					timeText.append(" <b><font color=\"#00CC00\">+"
+							+ (queue.getSkillList().size()) + " queued</font></b>");
+				}
 				toolTipText.append("<p style='white-space:pre'>");
 				toolTipText.append(printSkillQueue(queue));
 				toolTipText.append("</p>");
 			} else {
 				// else we fill the fields
 				thereIsASkillTraining = true;
+				ui.skillInTraining.resize(450, 13);
+				ui.skillInTraining.move(127,0);
+				ui.timeLeft.move(127, 13);
 				trainingText.append("<b>");
 				try {
 					trainingText.append(ItemDAO.getInstance().findItemById(inTraining.getTypeID())
@@ -174,6 +185,11 @@ public class CharacterSkills extends QWidget {
 
 				trainingText.append(Formater.printPercent(inTraining.calculateCompletion()));
 				trainingText.append("%)");
+
+				if (queue.getSkillList().size() > 1) {
+					trainingText.append(" <b><font color=\"#00CC00\">+"
+							+ (queue.getSkillList().size() - 1) + " queued</font></b>");
+				}
 
 				// training end date
 				dateFormat.format(new Date(inTraining.getEndTime()), endText, new FieldPosition(0));

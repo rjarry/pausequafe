@@ -27,55 +27,55 @@ public class Migrator {
 //				"databaseName=EVE;" +
 //				"user=SA;" +
 //				"password=connard;");
-		Connection conMSSQL = DriverManager.getConnection("jdbc:sqlite:resources/apo15-sqlite3-v1.db");
-		Connection conSQLite = DriverManager.getConnection("jdbc:sqlite:resources/eve-online.db");
+		Connection conCCP = DriverManager.getConnection("jdbc:sqlite:resources/apo15-sqlite3-v1.db");
+		Connection conPQ = DriverManager.getConnection("jdbc:sqlite:resources/eve-online.db");
 
 		System.out.println("Connected");
 
-		genDgmAttributeCategories(conMSSQL, conSQLite);
-		genDgmAttributeTypes(conMSSQL, conSQLite);
-		genDgmEffects(conMSSQL, conSQLite);
-		genDgmTypeAttributes(conMSSQL, conSQLite);
-		genDgmTypeEffects(conMSSQL, conSQLite);
-		genEveGraphics(conMSSQL, conSQLite);
-		genEveUnits(conMSSQL, conSQLite);
-		genInvBlueprintTypes(conMSSQL, conSQLite);
-		genInvCategories(conMSSQL, conSQLite);
-		genInvFlags(conMSSQL, conSQLite);
-		genInvGroups(conMSSQL, conSQLite);
-		genInvMarketGroups(conMSSQL, conSQLite);
-		genInvMetaGroups(conMSSQL, conSQLite);
-		genInvMetaTypes(conMSSQL, conSQLite);
-		genInvTypeReactions(conMSSQL, conSQLite);
-		genInvTypes(conMSSQL, conSQLite);
-		genRamActivities(conMSSQL, conSQLite);
-		genTypeActivityMaterials(conMSSQL, conSQLite);
+		genDgmAttributeCategories(conCCP, conPQ);
+		genDgmAttributeTypes(conCCP, conPQ);
+		genDgmEffects(conCCP, conPQ);
+		genDgmTypeAttributes(conCCP, conPQ);
+		genDgmTypeEffects(conCCP, conPQ);
+		genEveGraphics(conCCP, conPQ);
+		genEveUnits(conCCP, conPQ);
+		genInvBlueprintTypes(conCCP, conPQ);
+		genInvCategories(conCCP, conPQ);
+		genInvFlags(conCCP, conPQ);
+		genInvGroups(conCCP, conPQ);
+		genInvMarketGroups(conCCP, conPQ);
+		genInvMetaGroups(conCCP, conPQ);
+		genInvMetaTypes(conCCP, conPQ);
+		genInvTypeReactions(conCCP, conPQ);
+		genInvTypes(conCCP, conPQ);
+		genRamActivities(conCCP, conPQ);
+		genTypeActivityMaterials(conCCP, conPQ);
 		
-		conMSSQL.close();
+		conCCP.close();
 
-		System.out.println("SQLite database successfully generated from MSSQL database.");
+		System.out.println("PQ database successfully generated from CCP database.");
 		System.out.println("Customizing database...");
 		
-		completeTech3Tags(conSQLite);
-		deleteTradeGoods(conSQLite);
-		completeShipsMarketGroups(conSQLite);
-		completeModulesMarketGroups(conSQLite);
-		completeBlueprintsMarketGroups(conSQLite);
-		correctBugs(conSQLite);
+		completeTech3Tags(conPQ);
+		deleteTradeGoods(conPQ);
+		completeShipsMarketGroups(conPQ);
+		completeModulesMarketGroups(conPQ);
+		completeBlueprintsMarketGroups(conPQ);
+		correctBugs(conPQ);
 		
 		System.out.println("Vacuuming SQLite file... ");
-		Statement statSQLite = conSQLite.createStatement();
+		Statement statSQLite = conPQ.createStatement();
 		statSQLite.executeUpdate("VACUUM");
 		System.out.println("You can go now.");
 		
-		conSQLite.close();
+		conPQ.close();
 	}
 
 ////////////////////////////////////////////////////
 	public static void genDgmAttributeCategories(Connection conREAD, Connection conWRITE) 
 																			throws SQLException{
 		System.out.print("Generating dgmAttributeCategories... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE dgmAttributeCategories " +
@@ -86,7 +86,7 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statMSSQL.executeQuery("select * from dgmAttributeCategories");
+		ResultSet rs = statREAD.executeQuery("select * from dgmAttributeCategories");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 												"INSERT INTO dgmAttributeCategories(categoryID, " +
@@ -112,7 +112,7 @@ public class Migrator {
 	public static void genDgmAttributeTypes(Connection conREAD, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating dgmAttributeTypes... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE dgmAttributeTypes " +
@@ -130,7 +130,7 @@ public class Migrator {
 										"categoryID tinyint"+
 									")");
 
-		ResultSet rs = statMSSQL.executeQuery("select * from dgmAttributeTypes");
+		ResultSet rs = statREAD.executeQuery("select * from dgmAttributeTypes");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 									"INSERT INTO dgmAttributeTypes(attributeID, attributeName, " +
@@ -173,7 +173,7 @@ public class Migrator {
 	public static void genDgmEffects(Connection conREAD, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating dgmEffects... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE dgmEffects"+
@@ -206,7 +206,7 @@ public class Migrator {
 										"fittingUsageChanceAttributeID smallint"+
 									")");
 
-		ResultSet rs = statMSSQL.executeQuery("select * from dgmEffects");
+		ResultSet rs = statREAD.executeQuery("select * from dgmEffects");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 				"INSERT INTO dgmEffects(effectID, effectName, " +
@@ -300,7 +300,7 @@ public class Migrator {
 	public static void genDgmTypeAttributes(Connection conREAD, Connection conWRITE) 
 																	throws SQLException{
 		System.out.print("Generating dgmTypeAttributes... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE dgmTypeAttributes " +
@@ -314,7 +314,7 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statMSSQL.executeQuery("SELECT a.* FROM dgmTypeAttributes a, invTypes t " +
+		ResultSet rs = statREAD.executeQuery("SELECT a.* FROM dgmTypeAttributes a, invTypes t " +
 												"WHERE t.published=1 AND a.typeID=t.typeID");
 
 		PreparedStatement prep = conWRITE.prepareStatement("INSERT INTO dgmTypeAttributes(" +
@@ -349,7 +349,7 @@ public class Migrator {
 	public static void genDgmTypeEffects(Connection conREAD, Connection conWRITE) 
 																	throws SQLException{
 		System.out.print("Generating dgmTypeEffects... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE dgmTypeEffects " +
@@ -362,7 +362,7 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statMSSQL.executeQuery("SELECT e.* FROM dgmTypeEffects e, invTypes t " +
+		ResultSet rs = statREAD.executeQuery("SELECT e.* FROM dgmTypeEffects e, invTypes t " +
 												"WHERE t.published=1 AND e.typeID=t.typeID");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
@@ -388,7 +388,7 @@ public class Migrator {
 	public static void genEveGraphics(Connection conREAD, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating eveGraphics... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE eveGraphics"+
@@ -398,7 +398,7 @@ public class Migrator {
 										"icon varchar(100)"+
 									")");
 
-		ResultSet rs = statMSSQL.executeQuery("select * from eveGraphics where published=1");
+		ResultSet rs = statREAD.executeQuery("select * from eveGraphics where published=1");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 									"INSERT INTO eveGraphics(graphicID, description, " +
@@ -424,7 +424,7 @@ public class Migrator {
 																	throws SQLException{
 
 		System.out.print("Generating eveUnits... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE eveUnits " +
@@ -436,7 +436,7 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statMSSQL.executeQuery("select * from eveUnits");
+		ResultSet rs = statREAD.executeQuery("select * from eveUnits");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO eveUnits(unitID, " +
@@ -463,7 +463,7 @@ public class Migrator {
 	public static void genInvBlueprintTypes(Connection conREAD, Connection conWRITE) 
 																				throws SQLException{
 		System.out.print("Generating invBlueprintTypes... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE invBlueprintTypes " +
@@ -484,7 +484,7 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statMSSQL.executeQuery(	"SELECT b.* FROM invTypes i, invBlueprintTypes b " +
+		ResultSet rs = statREAD.executeQuery(	"SELECT b.* FROM invTypes i, invBlueprintTypes b " +
 												"WHERE i.published=1 and i.typeID=b.productTypeID");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
@@ -527,7 +527,7 @@ public class Migrator {
 	public static void genInvCategories(Connection conREAD, Connection conWRITE) 
 																	throws SQLException{
 		System.out.print("Generating invCategories... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE invCategories " +
@@ -538,7 +538,7 @@ public class Migrator {
 										"graphicID smallint"+
 									")");
 
-		ResultSet rs = statMSSQL.executeQuery("select * from invCategories where published=1");
+		ResultSet rs = statREAD.executeQuery("select * from invCategories where published=1");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invCategories(categoryID, " +
@@ -569,7 +569,7 @@ public class Migrator {
 	public static void genInvFlags(Connection conREAD, Connection conWRITE) 
 	throws SQLException{
 System.out.print("Generating invFlags... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE invFlags " +
@@ -580,7 +580,7 @@ System.out.print("Generating invFlags... ");
 										"orderID smallint"+
 									")");
 
-		ResultSet rs = statMSSQL.executeQuery("select * from invFlags");
+		ResultSet rs = statREAD.executeQuery("select * from invFlags");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invFlags(flagID, " +
@@ -607,7 +607,7 @@ System.out.print("Generating invFlags... ");
 	public static void genInvGroups(Connection conREAD, Connection conWRITE) 
 	throws SQLException{
 		System.out.print("Generating invGroups... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE invGroups " +
@@ -626,7 +626,7 @@ System.out.print("Generating invFlags... ");
 									")");
 
 
-		ResultSet rs = statMSSQL.executeQuery("select * from invGroups where published=1");
+		ResultSet rs = statREAD.executeQuery("select * from invGroups where published=1");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 						"INSERT INTO invGroups(groupID, categoryID, groupName, " +
@@ -669,7 +669,7 @@ System.out.print("Generating invFlags... ");
 	public static void genInvMarketGroups(Connection conREAD, Connection conWRITE) 
 																			throws SQLException{
 		System.out.print("Generating invMarketGroups... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 
 		statSQLite.executeUpdate(	"CREATE TABLE invMarketGroups " +
@@ -682,7 +682,7 @@ System.out.print("Generating invFlags... ");
 										"hasTypes bit"+
 									")");
 
-		ResultSet rs = statMSSQL.executeQuery("select * from invMarketGroups");
+		ResultSet rs = statREAD.executeQuery("select * from invMarketGroups");
 
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invMarketGroups(marketGroupID, parentGroupID, " + 
@@ -719,7 +719,7 @@ System.out.print("Generating invFlags... ");
 	public static void genInvMetaGroups(Connection conREAD, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating invMetaGroups... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 		
 		statSQLite.executeUpdate(	"CREATE TABLE invMetaGroups " +
@@ -729,7 +729,7 @@ System.out.print("Generating invFlags... ");
 										"description nvarchar(512)"+
 									")");
 		
-		ResultSet rs = statMSSQL.executeQuery("select * from invMetaGroups");
+		ResultSet rs = statREAD.executeQuery("select * from invMetaGroups");
 		
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invMetaGroups(metaGroupID, " +
@@ -757,7 +757,7 @@ System.out.print("Generating invFlags... ");
 	public static void genInvMetaTypes(Connection conREAD, Connection conWRITE) 
 																	throws SQLException{
 		System.out.print("Generating invMetaTypes... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 		
 		statSQLite.executeUpdate(	"CREATE TABLE invMetaTypes " +
@@ -767,7 +767,7 @@ System.out.print("Generating invFlags... ");
 										"metaGroupID smallint"+
 									")");
 		
-		ResultSet rs = statMSSQL.executeQuery(	"SELECT m.* FROM invMetaTypes m, invTypes t " +
+		ResultSet rs = statREAD.executeQuery(	"SELECT m.* FROM invMetaTypes m, invTypes t " +
 												"WHERE t.published=1 AND m.typeID=t.typeID");
 		
 		PreparedStatement prep = conWRITE.prepareStatement(
@@ -794,7 +794,7 @@ System.out.print("Generating invFlags... ");
 	public static void genInvTypeReactions (Connection conREAD, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating invTypeReactions... ");
-		Statement statMSSQL = conREAD.createStatement();
+		Statement statREAD = conREAD.createStatement();
 		Statement statSQLite = conWRITE.createStatement();
 		
 		statSQLite.executeUpdate(	"CREATE TABLE invTypeReactions " +
@@ -808,7 +808,7 @@ System.out.print("Generating invFlags... ");
 															"(reactionTypeID, input, typeID)"+
 									")");
 		
-		ResultSet rs = statMSSQL.executeQuery(	"SELECT r.* FROM invTypeReactions r, invTypes t " +
+		ResultSet rs = statREAD.executeQuery(	"SELECT r.* FROM invTypeReactions r, invTypes t " +
 												"WHERE t.published=1 AND r.typeID=t.typeID");
 		
 		PreparedStatement prep = conWRITE.prepareStatement(
@@ -837,10 +837,10 @@ System.out.print("Generating invFlags... ");
 																throws SQLException{
 
 		System.out.print("Generating invTypes... ");
-		Statement statMSSQL = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statREAD = conREAD.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE invTypes	" +
+		statWRITE.executeUpdate(	"CREATE TABLE invTypes	" +
 									"(" +
 										"typeID smallint PRIMARY KEY," +
 										"groupID smallint," +
@@ -854,24 +854,25 @@ System.out.print("Generating invFlags... ");
 										"basePrice double," +
 										"marketGroupID smallint," +
 										"chanceOfDuplicating double," +
-										"metaGroupID tinyint" +
-						
+										"metaGroupID tinyint," +
+										"published bit" +
 									")");
 
 
-		ResultSet rs = statMSSQL.executeQuery(
-				"select t.*, g.icon , m.metaGroupID "+
-				"from invTypes t left outer join eveGraphics g on t.graphicID = g.graphicID, "+
-				"     invTypes t2 left outer join invMetaTypes m on t2.typeID = m.typeID "+
-				"where t.published=1 "+
-				"and t.typeID=t2.typeID");
+		ResultSet rs = statREAD.executeQuery(
+				"SELECT t.*, g.icon , m.metaGroupID "+
+				"FROM invTypes t LEFT OUTER JOIN eveGraphics g ON t.graphicID = g.graphicID, "+
+				"     invTypes t2 LEFT OUTER JOIN invMetaTypes m ON t2.typeID = m.typeID "+
+				"WHERE t.typeID=t2.typeID "+
+				"AND (t.published=1 " +
+				"OR t.groupID IN (255,256,257,258,266,267,268,269,270,271,272,273,274,275,278,505,989))");
 		
 		PreparedStatement prep = conWRITE.prepareStatement(
 										"INSERT INTO invTypes(typeID, groupID, " +
 										"typeName, description, icon, radius, mass, " +
 										"volume, capacity, basePrice, " +
-										"marketGroupID, chanceOfDuplicating, metaGroupID)" +
-										" VALUES (?, ? ,? ,? ,? , ?, ?, ?, ?, ?, ?, ?, ?)");
+										"marketGroupID, chanceOfDuplicating, metaGroupID, published)" +
+										" VALUES (?, ? ,? ,? ,? , ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		while(rs.next()){
 			prep.setInt(1, rs.getInt("typeID"));
 			prep.setInt(2, rs.getInt("groupID"));
@@ -898,6 +899,7 @@ System.out.print("Generating invFlags... ");
 				prep.setNull(13, java.sql.Types.NULL);
 			else 
 				prep.setShort(13, tempShort);
+			prep.setByte(14, rs.getByte("published"));
 			prep.addBatch();
 		}
 
@@ -914,17 +916,17 @@ System.out.print("Generating invFlags... ");
 	public static void genRamActivities(Connection conREAD, Connection conWRITE) 
 	throws SQLException{
 		System.out.print("Generating ramActivities... ");
-		Statement statMSSQL = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statREAD = conREAD.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 		
-		statSQLite.executeUpdate(	"CREATE TABLE ramActivities " +
+		statWRITE.executeUpdate(	"CREATE TABLE ramActivities " +
 									"(" +
 										"activityID tinyint PRIMARY KEY,"+
 										"activityName nvarchar(100),"+
 										"description nvarchar(128)"+
 									")");
 		
-		ResultSet rs = statMSSQL.executeQuery("SELECT * FROM ramActivities");
+		ResultSet rs = statREAD.executeQuery("SELECT * FROM ramActivities");
 		
 		PreparedStatement prep = conWRITE.prepareStatement(
 									"INSERT INTO ramActivities(activityID, activityName, " + 
@@ -950,10 +952,10 @@ System.out.print("Generating invFlags... ");
 	public static void genTypeActivityMaterials(Connection conREAD, Connection conWRITE) 
 																				throws SQLException{
 		System.out.print("Generating typeActivityMaterials... ");
-		Statement statMSSQL = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statREAD = conREAD.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE typeActivityMaterials " +
+		statWRITE.executeUpdate(	"CREATE TABLE typeActivityMaterials " +
 									"(" +
 										"typeID smallint NOT NULL,"+
 										"activityID tinyint,"+
@@ -966,7 +968,7 @@ System.out.print("Generating invFlags... ");
 										"(typeID, activityID, requiredTypeID)"+
 									")");
 
-		ResultSet rs = statMSSQL.executeQuery(	"SELECT m.* " +
+		ResultSet rs = statREAD.executeQuery(	"SELECT m.* " +
 												"FROM invTypes i, typeActivityMaterials m " +
 												"WHERE i.published=1 " +
 												"AND i.typeID=m.typeID");
@@ -998,9 +1000,9 @@ System.out.print("Generating invFlags... ");
 	public static void deleteTradeGoods(Connection conWRITE) throws SQLException{
 		
 		System.out.print("Deleting Trade Goods... ");
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 		
-		ResultSet rs = statSQLite.executeQuery(	
+		ResultSet rs = statWRITE.executeQuery(	
 				"SELECT m2.marketGroupID, m2.hasTypes FROM invMarketGroups m1, invMarketGroups m2 " +
 				"WHERE m1.marketGroupName='Trade Goods' " +
 				"AND m1.marketGroupID = m2.parentGroupID ");
@@ -1011,7 +1013,7 @@ System.out.print("Generating invFlags... ");
 			groupsToBeDeleted.add(rs.getInt("marketGroupID"));
 		}
 		
-		rs = statSQLite.executeQuery(	
+		rs = statWRITE.executeQuery(	
 				"SELECT marketGroupID FROM invMarketGroups WHERE parentGroupID IN " +
 				"(SELECT m2.marketGroupID FROM invMarketGroups m1, invMarketGroups m2 " +
 				"WHERE m1.marketGroupName='Trade Goods' " +
@@ -1042,8 +1044,8 @@ System.out.print("Generating invFlags... ");
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 		
-		statSQLite.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupName = 'Trade Goods'");
-		statSQLite.executeUpdate("delete from invTypes where marketGroupID is null and groupID in (select groupID from invGroups where categoryID=17)");
+		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupName = 'Trade Goods'");
+		statWRITE.executeUpdate("delete from invTypes where marketGroupID is null and groupID in (select groupID from invGroups where categoryID=17)");
 		
 		rs.close();
 		System.out.println("Done");
@@ -1053,9 +1055,9 @@ System.out.print("Generating invFlags... ");
 /////////////////////////////////////////////////////
 	public static void completeShipsMarketGroups(Connection conWRITE) throws SQLException{
 		System.out.print("Completing ships market groups... ");
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 				
-		ResultSet rs = statSQLite.executeQuery(	
+		ResultSet rs = statWRITE.executeQuery(	
 											"SELECT DISTINCT mk1.parentGroupID " +
 											"FROM invTypes t , invGroups g , invCategories c , "+
 											     "invMetaGroups mg , invMetaTypes mt , "+
@@ -1090,7 +1092,7 @@ System.out.print("Generating invFlags... ");
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 		
-		rs = statSQLite.executeQuery(	
+		rs = statWRITE.executeQuery(	
 				"SELECT t.typeID , mk2.marketGroupID "+
 				"FROM invTypes t , invGroups g , invCategories c , "+
 				     "invMetaGroups mg , invMetaTypes mt , "+
@@ -1124,7 +1126,7 @@ System.out.print("Generating invFlags... ");
 		
 		
 		
-		rs = statSQLite.executeQuery( 	"SELECT t.typeID, g.groupName "+
+		rs = statWRITE.executeQuery( 	"SELECT t.typeID, g.groupName "+
 										"FROM invTypes t, invGroups g "+
 										"WHERE g.categoryID=6 "+
 										"AND g.groupID=t.groupID "+
@@ -1179,13 +1181,13 @@ System.out.print("Generating invFlags... ");
 		prep2.executeBatch();
 		conWRITE.setAutoCommit(true);
 		
-		statSQLite.executeUpdate(	"INSERT INTO invMarketGroups" +
+		statWRITE.executeUpdate(	"INSERT INTO invMarketGroups" +
 									"(marketGroupID, parentGroupID, marketGroupName," +
 									"description, graphicID, hasTypes)" +
 									"VALUES((SELECT max(marketGroupID) FROM invMarketGroups) + 1," +
 									"391, 'Faction', 'Faction ship designs', null , 1)  ");
 		
-		statSQLite.executeUpdate(	"UPDATE invTypes "+
+		statWRITE.executeUpdate(	"UPDATE invTypes "+
 									"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups), " +
 									"	 metaGroupID = 4 "+
 									"WHERE typeID IN "+
@@ -1202,9 +1204,9 @@ System.out.print("Generating invFlags... ");
 /////////////////////////////////////////////////////
 	public static void completeModulesMarketGroups(Connection conWRITE) throws SQLException{
 		System.out.print("Completing modules market groups... ");
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 				
-		ResultSet rs = statSQLite.executeQuery(	"SELECT t1.typeID , t2.marketGroupID " +
+		ResultSet rs = statWRITE.executeQuery(	"SELECT t1.typeID , t2.marketGroupID " +
 												"FROM invTypes t1, invTypes t2, invMetaTypes m " +
 												"WHERE t1.marketGroupID IS NULL " +
 												"AND m.typeID=t1.typeID " +
@@ -1225,7 +1227,7 @@ System.out.print("Generating invFlags... ");
 		
 		rs.close();
 		
-		statSQLite.executeUpdate("UPDATE invMarketGroups SET parentGroupID=9 " +
+		statWRITE.executeUpdate("UPDATE invMarketGroups SET parentGroupID=9 " +
 									"where marketGroupID in (11,24,157,955)");
 		
 		String marketUpdateQuery = "INSERT INTO invMarketGroups(marketGroupID, parentGroupID, " + 
@@ -1263,7 +1265,7 @@ System.out.print("Generating invFlags... ");
 				"(10025, 553, 'Invulnerability Fields', 'shield adaptive hardeners', 1)"};
 		
 		for(String group : createNewMarketGroups){
-			statSQLite.executeUpdate(marketUpdateQuery.replace("?", group));
+			statWRITE.executeUpdate(marketUpdateQuery.replace("?", group));
 		}
 		String[] invTypesUpdate = {
 		"UPDATE invTypes SET marketGroupID = 10001 WHERE marketGroupID=535 AND typeName LIKE '%EM Hardener%'",
@@ -1307,10 +1309,10 @@ System.out.print("Generating invFlags... ");
 		"UPDATE invTypes SET marketGroupID = 10025 WHERE marketGroupID=553 AND typeName LIKE '%V-M15%'"};
 		
 		for(String update : invTypesUpdate){
-			statSQLite.executeUpdate(update);
+			statWRITE.executeUpdate(update);
 		}
 		
-		statSQLite.executeUpdate("UPDATE invMarketGroups SET hasTypes=0 " +
+		statWRITE.executeUpdate("UPDATE invMarketGroups SET hasTypes=0 " +
 									"where marketGroupID in (535,540,541,550,553)");
 		
 		System.out.println("Done");
@@ -1320,9 +1322,9 @@ System.out.print("Generating invFlags... ");
 /////////////////////////////////////////////////////
 	private static void completeTech3Tags(Connection conWRITE) throws SQLException {
 		System.out.print("Completing Tech3 tags... ");
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 		
-		ResultSet rs = statSQLite.executeQuery("SELECT DISTINCT parentTypeID FROM invMetaTypes WHERE metaGroupID=14");
+		ResultSet rs = statWRITE.executeQuery("SELECT DISTINCT parentTypeID FROM invMetaTypes WHERE metaGroupID=14");
 		
 		PreparedStatement prep = conWRITE.prepareStatement("UPDATE invTypes SET metaGroupID=14 WHERE typeID=?");
 		
@@ -1337,7 +1339,7 @@ System.out.print("Generating invFlags... ");
 		
 		rs.close();
 		
-		statSQLite.executeUpdate("UPDATE invTypes SET metaGroupID=14 WHERE typeID IN (29984,29986,29988,29990)");
+		statWRITE.executeUpdate("UPDATE invTypes SET metaGroupID=14 WHERE typeID IN (29984,29986,29988,29990)");
 		
 		System.out.println("Done");
 	}
@@ -1349,9 +1351,9 @@ System.out.print("Generating invFlags... ");
 /////////////////////////////////////////////////////
 	private static void completeBlueprintsMarketGroups(Connection conWRITE) throws SQLException {
 		System.out.print("Completing blueprints market groups... ");
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 		
-		ResultSet rs = statSQLite.executeQuery
+		ResultSet rs = statWRITE.executeQuery
 		
 		
 		("SELECT b1.blueprintTypeID, t2.marketGroupID " +
@@ -1394,23 +1396,23 @@ System.out.print("Generating invFlags... ");
 		conWRITE.setAutoCommit(true);
 		rs.close();
 		
-		statSQLite.executeUpdate(	"UPDATE invTypes "+
+		statWRITE.executeUpdate(	"UPDATE invTypes "+
 				"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups)-2 "+
 				"WHERE typeID IN "+
 				"(SELECT typeID FROM invTypes "+
 				"WHERE groupID=105 AND marketGroupID IS NULL) ");
-		statSQLite.executeUpdate(	"UPDATE invTypes "+
+		statWRITE.executeUpdate(	"UPDATE invTypes "+
 				"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups)-1 "+
 				"WHERE typeID IN "+
 				"(SELECT typeID FROM invTypes "+
 				"WHERE groupID=106 AND marketGroupID IS NULL) ");
-		statSQLite.executeUpdate(	"UPDATE invTypes "+
+		statWRITE.executeUpdate(	"UPDATE invTypes "+
 				"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups) "+
 				"WHERE typeID IN "+
 				"(SELECT typeID FROM invTypes "+
 				"WHERE groupID=107 AND marketGroupID IS NULL) ");
 		
-		statSQLite.executeUpdate(	"UPDATE invTypes "+
+		statWRITE.executeUpdate(	"UPDATE invTypes "+
 				"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups) "+
 				"WHERE typeID IN "+
 				"(SELECT typeID FROM invTypes "+
@@ -1423,41 +1425,41 @@ System.out.print("Generating invFlags... ");
 /////////////////////////////////////////////////////
 	public static void correctBugs(Connection conWRITE) throws SQLException{
 		System.out.print("Correcting bugs... ");
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
 				
-		statSQLite.executeUpdate("UPDATE dgmTypeAttributes SET valueInt=valueFloat WHERE typeID=29637 AND attributeID IN (180,181,182,183,184,277,278,279,280,1047)");
-		statSQLite.executeUpdate("UPDATE dgmTypeAttributes SET valueFloat=NULL WHERE typeID=29637 AND attributeID IN (180,181,182,183,184,277,278,279,280,1047)");
-		statSQLite.executeUpdate("DELETE FROM eveGraphics WHERE icon='' ");
+		statWRITE.executeUpdate("UPDATE dgmTypeAttributes SET valueInt=valueFloat WHERE typeID=29637 AND attributeID IN (180,181,182,183,184,277,278,279,280,1047)");
+		statWRITE.executeUpdate("UPDATE dgmTypeAttributes SET valueFloat=NULL WHERE typeID=29637 AND attributeID IN (180,181,182,183,184,277,278,279,280,1047)");
+		statWRITE.executeUpdate("DELETE FROM eveGraphics WHERE icon='' ");
 		
-		statSQLite.executeUpdate("UPDATE invTypes SET metaGroupID=0 WHERE metaGroupID IS NULL");
-		statSQLite.executeUpdate("UPDATE invTypes SET metaGroupID=7 WHERE metaGroupID=14");
-		statSQLite.executeUpdate("UPDATE invTypes SET icon=typeID WHERE groupID IN (SELECT groupID FROM invGroups WHERE categoryID=9) AND icon LIKE 'icon%'");
-		statSQLite.executeUpdate("UPDATE invTypes SET icon=typeID WHERE typeID IN (29984,29986,29988,29990)");
-		statSQLite.executeUpdate("UPDATE invGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
-		statSQLite.executeUpdate("UPDATE invCategories SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
-		statSQLite.executeUpdate("UPDATE invMarketGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
-		statSQLite.executeUpdate("UPDATE dgmAttributeTypes SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
-		statSQLite.executeUpdate("INSERT INTO eveUnits(unitID,unitName, displayName, description) VALUES (0, 'noUnit', '', 'no unit')");
-		statSQLite.executeUpdate("UPDATE dgmAttributeTypes SET unitID=0 WHERE unitID IS NULL ");
+		statWRITE.executeUpdate("UPDATE invTypes SET metaGroupID=0 WHERE metaGroupID IS NULL");
+		statWRITE.executeUpdate("UPDATE invTypes SET metaGroupID=7 WHERE metaGroupID=14");
+		statWRITE.executeUpdate("UPDATE invTypes SET icon=typeID WHERE groupID IN (SELECT groupID FROM invGroups WHERE categoryID=9) AND icon LIKE 'icon%'");
+		statWRITE.executeUpdate("UPDATE invTypes SET icon=typeID WHERE typeID IN (29984,29986,29988,29990)");
+		statWRITE.executeUpdate("UPDATE invGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
+		statWRITE.executeUpdate("UPDATE invCategories SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
+		statWRITE.executeUpdate("UPDATE invMarketGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
+		statWRITE.executeUpdate("UPDATE dgmAttributeTypes SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
+		statWRITE.executeUpdate("INSERT INTO eveUnits(unitID,unitName, displayName, description) VALUES (0, 'noUnit', '', 'no unit')");
+		statWRITE.executeUpdate("UPDATE dgmAttributeTypes SET unitID=0 WHERE unitID IS NULL ");
 		
-		statSQLite.executeUpdate("DELETE FROM invTypes WHERE groupID NOT IN (SELECT groupID FROM invGroups)");
-		statSQLite.executeUpdate("DELETE FROM invTypes WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invMarketGroups)");
-		statSQLite.executeUpdate("DELETE FROM invTypes WHERE marketGroupID IS NULL");
+		statWRITE.executeUpdate("DELETE FROM invTypes WHERE groupID NOT IN (SELECT groupID FROM invGroups)");
+//		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invMarketGroups)");
+//		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID IS NULL");
 		
-		statSQLite.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invTypes) AND hasTypes=1");
-		statSQLite.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT parentGroupID FROM invMarketGroups)");
+		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invTypes) AND hasTypes=1");
+		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT parentGroupID FROM invMarketGroups)");
 		
-		statSQLite.executeUpdate("DELETE FROM invGroups WHERE groupID NOT IN (SELECT groupID FROM invTypes)");
-		statSQLite.executeUpdate("DELETE FROM invGroups WHERE categoryID NOT IN (SELECT categoryID FROM invCategories)");
-		statSQLite.executeUpdate("DELETE FROM invCategories WHERE categoryID NOT IN (SELECT categoryID FROM invGroups)");
+		statWRITE.executeUpdate("DELETE FROM invGroups WHERE groupID NOT IN (SELECT groupID FROM invTypes)");
+		statWRITE.executeUpdate("DELETE FROM invGroups WHERE categoryID NOT IN (SELECT categoryID FROM invCategories)");
+		statWRITE.executeUpdate("DELETE FROM invCategories WHERE categoryID NOT IN (SELECT categoryID FROM invGroups)");
 
-		statSQLite.executeUpdate("DELETE FROM invMetaTypes WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
-		statSQLite.executeUpdate("DELETE FROM invBlueprintTypes WHERE blueprintTypeID NOT IN (SELECT typeID FROM invTypes)");
-		statSQLite.executeUpdate("DELETE FROM invBlueprintTypes WHERE productTypeID NOT IN (SELECT typeID FROM invTypes)");
-		statSQLite.executeUpdate("DELETE FROM typeActivityMaterials WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
-		statSQLite.executeUpdate("DELETE FROM dgmTypeAttributes WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
-		statSQLite.executeUpdate("DELETE FROM dgmTypeEffects WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
-		statSQLite.executeUpdate("DELETE FROM eveGraphics " +
+		statWRITE.executeUpdate("DELETE FROM invMetaTypes WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
+		statWRITE.executeUpdate("DELETE FROM invBlueprintTypes WHERE blueprintTypeID NOT IN (SELECT typeID FROM invTypes)");
+		statWRITE.executeUpdate("DELETE FROM invBlueprintTypes WHERE productTypeID NOT IN (SELECT typeID FROM invTypes)");
+		statWRITE.executeUpdate("DELETE FROM typeActivityMaterials WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
+		statWRITE.executeUpdate("DELETE FROM dgmTypeAttributes WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
+		statWRITE.executeUpdate("DELETE FROM dgmTypeEffects WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
+		statWRITE.executeUpdate("DELETE FROM eveGraphics " +
 									"WHERE graphicID NOT IN " +
 									"(SELECT graphicID FROM invGroups WHERE graphicID NOT NULL " +
 									"UNION SELECT graphicID FROM invMarketGroups WHERE graphicID NOT NULL " +

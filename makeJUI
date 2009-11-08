@@ -9,9 +9,9 @@
 ################################################
 echo ""
 echo "Check for .jui in ./src/main :"
-juic -d Generated\ JUIC\ files -cp ./src/main
+juic -d generated -cp ./src/main
 
 echo ""
 echo "Check for .jui in ./src/test :"
-juic -d Generated\ JUIC\ files -cp ./src/test
+juic -d generated -cp ./src/test
 echo ""

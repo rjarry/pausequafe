@@ -23,7 +23,7 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	/////////////
 	private static MonitoredCharactersAndSkillPlansModel instance;
 	private List<MonitoredCharacter> characterList = new ArrayList<MonitoredCharacter>();
-	public Signal1<List<MonitoredCharacter>> listUpdated = new Signal1<List<MonitoredCharacter>>();
+	public Signal0 listUpdated = new Signal0();
 
 	// ///////////////
 	// constructors //
@@ -57,7 +57,7 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	PQUserDatabaseFileCorrupted {
 		characterList.add(character);
 		MonitoredCharacterDAO.getInstance().addMonitoredCharacter(character.getApi());
-		listUpdated.emit(characterList);
+		listUpdated.emit();
 	}
 
 	public void removeCharacter(int currentIndex) throws PQSQLDriverNotFoundException,
@@ -65,9 +65,11 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		int characterID = characterList.get(currentIndex).getApi().getCharacterID();
 		MonitoredCharacterDAO.getInstance().deleteMonitoredCharacter(characterID);
 		characterList.remove(currentIndex);
-		listUpdated.emit(characterList);
+		listUpdated.emit();
 	}
 
+	
+	
 	public MonitoredCharacter getCharacterAt(int index) {
 		return characterList.get(index);
 	}
@@ -75,6 +77,11 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	public int characterCount(){
 		return characterList.size();
 	}
+	
+	public List<MonitoredCharacter> getList() {
+		return characterList;
+	}
+
 
 	///////////////////////////////////
 	// overridden QTreeModel methods //
@@ -245,5 +252,6 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		}
 		return result;
 	}
+
 
 }

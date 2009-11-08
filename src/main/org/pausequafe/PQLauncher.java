@@ -36,7 +36,6 @@ public class PQLauncher {
 		QApplication.setApplicationVersion(Constants.PQ_VERSION);
 
 		QPixmap pix = new QPixmap(Constants.SPLASH_SCREEN);
-
 		QFile file = new QFile("resources/ui/quafeStyleSheet.qss");
 		file.open(OpenModeFlag.ReadOnly);
 		String styleSheet = file.readAll().toString();
