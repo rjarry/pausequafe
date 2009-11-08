@@ -10,7 +10,7 @@ import java.util.TimeZone;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.ServerStatus;
-import org.pausequafe.gui.model.characters.MonitoredCharactersModel;
+import org.pausequafe.gui.model.characters.MonitoredCharactersAndSkillPlansModel;
 import org.pausequafe.gui.view.browsers.BrowsersWindow;
 import org.pausequafe.gui.view.character.CharacterTab;
 import org.pausequafe.gui.view.misc.AboutPQ;
@@ -37,6 +37,7 @@ import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMovie;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QTabWidget;
+import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.gui.QSystemTrayIcon.ActivationReason;
 
@@ -77,14 +78,29 @@ public class MainWindow extends QMainWindow {
 		updateTime();
 		requestServerStatus();
 		try {
-			for (MonitoredCharacter character : MonitoredCharactersModel.getInstance().getList()) {
-				addTab(character);
+			MonitoredCharactersAndSkillPlansModel characters = MonitoredCharactersAndSkillPlansModel.getInstance();
+			for(int i=0;i<characters.characterCount();i++){
+				addTab(characters.getCharacterAt(i));
 			}
 		} catch (PQSQLDriverNotFoundException e) {
 			popSQLDriverError();
 		} catch (PQUserDatabaseFileCorrupted e) {
 			popUserDBCorrupt();
 		}
+		
+		//FIXME remove this after test
+		MonitoredCharactersAndSkillPlansModel characters=null;
+		try {
+			characters = MonitoredCharactersAndSkillPlansModel.getInstance();
+		} catch (PQSQLDriverNotFoundException e) {
+			e.printStackTrace();
+		} catch (PQUserDatabaseFileCorrupted e) {
+			e.printStackTrace();
+		}
+		
+		QTreeView view = new QTreeView();
+		view.setModel(characters);
+		view.show();
 	}
 
 	private void setupUi() {
@@ -248,7 +264,7 @@ public class MainWindow extends QMainWindow {
 			APIData data = addCharDialog.getChosenCharacter();
 			try {
 				MonitoredCharacter character = new MonitoredCharacter(data);
-				MonitoredCharactersModel.getInstance().addCharacter(character);
+				MonitoredCharactersAndSkillPlansModel.getInstance().addCharacter(character);
 				addTab(character);
 			} catch (PQSQLDriverNotFoundException e) {
 				popSQLDriverError();
@@ -283,7 +299,7 @@ public class MainWindow extends QMainWindow {
 		delCharDialog.exec();
 
 		if (delCharDialog.result() == QDialog.DialogCode.Accepted.value()) {
-			MonitoredCharactersModel.getInstance().removeCharacter(tabWidget.currentIndex());
+			MonitoredCharactersAndSkillPlansModel.getInstance().removeCharacter(tabWidget.currentIndex());
 			tabWidget.removeTab(tabWidget.currentIndex());
 		}
 	}

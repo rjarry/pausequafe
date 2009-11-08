@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pausequafe.data.business.APIData;
+import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.SQLConstants;
 
-public class MonitoredCharacterDAO extends AbstractSqlDAO {
+public class MonitoredCharacterDAO extends UserDatabaseDAO {
 
 	// //////////////////
 	// private fields //
@@ -38,16 +39,10 @@ public class MonitoredCharacterDAO extends AbstractSqlDAO {
 	// //////////////////
 	// public methods //
 	// //////////////////
-
-	public List<APIData> getMonitoredCharacters() throws PQSQLDriverNotFoundException,
-			PQUserDatabaseFileCorrupted {
+	public List<APIData> findMonitoredCharacters() throws PQSQLDriverNotFoundException,PQUserDatabaseFileCorrupted {
+		
 		List<APIData> monitoredCharacters = new ArrayList<APIData>();
-
-		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
-		if (!userdataBaseFile.exists()) {
-			createUserDataBase();
-		}
-
+		createUserDataBaseIfNotExists();
 		initConnection(SQLConstants.USER_DATABASE);
 
 		try {
@@ -69,32 +64,12 @@ public class MonitoredCharacterDAO extends AbstractSqlDAO {
 		return monitoredCharacters;
 	}
 
-	public boolean isMonitored(APIData data) throws PQSQLDriverNotFoundException,
-			PQUserDatabaseFileCorrupted {
-		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
-		if (userdataBaseFile.exists()) {
-			List<APIData> list = getMonitoredCharacters();
-
-			for (APIData mon : list) {
-				if (mon.getCharacterID() == data.getCharacterID()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public List<APIData> getDistinctApiData() throws PQSQLDriverNotFoundException,
-			PQUserDatabaseFileCorrupted {
-		List<APIData> apiData = new ArrayList<APIData>();
-
-		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
-		if (!userdataBaseFile.exists()) {
-			createUserDataBase();
-		}
-
+	public List<APIData> findDistinctApiData() throws PQSQLDriverNotFoundException,PQUserDatabaseFileCorrupted {
+		
+		createUserDataBaseIfNotExists();
 		initConnection(SQLConstants.USER_DATABASE);
 
+		List<APIData> apiData = new ArrayList<APIData>();
 		try {
 			ResultSet rs = stat.executeQuery(SQLConstants.QUERY_DISTINCT_API);
 			while (rs.next()) {
@@ -111,13 +86,25 @@ public class MonitoredCharacterDAO extends AbstractSqlDAO {
 
 		return apiData;
 	}
-
-	public void addMonitoredCharacter(APIData data) throws PQSQLDriverNotFoundException,
+	public boolean isMonitored(APIData data) throws PQSQLDriverNotFoundException,
 			PQUserDatabaseFileCorrupted {
 		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
-		if (!userdataBaseFile.exists()) {
-			createUserDataBase();
+		if (userdataBaseFile.exists()) {
+			List<APIData> list = findMonitoredCharacters();
+
+			for (APIData mon : list) {
+				if (mon.getCharacterID() == data.getCharacterID()) {
+					return true;
+				}
+			}
 		}
+		return false;
+	}
+
+
+	public void addMonitoredCharacter(APIData data) throws PQSQLDriverNotFoundException,PQUserDatabaseFileCorrupted {
+		
+		createUserDataBaseIfNotExists();
 		initConnection(SQLConstants.USER_DATABASE);
 		try {
 			// TODO : gestion perso qui change de compte
@@ -149,28 +136,11 @@ public class MonitoredCharacterDAO extends AbstractSqlDAO {
 		}
 	}
 
-	public void changeApiKey(APIData data) throws PQSQLDriverNotFoundException,
-			PQUserDatabaseFileCorrupted {
-		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
-		if (!userdataBaseFile.exists()) {
-			createUserDataBase();
-		}
-		try {
-			initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.UPDATE_API_KEY_FROM_USERID);
-			prep.setString(1, data.getApiKey());
-			prep.setInt(2, data.getUserID());
-			prep.executeUpdate();
-		} catch (SQLException e) {
-			closeConnection();
-			throw new PQUserDatabaseFileCorrupted();
-		} finally {
-			closeConnection();
-		}
-
+	public void updateMonitoredCharacter(MonitoredCharacter c) {
+		// FIXME Implémenter cette méthode manquante
 	}
-
-	public void removeMonitoredCharacter(int characterID) throws PQSQLDriverNotFoundException,
-			PQUserDatabaseFileCorrupted {
+	
+	public void deleteMonitoredCharacter(int characterID) throws PQSQLDriverNotFoundException,PQUserDatabaseFileCorrupted {
 		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
 		if (userdataBaseFile.exists()) {
 			initConnection(SQLConstants.USER_DATABASE);
@@ -190,19 +160,25 @@ public class MonitoredCharacterDAO extends AbstractSqlDAO {
 			closeConnection();
 		}
 	}
-
-	// ///////////////////
-	// private methods //
-	// ///////////////////
-
-	private void createUserDataBase() throws PQSQLDriverNotFoundException,
-			PQUserDatabaseFileCorrupted {
-		initConnection(SQLConstants.USER_DATABASE);
+	
+	public void changeApiKey(APIData data) throws PQSQLDriverNotFoundException,
+	PQUserDatabaseFileCorrupted {
+		
+		createUserDataBaseIfNotExists();
 		try {
-			stat.executeUpdate(SQLConstants.CREATE_USER_DATABASE);
+			initPrepareStatement(SQLConstants.USER_DATABASE, SQLConstants.UPDATE_API_KEY_FROM_USERID);
+			prep.setString(1, data.getApiKey());
+			prep.setInt(2, data.getUserID());
+			prep.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			closeConnection();
+			throw new PQUserDatabaseFileCorrupted();
+		} finally {
+			closeConnection();
 		}
-		closeConnection();
+		
 	}
+
+
+	
 }

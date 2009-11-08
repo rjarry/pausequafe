@@ -202,16 +202,7 @@ public class ItemDAO extends AbstractSqlDAO {
 		}
 		initConnection(SQLConstants.EVE_DATABASE);
 
-		String inClause = "";
-		boolean first = true;
-		for (Integer typeID : toBeQueried) {
-			if (first) {
-				first = false;
-			} else {
-				inClause += ",";
-			}
-			inClause += typeID;
-		}
+		String inClause = buildInClause(toBeQueried);
 		String query = SQLConstants.QUERY_TYPES_BY_ID;
 		query = query.replace("?", inClause);
 		// System.out.println(query); // for convenience : uncomment to see DB

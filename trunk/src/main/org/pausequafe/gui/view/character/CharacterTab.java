@@ -31,9 +31,8 @@ public class CharacterTab extends QWidget {
 	// constructors //
 	// ////////////////
 	public CharacterTab(MonitoredCharacter character) {
-		setupUi();
-
 		monChar = character;
+		setupUi();
 
 		request = new ApiRequest(character.getApi());
 
@@ -54,7 +53,7 @@ public class CharacterTab extends QWidget {
 
 		infoWidget = new CharacterInfo(this);
 		skillsWidget = new CharacterSkills(this, null, null, null);
-		plansWidget = new SkillPlanListView(this);
+		plansWidget = new SkillPlanListView(this,monChar);
 
 		ui.verticalLayout.insertWidget(0, infoWidget);
 

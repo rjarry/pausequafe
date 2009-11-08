@@ -203,13 +203,24 @@ public class SQLConstants {
 
 	// Columns name
 	public static final String CHARACTERS_TABLE = "monitoredCharacters";
+	public static final String SKILLPLANS_TABLE = "monitoredCharacters";
 	public static final String CHARACTERID_COL = "characterID";
 	public static final String CHARACTERNAME_COL = "characterName";
 	public static final String USERID_COL = "userID";
 	public static final String APIKEY_COL = "apiKey";
 	public static final String ISMONITORED_COL = "isMonitored";
+	public static final String SKILLPLANID_COL = "skillPlanID";
+	public static final String SKILLPLANINDEX_COL = "skillPlanIndex";
+	public static final String SKILLPLANNAME_COL = "skillPlanName";
 
 	// Queries
+	public static final String CREATE_CHARACTER_TABLE = "CREATE TABLE monitoredCharacters " + "("
+	+ CHARACTERID_COL + " int NOT NULL UNIQUE," 
+	+ CHARACTERNAME_COL + " nvarchar(256),"
+	+ USERID_COL + " int," 
+	+ APIKEY_COL + " nvarchar(256)," 
+	+ ISMONITORED_COL + " bit,"
+	+ "CONSTRAINT characterID_PK PRIMARY KEY (" + CHARACTERID_COL + ")" + ")";
 	public static final String QUERY_MONITORED_CHARACTERS = "SELECT * FROM " + CHARACTERS_TABLE
 			+ " WHERE " + ISMONITORED_COL + "=1";
 	public static final String QUERY_DISTINCT_API = "SELECT DISTINCT " + USERID_COL + ", "
@@ -221,13 +232,25 @@ public class SQLConstants {
 			+ ISMONITORED_COL + "=0 WHERE " + CHARACTERID_COL + " IN (?)";
 	public static final String UPDATE_MONITORED_CHARACTER = "UPDATE " + CHARACTERS_TABLE + " SET "
 			+ ISMONITORED_COL + "=1 WHERE " + CHARACTERID_COL + " IN (?)";
-	public static final String CREATE_USER_DATABASE = "CREATE TABLE monitoredCharacters " + "("
-			+ CHARACTERID_COL + " int NOT NULL UNIQUE," + CHARACTERNAME_COL + " nvarchar(256),"
-			+ USERID_COL + " int," + APIKEY_COL + " nvarchar(256)," + ISMONITORED_COL + " bit,"
-			+ "CONSTRAINT characterID_PK PRIMARY KEY (" + CHARACTERID_COL + ")" + ")";
 	public static final String UPDATE_API_KEY_FROM_USERID = "UPDATE " + CHARACTERS_TABLE + " SET "
 			+ APIKEY_COL + "=? WHERE " + USERID_COL + " in (?)";
 	public static final String UPDATE_API_KEY_FROM_CHARID = "UPDATE " + CHARACTERS_TABLE + " SET "
 			+ APIKEY_COL + "=? WHERE " + CHARACTERID_COL + " in (?)";
 
+	public static final String CREATE_SKILLPLANTABLE = "CREATE TABLE skillPlans " + "("
+	+ CHARACTERID_COL + " int NOT NULL,"		
+	+ SKILLPLANID_COL + " int NOT NULL UNIQUE," 
+	+ SKILLPLANINDEX_COL + " int NOT NULL,"  
+	+ SKILLPLANNAME_COL + " nvarchar(256)," 
+	+ "CONSTRAINT skillPlanID_PK PRIMARY KEY (" + SKILLPLANID_COL + ")" + ")";
+	public static final String QUERY_SKILLPLANS = "SELECT * FROM" + SKILLPLANS_TABLE 
+			+ " WHERE " + CHARACTERID_COL + " IN (?)" 
+			+ " ORDER BY " + SKILLPLANINDEX_COL;
+	public static final String INSERT_SKILL_PLAN = "INSERT INTO " + SKILLPLANS_TABLE + "("
+	+ CHARACTERID_COL + "," + SKILLPLANID_COL + "," + SKILLPLANINDEX_COL + "," + SKILLPLANNAME_COL + ") VALUES (?,?,?,?)";
+	public static final String QUERY_SKILLPLAN_MAXID = "SELECT MAX(skillPlanID) FROM SKILLPLANS";
+	public static final String DELETE_SKILLPLANS = "DELETE FROM SKILLPLANS where skillPlanID in (?)";
+	public static final String UPDATE_SKILLPLAN = "UPDATE " + SKILLPLANS_TABLE + " SET "
+			+ CHARACTERID_COL + "=?," + SKILLPLANINDEX_COL + "=?," + SKILLPLANNAME_COL + "=?"
+			+ "WHERE " + SKILLPLANID_COL + "=?";
 }
