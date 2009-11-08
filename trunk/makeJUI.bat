@@ -6,16 +6,16 @@ rem                                              #
 rem The binary juic must be in your PATH or in   #
 rem this directory                               #
 rem                                              #
-rem Don't forget to add the Generated_JUIC_files #
+rem Don't forget to add the generated            #
 rem directory to your source folders in Eclipse  #
 rem ##############################################
 
 echo Checking for .jui files in .\src\main
-call juic.exe -d "Generated JUIC files" -cp .\src\main
+call juic.exe -d "generated" -cp .\src\main
 
 echo.
 echo Checking for .jui files in .\src\test
-call juic.exe -d "Generated JUIC files" -cp .\src\test
+call juic.exe -d "generated" -cp .\src\test
 echo.
 
 pause

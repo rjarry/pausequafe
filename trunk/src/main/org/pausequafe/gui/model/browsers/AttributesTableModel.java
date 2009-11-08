@@ -107,7 +107,7 @@ public class AttributesTableModel extends QAbstractTableModel {
 			case 168 : return "Willpower";
 			}
 		case SQLConstants.GROUPID_UNITID :
-			try {// FIXME : gettype name
+			try {
 				return MarketGroupDAO.getInstance().getGroupName((int) value);
 			} catch (Exception e) {
 				e.printStackTrace();

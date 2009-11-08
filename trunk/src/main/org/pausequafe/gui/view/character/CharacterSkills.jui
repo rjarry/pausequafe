@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>435</width>
+    <width>432</width>
     <height>717</height>
    </rect>
   </property>
@@ -102,26 +102,26 @@
           <rect>
            <x>127</x>
            <y>26</y>
-           <width>255</width>
+           <width>450</width>
            <height>13</height>
           </rect>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>255</width>
-           <height>13</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>255</width>
-           <height>13</height>
+           <width>16777215</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="frameShape">
@@ -132,6 +132,9 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLabel" name="skills">
@@ -176,26 +179,26 @@
           <rect>
            <x>127</x>
            <y>13</y>
-           <width>255</width>
+           <width>450</width>
            <height>13</height>
           </rect>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>255</width>
-           <height>13</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>255</width>
-           <height>13</height>
+           <width>16777215</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="frameShape">
@@ -206,6 +209,9 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLabel" name="levelVSkills">
@@ -250,26 +256,26 @@
           <rect>
            <x>127</x>
            <y>0</y>
-           <width>255</width>
+           <width>450</width>
            <height>16</height>
           </rect>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>255</width>
-           <height>16</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>255</width>
-           <height>16</height>
+           <width>16777215</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="frameShape">
@@ -280,6 +286,9 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLabel" name="skillPoints">

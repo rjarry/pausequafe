@@ -71,7 +71,7 @@ public class ItemPrerequisiteElement extends GroupElement {
 	}
 
 	public String getName() {
-		return item.getTypeName() + Formater.printLevel(requiredLevel);
+		return item.getTypeName() + " " + Formater.printLevel(requiredLevel);
 	}
 
 	@Override

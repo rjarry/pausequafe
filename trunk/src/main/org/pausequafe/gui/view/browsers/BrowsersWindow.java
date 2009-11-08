@@ -1,7 +1,6 @@
 package org.pausequafe.gui.view.browsers;
 
 import java.io.File;
-import java.util.List;
 
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.MonitoredCharacter;
@@ -43,9 +42,9 @@ public class BrowsersWindow extends QWidget {
 	public BrowsersWindow(QWidget parent) {
 		super(parent);
 		setupUi();
+		updateSheetList();
 		try {
-			MonitoredCharactersAndSkillPlansModel.getInstance().listUpdated.connect(this,
-					"setSheetList(List<MonitoredCharacter>)");
+			MonitoredCharactersAndSkillPlansModel.getInstance().listUpdated.connect(this, "updateSheetList()");
 		} catch (PQSQLDriverNotFoundException e) {
 			popSQLDriverError();
 		} catch (PQUserDatabaseFileCorrupted e) {
@@ -71,9 +70,9 @@ public class BrowsersWindow extends QWidget {
 		sheetCombo.addItem("no character");
 		sheetCombo.currentIndexChanged.connect(this, "changeCurrentCharacter(int)");
 
-		skillBrowser = new BrowserSkillTab(this, 150);
-		shipBrowser = new BrowserShipTab(this, 4);
-		moduleBrowser = new BrowserItemTab(this, 9);
+		skillBrowser = new BrowserSkillTab(this, Constants.SKILLS_MARKETGROUPID);
+		shipBrowser = new BrowserShipTab(this, Constants.SHIPS_MARKETGROUPID);
+		moduleBrowser = new BrowserItemTab(this, Constants.MODULES_MARKETGROUPID);
 
 		ui.tabWidget.removeTab(0);
 
@@ -95,11 +94,17 @@ public class BrowsersWindow extends QWidget {
 		moduleBrowser.setSheet((CharacterSheet) sheetCombo.itemData(index));
 	}
 
-	@SuppressWarnings("unused")
-	private void setSheetList(List<MonitoredCharacter> list) {
+	private void updateSheetList() {
 		sheetCombo.clear();
-		for (MonitoredCharacter character : list) {
-			sheetCombo.addItem(character.getSheet().getName(), character.getSheet());
+		sheetCombo.addItem("no character");
+		try {
+			for (MonitoredCharacter character : MonitoredCharactersAndSkillPlansModel.getInstance().getList()) {
+				sheetCombo.addItem(character.getSheet().getName(), character.getSheet());
+			}
+		} catch (PQSQLDriverNotFoundException e) {
+			popSQLDriverError();
+		} catch (PQUserDatabaseFileCorrupted e) {
+			popUserDBCorrupt();
 		}
 	}
 

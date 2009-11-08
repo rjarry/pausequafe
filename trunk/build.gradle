@@ -27,7 +27,13 @@ defaultTasks 'clean', 'distrib'
 
 usePlugin 'java'
 usePlugin 'eclipse'
-version='1.0'
+import java.util.Date
+import java.text.SimpleDateFormat
+
+format=new SimpleDateFormat('yyyyMMddHHmm')
+timestamp=format.format(new Date())
+os='win32'
+version=os+'-0.0.1beta-'+timestamp
 archivesBaseName='pauseQuafe'
 
 manifest.mainAttributes("Main-Class": "org.pausequafe.PQLauncher")
@@ -35,67 +41,67 @@ manifest.mainAttributes("Main-Class": "org.pausequafe.PQLauncher")
 def juicGeneratedDir="$buildDir/generated"
 def normalizedBuildDir=buildDir.path.replace('\\','/')
 def executableDir="$normalizedBuildDir/executables"
-def executablePauseQuafePath="$executableDir/$archivesBaseName-$version"+".exe"
+def executablePauseQuafePath="$executableDir/PQ.exe"
 
 task init << {
- file(executableDir).mkdirs()
+	file(executableDir).mkdirs()
 }
 
-task juic <<{
- def juicExecutableLocation="juic.exe"
- def path= System.getenv("PATH") 
- ant.exec(executable: "juic.exe"){
-  env(key:"PATH", path:path)
-  arg(value:"-d")
-  arg(value:juicGeneratedDir)
-  arg(value:"-cp")
-  arg(value:"src/main")
- } 
+task juic << {
+	def juicExecutableLocation="juic.exe"
+	def path= System.getenv("PATH") 
+	ant.exec(executable: "juic.exe"){
+		env(key:"PATH", path:path)
+		arg(value:"-d")
+		arg(value:juicGeneratedDir)
+		arg(value:"-cp")
+		arg(value:"src/main")
+	} 
 }
 
 
 sourceSets { 
- main {
-   java {
-    srcDir 'src/main'
-   }
- }  
- main {
-   java {
-    srcDir juicGeneratedDir
-  }
- }  
+	main {
+		java {
+			srcDir 'src/main'
+		}
+	}  
+	main {
+		java {
+			srcDir juicGeneratedDir
+		}
+	}  
 }
 
-repositories{
- flatDir(dirs:'lib')
+repositories {
+	flatDir(dirs:'lib')
 }
 
-dependencies{
- compile ":jdom:1.0",
-         ":JEveCore_Modified:2.0",
-	 ":qtjambi:4.5.2_01",
-	 ":qtjambi-win32-msvc2005:4.5.2_01",
-	 ":sqlitejdbc:v054"
+dependencies {
+	compile ":jdom:1.0",
+		":JEveCore_Modified:2.0",
+		":qtjambi:4.5.2_01",
+		":qtjambi-win32-msvc2005:4.5.2_01",
+		":sqlitejdbc:v054"
 }
 
 
 // TODO Make an executable Gradle task
-task wrapExecutable <<{
-  //TODO Export on a environment variable
-  def launch4jDir="C:\\tools\\Launch4j"
+task wrapExecutable << {
+	//TODO Export on a environment variable
+	def launch4jDir="D:\\dev\\lib\\Launch4j"
 
-  ant{
-   taskdef(name : 'launch4j',
-    classname:"net.sf.launch4j.ant.Launch4jTask",
-    classpath:"${launch4jDir}/launch4j.jar;${launch4jDir}/lib/xstream.jar")
+	ant {
+		taskdef(name : 'launch4j',
+		classname:"net.sf.launch4j.ant.Launch4jTask",
+		classpath:"${launch4jDir}/launch4j.jar;${launch4jDir}/lib/xstream.jar")
 
-   launch4j(
-    configFile: 'launch4jCommandLine.xml',
-    outfile: executablePauseQuafePath,
-    jar: jar.archivePath
-   )
-  }
+		launch4j(
+			configFile: 'launch4jCommandLine.xml',
+			outfile: executablePauseQuafePath,
+			jar: jar.archivePath
+		)
+	}
 }
 
 wrapExecutable.dependsOn jar
@@ -103,18 +109,20 @@ juic.dependsOn init
 compileJava.dependsOn juic
 
 
-task distrib(type:Zip){
- dependsOn(wrapExecutable)
- fileSet(dir:'.'){
-  include('resources/**/*.*')
-  include('settings/**/*.*')
-  include('cache/**/*.*')
-  include('lib/**/*.*')
- } 
- fileSet(dir: executableDir)
+task distrib(type:Zip) {
+	dependsOn(wrapExecutable)
+	fileSet(dir:'.') {
+		include('resources/**/*.*')
+		include('settings/*.configuration')
+		include('lib/**/*.*')
+		exclude('lib/**/qtjambi-linux32*.jar')
+		exclude('lib/**/qtjambi-macosx*.jar')
+		exclude('**/*.svn')
+	} 
+	fileSet(dir: executableDir)
 }
 
 
 task wrapper(type: Wrapper) {
- gradleVersion = '0.8'
+	gradleVersion = '0.8'
 }

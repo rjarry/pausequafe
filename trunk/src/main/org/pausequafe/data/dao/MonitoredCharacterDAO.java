@@ -129,8 +129,7 @@ public class MonitoredCharacterDAO extends UserDatabaseDAO {
 			prep.setInt(2, data.getUserID());
 			prep.executeUpdate();
 		} catch (SQLException e) {
-			closeConnection();
-			throw new PQUserDatabaseFileCorrupted();
+			throw new PQUserDatabaseFileCorrupted(e);
 		} finally {
 			closeConnection();
 		}
