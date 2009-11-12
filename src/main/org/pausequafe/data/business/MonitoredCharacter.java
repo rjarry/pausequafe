@@ -40,8 +40,8 @@ public class MonitoredCharacter {
 		return skillPlanList.size();
 	}
 	
-	public void addSkillPlan(SkillPlan plan){
-		skillPlanList.add(plan);
+	public void addSkillPlan(int index,SkillPlan plan){
+		skillPlanList.add(index,plan);
 	}
 	
 	public void deletePlan(int index){
@@ -79,6 +79,9 @@ public class MonitoredCharacter {
 	public void setSheet(CharacterSheet sheet) {
 		this.sheet = sheet;
 	}
+	public void setSkillPlanAt(int index, SkillPlan newPlan) {
+		skillPlanList.set(index, newPlan);
+	}
 	public void setInTraining(SkillInTraining inTraining) {
 		this.inTraining = inTraining;
 	}
@@ -88,5 +91,8 @@ public class MonitoredCharacter {
 	public void setImageLocation(String imageLocation) {
 		this.imageLocation = imageLocation;
 	}
+
+
+
 
 }

@@ -37,8 +37,9 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	private void init() throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		List<APIData> list = MonitoredCharacterDAO.getInstance().findMonitoredCharacters();
 		for (APIData data : list) {
-			MonitoredCharacter character = new MonitoredCharacter(data);
-			characterList.add(character);
+			MonitoredCharacter c = new MonitoredCharacter(data);
+			initCharacter(c);
+			characterList.add(c);
 		}
 	}
 
@@ -55,7 +56,10 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	// /////////////////
 	public void addCharacter(MonitoredCharacter character) throws PQSQLDriverNotFoundException,
 	PQUserDatabaseFileCorrupted {
+		int row = characterList.size();
+		initCharacter(character);
 		characterList.add(character);
+		childrenInserted(null, row, row);
 		MonitoredCharacterDAO.getInstance().addMonitoredCharacter(character.getApi());
 		listUpdated.emit();
 	}
@@ -63,8 +67,9 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	public void removeCharacter(int currentIndex) throws PQSQLDriverNotFoundException,
 	PQUserDatabaseFileCorrupted {
 		int characterID = characterList.get(currentIndex).getApi().getCharacterID();
-		MonitoredCharacterDAO.getInstance().deleteMonitoredCharacter(characterID);
 		characterList.remove(currentIndex);
+		childrenRemoved(null, currentIndex, currentIndex);
+		MonitoredCharacterDAO.getInstance().deleteMonitoredCharacter(characterID);
 		listUpdated.emit();
 	}
 
@@ -139,34 +144,36 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	public boolean setData(QModelIndex index, Object value, int role) {
 		boolean result = true;
 
-		if(role==ItemDataRole.DisplayRole){
+		switch(role){
+		case ItemDataRole.DisplayRole :
 			Object target=indexToValue(index);
 			if(target instanceof MonitoredCharacter && value instanceof MonitoredCharacter){
 				MonitoredCharacter c = (MonitoredCharacter) value; 
 				MonitoredCharacterDAO.getInstance().updateMonitoredCharacter(c);
 				result = true;
 			} else if (target instanceof SkillPlan && value instanceof SkillPlan){
-				SkillPlan sp = (SkillPlan) value;
+				SkillPlan sourcePlan = (SkillPlan) value;
 				SkillPlan targetPlan = (SkillPlan) target;
-				if(sp.getId()==SkillPlan.NOID){
+				if(sourcePlan.getId()==SkillPlan.NOID){
 					// SkillPlan passed as parameter has no id hence it's 
 					// a new SP and we must create it in the database
-					result = createSkillPlan(sp, targetPlan);
+					result = createSkillPlan(sourcePlan, targetPlan);
 					if(result==false){
 						removeRow(index.row(),index.parent());
 					}
 				} else {
 					// SkillPlan passed as parameter has already an id 
 					// hence it already exist
-					result = moveSkillPlan(sp, targetPlan);
+					result = moveSkillPlan(sourcePlan, targetPlan);
 				}
+				dataChanged.emit(index, index);
 			} else {
 				// should not happen
 				result = false;
 			}
-		} else {
-			// if role!=DisplayRole , we do nothing
-			result = false;
+			break;
+		default:
+			break;
 		}
 
 		return result;
@@ -179,9 +186,9 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		Object parentObject = (MonitoredCharacter) indexToValue(parent);
 		if(parentObject instanceof MonitoredCharacter){
 			MonitoredCharacter parentCharacter = (MonitoredCharacter) parentObject;
-			parentCharacter.addSkillPlan(
+			parentCharacter.addSkillPlan(row,
 					new SkillPlan(
-							parentCharacter.getApi().getUserID(), 
+							parentCharacter.getApi().getCharacterID(), 
 							SkillPlan.NOID, 
 							row,
 							""
@@ -197,15 +204,44 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	@Override
 	public boolean removeRows(int row, int count, QModelIndex parent) {
 		boolean result = false;
-
+		if(count!=1){
+			return false;
+		}
+		SkillPlanDAO spDAO = SkillPlanDAO.getInstance();
+		
 		Object parentObject = (MonitoredCharacter) indexToValue(parent);
 		if(parentObject instanceof MonitoredCharacter){
 			MonitoredCharacter parentCharacter = (MonitoredCharacter) parentObject;
+			SkillPlan skillPlanAt = parentCharacter.getSkillPlanAt(row);
+			if(skillPlanAt.getId()==SkillPlan.NOID){
+				// this is the end of a move action (because id has been set to "no id")
+				// hence no deletion has to be done in database
+				try {
+					spDAO.updateOrderIndices(parentCharacter);
+				} catch (PQException e) {
+					e.printStackTrace();
+					return false;
+				}
+			} else {
+				// this a real deletion of a SkillPlan
+				// hence we have to delete the SP from DB
+				SkillPlan sp = parentCharacter.getSkillPlanAt(row);
+				try {
+					spDAO.deleteSkillPlan(sp.getId());
+				} catch (PQException e) {
+					e.printStackTrace();
+					return false;
+				} 
+			}
 			parentCharacter.deletePlan(row);
-			childrenRemoved(parent, row, row + count -1);
-			result =true;
-		} 
-
+			childrenRemoved(parent, row, row );
+			try {
+				spDAO.updateOrderIndices(parentCharacter);
+			} catch (PQException e) {
+				e.printStackTrace();
+			}
+			result = true;
+		}
 		return result;
 	}
 
@@ -214,22 +250,13 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	/////////////////////
 	private boolean createSkillPlan(SkillPlan toBeCreated, SkillPlan target) {
 		MonitoredCharacter character = findCharacter(target.getCharacterID());
-		SkillPlanDAO spDAO = null;
-		spDAO = SkillPlanDAO.getInstance();
+		SkillPlanDAO spDAO = SkillPlanDAO.getInstance();
 		try {
-			spDAO.beginTran();
 			SkillPlan newPlan = spDAO.createSkillPlan(toBeCreated);
-			target = newPlan;
+			character.setSkillPlanAt(target.getIndex(),newPlan);
 			spDAO.updateOrderIndices(character);
-			spDAO.commit();
 		} catch (PQException e) {
 			e.printStackTrace();
-			try {
-				spDAO.rollback();
-			} catch (PQUserDatabaseFileCorrupted e1) {
-				// that would be very unlucky to fall here
-				e1.printStackTrace();
-			}
 			return false;
 		} 
 		
@@ -237,10 +264,23 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	}
 	
 	private boolean moveSkillPlan(SkillPlan source, SkillPlan target) {
-		MonitoredCharacter targetCharacter = findCharacter(target.getCharacterID());
-		MonitoredCharacter sourceCharacter = findCharacter(source.getCharacterID());
-		SkillPlanDAO spDAO = null;
-		return false;
+		MonitoredCharacter character = findCharacter(source.getCharacterID());
+		SkillPlan originalSource = null;
+		for(int i=0;i<character.skillPlanCount();i++){
+			SkillPlan sp = character.getSkillPlanAt(i);
+			if(sp.getId()==source.getId()){
+				originalSource = sp;
+				break;
+			}
+		}
+		
+		target.setCharacterID(source.getCharacterID());
+		target.setId(source.getId());
+		target.setName(source.getName());
+		
+		originalSource.setId(-1);
+
+		return true;
 	}
 	
 	private MonitoredCharacter findCharacter(int id){
@@ -252,6 +292,13 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		}
 		return result;
 	}
-
+	
+	private void initCharacter(MonitoredCharacter c) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
+		List<SkillPlan> skillPlanList = 
+			SkillPlanDAO.getInstance().findSkillPlanByChararcterID(c.getApi().getCharacterID());
+		for(SkillPlan plan : skillPlanList){
+			c.addSkillPlan(plan.getIndex(), plan);
+		}
+	}
 
 }

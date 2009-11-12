@@ -98,7 +98,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>10</x>
       <y>186</y>
-      <width>111</width>
+      <width>141</width>
       <height>23</height>
      </rect>
     </property>
@@ -160,9 +160,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="characterLabel">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>160</x>
       <y>186</y>
-      <width>181</width>
+      <width>151</width>
       <height>21</height>
      </rect>
     </property>

@@ -40,6 +40,7 @@ public abstract class AbstractSqlDAO {
 				conn.commit();
 				conn.setAutoCommit(true);
 			} catch (SQLException e) {
+				e.printStackTrace();
 				throw new PQUserDatabaseFileCorrupted();
 			}
 			transactionMode = false;

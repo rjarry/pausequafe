@@ -136,7 +136,7 @@ public class MonitoredCharacterDAO extends UserDatabaseDAO {
 	}
 
 	public void updateMonitoredCharacter(MonitoredCharacter c) {
-		// FIXME Implémenter cette méthode manquante
+		// FIXME : Implémenter cette méthode manquante
 	}
 	
 	public void deleteMonitoredCharacter(int characterID) throws PQSQLDriverNotFoundException,PQUserDatabaseFileCorrupted {
@@ -152,11 +152,11 @@ public class MonitoredCharacterDAO extends UserDatabaseDAO {
 
 				prep.executeUpdate();
 			} catch (SQLException e) {
-				closeConnection();
 				throw new PQUserDatabaseFileCorrupted();
+			} finally {
+				closeConnection();
 			}
 
-			closeConnection();
 		}
 	}
 	

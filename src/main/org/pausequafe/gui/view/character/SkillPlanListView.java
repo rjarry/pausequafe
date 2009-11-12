@@ -1,15 +1,21 @@
 package org.pausequafe.gui.view.character;
 
+import java.util.List;
+
 import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.gui.model.characters.CharaterSkillPlansProxyModel;
 import org.pausequafe.misc.util.Constants;
 
+import com.trolltech.qt.core.QModelIndex;
+import com.trolltech.qt.gui.QAbstractItemView;
+import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QWidget;
+import com.trolltech.qt.gui.QAbstractItemView.DragDropMode;
 
 public class SkillPlanListView extends QWidget {
 
-    Ui_SkillPlanList ui = new Ui_SkillPlanList();
+    Ui_SkillPlanListView ui = new Ui_SkillPlanListView();
     MonitoredCharacter monChar;
     CharaterSkillPlansProxyModel skillPlansModel;
 
@@ -33,6 +39,11 @@ public class SkillPlanListView extends QWidget {
 		ui.addPlanButton.setIcon(iconAdd);
 		ui.removePlanButton.setIcon(iconDel);
 		ui.skillPlanList.setModel(skillPlansModel);
+		ui.skillPlanList.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection);
+		ui.skillPlanList.setDragEnabled(true);
+		ui.skillPlanList.setAcceptDrops(true);
+		ui.skillPlanList.setDropIndicatorShown(true);
+		ui.skillPlanList.setDragDropMode(DragDropMode.InternalMove);
 		
 		ui.addPlanButton.clicked.connect(this, "createSkillPlan()");
 		ui.removePlanButton.clicked.connect(this, "deleteSkillPlan()");
@@ -40,16 +51,19 @@ public class SkillPlanListView extends QWidget {
 	
 	@SuppressWarnings("unused")
 	private void createSkillPlan(){
-		// TODO use a dialog box to call the following method
-		// + add a parameters to method
-		String spName = "Toto";
-		skillPlansModel.createSkillPlan(spName);
+		AddSkillPlanDialog dialog = new AddSkillPlanDialog(monChar,this);
+		dialog.exec();
+		if(dialog.result() == QDialog.DialogCode.Accepted.value()){
+			String spName = dialog.getSkillPlanName();
+			skillPlansModel.createSkillPlan(spName);
+		}
 	}
 	
 	@SuppressWarnings("unused")
 	private void deleteSkillPlan(){
-		// TODO use a dialog box to call the following method
-		// + add a parameters to method
-		skillPlansModel.deleteSkillPlan();
+		List<QModelIndex> selectedRows = ui.skillPlanList.selectionModel().selectedRows();
+		if(selectedRows.size()==1){
+			skillPlansModel.deleteSkillPlan(selectedRows.get(0).row());
+		}
 	}
 }
