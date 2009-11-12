@@ -58,6 +58,7 @@ public class SkillPlanDAO extends UserDatabaseDAO {
 			}
 			rs.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new PQUserDatabaseFileCorrupted();
 		} finally {
 			closeConnection();
@@ -87,6 +88,7 @@ public class SkillPlanDAO extends UserDatabaseDAO {
 			
 			createdSP = new SkillPlan(sp.getCharacterID(), id, sp.getIndex(), sp.getName());
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new PQUserDatabaseFileCorrupted();
 		} finally {
 			closeConnection();
@@ -102,10 +104,10 @@ public class SkillPlanDAO extends UserDatabaseDAO {
 				initConnection(SQLConstants.USER_DATABASE);
 				initPrepareStatement(SQLConstants.USER_DATABASE,
 						SQLConstants.UPDATE_SKILLPLAN);
-				prep.setInt(0, sp.getCharacterID());
-				prep.setInt(1, sp.getIndex());
-				prep.setString(2, sp.getName());
-				prep.setInt(3, id);
+				prep.setInt(1, sp.getCharacterID());
+				prep.setInt(2, sp.getIndex());
+				prep.setString(3, sp.getName());
+				prep.setInt(4, id);
 				prep.executeUpdate();
 			} catch (SQLException e) {
 				throw new PQUserDatabaseFileCorrupted();
@@ -117,12 +119,18 @@ public class SkillPlanDAO extends UserDatabaseDAO {
 		
 	}
 	
-	public void updateOrderIndices(MonitoredCharacter parentCharacter) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
+	public void updateOrderIndices(MonitoredCharacter parentCharacter) throws PQUserDatabaseFileCorrupted, PQSQLDriverNotFoundException  {
+		beginTran();
 		for(int i = 0 ; i<parentCharacter.skillPlanCount();i++){
 			SkillPlan sp = parentCharacter.getSkillPlanAt(i);
 			sp.setIndex(i);
-			updateSkillPlan(sp.getId(), sp);
+			try {
+				updateSkillPlan(sp.getId(), sp);
+			} catch (PQUserDatabaseFileCorrupted e) {
+				rollback();
+			}
 		}
+		commit();
 	}
 	
 	public void deleteSkillPlan(List<Integer> ids)throws PQSQLDriverNotFoundException,PQUserDatabaseFileCorrupted {
@@ -142,10 +150,28 @@ public class SkillPlanDAO extends UserDatabaseDAO {
 		}
 	}
 	
+	public void deleteSkillPlan(int id) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted{
+		File userdataBaseFile = new File(SQLConstants.USER_DATABASE_FILE);
+		if (userdataBaseFile.exists()) {
+			String InClause = Integer.toString(id);
+
+			try {
+				initConnection(SQLConstants.USER_DATABASE);
+				stat.executeUpdate(SQLConstants.DELETE_SKILLPLANS.replace("?", InClause ));
+			} catch (SQLException e) {
+				throw new PQUserDatabaseFileCorrupted();
+			} finally {
+				closeConnection();
+			}
+
+		}
+	}
+	
 	private int getNewIdForPlan() throws SQLException {
 		ResultSet rs = stat.executeQuery(SQLConstants.QUERY_SKILLPLAN_MAXID);
 		rs.next();
-		int maxID = rs.getInt(0);
+		int maxID = rs.getInt(1);
+		rs.close();
 		
 		return maxID + 1;
 	}

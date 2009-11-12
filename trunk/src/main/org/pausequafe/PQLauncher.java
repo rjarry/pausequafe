@@ -99,6 +99,14 @@ public class PQLauncher {
 		splash.finish(mainWindow);
 		mainWindow.show();
 		tray.show();
+		
+//		QTreeView view = new QTreeView();
+//		try {
+//			view.setModel(MonitoredCharactersAndSkillPlansModel.getInstance());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		view.show();
 
 		QApplication.exec();
 	}

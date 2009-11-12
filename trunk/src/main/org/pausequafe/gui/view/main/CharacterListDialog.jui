@@ -1,7 +1,8 @@
-<ui version="4.0" language="jambi" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0" language="jambi">
  <class>CharacterListDialog</class>
- <widget class="QDialog" name="CharacterListDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="CharacterListDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,45 +10,45 @@
     <height>114</height>
    </rect>
   </property>
-  <property name="sizePolicy" >
-   <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="minimumSize" >
+  <property name="minimumSize">
    <size>
     <width>160</width>
     <height>114</height>
    </size>
   </property>
-  <property name="maximumSize" >
+  <property name="maximumSize">
    <size>
     <width>160</width>
     <height>114</height>
    </size>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="chooseButton" >
-   <property name="geometry" >
+  <widget class="QPushButton" name="chooseButton">
+   <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>83</y>
-     <width>101</width>
+     <x>10</x>
+     <y>80</y>
+     <width>141</width>
      <height>23</height>
     </rect>
    </property>
-   <property name="focusPolicy" >
+   <property name="focusPolicy">
     <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Choose Character</string>
    </property>
   </widget>
-  <widget class="QListWidget" name="charListWidget" >
-   <property name="geometry" >
+  <widget class="QListWidget" name="charListWidget">
+   <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
@@ -55,7 +56,7 @@
      <height>64</height>
     </rect>
    </property>
-   <property name="focusPolicy" >
+   <property name="focusPolicy">
     <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
    </property>
   </widget>

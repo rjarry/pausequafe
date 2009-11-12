@@ -4,6 +4,11 @@ import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.SkillPlan;
 
 import com.trolltech.qt.core.QModelIndex;
+import com.trolltech.qt.core.Qt.DropAction;
+import com.trolltech.qt.core.Qt.DropActions;
+import com.trolltech.qt.core.Qt.ItemDataRole;
+import com.trolltech.qt.core.Qt.ItemFlag;
+import com.trolltech.qt.core.Qt.ItemFlags;
 import com.trolltech.qt.gui.QAbstractProxyModel;
 
 public class CharaterSkillPlansProxyModel extends QAbstractProxyModel{
@@ -27,7 +32,7 @@ public class CharaterSkillPlansProxyModel extends QAbstractProxyModel{
 			setSourceModel(sourceModel);
 		} catch (Exception e) {
 			// we don't really care because no exception 
-			// can actually be returned at this point
+			// can actually be returned at this point since
 			// monitored characters have already been retrieved
 			e.printStackTrace();
 		}
@@ -41,13 +46,13 @@ public class CharaterSkillPlansProxyModel extends QAbstractProxyModel{
 		insertRow(rowCount, null);
 		
 		SkillPlan newSkillPlan = new SkillPlan(root.getApi().getCharacterID(),SkillPlan.NOID,rowCount,name);
-		setData(index(rowCount,0,null) , newSkillPlan);
+		setData(index(rowCount,0,null) , newSkillPlan, ItemDataRole.DisplayRole);
 	}
 
-	public void deleteSkillPlan() {
+	public void deleteSkillPlan(int row) {
 		int rowCount = rowCount(null);
 		if(rowCount!=0){
-			removeRow(rowCount-1, null);
+			removeRow(row, null);
 		}
 	}
 	
@@ -130,13 +135,26 @@ public class CharaterSkillPlansProxyModel extends QAbstractProxyModel{
 		return result;
 	}
 
+	@Override
+	public DropActions supportedDropActions() {
+		DropActions result = new DropActions(DropAction.MoveAction);
+		return result;
+	}
 
-	
-//	@Override
-//	public DropActions supportedDropActions() {
-//		DropActions result = new DropActions(DropAction.MoveAction);
-//		return result;
-//	}
-	
+	@Override
+	public ItemFlags flags(QModelIndex index) {
+		ItemFlags result = new ItemFlags();
+
+		if (index == null){
+			result.set(ItemFlag.ItemIsDropEnabled);
+		} else {
+			result.set(
+					ItemFlag.ItemIsDragEnabled,
+					ItemFlag.ItemIsEnabled,
+					ItemFlag.ItemIsSelectable);
+		}
+
+		return result;
+	}
 
 }

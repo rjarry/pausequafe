@@ -1,6 +1,9 @@
 package org.pausequafe.data.business;
 
-public class SkillPlan {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class SkillPlan implements Serializable{
 
 	public final static int NOID=-1;
 	public final static String NONAME = "No name";

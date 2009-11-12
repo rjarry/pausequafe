@@ -37,7 +37,6 @@ import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMovie;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QTabWidget;
-import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.gui.QSystemTrayIcon.ActivationReason;
 
@@ -88,19 +87,6 @@ public class MainWindow extends QMainWindow {
 			popUserDBCorrupt();
 		}
 		
-		//FIXME remove this after test
-		MonitoredCharactersAndSkillPlansModel characters=null;
-		try {
-			characters = MonitoredCharactersAndSkillPlansModel.getInstance();
-		} catch (PQSQLDriverNotFoundException e) {
-			e.printStackTrace();
-		} catch (PQUserDatabaseFileCorrupted e) {
-			e.printStackTrace();
-		}
-		
-		QTreeView view = new QTreeView();
-		view.setModel(characters);
-		view.show();
 	}
 
 	private void setupUi() {
@@ -161,7 +147,6 @@ public class MainWindow extends QMainWindow {
 		updateServerStatus(status);
 
 		this.resize(300, 700);
-
 	}
 
 	/**

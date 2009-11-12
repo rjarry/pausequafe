@@ -203,7 +203,7 @@ public class SQLConstants {
 
 	// Columns name
 	public static final String CHARACTERS_TABLE = "monitoredCharacters";
-	public static final String SKILLPLANS_TABLE = "monitoredCharacters";
+	public static final String SKILLPLANS_TABLE = "skillPlans";
 	public static final String CHARACTERID_COL = "characterID";
 	public static final String CHARACTERNAME_COL = "characterName";
 	public static final String USERID_COL = "userID";
@@ -243,7 +243,7 @@ public class SQLConstants {
 	+ SKILLPLANINDEX_COL + " int NOT NULL,"  
 	+ SKILLPLANNAME_COL + " nvarchar(256)," 
 	+ "CONSTRAINT skillPlanID_PK PRIMARY KEY (" + SKILLPLANID_COL + ")" + ")";
-	public static final String QUERY_SKILLPLANS = "SELECT * FROM" + SKILLPLANS_TABLE 
+	public static final String QUERY_SKILLPLANS = "SELECT * FROM " + SKILLPLANS_TABLE 
 			+ " WHERE " + CHARACTERID_COL + " IN (?)" 
 			+ " ORDER BY " + SKILLPLANINDEX_COL;
 	public static final String INSERT_SKILL_PLAN = "INSERT INTO " + SKILLPLANS_TABLE + "("
@@ -252,5 +252,5 @@ public class SQLConstants {
 	public static final String DELETE_SKILLPLANS = "DELETE FROM SKILLPLANS where skillPlanID in (?)";
 	public static final String UPDATE_SKILLPLAN = "UPDATE " + SKILLPLANS_TABLE + " SET "
 			+ CHARACTERID_COL + "=?," + SKILLPLANINDEX_COL + "=?," + SKILLPLANNAME_COL + "=?"
-			+ "WHERE " + SKILLPLANID_COL + "=?";
+			+ " WHERE " + SKILLPLANID_COL + "=?";
 }
