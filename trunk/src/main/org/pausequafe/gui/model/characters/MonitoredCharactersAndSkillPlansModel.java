@@ -58,6 +58,7 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	PQUserDatabaseFileCorrupted {
 		int row = characterList.size();
 		initCharacter(character);
+		beginInsertRows(null, row, row);
 		characterList.add(character);
 		childrenInserted(null, row, row);
 		MonitoredCharacterDAO.getInstance().addMonitoredCharacter(character.getApi());
@@ -67,6 +68,7 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	public void removeCharacter(int currentIndex) throws PQSQLDriverNotFoundException,
 	PQUserDatabaseFileCorrupted {
 		int characterID = characterList.get(currentIndex).getApi().getCharacterID();
+		beginRemoveRows(null, currentIndex, currentIndex);
 		characterList.remove(currentIndex);
 		childrenRemoved(null, currentIndex, currentIndex);
 		MonitoredCharacterDAO.getInstance().deleteMonitoredCharacter(characterID);
@@ -186,6 +188,7 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		Object parentObject = (MonitoredCharacter) indexToValue(parent);
 		if(parentObject instanceof MonitoredCharacter){
 			MonitoredCharacter parentCharacter = (MonitoredCharacter) parentObject;
+			beginInsertRows(parent, row, row + count - 1);
 			parentCharacter.addSkillPlan(row,
 					new SkillPlan(
 							parentCharacter.getApi().getCharacterID(), 
@@ -195,7 +198,7 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 					)
 			);
 			childrenInserted(parent, row, row + count - 1);
-			result =true;
+			result = true;
 		}
 
 		return result;
@@ -233,7 +236,8 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 					return false;
 				} 
 			}
-			parentCharacter.deletePlan(row);
+			beginRemoveRows(parent, row, row);
+			parentCharacter.removePlan(row);
 			childrenRemoved(parent, row, row );
 			try {
 				spDAO.updateOrderIndices(parentCharacter);
