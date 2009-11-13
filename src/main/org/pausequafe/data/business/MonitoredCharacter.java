@@ -44,7 +44,7 @@ public class MonitoredCharacter {
 		skillPlanList.add(index,plan);
 	}
 	
-	public void deletePlan(int index){
+	public void removePlan(int index){
 		skillPlanList.remove(index);
 	}
 
