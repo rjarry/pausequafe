@@ -42,17 +42,17 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	// //////////////////
 	// public methods //
 	// //////////////////
-	public List<MarketGroup> findMarketGroupsById(List<Integer> list)
+	public List<MarketGroup> findMarketGroupsById(List<Integer> idList)
 			throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
 		ArrayList<MarketGroup> result = new ArrayList<MarketGroup>();
 		List<Integer> toBeQueried = new ArrayList<Integer>();
 
 		// get items from cache
 		MarketGroup aMarketGroup;
-		for (Integer aMarketGroupIndex : list) {
-			aMarketGroup = memoryCache.get(aMarketGroupIndex);
+		for (Integer aMarketGroupId : idList) {
+			aMarketGroup = memoryCache.get(aMarketGroupId);
 			if (aMarketGroup == null) {
-				toBeQueried.add(aMarketGroupIndex);
+				toBeQueried.add(aMarketGroupId);
 			} else {
 				result.add(aMarketGroup);
 			}
@@ -62,7 +62,6 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 		if (!toBeQueried.isEmpty()) {
 			List<MarketGroup> queriedMarketGroups = queryMarketGroupsById(toBeQueried);
 			result.addAll(queriedMarketGroups);
-
 		} // missing items are now retrieved
 
 		return result;
@@ -114,16 +113,16 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	// private methods //
 	// ///////////////////
 
-	private List<MarketGroup> queryMarketGroupsById(List<Integer> toBeQueried)
+	private List<MarketGroup> queryMarketGroupsById(List<Integer> idsToBeQueried)
 			throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
 
 		initConnection(SQLConstants.EVE_DATABASE);
 
-		String inClause = buildInClause(toBeQueried);
+		String inClause = buildInClause(idsToBeQueried);
 
 		String query = SQLConstants.QUERY_MARKETGRP_BY_ID;
 		query = query.replace("?", inClause);
-		// System.out.println(query); // for convenience : uncomment to see DB
+//		System.out.println(query); // for convenience : uncomment to see DB
 		// queries
 
 		List<MarketGroup> result = new ArrayList<MarketGroup>();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>351</width>
-    <height>268</height>
+    <width>399</width>
+    <height>271</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,180 +16,194 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
+  <property name="minimumSize">
+   <size>
+    <width>399</width>
+    <height>271</height>
+   </size>
   </property>
-  <property name="modal">
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>271</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Add New Character</string>
+  </property>
+  <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-  <widget class="QPushButton" name="addButton">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>237</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <property name="margin">
+    <number>5</number>
    </property>
-   <property name="focusPolicy">
-    <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-   </property>
-   <property name="text">
-    <string>Add</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="cancelButton">
-   <property name="geometry">
-    <rect>
-     <x>261</x>
-     <y>237</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="focusPolicy">
-    <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-   </property>
-   <property name="text">
-    <string>Cancel</string>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>7</y>
-     <width>331</width>
-     <height>221</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>EVE Online API Details</string>
-   </property>
-   <widget class="QLabel" name="mainTextLabel">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>320</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="lineWidth">
-     <number>0</number>
-    </property>
-    <property name="text">
-     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+   <item row="0" column="0" colspan="3">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>EVE Online API Details</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="mainTextLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>65</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
+        <property name="text">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enter the &lt;span style=&quot; font-weight:600;&quot;&gt;User ID&lt;/span&gt; and the &lt;span style=&quot; font-weight:600;&quot;&gt;limited API key&lt;/span&gt; for the character you want to monitor.&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can find the API details from this link: &lt;a href=&quot;http://www.eveonline.com/api/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.eveonline.com/api/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-    <property name="openExternalLinks">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="chooseCharButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>186</y>
-      <width>141</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="focusPolicy">
-     <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-    </property>
-    <property name="text">
-     <string>Chose Character...</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="apiKeyLabel">
-    <property name="geometry">
-     <rect>
-      <x>13</x>
-      <y>141</y>
-      <width>46</width>
-      <height>14</height>
-     </rect>
-    </property>
-    <property name="lineWidth">
-     <number>0</number>
-    </property>
-    <property name="text">
-     <string>API Key</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="userIDCombo">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>117</y>
-      <width>121</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="focusPolicy">
-     <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
-    </property>
-    <property name="editable">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="userIDlabel">
-    <property name="geometry">
-     <rect>
-      <x>13</x>
-      <y>101</y>
-      <width>46</width>
-      <height>14</height>
-     </rect>
-    </property>
-    <property name="lineWidth">
-     <number>0</number>
-    </property>
-    <property name="text">
-     <string>User ID</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="characterLabel">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>186</y>
-      <width>151</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="lineWidth">
-     <number>0</number>
-    </property>
-    <property name="text">
-     <string>no character selected</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="apiKeyText">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>156</y>
-      <width>310</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="focusPolicy">
-     <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-  </widget>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="userIDlabel">
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
+        <property name="text">
+         <string>User ID</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QComboBox" name="userIDCombo">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="apiKeyLabel">
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
+        <property name="text">
+         <string>API Key</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QLineEdit" name="apiKeyText">
+        <property name="focusPolicy">
+         <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="chooseCharButton">
+        <property name="focusPolicy">
+         <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+        </property>
+        <property name="text">
+         <string>Chose Character...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLabel" name="characterLabel">
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
+        <property name="text">
+         <string>no character selected</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>com.trolltech.qt.core.Qt.Orientation.Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>220</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="addButton">
+     <property name="focusPolicy">
+      <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="cancelButton">
+     <property name="focusPolicy">
+      <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
