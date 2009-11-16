@@ -36,7 +36,6 @@ public class AddCharacterDialog extends QDialog {
     
     private void setupUi(){
     	ui.setupUi(this);
-    	this.setWindowTitle("Add New Character");
     	
     	ui.characterLabel.setText("<i>no character chosen...</i>");
     	

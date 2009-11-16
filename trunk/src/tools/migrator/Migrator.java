@@ -1443,8 +1443,8 @@ System.out.print("Generating invFlags... ");
 		statWRITE.executeUpdate("UPDATE dgmAttributeTypes SET unitID=0 WHERE unitID IS NULL ");
 		
 		statWRITE.executeUpdate("DELETE FROM invTypes WHERE groupID NOT IN (SELECT groupID FROM invGroups)");
-//		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invMarketGroups)");
-//		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID IS NULL");
+		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invMarketGroups)");
+		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID IS NULL");
 		
 		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invTypes) AND hasTypes=1");
 		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT parentGroupID FROM invMarketGroups)");
@@ -1465,6 +1465,13 @@ System.out.print("Generating invFlags... ");
 									"UNION SELECT graphicID FROM invMarketGroups WHERE graphicID NOT NULL " +
 									"UNION SELECT graphicID FROM dgmAttributeTypes WHERE graphicID NOT NULL " +
 									"UNION SELECT graphicID FROM invCategories WHERE graphicID NOT NULL)");
+		// insert meta level 0 to items without any
+		statWRITE.executeUpdate(
+				"INSERT INTO dgmTypeAttributes(typeID, attributeID, valueInt, valueFloat) " +
+				"SELECT DISTINCT typeID, 633 AS attributeID, NULL AS valueInt, 0.0 AS valueFloat " +
+				"FROM invTypes " +
+				"WHERE typeID NOT IN (SELECT DISTINCT typeID FROM dgmTypeAttributes WHERE attributeID = 633)");
+		
 		
 		System.out.println("Done");
 	}
