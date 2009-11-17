@@ -25,21 +25,27 @@ public class Item {
 	protected int metaLevel;
 	
 	protected List<PreRequisite> preReqs = null;
-	protected PreRequisite preRequisite1 = new PreRequisite();
-	protected PreRequisite preRequisite2 = new PreRequisite();
-	protected PreRequisite preRequisite3 = new PreRequisite();
-	
 
     /////////////////
     // constructor //
     /////////////////
     public Item(){
+    	preReqs = new ArrayList<PreRequisite>();
     }
 
 	public Item(int typeID, String typeName, int metaGroupID) {
 		this.typeID = typeID;
 		this.typeName = typeName;
 		this.metaGroupID = metaGroupID;
+		preReqs = new ArrayList<PreRequisite>();
+	}
+	
+	public Item(Item item){
+		this.typeID = item.getTypeID();
+		this.typeName = item.getTypeName();
+		this.metaGroupID = item.getMetaGroupID();
+		this.metaLevel = item.getMetaLevel();
+		preReqs = item.getPreReqs();
 	}
 
 	////////////////////
@@ -73,28 +79,7 @@ public class Item {
     }
     
     public List<PreRequisite> getPreReqs() {
-    	if(preReqs == null){
-    		preReqs = new ArrayList<PreRequisite>();
-    		if(preRequisite1.getTypeID()!=-1){
-    			preReqs.add(preRequisite1);
-    		}
-    		if(preRequisite2.getTypeID()!=-1){
-    			preReqs.add(preRequisite2);
-    		}
-    		if(preRequisite3.getTypeID()!=-1){
-    			preReqs.add(preRequisite3);
-    		}
-    	}
     	return preReqs;
-    }
-    
-    public PreRequisite youDontWantToKnowWhatThisIs(int i){
-    	switch(i){
-    	case 1 : return preRequisite1 ;
-    	case 2 : return preRequisite2 ;
-    	case 3 : return preRequisite3 ;
-    	default : return null;
-    	}
     }
     
     public int getMetaGroupID(){
