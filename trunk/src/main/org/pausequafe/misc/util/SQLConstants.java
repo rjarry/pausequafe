@@ -36,16 +36,13 @@ public class SQLConstants {
 	public static final String UNITID_COL = "unitID";
 	public static final String CATEGORYNAME_COL = "categoryName";
 	public static final String PARENTGRPID_COL = "parentGroupID";
+	public static final String SKILLID_COL = "skillID";
+	public static final String SKILLLEVEL_COL = "skillLevel";
 
 	// attributes ids
-	public static final int REQUIRED_SKILL_1_ATTID = 182;
-	public static final int REQUIRED_SKILL_2_ATTID = 183;
-	public static final int REQUIRED_SKILL_3_ATTID = 184;
-	public static final int REQUIRED_SKILL_1_LEVEL_ATTID = 277;
-	public static final int REQUIRED_SKILL_2_LEVEL_ATTID = 278;
-	public static final int REQUIRED_SKILL_3_LEVEL_ATTID = 279;
 	public static final int METALEVEL_ATTID = 633;
 	public static final int RANK_ATTID = 275;
+	private static final int SKILL_ATTRIBUTE_CATEGORY = 8;
 	// armor
 	public static final int ARMOR_HP_ATTID = 265;
 	public static final int ARMOR_EM_RESIST_ATTID = 267;
@@ -108,45 +105,29 @@ public class SQLConstants {
 	public static final int SIZECLASS_UNITID = 117;
 	public static final int ATTRIBUTEID_UNITID = 119;
 
+
 	// Queries
 	// public static final String QUERY_TYPES_BY_ID =
 	// "select * from invTypes where typeID in (?)";
 	public static final String QUERY_MARKETGRP_BY_ID = "select " + MARKETGRPID_COL + ","
 			+ MARKETGRPNAME_COL + "," + HASTYPE_COL
 			+ " from invMarketGroups where marketGroupID in (?)";
+	
 	public static final String QUERY_MARKETGRP_BY_PARENT = "select " + MARKETGRPID_COL + ","
 			+ MARKETGRPNAME_COL + "," + HASTYPE_COL + "," + PARENTGRPID_COL
 			+ " from invMarketGroups where parentGroupID in (?)";
+	
 	public static final String QUERY_MARKETGRP_BY_ID_WITHCHILDREN = "select mk1."
-			+ MARKETGRPID_COL
-			+ " as "
-			+ MARKETGRPID_COL
-			+ ",mk1."
-			+ MARKETGRPNAME_COL
-			+ " as "
-			+ MARKETGRPNAME_COL
-			+ ",mk1."
-			+ HASTYPE_COL
-			+ " as "
-			+ HASTYPE_COL
-			+ ",mk2.marketGroupID as "
-			+ CHILDID_COL
+			+ MARKETGRPID_COL + " as " + MARKETGRPID_COL
+			+ ",mk1." + MARKETGRPNAME_COL + " as " + MARKETGRPNAME_COL
+			+ ",mk1." + HASTYPE_COL	+ " as " + HASTYPE_COL
+			+ ",mk2.marketGroupID as " + CHILDID_COL
 			+ " from invMarketGroups mk1,invMarketGroups mk2 where mk1.marketGroupID in (?) and mk1.marketGroupID=mk2.parentGroupID"
 			+ " union "
-			+ "select mk1."
-			+ MARKETGRPID_COL
-			+ " as "
-			+ MARKETGRPID_COL
-			+ ",mk1."
-			+ MARKETGRPNAME_COL
-			+ " as "
-			+ MARKETGRPNAME_COL
-			+ ",mk1."
-			+ HASTYPE_COL
-			+ " as "
-			+ HASTYPE_COL
-			+ ",t.typeID as "
-			+ CHILDID_COL
+			+ "select mk1."	+ MARKETGRPID_COL + " as " + MARKETGRPID_COL
+			+ ",mk1." + MARKETGRPNAME_COL + " as " + MARKETGRPNAME_COL
+			+ ",mk1." + HASTYPE_COL	+ " as " + HASTYPE_COL
+			+ ",t.typeID as " + CHILDID_COL
 			+ " from invMarketGroups mk1,invTypes t where mk1.marketGroupID in (?) and mk1.marketGroupID=t.marketGroupID";
 
 	public static final String QUERY_TYPES_BY_ID = "SELECT t.typeID,t.metaGroupID,t.typeName,c.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value  "
@@ -157,17 +138,20 @@ public class SQLConstants {
 			+ "AND t.groupID=g.groupID "
 			+ "AND g.categoryID=c.categoryID "
 			+ "AND at.attributeID in ("
-			+ REQUIRED_SKILL_1_ATTID
-			+ ","
-			+ REQUIRED_SKILL_2_ATTID
-			+ ","
-			+ REQUIRED_SKILL_3_ATTID
-			+ ","
-			+ REQUIRED_SKILL_1_LEVEL_ATTID
-			+ ","
-			+ REQUIRED_SKILL_2_LEVEL_ATTID
-			+ ","
-			+ REQUIRED_SKILL_3_LEVEL_ATTID + "," + METALEVEL_ATTID + "," + RANK_ATTID + ") ";
+			+  METALEVEL_ATTID + "," + RANK_ATTID + ") ";
+	
+	public static final String QUERY_PREREQUISITES_BY_ID = "SELECT t.typeID,IFNULL(ta1.valueInt, ta1.valueFloat) AS skillID,IFNULL(ta2.valueInt, ta2.valueFloat) AS skillLevel "
+		    + "FROM INVTYPES t,DGMTYPEATTRIBUTES ta1,DGMTYPEATTRIBUTES ta2,DGMATTRIBUTETYPES a1 ,DGMATTRIBUTETYPES a2 "
+		    + "WHERE t.marketGroupID in (?) "
+		    + "AND t.typeID=ta1.typeID "
+		    + "AND t.typeID=ta2.typeID "
+		    + "AND ta1.attributeID=a1.attributeID "
+		    + "AND ta2.attributeID=a2.attributeID "
+		    + "AND a1.categoryID=" + SKILL_ATTRIBUTE_CATEGORY + " "
+		    + "AND a2.attributeName like '%Level' " 
+		    + "AND a2.attributeName like (a1.attributeName || '%') " 
+		    + "AND a2.attributeName != a1.attributeName "  
+		    + "order by a1.attributeName";
 
 	public static final String QUERY_TYPE_BY_PARENT = "SELECT t.typeID,t.marketGroupID,t.metaGroupID,t.typeName,c.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value  "
 			+ "FROM invTypes t, dgmTypeAttributes a, dgmAttributeTypes at, invGroups g, invCategories c "
@@ -177,22 +161,27 @@ public class SQLConstants {
 			+ "AND t.groupID=g.groupID "
 			+ "AND g.categoryID=c.categoryID "
 			+ "AND at.attributeID in ("
-			+ REQUIRED_SKILL_1_ATTID
-			+ ","
-			+ REQUIRED_SKILL_2_ATTID
-			+ ","
-			+ REQUIRED_SKILL_3_ATTID
-			+ ","
-			+ REQUIRED_SKILL_1_LEVEL_ATTID
-			+ ","
-			+ REQUIRED_SKILL_2_LEVEL_ATTID
-			+ ","
-			+ REQUIRED_SKILL_3_LEVEL_ATTID + "," + METALEVEL_ATTID + "," + RANK_ATTID + ") ";;
+			+ METALEVEL_ATTID + "," + RANK_ATTID + ") ";
 
-	public static final String QUERY_ITEM_DETAILS_BY_ID = "SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,at.attributeID,at.attributeName,IFNULL(a.valueInt, a.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice "
-			+ "FROM invTypes t,dgmTypeAttributes a,dgmAttributeTypes at,dgmAttributeCategories ac,eveUnits u "
-			+ "WHERE t.typeID in (?) AND t.typeID = a.typeID AND a.attributeID = at.attributeID AND at.categoryID = ac.categoryID AND at.unitID = u.unitID "
-			+ "ORDER BY ac.categoryName ";
+	public static final String QUERY_PREREQUISITES_BY_PARENT = "SELECT t.typeID,IFNULL(ta1.valueInt, ta1.valueFloat) AS skillID,IFNULL(ta2.valueInt, ta2.valueFloat) AS skillLevel "
+	    + "FROM INVTYPES t,DGMTYPEATTRIBUTES ta1,DGMTYPEATTRIBUTES ta2,DGMATTRIBUTETYPES a1 ,DGMATTRIBUTETYPES a2 "
+	    + "WHERE t.marketGroupID in (?) "
+	    + "AND t.typeID=ta1.typeID "
+	    + "AND t.typeID=ta2.typeID "
+	    + "AND ta1.attributeID=a1.attributeID "
+	    + "AND ta2.attributeID=a2.attributeID "
+	    + "AND a1.categoryID=" + SKILL_ATTRIBUTE_CATEGORY + " "
+	    + "AND a2.attributeName like '%Level' " 
+	    + "AND a2.attributeName like (a1.attributeName || '%') " 
+	    + "AND a2.attributeName != a1.attributeName " 
+	    + "order by a1.attributeName";
+
+			
+	public static final String QUERY_ITEM_DETAILS_BY_ID = "SELECT t.typeID,t.icon,t.metaGroupID,t.typeName,ac.categoryName,a.attributeID,a.attributeName,IFNULL(ta.valueInt, ta.valueFloat) AS value, u.unitID, u.displayName AS unit,t.radius,t.description,t.mass,t.volume,t.capacity,t.basePrice "
+			+ "FROM invTypes t,dgmTypeAttributes ta,dgmAttributeTypes a,dgmAttributeCategories ac,eveUnits u "
+			+ "WHERE t.typeID in (?) AND t.typeID = ta.typeID AND ta.attributeID = a.attributeID AND a.categoryID = ac.categoryID AND a.unitID = u.unitID "
+			+ "AND a.categoryID!=" + SKILL_ATTRIBUTE_CATEGORY
+			+ " ORDER BY ac.categoryName ";
 
 	public static final String QUERY_GROUP_NAME_BY_ID = "SELECT groupName FROM invGroups WHERE groupID IN (?)";
 	public static final String QUERY_TYPE_NAME_BY_ID = "SELECT typeName FROM invTypes WHERE typeID IN (?)";

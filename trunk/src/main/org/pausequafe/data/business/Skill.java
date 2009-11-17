@@ -23,7 +23,7 @@ public class Skill extends Item {
     // constructor //
     /////////////////
 	public Skill(int typeID, String typeName) {
-		super(typeID,typeName,-1);
+		super(typeID,typeName,0);
 	}
 
     ////////////////////

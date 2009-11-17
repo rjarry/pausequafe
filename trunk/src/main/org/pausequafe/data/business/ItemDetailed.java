@@ -26,10 +26,10 @@ public class ItemDetailed extends Item {
 		super();
 	}
 
-	public ItemDetailed(int typeID, String typeName, String icon, String description, 
+	public ItemDetailed(Item baseItem, String icon, String description, 
 			double basePrice, double radius, double mass, double volume,
-			double capacity, int metaGroupID) {
-		super(typeID, typeName, metaGroupID);
+			double capacity) {
+		super(baseItem);
 		
 		this.icon = icon;
 		this.basePrice = basePrice;
@@ -40,6 +40,15 @@ public class ItemDetailed extends Item {
 		attributeList.add(new ItemAttribute(SQLConstants.VOLUME_ATTID, "Volume", "Structure", volume, "m3", 9));
 		attributeList.add(new ItemAttribute(SQLConstants.CAPACITY_ATTID, "Capacity", "Structure", capacity, "m3", 9));
 	}
+
+	public ItemDetailed(Item baseItem) {
+		typeID = baseItem.getTypeID();
+		typeName = baseItem.getTypeName();
+		metaLevel = baseItem.getMetaLevel();
+		metaGroupID = baseItem.getMetaGroupID();
+		
+	}
+	
 
 	////////////////////
     // public methods //
@@ -67,30 +76,7 @@ public class ItemDetailed extends Item {
     public String getDescription() {
     	return description;
     }
-    public List<PreRequisite> getPreReqs() {
-    	if(preReqs == null){
-    		preReqs = new ArrayList<PreRequisite>();
-    		if(preRequisite1.getTypeID()!=-1){
-    			preReqs.add(preRequisite1);
-    		}
-    		if(preRequisite2.getTypeID()!=-1){
-    			preReqs.add(preRequisite2);
-    		}
-    		if(preRequisite3.getTypeID()!=-1){
-    			preReqs.add(preRequisite3);
-    		}
-    	}
-    	return preReqs;
-    }
-    public PreRequisite youDontWantToKnowWhatThisIs(int i){
-    	switch(i){
-    	case 1 : return preRequisite1 ;
-    	case 2 : return preRequisite2 ;
-    	case 3 : return preRequisite3 ;
-    	default : return null;
-    	}
-    }
-    
+
     public double getBasePrice() {
     	return basePrice;
     }

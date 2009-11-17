@@ -11,6 +11,7 @@ import org.pausequafe.data.business.Item;
 import org.pausequafe.data.business.ItemAttribute;
 import org.pausequafe.data.business.ItemDetailed;
 import org.pausequafe.data.business.MarketGroup;
+import org.pausequafe.data.business.PreRequisite;
 import org.pausequafe.data.business.Skill;
 import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
@@ -20,7 +21,7 @@ import org.pausequafe.misc.util.SQLConstants;
 /**
  * A DAO that creates Item from the eve database
  * 
- * @author Administrateur
+ * @author Gobi
  */
 public class ItemDAO extends AbstractSqlDAO {
 
@@ -128,56 +129,26 @@ public class ItemDAO extends AbstractSqlDAO {
 							"\n", "<br>");
 					description = description.replaceAll("\t", "<br>");
 
-					askedItem = new ItemDetailed(res.getInt(SQLConstants.TYPEID_COL), res
-							.getString(SQLConstants.TYPENAME_COL), res
-							.getString(SQLConstants.ICON_COL), description, res
-							.getDouble(SQLConstants.BASEPRICE_COL), res
-							.getDouble(SQLConstants.RADIUS_COL), res
-							.getDouble(SQLConstants.MASS_COL), res
-							.getDouble(SQLConstants.VOLUME_COL), res
-							.getDouble(SQLConstants.CAPACITY_COL), res
-							.getInt(SQLConstants.METAGROUPID_COL));
+					askedItem = new ItemDetailed(
+							baseItem,
+							res.getString(SQLConstants.ICON_COL), description, 
+							res.getDouble(SQLConstants.BASEPRICE_COL), 
+							res.getDouble(SQLConstants.RADIUS_COL), 
+							res.getDouble(SQLConstants.MASS_COL), 
+							res.getDouble(SQLConstants.VOLUME_COL), 
+							res.getDouble(SQLConstants.CAPACITY_COL));
 				}
 
 				int attributeID = res.getInt(SQLConstants.ATTRIBUTEID_COL);
 
-				switch (attributeID) {
-				case SQLConstants.REQUIRED_SKILL_1_ATTID:
-					askedItem.youDontWantToKnowWhatThisIs(1).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_2_ATTID:
-					askedItem.youDontWantToKnowWhatThisIs(2).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_3_ATTID:
-					askedItem.youDontWantToKnowWhatThisIs(3).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_1_LEVEL_ATTID:
-					askedItem.youDontWantToKnowWhatThisIs(1).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_2_LEVEL_ATTID:
-					askedItem.youDontWantToKnowWhatThisIs(2).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_3_LEVEL_ATTID:
-					askedItem.youDontWantToKnowWhatThisIs(3).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.METALEVEL_ATTID:
-					askedItem.setMetaLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-				default:
-					String attributeName = res.getString(SQLConstants.ATTRIBUTE_NAME_COL);
-					String attributeCategory = res.getString(SQLConstants.ATTRIBUTE_CATEGORY_COL);
-					double attributeValue = res.getDouble(SQLConstants.ATTRIBUTE_VALUE_COL);
-					String unit = res.getString(SQLConstants.UNIT_COL);
-					int unitID = res.getInt(SQLConstants.UNITID_COL);
-					ItemAttribute attribute = new ItemAttribute(attributeID, attributeName,
-							attributeCategory, attributeValue, unit, unitID);
-					askedItem.addAttribute(attribute);
-				}
+				String attributeName = res.getString(SQLConstants.ATTRIBUTE_NAME_COL);
+				String attributeCategory = res.getString(SQLConstants.ATTRIBUTE_CATEGORY_COL);
+				double attributeValue = res.getDouble(SQLConstants.ATTRIBUTE_VALUE_COL);
+				String unit = res.getString(SQLConstants.UNIT_COL);
+				int unitID = res.getInt(SQLConstants.UNITID_COL);
+				ItemAttribute attribute = new ItemAttribute(attributeID, attributeName,
+						attributeCategory, attributeValue, unit, unitID);
+				askedItem.addAttribute(attribute);
 			}
 			res.close();
 
@@ -203,8 +174,8 @@ public class ItemDAO extends AbstractSqlDAO {
 		initConnection(SQLConstants.EVE_DATABASE);
 
 		String inClause = buildInClause(toBeQueried);
-		String query = SQLConstants.QUERY_TYPES_BY_ID;
-		query = query.replace("?", inClause);
+		String query = SQLConstants.QUERY_TYPES_BY_ID.replace("?", inClause);
+		String query2 = SQLConstants.QUERY_PREREQUISITES_BY_ID.replace("?", inClause);
 		// System.out.println(query); // for convenience : uncomment to see DB
 		// queries
 
@@ -230,30 +201,6 @@ public class ItemDAO extends AbstractSqlDAO {
 				int attributeID = res.getInt(SQLConstants.ATTRIBUTEID_COL);
 
 				switch (attributeID) {
-				case SQLConstants.REQUIRED_SKILL_1_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(1).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_2_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(2).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_3_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(3).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_1_LEVEL_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(1).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_2_LEVEL_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(2).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_3_LEVEL_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(3).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
 				case SQLConstants.METALEVEL_ATTID:
 					newItem.setMetaLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 					break;
@@ -268,6 +215,17 @@ public class ItemDAO extends AbstractSqlDAO {
 
 			}
 			res.close();
+			
+			ResultSet res2 = stat.executeQuery(query2);
+			while (res2.next()){
+				Integer itemId = res.getInt(SQLConstants.TYPEID_COL);
+				newItem = memoryCache.get(itemId);
+				PreRequisite p = new PreRequisite(
+						res2.getInt(SQLConstants.SKILLID_COL),
+						res2.getInt(SQLConstants.SKILLLEVEL_COL));
+				newItem.addPreRequisite(p);
+			}
+			res2.close();
 		} catch (SQLException e) {
 			throw new PQEveDatabaseNotFound();
 		}
@@ -297,8 +255,8 @@ public class ItemDAO extends AbstractSqlDAO {
 			inClause += daddy.getGroupID();
 		}
 
-		String query = SQLConstants.QUERY_TYPE_BY_PARENT;
-		query = query.replace("?", inClause);
+		String query = SQLConstants.QUERY_TYPE_BY_PARENT.replace("?", inClause);
+		String query2 = SQLConstants.QUERY_PREREQUISITES_BY_PARENT.replace("?", inClause);
 		// System.out.println(query); // for convenience : uncomment to see DB
 		// queries
 
@@ -325,30 +283,6 @@ public class ItemDAO extends AbstractSqlDAO {
 				int attributeID = res.getInt(SQLConstants.ATTRIBUTEID_COL);
 
 				switch (attributeID) {
-				case SQLConstants.REQUIRED_SKILL_1_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(1).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_2_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(2).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_3_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(3).setTypeID(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_1_LEVEL_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(1).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_2_LEVEL_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(2).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
-				case SQLConstants.REQUIRED_SKILL_3_LEVEL_ATTID:
-					newItem.youDontWantToKnowWhatThisIs(3).setRequiredLevel(
-							res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
-					break;
 				case SQLConstants.METALEVEL_ATTID:
 					newItem.setMetaLevel(res.getInt(SQLConstants.ATTRIBUTE_VALUE_COL));
 					break;
@@ -363,6 +297,17 @@ public class ItemDAO extends AbstractSqlDAO {
 
 			}
 			res.close();
+			
+			ResultSet res2 = stat.executeQuery(query2);
+			while (res2.next()){
+				Integer itemId = res.getInt(SQLConstants.TYPEID_COL);
+				newItem = memoryCache.get(itemId);
+				PreRequisite p = new PreRequisite(
+						res2.getInt(SQLConstants.SKILLID_COL),
+						res2.getInt(SQLConstants.SKILLLEVEL_COL));
+				newItem.addPreRequisite(p);
+			}
+			res2.close();
 		} catch (SQLException e) {
 			throw new PQEveDatabaseNotFound();
 		}
