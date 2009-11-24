@@ -10,6 +10,7 @@ import java.util.TimeZone;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.ServerStatus;
+import org.pausequafe.data.business.SkillPlan;
 import org.pausequafe.gui.model.characters.MonitoredCharactersAndSkillPlansModel;
 import org.pausequafe.gui.view.browsers.BrowsersWindow;
 import org.pausequafe.gui.view.character.CharacterTab;
@@ -18,6 +19,7 @@ import org.pausequafe.gui.view.misc.ErrorAPICorrupted;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
 import org.pausequafe.gui.view.misc.StyleSheetEditor;
+import org.pausequafe.gui.view.skillplans.SkillPlanView;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
@@ -42,6 +44,8 @@ import com.trolltech.qt.gui.QSystemTrayIcon.ActivationReason;
 
 public class MainWindow extends QMainWindow {
 
+	private static MainWindow instance;
+	
 	private static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 	private Ui_MainWindow ui = new Ui_MainWindow();
 
@@ -66,11 +70,19 @@ public class MainWindow extends QMainWindow {
 	// ////////////////
 	// constructors //
 	// ////////////////
-	public MainWindow() {
+	public static MainWindow getInstance() {
+		if(instance==null){
+			instance = new MainWindow();
+		}
+		return instance;
+	}
+
+	
+	private MainWindow() {
 		this(null);
 	}
 
-	public MainWindow(QWidget parent) {
+	private MainWindow(QWidget parent) {
 		super(parent, Qt.WindowType.Window);
 		ui.setupUi(this);
 		setupUi();
@@ -89,6 +101,18 @@ public class MainWindow extends QMainWindow {
 		
 	}
 
+	////////////////////
+	// public methods //
+	////////////////////
+	public void showWindow(ActivationReason reason) {
+		if (reason == ActivationReason.DoubleClick) {
+			this.show();
+		}
+	}
+	
+	/////////////////////
+	// private methods //
+	/////////////////////
 	private void setupUi() {
 		// init icon & window name
 		this.setWindowIcon(new QIcon(Constants.WINDOW_ICON));
@@ -313,6 +337,17 @@ public class MainWindow extends QMainWindow {
 		browsers.show();
 		browsers.activateWindow();
 	}
+	
+	public void openPlanView(MonitoredCharacter character, SkillPlan plan) {
+		SkillPlanView skillPlanView = new SkillPlanView();
+		skillPlanView.setStyleSheet(this.styleSheet());
+		skillPlanView.setWindowIcon(this.windowIcon());
+		skillPlanView.show();
+		skillPlanView.activateWindow();
+		
+		skillPlanView.changeSelectedCharacter(character);
+		skillPlanView.changeSelectedSkillPlan(plan);
+	}
 
 	@SuppressWarnings("unused")
 	private void refreshAllTabs() {
@@ -374,12 +409,6 @@ public class MainWindow extends QMainWindow {
 	@Override
 	public void closeEvent(QCloseEvent event) {
 		this.hide();
-	}
-
-	public void showWindow(ActivationReason reason) {
-		if (reason == ActivationReason.DoubleClick) {
-			this.show();
-		}
 	}
 
 }

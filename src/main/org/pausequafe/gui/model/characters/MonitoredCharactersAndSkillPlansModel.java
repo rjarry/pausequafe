@@ -23,7 +23,7 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 	/////////////
 	private static MonitoredCharactersAndSkillPlansModel instance;
 	private List<MonitoredCharacter> characterList = new ArrayList<MonitoredCharacter>();
-	public Signal0 listUpdated = new Signal0();
+//	public Signal0 listUpdated = new Signal0();
 
 	// ///////////////
 	// constructors //
@@ -62,7 +62,6 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		characterList.add(character);
 		childrenInserted(null, row, row);
 		MonitoredCharacterDAO.getInstance().addMonitoredCharacter(character.getApi());
-		listUpdated.emit();
 	}
 
 	public void removeCharacter(int currentIndex) throws PQSQLDriverNotFoundException,
@@ -72,7 +71,6 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		characterList.remove(currentIndex);
 		childrenRemoved(null, currentIndex, currentIndex);
 		MonitoredCharacterDAO.getInstance().deleteMonitoredCharacter(characterID);
-		listUpdated.emit();
 	}
 
 	

@@ -12,6 +12,7 @@ import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.SQLConstants;
 
+import com.trolltech.qt.core.Qt.ItemDataRole;
 import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QLabel;
@@ -31,6 +32,8 @@ public class BrowsersWindow extends QWidget {
 
 	private QToolBar toolBar;
 	private QComboBox sheetCombo;
+	
+	private MonitoredCharactersAndSkillPlansModel characterModel;
 
 	// ////////////////
 	// constructors //
@@ -42,14 +45,14 @@ public class BrowsersWindow extends QWidget {
 	public BrowsersWindow(QWidget parent) {
 		super(parent);
 		setupUi();
-		updateSheetList();
 		try {
-			MonitoredCharactersAndSkillPlansModel.getInstance().listUpdated.connect(this, "updateSheetList()");
+			characterModel = MonitoredCharactersAndSkillPlansModel.getInstance();
 		} catch (PQSQLDriverNotFoundException e) {
 			popSQLDriverError();
 		} catch (PQUserDatabaseFileCorrupted e) {
 			popUserDBCorrupt();
 		}
+		sheetCombo.setModel(characterModel);
 	}
 
 	// ////////////////
@@ -83,29 +86,17 @@ public class BrowsersWindow extends QWidget {
 		this.resize(1100, 700);
 	}
 
-	// /////////
-	// slots //
-	// /////////
+	// //////////////////
+	// private methods //
+	// //////////////////
 	@SuppressWarnings("unused")
 	private void changeCurrentCharacter(int index) {
 		int i = index;
-		skillBrowser.setSheet((CharacterSheet) sheetCombo.itemData(index));
-		shipBrowser.setSheet((CharacterSheet) sheetCombo.itemData(index));
-		moduleBrowser.setSheet((CharacterSheet) sheetCombo.itemData(index));
-	}
-
-	private void updateSheetList() {
-		sheetCombo.clear();
-		sheetCombo.addItem("no character");
-		try {
-			for (MonitoredCharacter character : MonitoredCharactersAndSkillPlansModel.getInstance().getList()) {
-				sheetCombo.addItem(character.getSheet().getName(), character.getSheet());
-			}
-		} catch (PQSQLDriverNotFoundException e) {
-			popSQLDriverError();
-		} catch (PQUserDatabaseFileCorrupted e) {
-			popUserDBCorrupt();
-		}
+		MonitoredCharacter data = (MonitoredCharacter) sheetCombo.itemData(index,ItemDataRole.DisplayRole);
+		CharacterSheet sheet = data.getSheet(); 
+		skillBrowser.setSheet(sheet);
+		shipBrowser.setSheet(sheet);
+		moduleBrowser.setSheet(sheet);
 	}
 
 	private void popUserDBCorrupt() {
