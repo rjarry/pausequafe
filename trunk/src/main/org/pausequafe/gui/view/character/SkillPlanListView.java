@@ -3,10 +3,13 @@ package org.pausequafe.gui.view.character;
 import java.util.List;
 
 import org.pausequafe.data.business.MonitoredCharacter;
+import org.pausequafe.data.business.SkillPlan;
 import org.pausequafe.gui.model.characters.CharaterSkillPlansProxyModel;
+import org.pausequafe.gui.view.main.MainWindow;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.QModelIndex;
+import com.trolltech.qt.core.Qt.ItemDataRole;
 import com.trolltech.qt.gui.QAbstractItemView;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
@@ -44,6 +47,7 @@ public class SkillPlanListView extends QWidget {
 		ui.skillPlanList.setAcceptDrops(true);
 		ui.skillPlanList.setDropIndicatorShown(true);
 		ui.skillPlanList.setDragDropMode(DragDropMode.InternalMove);
+		ui.skillPlanList.doubleClicked.connect(this,"onSkillPlanDoubleClicked(QModelIndex)");
 		
 		ui.addPlanButton.clicked.connect(this, "createSkillPlan()");
 		ui.removePlanButton.clicked.connect(this, "deleteSkillPlan()");
@@ -65,5 +69,12 @@ public class SkillPlanListView extends QWidget {
 		if(selectedRows.size()==1){
 			skillPlansModel.deleteSkillPlan(selectedRows.get(0).row());
 		}
+	}
+	
+	@SuppressWarnings("unused")
+	private void onSkillPlanDoubleClicked(QModelIndex index){
+		SkillPlan skillPlan = (SkillPlan) skillPlansModel.data(index, ItemDataRole.DisplayRole);
+		MainWindow.getInstance().openPlanView(monChar, skillPlan);
+		
 	}
 }

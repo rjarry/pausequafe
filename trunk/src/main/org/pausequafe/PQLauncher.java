@@ -73,7 +73,7 @@ public class PQLauncher {
 			QApplication.quit();
 		}
 
-		MainWindow mainWindow = new MainWindow();
+		MainWindow mainWindow = MainWindow.getInstance();
 
 		QApplication.setActiveWindow(mainWindow);
 
