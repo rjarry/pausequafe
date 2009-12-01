@@ -22,6 +22,7 @@ import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.Formater;
+import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QTimer;
@@ -60,7 +61,7 @@ public class CharacterSkills extends QWidget {
 
 		MarketGroup group = null;
 		try {
-			group = MarketGroupDAO.getInstance().findMarketGroupById(150);
+			group = MarketGroupDAO.getInstance().findMarketGroupById(SQLConstants.SKILLS_MKTGRPID);
 		} catch (PQSQLDriverNotFoundException e) {
 			ErrorMessage message = new ErrorMessage(tr(Constants.DRIVER_NOT_FOUND_ERROR));
 			message.exec();

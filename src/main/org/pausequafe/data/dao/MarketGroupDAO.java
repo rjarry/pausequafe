@@ -23,7 +23,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	// protected fields //
 	// ////////////////////
 	private static MarketGroupDAO instance;
-	private HashMap<Integer, MarketGroup> memoryCache = new HashMap<Integer, MarketGroup>();
+	public final HashMap<Integer, MarketGroup> memoryCache = new HashMap<Integer, MarketGroup>();
 
 	// ///////////////
 	// constructor //
@@ -39,34 +39,6 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 		return instance;
 	}
 
-	// //////////////////
-	// public methods //
-	// //////////////////
-	public List<MarketGroup> findMarketGroupsById(List<Integer> idList)
-			throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
-		ArrayList<MarketGroup> result = new ArrayList<MarketGroup>();
-		List<Integer> toBeQueried = new ArrayList<Integer>();
-
-		// get items from cache
-		MarketGroup aMarketGroup;
-		for (Integer aMarketGroupId : idList) {
-			aMarketGroup = memoryCache.get(aMarketGroupId);
-			if (aMarketGroup == null) {
-				toBeQueried.add(aMarketGroupId);
-			} else {
-				result.add(aMarketGroup);
-			}
-		}
-
-		// get missing items from database
-		if (!toBeQueried.isEmpty()) {
-			List<MarketGroup> queriedMarketGroups = queryMarketGroupsById(toBeQueried);
-			result.addAll(queriedMarketGroups);
-		} // missing items are now retrieved
-
-		return result;
-	}
-
 	/**
 	 * Provided for convenience.
 	 * 
@@ -74,14 +46,13 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	public MarketGroup findMarketGroupById(Integer groupId) throws PQSQLDriverNotFoundException,
 			PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
 		MarketGroup result = null;
-		List<Integer> list = new ArrayList<Integer>();
-		list.add(groupId);
 
-		List<MarketGroup> listResult = findMarketGroupsById(list);
+		result = memoryCache.get(groupId);
+		if (result == null) {
+			// get missing items from database
+			result = queryMarketGroupById(groupId);
+		} // missing items are now retrieved
 
-		if (!listResult.isEmpty()) {
-			result = listResult.get(0);
-		}
 		return result;
 	}
 
@@ -113,30 +84,28 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	// private methods //
 	// ///////////////////
 
-	private List<MarketGroup> queryMarketGroupsById(List<Integer> idsToBeQueried)
-			throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
+	private MarketGroup queryMarketGroupById(Integer groupId) throws PQSQLDriverNotFoundException,
+			PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
 
 		initConnection(SQLConstants.EVE_DATABASE);
 
-		String inClause = buildInClause(idsToBeQueried);
-
 		String query = SQLConstants.QUERY_MARKETGRP_BY_ID;
-		query = query.replace("?", inClause);
-//		System.out.println(query); // for convenience : uncomment to see DB
+		query = query.replace("?", String.valueOf(groupId));
+		// System.out.println(query); // for convenience : uncomment to see DB
 		// queries
 
-		List<MarketGroup> result = new ArrayList<MarketGroup>();
+		MarketGroup marketGroup = null;
 		List<MarketGroup> itemContainerParents = new ArrayList<MarketGroup>();
 		List<MarketGroup> groupContainerParents = new ArrayList<MarketGroup>();
 		try {
 			ResultSet res = stat.executeQuery(query);
 			while (res.next()) {
-				MarketGroup marketGroup = new MarketGroup(res.getInt(SQLConstants.MARKETGRPID_COL),
-						res.getString(SQLConstants.MARKETGRPNAME_COL), res
-								.getBoolean(SQLConstants.HASTYPE_COL));
+				marketGroup = new MarketGroup(res.getInt(SQLConstants.MARKETGRPID_COL), res
+						.getString(SQLConstants.MARKETGRPNAME_COL), res
+						.getBoolean(SQLConstants.HASTYPE_COL));
 
 				memoryCache.put(marketGroup.getGroupID(), marketGroup);
-				result.add(marketGroup);
+
 				// Now we have to query the groups children
 				if (marketGroup.isItemContainer()) {
 					itemContainerParents.add(marketGroup);
@@ -149,10 +118,70 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 			throw new PQEveDatabaseNotFound();
 		}
 
-		ItemDAO.getInstance().initMarketGroupChildren(itemContainerParents);
-		initMarketGroupChildren(groupContainerParents);
+		if (groupId == SQLConstants.BLUEPRINTS_MKTGRPID) {
+			ItemDAO.getInstance().initBlueprintGroupChildren(itemContainerParents);
+			initBlueprintGroupChildren(groupContainerParents);
+		} else {
+			ItemDAO.getInstance().initMarketGroupChildren(itemContainerParents);
+			initMarketGroupChildren(groupContainerParents);
+		}
 
-		return result;
+		return marketGroup;
+	}
+
+	private void initBlueprintGroupChildren(List<MarketGroup> parents)
+			throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
+
+		if (parents == null || parents.size() == 0){
+			return;
+		}
+
+		initConnection(SQLConstants.EVE_DATABASE);
+		
+		String inClause = "";
+		boolean first = true;
+		for (MarketGroup daddy : parents) {
+			if (first) {
+				first = false;
+			} else {
+				inClause += ",";
+			}
+			inClause += daddy.getGroupID();
+		}
+
+		String query = SQLConstants.QUERY_MARKETGRP_BY_PARENT;
+		query = query.replace("?", inClause);
+		// System.out.println(query); // for convenience : uncomment to see DB
+		// queries
+
+		List<MarketGroup> itemContainerParents = new ArrayList<MarketGroup>();
+		List<MarketGroup> groupContainerParents = new ArrayList<MarketGroup>();
+		try {
+			ResultSet res = conn.createStatement().executeQuery(query);
+			while (res.next()) {
+				int marketGroupID = res.getInt(SQLConstants.MARKETGRPID_COL);
+				MarketGroup marketGroup = new MarketGroup(marketGroupID, res
+						.getString(SQLConstants.MARKETGRPNAME_COL), res
+						.getBoolean(SQLConstants.HASTYPE_COL));
+
+				memoryCache.put(marketGroup.getGroupID(), marketGroup);
+				addMarketGroupChild(res.getInt(SQLConstants.PARENTGRPID_COL), marketGroupID);
+				// Now we have to query the groups children
+				if (marketGroup.isItemContainer()) {
+					itemContainerParents.add(marketGroup);
+				} else {
+					groupContainerParents.add(marketGroup);
+				}
+			}
+			res.close();
+		} catch (SQLException e) {
+			throw new PQEveDatabaseNotFound();
+		}
+
+		ItemDAO.getInstance().initBlueprintGroupChildren(itemContainerParents);
+		if (groupContainerParents.size() != 0) {
+			initBlueprintGroupChildren(groupContainerParents);
+		}
 	}
 
 	/**
@@ -161,6 +190,10 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 	private void initMarketGroupChildren(List<MarketGroup> parents)
 			throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted, PQEveDatabaseNotFound {
 
+		if (parents == null || parents.size() == 0){
+			return;
+		}
+		
 		initConnection(SQLConstants.EVE_DATABASE);
 
 		String inClause = "";
@@ -182,7 +215,7 @@ public class MarketGroupDAO extends AbstractSqlDAO {
 		List<MarketGroup> itemContainerParents = new ArrayList<MarketGroup>();
 		List<MarketGroup> groupContainerParents = new ArrayList<MarketGroup>();
 		try {
-			ResultSet res = stat.executeQuery(query);
+			ResultSet res = conn.createStatement().executeQuery(query);
 			while (res.next()) {
 				int marketGroupID = res.getInt(SQLConstants.MARKETGRPID_COL);
 				MarketGroup marketGroup = new MarketGroup(marketGroupID, res

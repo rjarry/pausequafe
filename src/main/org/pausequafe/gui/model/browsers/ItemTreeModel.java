@@ -15,6 +15,8 @@ import com.trolltech.qt.gui.QTreeModel;
 public class ItemTreeModel extends QTreeModel {
 
 	private ItemTreeElement root = null;
+
+
 	private CharacterSheet sheet = null;
 
 	public ItemTreeModel() {
@@ -33,6 +35,14 @@ public class ItemTreeModel extends QTreeModel {
 
 	public CharacterSheet getSheet() {
 		return sheet;
+	}
+	public ItemTreeElement getRoot() {
+		return root;
+	}
+
+	public void setRoot(ItemTreeElement root) {
+		this.root = root;
+		this.dataChanged.emit(null, null);
 	}
 
 	@Override
@@ -59,12 +69,20 @@ public class ItemTreeModel extends QTreeModel {
 		ItemTreeElement treeElement;
 		if (parent == null) {
 			treeElement = root;
+			if (root == null){
+				return 0;
+			}
 		} else {
 			treeElement = (ItemTreeElement) parent;
 		}
 
 		return treeElement.childCount();
 	}
+	
+	public void forceReset(){
+		this.reset();
+	}
+	
 
 	@Override
 	public String text(Object value) {

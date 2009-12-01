@@ -13,6 +13,7 @@ import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.Qt.ItemDataRole;
+import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QLabel;
@@ -29,6 +30,7 @@ public class BrowsersWindow extends QWidget {
 	private BrowserSkillTab skillBrowser;
 	private BrowserShipTab shipBrowser;
 	private BrowserItemTab moduleBrowser;
+	private BrowserBlueprintTab blueprintBrowser;
 
 	private QToolBar toolBar;
 	private QComboBox sheetCombo;
@@ -53,6 +55,8 @@ public class BrowsersWindow extends QWidget {
 			popUserDBCorrupt();
 		}
 		sheetCombo.setModel(characterModel);
+		
+		changeCurrentCharacter(sheetCombo.currentIndex());
 	}
 
 	// ////////////////
@@ -70,18 +74,19 @@ public class BrowsersWindow extends QWidget {
 		toolBar.addWidget(new QLabel(" Active Character : "));
 		toolBar.addWidget(sheetCombo);
 
-		sheetCombo.addItem("no character");
 		sheetCombo.currentIndexChanged.connect(this, "changeCurrentCharacter(int)");
 
-		skillBrowser = new BrowserSkillTab(this, Constants.SKILLS_MARKETGROUPID);
-		shipBrowser = new BrowserShipTab(this, Constants.SHIPS_MARKETGROUPID);
-		moduleBrowser = new BrowserItemTab(this, Constants.MODULES_MARKETGROUPID);
+		skillBrowser = new BrowserSkillTab(this, SQLConstants.SKILLS_MKTGRPID);
+		shipBrowser = new BrowserShipTab(this, SQLConstants.SHIPS_MKTGRPID);
+		moduleBrowser = new BrowserItemTab(this, SQLConstants.ITEMS_MKTGRPID);
+		blueprintBrowser = new BrowserBlueprintTab(this, SQLConstants.BLUEPRINTS_MKTGRPID);
 
 		ui.tabWidget.removeTab(0);
 
 		ui.tabWidget.addTab(skillBrowser, "Skills");
 		ui.tabWidget.addTab(shipBrowser, "Ships");
 		ui.tabWidget.addTab(moduleBrowser, "Ship Equipement");
+		ui.tabWidget.addTab(blueprintBrowser, "Blueprints");
 
 		this.resize(1100, 700);
 	}
@@ -91,12 +96,12 @@ public class BrowsersWindow extends QWidget {
 	// //////////////////
 	@SuppressWarnings("unused")
 	private void changeCurrentCharacter(int index) {
-		int i = index;
 		MonitoredCharacter data = (MonitoredCharacter) sheetCombo.itemData(index,ItemDataRole.DisplayRole);
 		CharacterSheet sheet = data.getSheet(); 
 		skillBrowser.setSheet(sheet);
 		shipBrowser.setSheet(sheet);
 		moduleBrowser.setSheet(sheet);
+		blueprintBrowser.setSheet(sheet);
 	}
 
 	private void popUserDBCorrupt() {

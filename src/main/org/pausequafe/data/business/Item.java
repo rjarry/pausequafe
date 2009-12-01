@@ -23,6 +23,7 @@ public class Item {
 	protected String typeName;
 	protected int metaGroupID;
 	protected int metaLevel;
+	protected int categoryID;
 	
 	protected List<PreRequisite> preReqs = null;
 
@@ -33,18 +34,20 @@ public class Item {
     	preReqs = new ArrayList<PreRequisite>();
     }
 
-	public Item(int typeID, String typeName, int metaGroupID) {
+	public Item(int typeID, String typeName, int metaGroupID, int categoryID) {
 		this.typeID = typeID;
 		this.typeName = typeName;
 		this.metaGroupID = metaGroupID;
+		this.categoryID = categoryID;
 		preReqs = new ArrayList<PreRequisite>();
 	}
 	
 	public Item(Item item){
-		this.typeID = item.getTypeID();
-		this.typeName = item.getTypeName();
-		this.metaGroupID = item.getMetaGroupID();
-		this.metaLevel = item.getMetaLevel();
+		this.typeID = item.typeID;
+		this.typeName = item.typeName;
+		this.metaGroupID = item.metaGroupID;
+		this.metaLevel = item.metaLevel;
+		this.categoryID = item.categoryID;
 		preReqs = item.getPreReqs();
 	}
 
@@ -99,6 +102,14 @@ public class Item {
 	
 	public void setMetaLevel(int metaLevel) {
 		this.metaLevel = metaLevel;
+	}
+
+	public int getCategoryID() {
+		return categoryID;
+	}
+
+	public void setCategoryID(int categoryID) {
+		this.categoryID = categoryID;
 	}
 
 }

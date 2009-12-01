@@ -27,6 +27,8 @@ import com.trolltech.qt.gui.QSplashScreen;
 import com.trolltech.qt.gui.QSystemTrayIcon;
 
 public class PQLauncher {
+	
+	private static final int BOTTOM_LEFT = 120;
 
 	public static void main(String[] args) {
 		QApplication.initialize(args);
@@ -47,13 +49,15 @@ public class PQLauncher {
 		QApplication.setQuitOnLastWindowClosed(false);
 
 		try {
-			splash.showMessage("Loading item database...", 120, QColor.white);
-			MarketGroupDAO.getInstance().findMarketGroupById(4);
-			splash.showMessage("Loading ship database...", 120, QColor.white);
-			MarketGroupDAO.getInstance().findMarketGroupById(9);
-			splash.showMessage("Loading skill database...", 120, QColor.white);
-			MarketGroupDAO.getInstance().findMarketGroupById(150);
-			splash.showMessage("Loading proxy configuration...", 120, QColor.white);
+			splash.showMessage("Loading item database...", BOTTOM_LEFT, QColor.white);
+			MarketGroupDAO.getInstance().findMarketGroupById(SQLConstants.ITEMS_MKTGRPID);
+			splash.showMessage("Loading ship database...", BOTTOM_LEFT, QColor.white);
+			MarketGroupDAO.getInstance().findMarketGroupById(SQLConstants.SHIPS_MKTGRPID);
+			splash.showMessage("Loading skill database...", BOTTOM_LEFT, QColor.white);
+			MarketGroupDAO.getInstance().findMarketGroupById(SQLConstants.SKILLS_MKTGRPID);
+			splash.showMessage("Loading blueprint database...", BOTTOM_LEFT, QColor.white);
+			MarketGroupDAO.getInstance().findMarketGroupById(SQLConstants.BLUEPRINTS_MKTGRPID);
+			splash.showMessage("Loading proxy configuration...", BOTTOM_LEFT, QColor.white);
 			Configuration.setConfigurationFilePath(Constants.PROXY_CONFIG_FILE_PATH);
 		} catch (PQSQLDriverNotFoundException e) {
 			ErrorMessage error = new ErrorMessage(null, Constants.DRIVER_NOT_FOUND_ERROR);
@@ -99,14 +103,6 @@ public class PQLauncher {
 		splash.finish(mainWindow);
 		mainWindow.show();
 		tray.show();
-		
-//		QTreeView view = new QTreeView();
-//		try {
-//			view.setModel(MonitoredCharactersAndSkillPlansModel.getInstance());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		view.show();
 
 		QApplication.exec();
 	}

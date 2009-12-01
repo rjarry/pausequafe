@@ -11,6 +11,7 @@ import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.QSize;
+import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QWidget;
@@ -59,6 +60,9 @@ public class BrowserSkillTab extends AbstractBrowserTab {
     	super.initConnection();
     	ui.sortComboBox.currentIndexChanged.connect(this, "sort()");
     	
+    	QAction enterFilterArea = new QAction(this);
+		enterFilterArea.triggered.connect(filterLineEdit, "setFocus()");
+		enterFilterArea.setShortcut("Ctrl+F");
     }
     
 	///////////
@@ -83,6 +87,9 @@ public class BrowserSkillTab extends AbstractBrowserTab {
 		super.currentItemSelected(index);
 
 		if(currentItemSelected != null){
+			ui.prereqFrame.setEnabled(true);
+			ui.descriptionFrame.setEnabled(true);
+			ui.attributesTable.setEnabled(true);
 			ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
 
 			String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
@@ -100,6 +107,7 @@ public class BrowserSkillTab extends AbstractBrowserTab {
 			prereqModel = new ItemTreeModel(root);
 			prereqModel.setSheet(sheet);
 			prereqTree.setModel(prereqModel);
+			prereqTree.expandAll();
 
 			AttributesTableModel tableModel = new AttributesTableModel(currentItemSelected);
 			ui.attributesTable.setModel(tableModel);

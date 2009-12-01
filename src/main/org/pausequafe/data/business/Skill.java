@@ -1,5 +1,7 @@
 package org.pausequafe.data.business;
 
+import org.pausequafe.misc.util.SQLConstants;
+
 /**
  * A specific Item which has 3 additional attributes.
  * <ul><li>the rank (or time multiplier)
@@ -23,7 +25,7 @@ public class Skill extends Item {
     // constructor //
     /////////////////
 	public Skill(int typeID, String typeName) {
-		super(typeID,typeName,0);
+		super(typeID,typeName,0, SQLConstants.SKILL_CATID);
 	}
 
     ////////////////////

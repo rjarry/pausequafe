@@ -21,6 +21,7 @@ import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.QTimer;
+import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QTextBrowser;
@@ -62,7 +63,7 @@ public abstract class AbstractBrowserTab extends QWidget {
 	}
 
 	// /////////////////////////////
-	// protected (to be overiden //
+	// protected (to be overiden) //
 	// /////////////////////////////
 	public void setSheet(CharacterSheet sheet) {
 		this.sheet = sheet;
@@ -101,7 +102,6 @@ public abstract class AbstractBrowserTab extends QWidget {
 		itemTree.selectionModel().currentChanged.connect(this, "currentItemSelected(QModelIndex)");
 		filterLineEdit.textChanged.connect(delayBeforeUpdtingFilter, "start()");
 		delayBeforeUpdtingFilter.timeout.connect(this, "changeFilteringText()");
-		// filterLineEdit.textChanged.connect(this,"changeFilteringText()");
 	}
 
 	// /////////

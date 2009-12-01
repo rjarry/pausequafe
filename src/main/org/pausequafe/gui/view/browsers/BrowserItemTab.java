@@ -10,6 +10,7 @@ import org.pausequafe.gui.model.browsers.ItemTreeSortFilterProxyModel;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.QModelIndex;
+import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QWidget;
@@ -64,6 +65,10 @@ public class BrowserItemTab extends AbstractBrowserTab {
     	ui.factionCheckBox.toggled.connect(proxyModel, "setStorylineShown(boolean)");
     	ui.deadspaceCheckBox.toggled.connect(proxyModel, "setDeadspaceShown(boolean)");
     	ui.officerCheckBox.toggled.connect(proxyModel, "setOfficerShown(boolean)");
+    	
+    	QAction enterFilterArea = new QAction(this);
+		enterFilterArea.triggered.connect(filterLineEdit, "setFocus()");
+		enterFilterArea.setShortcut("Ctrl+F");
     }
     
 	///////////
@@ -88,6 +93,9 @@ public class BrowserItemTab extends AbstractBrowserTab {
 		super.currentItemSelected(index);
 
 		if(currentItemSelected != null){
+			ui.prereqFrame.setEnabled(true);
+			ui.descriptionFrame.setEnabled(true);
+			ui.attributesTable.setEnabled(true);
 			ui.itemNameLabel.setText("<font size=5>" + currentItemSelected.getTypeName() + "</font>");
 			
 			String icon = Constants.EVE_ICONS_PATH + currentItemSelected.getIcon() + ".png";
@@ -105,6 +113,7 @@ public class BrowserItemTab extends AbstractBrowserTab {
 			prereqModel = new ItemTreeModel(root);
 			prereqModel.setSheet(sheet);
 			prereqTree.setModel(prereqModel);
+			prereqTree.expandAll();
 			
 			AttributesTableModel tableModel = new AttributesTableModel(currentItemSelected);
 			ui.attributesTable.setModel(tableModel);

@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.text.FieldPosition;
 
 public class Formater {
-	
+
 	private static final long SECOND = 1000;
 	private static final long MINUTE = 60 * SECOND;
 	private static final long HOUR = 60 * MINUTE;
@@ -22,7 +22,7 @@ public class Formater {
 
 		return buff.toString();
 	}
-	
+
 	public static String printLong(long number) {
 		StringBuffer buff = new StringBuffer("");
 
@@ -35,7 +35,7 @@ public class Formater {
 
 		return buff.toString();
 	}
-	
+
 	public static String printPercent(double number) {
 		StringBuffer buff = new StringBuffer("");
 
@@ -47,41 +47,83 @@ public class Formater {
 
 		return buff.toString();
 	}
-	
-	public static String printTime(long time){
+
+	public static String printTime(long time) {
 		String timeString = "";
-		
+
 		int temp = (int) (time / DAY);
-		switch (temp){
-			case 0 : break;
-			case 1 : timeString += temp + " day "; break;
-			default : timeString += temp + " days ";
+		switch (temp) {
+		case 0:
+			break;
+		case 1:
+			timeString += temp + " day ";
+			break;
+		default:
+			timeString += temp + " days ";
 		}
-		
+
 		temp = (int) ((time % DAY) / HOUR);
-		switch (temp){
-			case 0 : break;
-			case 1 : timeString += temp + " hour "; break;
-			default : timeString += temp + " hours ";
+		switch (temp) {
+		case 0:
+			break;
+		case 1:
+			timeString += temp + " hour ";
+			break;
+		default:
+			timeString += temp + " hours ";
 		}
-		
+
 		temp = (int) ((time % HOUR) / MINUTE);
-		switch (temp){
-			case 0 : break;
-			case 1 : timeString += temp + " minute "; break;
-			default : timeString += temp + " minutes ";
+		switch (temp) {
+		case 0:
+			break;
+		case 1:
+			timeString += temp + " minute ";
+			break;
+		default:
+			timeString += temp + " minutes ";
 		}
-		
+
 		temp = (int) ((time % MINUTE) / SECOND);
-		switch (temp){
-			case 0 : break;
-			case 1 : timeString += temp + " second"; break;
-			default : timeString += temp + " seconds";
+		switch (temp) {
+		case 0:
+			break;
+		case 1:
+			timeString += temp + " second";
+			break;
+		default:
+			timeString += temp + " seconds";
 		}
 
 		return timeString;
 	}
-	
+
+	public static String printTimeCondensed(long time) {
+		String timeString = "";
+
+		int temp = (int) (time / DAY);
+		if (temp != 0) {
+			timeString += temp + "d ";
+		}
+
+		temp = (int) ((time % DAY) / HOUR);
+		if (temp != 0) {
+			timeString += temp + "h ";
+		}
+
+		temp = (int) ((time % HOUR) / MINUTE);
+		if (temp != 0) {
+			timeString += temp + "m ";
+		}
+
+		temp = (int) ((time % MINUTE) / SECOND);
+		if (temp != 0) {
+			timeString += temp + "s";
+		}
+
+		return timeString;
+	}
+
 	public static String printLevel(int level) {
 		String romanNumber;
 		switch (level) {
