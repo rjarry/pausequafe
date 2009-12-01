@@ -124,6 +124,7 @@ public class SkillPlanView extends QWidget {
 		}
 	}
 	
+	
 	private void popUserDBCorrupt() {
 		ErrorQuestion error = new ErrorQuestion(this, tr(Constants.USER_DB_CORRUPTED_ERROR));
 		error.exec();

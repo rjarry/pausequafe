@@ -57,11 +57,12 @@ public class Migrator {
 		System.out.println("Customizing database...");
 		
 		completeTech3Tags(conPQ);
-		deleteTradeGoods(conPQ);
+//		deleteTradeGoods(conPQ);
 		completeShipsMarketGroups(conPQ);
 		completeModulesMarketGroups(conPQ);
 		completeBlueprintsMarketGroups(conPQ);
 		correctBugs(conPQ);
+		blueprintMetagroups(conPQ);
 		
 		System.out.println("Vacuuming SQLite file... ");
 		Statement statSQLite = conPQ.createStatement();
@@ -853,7 +854,7 @@ System.out.print("Generating invFlags... ");
 										"capacity double," +
 										"basePrice double," +
 										"marketGroupID smallint," +
-										"chanceOfDuplicating double," +
+										"portionSize int," +
 										"metaGroupID tinyint," +
 										"published bit" +
 									")");
@@ -871,7 +872,7 @@ System.out.print("Generating invFlags... ");
 										"INSERT INTO invTypes(typeID, groupID, " +
 										"typeName, description, icon, radius, mass, " +
 										"volume, capacity, basePrice, " +
-										"marketGroupID, chanceOfDuplicating, metaGroupID, published)" +
+										"marketGroupID, portionSize, metaGroupID, published)" +
 										" VALUES (?, ? ,? ,? ,? , ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		while(rs.next()){
 			prep.setInt(1, rs.getInt("typeID"));
@@ -893,7 +894,7 @@ System.out.print("Generating invFlags... ");
 				prep.setNull(11, java.sql.Types.NULL);
 			else 
 				prep.setShort(11, tempShort);
-			prep.setDouble(12, rs.getDouble("chanceOfDuplicating"));
+			prep.setInt(12, rs.getInt("portionSize"));
 			tempShort = rs.getShort("metaGroupID");
 			if (rs.wasNull())
 				prep.setNull(13, java.sql.Types.NULL);
@@ -982,7 +983,7 @@ System.out.print("Generating invFlags... ");
 			prep.setShort(2, rs.getShort("activityID"));
 			prep.setInt(3, rs.getInt("requiredTypeID"));
 			prep.setInt(4, rs.getInt("quantity"));
-			prep.setInt(5, rs.getInt("damagePerJob"));
+			prep.setDouble(5, rs.getDouble("damagePerJob"));
 			prep.setByte(6, rs.getByte("recycle"));
 			prep.addBatch();
 		}
@@ -1421,7 +1422,34 @@ System.out.print("Generating invFlags... ");
 		System.out.println("Done");
 	}
 	
+	///////////////////////////////////////////////////////
+	public static void blueprintMetagroups(Connection conWRITE) throws SQLException {
+		System.out.print("Updating blueprints metagroups... ");
+		Statement statWRITE = conWRITE.createStatement();
 
+		ResultSet rs = statWRITE.executeQuery("SELECT t1.typeID, t2.metaGroupID "
+											+ "FROM invtypes t1, invBlueprintTypes b, invTypes t2 "
+											+ "where t1.typeID = b.blueprintTypeID " 
+											+ "and b.productTypeID = t2.typeID");
+		
+		conWRITE.setAutoCommit(false);
+		
+		PreparedStatement prep = conWRITE.prepareStatement("UPDATE invTypes SET metaGroupID = ? WHERE typeID = ?");
+		
+		while (rs.next()){
+			prep.setInt(1, rs.getInt("metaGroupID"));
+			prep.setInt(2, rs.getInt("typeID"));
+			prep.addBatch();
+		}
+
+		rs.close();
+		prep.executeBatch();
+		
+		conWRITE.setAutoCommit(true);
+		
+		System.out.println("done");
+		
+	}
 /////////////////////////////////////////////////////
 	public static void correctBugs(Connection conWRITE) throws SQLException{
 		System.out.print("Correcting bugs... ");
@@ -1443,8 +1471,8 @@ System.out.print("Generating invFlags... ");
 		statWRITE.executeUpdate("UPDATE dgmAttributeTypes SET unitID=0 WHERE unitID IS NULL ");
 		
 		statWRITE.executeUpdate("DELETE FROM invTypes WHERE groupID NOT IN (SELECT groupID FROM invGroups)");
-		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invMarketGroups)");
-		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID IS NULL");
+//		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invMarketGroups)");
+//		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID IS NULL");
 		
 		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invTypes) AND hasTypes=1");
 		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT parentGroupID FROM invMarketGroups)");

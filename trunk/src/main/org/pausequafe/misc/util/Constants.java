@@ -28,9 +28,7 @@ public class Constants {
 	public static final int PRESENCE = 12383;
 	public static final int SPATIAL_AWARENESS = 3379;
 
-	public static final int SHIPS_MARKETGROUPID = 4;
-	public static final int SKILLS_MARKETGROUPID = 150;
-	public static final int MODULES_MARKETGROUPID = 9;
+
 
 	// //////////////////
 	// Meta Groups ID //
@@ -103,6 +101,16 @@ public class Constants {
 	public static final String VOLUME_ICON = "resources/icons/PauseQuafe/ShipAttributes/volume.png";
 	public static final String WARP_ICON = "resources/icons/PauseQuafe/ShipAttributes/warp_velocity.png";
 
+	public static final String PRICE_ICON = "resources/icons/PauseQuafe/bp/isk.png";
+	public static final String PROD_ICON = "resources/icons/PauseQuafe/bp/production";
+	public static final String PE_ICON = "resources/icons/PauseQuafe/bp/PE.png";
+	public static final String ME_ICON = "resources/icons/PauseQuafe/bp/PE.png";
+	public static final String COPY_ICON = "resources/icons/PauseQuafe/bp/copy.png";
+	public static final String INVENTION_ICON = "resources/icons/PauseQuafe/bp/invention.png";
+	public static final String MAXRUNS_ICON = "resources/icons/PauseQuafe/bp/maxruns.png";
+	public static final String BATCH_ICON = "resources/icons/PauseQuafe/bp/batch.png";
+	public static final String WASTE_ICON = "resources/icons/PauseQuafe/bp/waste.png";
+	
 	public static final String ADD_ICON = "resources/icons/PauseQuafe/add.png";
 	public static final String MINUS_ICON = "resources/icons/PauseQuafe/minus.png";
 

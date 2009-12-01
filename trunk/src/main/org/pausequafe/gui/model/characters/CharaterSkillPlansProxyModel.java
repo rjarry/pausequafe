@@ -11,7 +11,7 @@ import com.trolltech.qt.core.Qt.ItemFlag;
 import com.trolltech.qt.core.Qt.ItemFlags;
 import com.trolltech.qt.gui.QAbstractProxyModel;
 
-public class CharaterSkillPlansProxyModel extends QAbstractProxyModel{
+public class CharaterSkillPlansProxyModel extends QAbstractProxyModel {
 
 
 	/////////////

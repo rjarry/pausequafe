@@ -115,6 +115,7 @@ task distrib(type:Zip) {
 		include('resources/**/*.*')
 		include('settings/*.configuration')
 		include('lib/**/*.*')
+		exclude('resources/*.db3')
 		exclude('lib/**/qtjambi-linux32*.jar')
 		exclude('lib/**/qtjambi-macosx*.jar')
 		exclude('**/*.svn')

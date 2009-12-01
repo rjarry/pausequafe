@@ -48,20 +48,17 @@ public class AttributesTableModel extends QAbstractTableModel {
 			// text to display
 			case ItemDataRole.DisplayRole    : 
 				switch(index.column()){
-					case 0 : result = displayList.get(index.row()).getAttributeName();break;
+					case 0 : 
+						result = displayList.get(index.row()).getAttributeName();
+						break;
 					case 1 : 
-						result = displayUnit(displayList.get(index.row()).getValue(),
+						result = displayUnit(displayList.get(index.row()).getAttributeID(),
+											 displayList.get(index.row()).getValue(),
 											 displayList.get(index.row()).getUnit(),
 											 displayList.get(index.row()).getUnitID());
-				} break;
-					
-//			// display font
-//			case ItemDataRole.FontRole       : result =  elt.getFont(); break;
-//			// the icon before the skills
-//			case ItemDataRole.DecorationRole : result =  elt.getIcon(); break;
-//			// tool tips on the skills
-//			case ItemDataRole.ToolTipRole    : result =  elt.getTooltip(); break;
-
+				} 
+				break;
+				
 		default : result = null;
 		}
 		return result;
@@ -75,7 +72,10 @@ public class AttributesTableModel extends QAbstractTableModel {
 	
 	
 	
-	private String displayUnit(double value, String unitName, int unitID){
+	private String displayUnit(int attributeId, double value, String unitName, int unitID){
+		if(attributeId == SQLConstants.MAINCOLOR_ATTID){
+			return "#" + Integer.toHexString((int) value).toUpperCase();
+		}
 		DecimalFormat format = new DecimalFormat("#.######");
 		double displayValue = 0;
 		switch(unitID){
@@ -92,10 +92,10 @@ public class AttributesTableModel extends QAbstractTableModel {
 		case SQLConstants.SIZECLASS_UNITID :
 			int size = (int) value;
 			switch(size){
-				case 1 : unitName = "S"; break;
-				case 2 : unitName = "M"; break;
-				case 3 : unitName = "L"; break;
-				case 4 : unitName = "XL"; break;
+				case 1 : return "S";
+				case 2 : return "M";
+				case 3 : return "L";
+				case 4 : return "XL";
 			}
 			break;
 		case SQLConstants.ATTRIBUTEID_UNITID :

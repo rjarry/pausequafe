@@ -26,4 +26,11 @@ QStatusBar:item {
 	border : 0px;
 }
 
+QSpinBox#meSpinBox {
+	font-size : 18px;
+}
+QSpinBox#peSpinBox {
+	font-size : 18px;
+}
+
 
