@@ -21,7 +21,6 @@ import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.QTimer;
-import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QTextBrowser;

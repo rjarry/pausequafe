@@ -247,6 +247,16 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		return result;
 	}
 
+	public MonitoredCharacter findCharacter(int id){
+		MonitoredCharacter result = null;
+		for (MonitoredCharacter character : characterList){
+			if (id == character.getApi().getCharacterID() ){
+				return  character;
+			}
+		}
+		return result;
+	}
+	
 	/////////////////////
 	// private methods //
 	/////////////////////
@@ -285,15 +295,6 @@ public class MonitoredCharactersAndSkillPlansModel extends QTreeModel {
 		return true;
 	}
 	
-	private MonitoredCharacter findCharacter(int id){
-		MonitoredCharacter result = null;
-		for (MonitoredCharacter character : characterList){
-			if (id == character.getApi().getCharacterID() ){
-				return  character;
-			}
-		}
-		return result;
-	}
 	
 	private void initCharacter(MonitoredCharacter c) throws PQSQLDriverNotFoundException, PQUserDatabaseFileCorrupted {
 		List<SkillPlan> skillPlanList = 

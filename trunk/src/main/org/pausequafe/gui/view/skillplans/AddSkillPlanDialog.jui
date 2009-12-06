@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
+    <width>395</width>
     <height>89</height>
    </rect>
   </property>
@@ -51,7 +51,7 @@
    <item row="1" column="0" colspan="3">
     <widget class="QLineEdit" name="skillPlanNameLineEdit"/>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>com.trolltech.qt.core.Qt.Orientation.Horizontal</enum>
@@ -64,17 +64,24 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="QPushButton" name="createButton">
      <property name="text">
       <string>Create</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="2">
+   <item row="3" column="2">
     <widget class="QPushButton" name="cancelButton">
      <property name="text">
       <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <widget class="QCheckBox" name="openSPWindowCheckBox">
+     <property name="text">
+      <string>Open Skill Plan Window</string>
      </property>
     </widget>
    </item>

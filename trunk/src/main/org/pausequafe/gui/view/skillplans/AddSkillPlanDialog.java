@@ -1,4 +1,4 @@
-package org.pausequafe.gui.view.character;
+package org.pausequafe.gui.view.skillplans;
 
 import org.pausequafe.data.business.MonitoredCharacter;
 
@@ -50,5 +50,9 @@ public class AddSkillPlanDialog extends QDialog {
 
 	public String getSkillPlanName() {
 		return skillPlanName;
+	}
+	
+	public boolean isOpenWindowChecked(){
+		return ui.openSPWindowCheckBox.isChecked();
 	}
 }
