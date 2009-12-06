@@ -196,21 +196,21 @@ public class MainWindow extends QMainWindow {
 	 * Updates server status icon Invoqued by the
 	 * <code>serverStatusRequest.finished</code> signal
 	 * 
-	 * @param status
+	 * @param s
 	 *            the server's status
 	 */
-	private void updateServerStatus(ServerStatus status) {
+	private void updateServerStatus(ServerStatus s) {
 		int requestCode = ApiRequest.OK;
-		if (status == null) {
+		if (s == null) {
 			requestCode = ApiRequest.CONNECTION_ERROR;
-			this.status = new ServerStatus();
+			status = new ServerStatus();
 		} else {
-			this.status = status;
+			status = s;
 		}
 		if (status.isOnLine()) {
 			serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_ONLINE_ICON));
 			serverStatusIndicator.setToolTip("Tranquility Server Online ("
-					+ status.getPlayerCount() + " pilots)");
+					+ s.getPlayerCount() + " pilots)");
 		} else {
 			if (status.isUnknown()) {
 				serverStatusIndicator.setPixmap(new QPixmap(Constants.SERVERSTATUS_UNKONWN_ICON));

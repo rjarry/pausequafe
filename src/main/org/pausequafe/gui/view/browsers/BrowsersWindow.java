@@ -13,7 +13,6 @@ import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.Qt.ItemDataRole;
-import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QLabel;
@@ -94,7 +93,6 @@ public class BrowsersWindow extends QWidget {
 	// //////////////////
 	// private methods //
 	// //////////////////
-	@SuppressWarnings("unused")
 	private void changeCurrentCharacter(int index) {
 		MonitoredCharacter data = (MonitoredCharacter) sheetCombo.itemData(index,ItemDataRole.DisplayRole);
 		CharacterSheet sheet = data.getSheet(); 

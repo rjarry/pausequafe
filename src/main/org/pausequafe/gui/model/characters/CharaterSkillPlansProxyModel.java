@@ -41,12 +41,15 @@ public class CharaterSkillPlansProxyModel extends QAbstractProxyModel {
 	/////////////////////
 	// public methods ///
 	/////////////////////
-	public void createSkillPlan(String name) {
+	public SkillPlan createSkillPlan(String name) {
 		int rowCount = rowCount(null);
 		insertRow(rowCount, null);
 		
 		SkillPlan newSkillPlan = new SkillPlan(root.getApi().getCharacterID(),SkillPlan.NOID,rowCount,name);
-		setData(index(rowCount,0,null) , newSkillPlan, ItemDataRole.DisplayRole);
+		QModelIndex index = index(rowCount,0,null);
+		setData(index , newSkillPlan, ItemDataRole.DisplayRole);
+		
+		return (SkillPlan) data(index,ItemDataRole.DisplayRole);
 	}
 
 	public void deleteSkillPlan(int row) {

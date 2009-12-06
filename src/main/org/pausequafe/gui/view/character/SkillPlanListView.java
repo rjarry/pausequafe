@@ -6,6 +6,7 @@ import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.SkillPlan;
 import org.pausequafe.gui.model.characters.CharaterSkillPlansProxyModel;
 import org.pausequafe.gui.view.main.MainWindow;
+import org.pausequafe.gui.view.skillplans.AddSkillPlanDialog;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.core.QModelIndex;
@@ -59,7 +60,11 @@ public class SkillPlanListView extends QWidget {
 		dialog.exec();
 		if(dialog.result() == QDialog.DialogCode.Accepted.value()){
 			String spName = dialog.getSkillPlanName();
-			skillPlansModel.createSkillPlan(spName);
+			SkillPlan createdSP = skillPlansModel.createSkillPlan(spName);
+			
+			if(dialog.isOpenWindowChecked()){
+				MainWindow.getInstance().openPlanView(monChar, createdSP);
+			}
 		}
 	}
 	
@@ -75,6 +80,5 @@ public class SkillPlanListView extends QWidget {
 	private void onSkillPlanDoubleClicked(QModelIndex index){
 		SkillPlan skillPlan = (SkillPlan) skillPlansModel.data(index, ItemDataRole.DisplayRole);
 		MainWindow.getInstance().openPlanView(monChar, skillPlan);
-		
 	}
 }

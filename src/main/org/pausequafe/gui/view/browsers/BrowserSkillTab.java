@@ -13,6 +13,7 @@ import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QSizePolicy;
 import com.trolltech.qt.gui.QTreeView;
 import com.trolltech.qt.gui.QWidget;
 
@@ -42,7 +43,32 @@ public class BrowserSkillTab extends AbstractBrowserTab {
     	ui = new Ui_BrowserSkillTab();
     	ui.setupUi(this);
 
-    	itemTree=ui.itemTree;
+    	// we have to do designer work here
+    	// because this bastard can't create
+    	// a custom ItemTreeView
+    	ui.itemTree.dispose();
+    	ui.itemTree = new ItemTreeView(ui.rightFrame);
+    	itemTree = ui.itemTree;
+        itemTree.setObjectName("itemTree");
+        QSizePolicy sizePolicy6 = new QSizePolicy(com.trolltech.qt.gui.QSizePolicy.Policy.Preferred, com.trolltech.qt.gui.QSizePolicy.Policy.Expanding);
+        sizePolicy6.setHorizontalStretch((byte)0);
+        sizePolicy6.setVerticalStretch((byte)0);
+        sizePolicy6.setHeightForWidth(itemTree.sizePolicy().hasHeightForWidth());
+        itemTree.setSizePolicy(sizePolicy6);
+        itemTree.setMinimumSize(new QSize(200, 200));
+        itemTree.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus);
+        itemTree.setHorizontalScrollBarPolicy(com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAsNeeded);
+        itemTree.setProperty("showDropIndicator", false);
+        itemTree.setDragEnabled(true);
+        itemTree.setDragDropMode(com.trolltech.qt.gui.QAbstractItemView.DragDropMode.DragOnly);
+        itemTree.setIndentation(20);
+        itemTree.setRootIsDecorated(true);
+        itemTree.setUniformRowHeights(true);
+        itemTree.setSortingEnabled(true);
+        itemTree.setHeaderHidden(true);
+    	ui.verticalLayout.addWidget(ui.itemTree);
+    	// end designer work
+    	
     	itemTree.setIconSize(new QSize(21,14));
     	itemDescription = ui.itemDescription;
     	prereqTree = ui.prereqTree;
