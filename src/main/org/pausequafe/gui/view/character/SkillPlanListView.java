@@ -1,3 +1,23 @@
+/*****************************************************************************
+ * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Copyright © 2009  diabeteman & Kios Askoner                               *
+ *                                                                           *
+ * This file is part of Pause Quafé.                                         *
+ *                                                                           *
+ * Pause Quafé is free software: you can redistribute it and/or modify       *
+ * it under the terms of the GNU General Public License as published by      *
+ * the Free Software Foundation, either version 3 of the License, or         *
+ * (at your option) any later version.                                       *
+ *                                                                           *
+ * Pause Quafé is distributed in the hope that it will be useful,            *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
+ * GNU General Public License for more details.                              *
+ *                                                                           *
+ * You should have received a copy of the GNU General Public License         *
+ * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
+ *****************************************************************************/
+
 package org.pausequafe.gui.view.character;
 
 import java.util.List;
@@ -23,8 +43,8 @@ public class SkillPlanListView extends QWidget {
     MonitoredCharacter monChar;
     CharaterSkillPlansProxyModel skillPlansModel;
 
-     public SkillPlanListView(MonitoredCharacter monitoredCharacter) {
-        this(null,monitoredCharacter);
+    public SkillPlanListView(MonitoredCharacter monitoredCharacter) {
+        this(null, monitoredCharacter);
     }
 
     public SkillPlanListView(QWidget parent, MonitoredCharacter monitoredCharacter) {
@@ -34,51 +54,51 @@ public class SkillPlanListView extends QWidget {
         setupUi();
     }
 
-	private void setupUi() {
-		ui.setupUi(this);
+    private void setupUi() {
+        ui.setupUi(this);
 
-		QIcon iconAdd = new QIcon(Constants.ADD_ICON);
-		QIcon iconDel = new QIcon(Constants.MINUS_ICON);
-		
-		ui.addPlanButton.setIcon(iconAdd);
-		ui.removePlanButton.setIcon(iconDel);
-		ui.skillPlanList.setModel(skillPlansModel);
-		ui.skillPlanList.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection);
-		ui.skillPlanList.setDragEnabled(true);
-		ui.skillPlanList.setAcceptDrops(true);
-		ui.skillPlanList.setDropIndicatorShown(true);
-		ui.skillPlanList.setDragDropMode(DragDropMode.InternalMove);
-		ui.skillPlanList.doubleClicked.connect(this,"onSkillPlanDoubleClicked(QModelIndex)");
-		
-		ui.addPlanButton.clicked.connect(this, "createSkillPlan()");
-		ui.removePlanButton.clicked.connect(this, "deleteSkillPlan()");
-	}
-	
-	@SuppressWarnings("unused")
-	private void createSkillPlan(){
-		AddSkillPlanDialog dialog = new AddSkillPlanDialog(monChar,this);
-		dialog.exec();
-		if(dialog.result() == QDialog.DialogCode.Accepted.value()){
-			String spName = dialog.getSkillPlanName();
-			SkillPlan createdSP = skillPlansModel.createSkillPlan(spName);
-			
-			if(dialog.isOpenWindowChecked()){
-				MainWindow.getInstance().openPlanView(monChar, createdSP);
-			}
-		}
-	}
-	
-	@SuppressWarnings("unused")
-	private void deleteSkillPlan(){
-		List<QModelIndex> selectedRows = ui.skillPlanList.selectionModel().selectedRows();
-		if(selectedRows.size()==1){
-			skillPlansModel.deleteSkillPlan(selectedRows.get(0).row());
-		}
-	}
-	
-	@SuppressWarnings("unused")
-	private void onSkillPlanDoubleClicked(QModelIndex index){
-		SkillPlan skillPlan = (SkillPlan) skillPlansModel.data(index, ItemDataRole.DisplayRole);
-		MainWindow.getInstance().openPlanView(monChar, skillPlan);
-	}
+        QIcon iconAdd = new QIcon(Constants.ADD_ICON);
+        QIcon iconDel = new QIcon(Constants.MINUS_ICON);
+
+        ui.addPlanButton.setIcon(iconAdd);
+        ui.removePlanButton.setIcon(iconDel);
+        ui.skillPlanList.setModel(skillPlansModel);
+        ui.skillPlanList.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection);
+        ui.skillPlanList.setDragEnabled(true);
+        ui.skillPlanList.setAcceptDrops(true);
+        ui.skillPlanList.setDropIndicatorShown(true);
+        ui.skillPlanList.setDragDropMode(DragDropMode.InternalMove);
+        ui.skillPlanList.doubleClicked.connect(this, "onSkillPlanDoubleClicked(QModelIndex)");
+
+        ui.addPlanButton.clicked.connect(this, "createSkillPlan()");
+        ui.removePlanButton.clicked.connect(this, "deleteSkillPlan()");
+    }
+
+    @SuppressWarnings("unused")
+    private void createSkillPlan() {
+        AddSkillPlanDialog dialog = new AddSkillPlanDialog(monChar, this);
+        dialog.exec();
+        if (dialog.result() == QDialog.DialogCode.Accepted.value()) {
+            String spName = dialog.getSkillPlanName();
+            SkillPlan createdSP = skillPlansModel.createSkillPlan(spName);
+
+            if (dialog.isOpenWindowChecked()) {
+                MainWindow.getInstance().openPlanView(monChar, createdSP);
+            }
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private void deleteSkillPlan() {
+        List<QModelIndex> selectedRows = ui.skillPlanList.selectionModel().selectedRows();
+        if (selectedRows.size() == 1) {
+            skillPlansModel.deleteSkillPlan(selectedRows.get(0).row());
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private void onSkillPlanDoubleClicked(QModelIndex index) {
+        SkillPlan skillPlan = (SkillPlan) skillPlansModel.data(index, ItemDataRole.DisplayRole);
+        MainWindow.getInstance().openPlanView(monChar, skillPlan);
+    }
 }

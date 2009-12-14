@@ -15,7 +15,7 @@ if "%OS%"=="Windows_NT" setlocal
 @rem Uncomment those lines to set JVM options. GRADLE_OPTS and JAVA_OPTS can be used together.
 @rem set GRADLE_OPTS=%GRADLE_OPTS% -Xmx512
 @rem set JAVA_OPTS=%JAVA_OPTS% -Xmx512
-
+cd /d %~dp0
 set DIRNAME=%~dp0
 if "%DIRNAME%" == "" set DIRNAME=.\
 
@@ -123,5 +123,6 @@ exit /b "%ERRORLEVEL%"
 
 :mainEnd
 if "%OS%"=="Windows_NT" endlocal
+pause
 
 :omega

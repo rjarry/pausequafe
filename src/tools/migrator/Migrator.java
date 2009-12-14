@@ -21,13 +21,13 @@ public class Migrator {
 		}
 
 		System.out.print("Establishing connections to the databases... ");
-//		Connection conMSSQL = DriverManager.getConnection(	"jdbc:sqlserver:" +
+//		Connection conCCP = DriverManager.getConnection(	"jdbc:sqlserver:" +
 //				"//localhost\\EVE;" +
 //				"instanceName=EVE;" +
 //				"databaseName=EVE;" +
 //				"user=SA;" +
 //				"password=connard;");
-		Connection conCCP = DriverManager.getConnection("jdbc:sqlite:resources/apo15-sqlite3-v1.db");
+		Connection conCCP = DriverManager.getConnection("jdbc:sqlite:resources/dom100-sqlite3-v1.db3");
 		Connection conPQ = DriverManager.getConnection("jdbc:sqlite:resources/eve-online.db");
 
 		System.out.println("Connected");
@@ -48,8 +48,9 @@ public class Migrator {
 		genInvMetaTypes(conCCP, conPQ);
 		genInvTypeReactions(conCCP, conPQ);
 		genInvTypes(conCCP, conPQ);
+		genInvTypeMaterials(conCCP, conPQ);
 		genRamActivities(conCCP, conPQ);
-		genTypeActivityMaterials(conCCP, conPQ);
+		genRamTypeRequirements(conCCP, conPQ);
 		
 		conCCP.close();
 
@@ -57,12 +58,14 @@ public class Migrator {
 		System.out.println("Customizing database...");
 		
 		completeTech3Tags(conPQ);
-//		deleteTradeGoods(conPQ);
 		completeShipsMarketGroups(conPQ);
 		completeModulesMarketGroups(conPQ);
 		completeBlueprintsMarketGroups(conPQ);
+		compileMaterialReqs(conPQ);
+		deleteTradeGoods(conPQ);
 		correctBugs(conPQ);
 		blueprintMetagroups(conPQ);
+		updateBlueprintIcons(conPQ);
 		
 		System.out.println("Vacuuming SQLite file... ");
 		Statement statSQLite = conPQ.createStatement();
@@ -73,13 +76,13 @@ public class Migrator {
 	}
 
 ////////////////////////////////////////////////////
-	public static void genDgmAttributeCategories(Connection conREAD, Connection conWRITE) 
+	public static void genDgmAttributeCategories(Connection conCCP, Connection conWRITE) 
 																			throws SQLException{
 		System.out.print("Generating dgmAttributeCategories... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statREAD = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE dgmAttributeCategories " +
+		statPQ.executeUpdate(	"CREATE TABLE dgmAttributeCategories " +
 									"(" +
 										"categoryID tinyint PRIMARY KEY,"+
 										"categoryName nvarchar(50),"+
@@ -89,6 +92,7 @@ public class Migrator {
 
 		ResultSet rs = statREAD.executeQuery("select * from dgmAttributeCategories");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 												"INSERT INTO dgmAttributeCategories(categoryID, " +
 												"categoryName, categoryDescription)" +
@@ -100,7 +104,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -110,13 +113,13 @@ public class Migrator {
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genDgmAttributeTypes(Connection conREAD, Connection conWRITE) 
+	public static void genDgmAttributeTypes(Connection conCCP, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating dgmAttributeTypes... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE dgmAttributeTypes " +
+		statPQ.executeUpdate(	"CREATE TABLE dgmAttributeTypes " +
 									"(" +
 										"attributeID int PRIMARY KEY,"+
 										"attributeName varchar(100),"+
@@ -131,8 +134,9 @@ public class Migrator {
 										"categoryID tinyint"+
 									")");
 
-		ResultSet rs = statREAD.executeQuery("select * from dgmAttributeTypes");
+		ResultSet rs = statCCP.executeQuery("select * from dgmAttributeTypes");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 									"INSERT INTO dgmAttributeTypes(attributeID, attributeName, " +
 									"description, graphicID, defaultValue, published, displayName, " +
@@ -161,7 +165,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -171,13 +174,13 @@ public class Migrator {
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genDgmEffects(Connection conREAD, Connection conWRITE) 
+	public static void genDgmEffects(Connection conCCP, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating dgmEffects... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE dgmEffects"+
+		statPQ.executeUpdate(	"CREATE TABLE dgmEffects"+
 									"("+
 										"effectID smallint PRIMARY KEY,"+
 										"effectName varchar(400),"+
@@ -207,8 +210,9 @@ public class Migrator {
 										"fittingUsageChanceAttributeID smallint"+
 									")");
 
-		ResultSet rs = statREAD.executeQuery("select * from dgmEffects");
+		ResultSet rs = statCCP.executeQuery("select * from dgmEffects");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 				"INSERT INTO dgmEffects(effectID, effectName, " +
 				"effectCategory, preExpression, postExpression, description, guid, " +
@@ -288,7 +292,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -298,13 +301,13 @@ public class Migrator {
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genDgmTypeAttributes(Connection conREAD, Connection conWRITE) 
+	public static void genDgmTypeAttributes(Connection conCCP, Connection conWRITE) 
 																	throws SQLException{
 		System.out.print("Generating dgmTypeAttributes... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE dgmTypeAttributes " +
+		statPQ.executeUpdate(	"CREATE TABLE dgmTypeAttributes " +
 									"(" +
 										"typeID int NOT NULL,"+
 										"attributeID int NOT NULL,"+
@@ -315,9 +318,10 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statREAD.executeQuery("SELECT a.* FROM dgmTypeAttributes a, invTypes t " +
+		ResultSet rs = statCCP.executeQuery("SELECT a.* FROM dgmTypeAttributes a, invTypes t " +
 												"WHERE t.published=1 AND a.typeID=t.typeID");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement("INSERT INTO dgmTypeAttributes(" +
 													"typeID, attributeID, valueInt, valueFloat)" +
 													" VALUES (?, ?, ?, ?)");
@@ -337,7 +341,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -347,13 +350,13 @@ public class Migrator {
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genDgmTypeEffects(Connection conREAD, Connection conWRITE) 
+	public static void genDgmTypeEffects(Connection conCCP, Connection conWRITE) 
 																	throws SQLException{
 		System.out.print("Generating dgmTypeEffects... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE dgmTypeEffects " +
+		statPQ.executeUpdate(	"CREATE TABLE dgmTypeEffects " +
 									"(" +
 										"typeID int NOT NULL,"+
 										"effectID int NOT NULL,"+
@@ -363,9 +366,10 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statREAD.executeQuery("SELECT e.* FROM dgmTypeEffects e, invTypes t " +
+		ResultSet rs = statCCP.executeQuery("SELECT e.* FROM dgmTypeEffects e, invTypes t " +
 												"WHERE t.published=1 AND e.typeID=t.typeID");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 								"INSERT INTO dgmTypeEffects(typeID, effectID, isDefault)" +
 								" VALUES (?, ?, ?)");
@@ -376,7 +380,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -386,21 +389,22 @@ public class Migrator {
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genEveGraphics(Connection conREAD, Connection conWRITE) 
+	public static void genEveGraphics(Connection conCCP, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating eveGraphics... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE eveGraphics"+
+		statPQ.executeUpdate(	"CREATE TABLE eveGraphics"+
 									"("+
 										"graphicID smallint PRIMARY KEY,"+
 										"description varchar(256),"+
 										"icon varchar(100)"+
 									")");
 
-		ResultSet rs = statREAD.executeQuery("select * from eveGraphics where published=1");
+		ResultSet rs = statCCP.executeQuery("select * from eveGraphics where published=1");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 									"INSERT INTO eveGraphics(graphicID, description, " +
 									"icon) VALUES (?, ?, ?)");
@@ -411,7 +415,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -421,14 +424,14 @@ public class Migrator {
 	}
 
 ////////////////////////////////////////////////////
-	public static void genEveUnits(Connection conREAD, Connection conWRITE) 
+	public static void genEveUnits(Connection conCCP, Connection conWRITE) 
 																	throws SQLException{
 
 		System.out.print("Generating eveUnits... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE eveUnits " +
+		statPQ.executeUpdate(	"CREATE TABLE eveUnits " +
 									"(" +
 										"unitID tinyint PRIMARY KEY,"+
 										"unitName varchar(100),"+
@@ -437,8 +440,9 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statREAD.executeQuery("select * from eveUnits");
+		ResultSet rs = statCCP.executeQuery("select * from eveUnits");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO eveUnits(unitID, " +
 											"unitName, displayName, description)" +
@@ -451,7 +455,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -461,13 +464,13 @@ public class Migrator {
 	}
 
 ////////////////////////////////////////////////////
-	public static void genInvBlueprintTypes(Connection conREAD, Connection conWRITE) 
+	public static void genInvBlueprintTypes(Connection conCCP, Connection conWRITE) 
 																				throws SQLException{
 		System.out.print("Generating invBlueprintTypes... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE invBlueprintTypes " +
+		statPQ.executeUpdate(	"CREATE TABLE invBlueprintTypes " +
 									"(" +
 										"blueprintTypeID smallint PRIMARY KEY,"+
 										"parentBlueprintTypeID smallint,"+
@@ -485,9 +488,10 @@ public class Migrator {
 									")");
 
 
-		ResultSet rs = statREAD.executeQuery(	"SELECT b.* FROM invTypes i, invBlueprintTypes b " +
+		ResultSet rs = statCCP.executeQuery(	"SELECT b.* FROM invTypes i, invBlueprintTypes b " +
 												"WHERE i.published=1 and i.typeID=b.productTypeID");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 						"INSERT INTO invBlueprintTypes(blueprintTypeID, parentBlueprintTypeID, " +
 						"productTypeID, productionTime, techLevel, researchProductivityTime, " +
@@ -515,7 +519,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -525,13 +528,13 @@ public class Migrator {
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genInvCategories(Connection conREAD, Connection conWRITE) 
+	public static void genInvCategories(Connection conCCP, Connection conWRITE) 
 																	throws SQLException{
 		System.out.print("Generating invCategories... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE invCategories " +
+		statPQ.executeUpdate(	"CREATE TABLE invCategories " +
 									"(" +
 										"categoryID tinyint PRIMARY KEY,"+
 										"categoryName nvarchar(64),"+
@@ -539,8 +542,9 @@ public class Migrator {
 										"graphicID smallint"+
 									")");
 
-		ResultSet rs = statREAD.executeQuery("select * from invCategories where published=1");
+		ResultSet rs = statCCP.executeQuery("select * from invCategories where published=1");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invCategories(categoryID, " +
 											"categoryName, description, graphicID)" +
@@ -557,7 +561,6 @@ public class Migrator {
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -567,13 +570,13 @@ public class Migrator {
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genInvFlags(Connection conREAD, Connection conWRITE) 
+	public static void genInvFlags(Connection conCCP, Connection conWRITE) 
 	throws SQLException{
 System.out.print("Generating invFlags... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE invFlags " +
+		statPQ.executeUpdate(	"CREATE TABLE invFlags " +
 									"(" +
 										"flagID tinyint PRIMARY KEY,"+
 										"flagName varchar(100),"+
@@ -581,8 +584,9 @@ System.out.print("Generating invFlags... ");
 										"orderID smallint"+
 									")");
 
-		ResultSet rs = statREAD.executeQuery("select * from invFlags");
+		ResultSet rs = statCCP.executeQuery("select * from invFlags");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invFlags(flagID, " +
 											"flagName, flagText, orderID)" +
@@ -595,7 +599,6 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -605,13 +608,13 @@ System.out.print("Generating invFlags... ");
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genInvGroups(Connection conREAD, Connection conWRITE) 
+	public static void genInvGroups(Connection conCCP, Connection conWRITE) 
 	throws SQLException{
 		System.out.print("Generating invGroups... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE invGroups " +
+		statPQ.executeUpdate(	"CREATE TABLE invGroups " +
 									"(" +
 										"groupID smallint PRIMARY KEY,"+
 										"categoryID tinyint,"+
@@ -627,8 +630,9 @@ System.out.print("Generating invFlags... ");
 									")");
 
 
-		ResultSet rs = statREAD.executeQuery("select * from invGroups where published=1");
+		ResultSet rs = statCCP.executeQuery("select * from invGroups where published=1");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 						"INSERT INTO invGroups(groupID, categoryID, groupName, " +
 						"description, graphicID, useBasePrice, allowManufacture, " +
@@ -657,7 +661,6 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -667,13 +670,13 @@ System.out.print("Generating invFlags... ");
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genInvMarketGroups(Connection conREAD, Connection conWRITE) 
+	public static void genInvMarketGroups(Connection conCCP, Connection conWRITE) 
 																			throws SQLException{
 		System.out.print("Generating invMarketGroups... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 
-		statSQLite.executeUpdate(	"CREATE TABLE invMarketGroups " +
+		statPQ.executeUpdate(	"CREATE TABLE invMarketGroups " +
 									"(" +
 										"marketGroupID smallint PRIMARY KEY,"+
 										"parentGroupID smallint,"+
@@ -683,8 +686,9 @@ System.out.print("Generating invFlags... ");
 										"hasTypes bit"+
 									")");
 
-		ResultSet rs = statREAD.executeQuery("select * from invMarketGroups");
+		ResultSet rs = statCCP.executeQuery("select * from invMarketGroups");
 
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invMarketGroups(marketGroupID, parentGroupID, " + 
 											"marketGroupName, description, graphicID, hasTypes)" +
@@ -707,7 +711,6 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -717,21 +720,22 @@ System.out.print("Generating invFlags... ");
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genInvMetaGroups(Connection conREAD, Connection conWRITE) 
+	public static void genInvMetaGroups(Connection conCCP, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating invMetaGroups... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 		
-		statSQLite.executeUpdate(	"CREATE TABLE invMetaGroups " +
+		statPQ.executeUpdate(	"CREATE TABLE invMetaGroups " +
 									"(" +
 										"metaGroupID smallint PRIMARY KEY,"+
 										"metaGroupName nvarchar(100),"+
 										"description nvarchar(512)"+
 									")");
 		
-		ResultSet rs = statREAD.executeQuery("select * from invMetaGroups");
+		ResultSet rs = statCCP.executeQuery("select * from invMetaGroups");
 		
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invMetaGroups(metaGroupID, " +
 											"metaGroupName, description)" +
@@ -743,34 +747,36 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 		
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 		
 		rs.close();
 		
-		statSQLite.executeUpdate("INSERT INTO invMetaGroups(metaGroupID, metaGroupName, description) VALUES (0, 'Tech I', 'basic tech 1 items')");
-		statSQLite.executeUpdate("UPDATE invMetaGroups SET metaGroupName='Named', description='named items' WHERE metaGroupID=1");
+		statPQ.executeUpdate("INSERT INTO invMetaGroups(metaGroupID, metaGroupName, description) " +
+				                     "VALUES (0, 'Tech I', 'basic tech 1 items')");
+		statPQ.executeUpdate("UPDATE invMetaGroups SET metaGroupName='Named', " +
+				                    "description='named items' WHERE metaGroupID=1");
 		System.out.println("Success");
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genInvMetaTypes(Connection conREAD, Connection conWRITE) 
+	public static void genInvMetaTypes(Connection conCCP, Connection conWRITE) 
 																	throws SQLException{
 		System.out.print("Generating invMetaTypes... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 		
-		statSQLite.executeUpdate(	"CREATE TABLE invMetaTypes " +
+		statPQ.executeUpdate(	"CREATE TABLE invMetaTypes " +
 									"(" +
 										"typeID smallint PRIMARY KEY,"+
 										"parentTypeID smallint,"+
 										"metaGroupID smallint"+
 									")");
 		
-		ResultSet rs = statREAD.executeQuery(	"SELECT m.* FROM invMetaTypes m, invTypes t " +
+		ResultSet rs = statCCP.executeQuery(	"SELECT m.* FROM invMetaTypes m, invTypes t " +
 												"WHERE t.published=1 AND m.typeID=t.typeID");
 		
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invMetaTypes(typeID, " +
 											"parentTypeID, metaGroupID)" +
@@ -782,7 +788,6 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 		
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 		
@@ -792,13 +797,13 @@ System.out.print("Generating invFlags... ");
 	}
 	
 ////////////////////////////////////////////////////
-	public static void genInvTypeReactions (Connection conREAD, Connection conWRITE) 
+	public static void genInvTypeReactions (Connection conCCP, Connection conWRITE) 
 																		throws SQLException{
 		System.out.print("Generating invTypeReactions... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statSQLite = conWRITE.createStatement();
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conWRITE.createStatement();
 		
-		statSQLite.executeUpdate(	"CREATE TABLE invTypeReactions " +
+		statPQ.executeUpdate(	"CREATE TABLE invTypeReactions " +
 									"(" +
 										"reactionTypeID smallint NOT NULL,"+
 										"input bit NOT NULL," +
@@ -809,9 +814,10 @@ System.out.print("Generating invFlags... ");
 															"(reactionTypeID, input, typeID)"+
 									")");
 		
-		ResultSet rs = statREAD.executeQuery(	"SELECT r.* FROM invTypeReactions r, invTypes t " +
+		ResultSet rs = statCCP.executeQuery(	"SELECT r.* FROM invTypeReactions r, invTypes t " +
 												"WHERE t.published=1 AND r.typeID=t.typeID");
 		
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 											"INSERT INTO invTypeReactions(reactionTypeID, " +
 											"input, typeID, quantity)" +
@@ -824,7 +830,6 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 		
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 		
@@ -834,11 +839,11 @@ System.out.print("Generating invFlags... ");
 	}
 
 ////////////////////////////////////////////////////
-	public static void genInvTypes(Connection conREAD, Connection conWRITE) 
+	public static void genInvTypes(Connection conCCP, Connection conWRITE) 
 																throws SQLException{
 
 		System.out.print("Generating invTypes... ");
-		Statement statREAD = conREAD.createStatement();
+		Statement statCCP = conCCP.createStatement();
 		Statement statWRITE = conWRITE.createStatement();
 
 		statWRITE.executeUpdate(	"CREATE TABLE invTypes	" +
@@ -860,7 +865,7 @@ System.out.print("Generating invFlags... ");
 									")");
 
 
-		ResultSet rs = statREAD.executeQuery(
+		ResultSet rs = statCCP.executeQuery(
 				"SELECT t.*, g.icon , m.metaGroupID "+
 				"FROM invTypes t LEFT OUTER JOIN eveGraphics g ON t.graphicID = g.graphicID, "+
 				"     invTypes t2 LEFT OUTER JOIN invMetaTypes m ON t2.typeID = m.typeID "+
@@ -868,6 +873,7 @@ System.out.print("Generating invFlags... ");
 				"AND (t.published=1 " +
 				"OR t.groupID IN (255,256,257,258,266,267,268,269,270,271,272,273,274,275,278,505,989))");
 		
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 										"INSERT INTO invTypes(typeID, groupID, " +
 										"typeName, description, icon, radius, mass, " +
@@ -904,7 +910,48 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 
+		prep.executeBatch();
+		conWRITE.setAutoCommit(true);
+
+
+		rs.close();
+		System.out.println("Success");
+	}
+
+////////////////////////////////////////////////////
+	public static void genInvTypeMaterials(Connection conCCP, Connection conWRITE) 
+																				throws SQLException{
+		System.out.print("Generating invTypeMaterials... ");
+		Statement statCCP = conCCP.createStatement();
+		Statement statWRITE = conWRITE.createStatement();
+
+		statWRITE.executeUpdate(	"CREATE TABLE invTypeMaterials " +
+									"(" +
+										"typeID int NOT NULL,"+
+										"materialTypeID int,"+
+										"quantity int,"+
+						
+										"CONSTRAINT invTypeMaterials_PK PRIMARY KEY " +
+										"(typeID, materialTypeID)"+
+									")");
+
+		ResultSet rs = statCCP.executeQuery(	"SELECT m.* " +
+												"FROM invTypes i, invTypeMaterials m " +
+												"WHERE i.published=1 " +
+												"AND i.typeID=m.typeID");
+
 		conWRITE.setAutoCommit(false);
+		PreparedStatement prep = conWRITE.prepareStatement(
+											"INSERT INTO " +
+											"invTypeMaterials(typeID, materialTypeID, quantity) " +
+											"VALUES (?, ?, ?)");
+		while(rs.next()){
+			prep.setInt(1, rs.getInt("typeID"));
+			prep.setShort(2, rs.getShort("materialTypeID"));
+			prep.setInt(3, rs.getInt("quantity"));
+			prep.addBatch();
+		}
+
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 
@@ -913,11 +960,19 @@ System.out.print("Generating invFlags... ");
 		System.out.println("Success");
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
 ////////////////////////////////////////////////////
-	public static void genRamActivities(Connection conREAD, Connection conWRITE) 
+	public static void genRamActivities(Connection conCCP, Connection conWRITE) 
 	throws SQLException{
 		System.out.print("Generating ramActivities... ");
-		Statement statREAD = conREAD.createStatement();
+		Statement statCCP = conCCP.createStatement();
 		Statement statWRITE = conWRITE.createStatement();
 		
 		statWRITE.executeUpdate(	"CREATE TABLE ramActivities " +
@@ -927,8 +982,9 @@ System.out.print("Generating invFlags... ");
 										"description nvarchar(128)"+
 									")");
 		
-		ResultSet rs = statREAD.executeQuery("SELECT * FROM ramActivities");
+		ResultSet rs = statCCP.executeQuery("SELECT * FROM ramActivities");
 		
+		conWRITE.setAutoCommit(false);
 		PreparedStatement prep = conWRITE.prepareStatement(
 									"INSERT INTO ramActivities(activityID, activityName, " + 
 									"description) VALUES (?, ?, ?)");
@@ -940,7 +996,6 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 		
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		conWRITE.setAutoCommit(true);
 		
@@ -950,13 +1005,13 @@ System.out.print("Generating invFlags... ");
 	}
 
 ////////////////////////////////////////////////////
-	public static void genTypeActivityMaterials(Connection conREAD, Connection conWRITE) 
+	public static void genRamTypeRequirements(Connection conCCP, Connection conPQ) 
 																				throws SQLException{
-		System.out.print("Generating typeActivityMaterials... ");
-		Statement statREAD = conREAD.createStatement();
-		Statement statWRITE = conWRITE.createStatement();
+		System.out.print("Generating ramTypeRequirements... ");
+		Statement statCCP = conCCP.createStatement();
+		Statement statPQ = conPQ.createStatement();
 
-		statWRITE.executeUpdate(	"CREATE TABLE typeActivityMaterials " +
+		statPQ.executeUpdate(	"CREATE TABLE ramTypeRequirements " +
 									"(" +
 										"typeID smallint NOT NULL,"+
 										"activityID tinyint,"+
@@ -965,17 +1020,18 @@ System.out.print("Generating invFlags... ");
 										"damagePerJob double,"+
 										"recycle bit,"+
 						
-										"CONSTRAINT typeActivityMaterials_PK PRIMARY KEY " +
+										"CONSTRAINT ramTypeRequirements_PK PRIMARY KEY " +
 										"(typeID, activityID, requiredTypeID)"+
 									")");
 
-		ResultSet rs = statREAD.executeQuery(	"SELECT m.* " +
-												"FROM invTypes i, typeActivityMaterials m " +
+		ResultSet rs = statCCP.executeQuery(	"SELECT m.* " +
+												"FROM invTypes i, ramTypeRequirements m " +
 												"WHERE i.published=1 " +
 												"AND i.typeID=m.typeID");
 
-		PreparedStatement prep = conWRITE.prepareStatement(
-											"INSERT INTO typeActivityMaterials(typeID, activityID, " + 
+		conPQ.setAutoCommit(false);
+		PreparedStatement prep = conPQ.prepareStatement(
+											"INSERT INTO ramTypeRequirements(typeID, activityID, " + 
 											"requiredTypeID, quantity, damagePerJob, recycle)" +
 											" VALUES (?, ?, ?, ?, ?, ?)");
 		while(rs.next()){
@@ -988,9 +1044,8 @@ System.out.print("Generating invFlags... ");
 			prep.addBatch();
 		}
 
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 
 
 		rs.close();
@@ -998,12 +1053,12 @@ System.out.print("Generating invFlags... ");
 	}
 
 /////////////////////////////////////////////////////
-	public static void deleteTradeGoods(Connection conWRITE) throws SQLException{
+	public static void deleteTradeGoods(Connection conPQ) throws SQLException{
 		
 		System.out.print("Deleting Trade Goods... ");
-		Statement statWRITE = conWRITE.createStatement();
+		Statement statPQ = conPQ.createStatement();
 		
-		ResultSet rs = statWRITE.executeQuery(	
+		ResultSet rs = statPQ.executeQuery(	
 				"SELECT m2.marketGroupID, m2.hasTypes FROM invMarketGroups m1, invMarketGroups m2 " +
 				"WHERE m1.marketGroupName='Trade Goods' " +
 				"AND m1.marketGroupID = m2.parentGroupID ");
@@ -1014,7 +1069,7 @@ System.out.print("Generating invFlags... ");
 			groupsToBeDeleted.add(rs.getInt("marketGroupID"));
 		}
 		
-		rs = statWRITE.executeQuery(	
+		rs = statPQ.executeQuery(	
 				"SELECT marketGroupID FROM invMarketGroups WHERE parentGroupID IN " +
 				"(SELECT m2.marketGroupID FROM invMarketGroups m1, invMarketGroups m2 " +
 				"WHERE m1.marketGroupName='Trade Goods' " +
@@ -1026,27 +1081,26 @@ System.out.print("Generating invFlags... ");
 		}
 		
 		
-		PreparedStatement prep = conWRITE.prepareStatement("DELETE FROM invTypes WHERE marketGroupID = ? ");
+		conPQ.setAutoCommit(false);
+		PreparedStatement prep = conPQ.prepareStatement("DELETE FROM invTypes WHERE marketGroupID = ? ");
 		for(int groupID : groupsToBeDeleted){
 			prep.setInt(1, groupID);
 			prep.addBatch();
 		}
 		
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
 		
-		prep = conWRITE.prepareStatement("DELETE FROM invMarketGroups WHERE marketGroupID = ? ");
+		prep = conPQ.prepareStatement("DELETE FROM invMarketGroups WHERE marketGroupID = ? ");
 		for(int groupID : groupsToBeDeleted){
 			prep.setInt(1, groupID);
 			prep.addBatch();
 		}
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		
-		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupName = 'Trade Goods'");
-		statWRITE.executeUpdate("delete from invTypes where marketGroupID is null and groupID in (select groupID from invGroups where categoryID=17)");
+		statPQ.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupName = 'Trade Goods'");
+		statPQ.executeUpdate("delete from invTypes where marketGroupID is null and groupID in " +
+				                            "(select groupID from invGroups where categoryID=17)");
 		
 		rs.close();
 		System.out.println("Done");
@@ -1054,11 +1108,11 @@ System.out.print("Generating invFlags... ");
 	}
 	
 /////////////////////////////////////////////////////
-	public static void completeShipsMarketGroups(Connection conWRITE) throws SQLException{
+	public static void completeShipsMarketGroups(Connection conPQ) throws SQLException{
 		System.out.print("Completing ships market groups... ");
-		Statement statWRITE = conWRITE.createStatement();
+		Statement statPQ = conPQ.createStatement();
 				
-		ResultSet rs = statWRITE.executeQuery(	
+		ResultSet rs = statPQ.executeQuery(	
 											"SELECT DISTINCT mk1.parentGroupID " +
 											"FROM invTypes t , invGroups g , invCategories c , "+
 											     "invMetaGroups mg , invMetaTypes mt , "+
@@ -1077,7 +1131,8 @@ System.out.print("Generating invFlags... ");
 			parentGroupIDs.add(rs.getInt(1));
 		}
 		
-		PreparedStatement prep = conWRITE.prepareStatement(
+		conPQ.setAutoCommit(false);
+		PreparedStatement prep = conPQ.prepareStatement(
 				"INSERT INTO invMarketGroups (marketGroupID,parentGroupID, " +
 									"marketGroupName,description,hasTypes) " +
 				"VALUES (" + 
@@ -1089,11 +1144,10 @@ System.out.print("Generating invFlags... ");
 			prep.setInt(1, parentGroupID);
 			prep.addBatch();
 		}
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		
-		rs = statWRITE.executeQuery(	
+		rs = statPQ.executeQuery(	
 				"SELECT t.typeID , mk2.marketGroupID "+
 				"FROM invTypes t , invGroups g , invCategories c , "+
 				     "invMetaGroups mg , invMetaTypes mt , "+
@@ -1110,7 +1164,8 @@ System.out.print("Generating invFlags... ");
 				  "AND mk2.marketGroupName = 'Faction' ");
 		
 		
-		prep = conWRITE.prepareStatement(	"UPDATE invTypes " +
+		conPQ.setAutoCommit(false);
+		prep = conPQ.prepareStatement(	"UPDATE invTypes " +
 											"SET marketGroupID = ? " +
 											"WHERE typeID = ? ");
 		
@@ -1120,14 +1175,13 @@ System.out.print("Generating invFlags... ");
 			prep.setInt(2, rs.getInt("typeID"));
 			prep.addBatch();
 		}
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		
 		
 		
 		
-		rs = statWRITE.executeQuery( 	"SELECT t.typeID, g.groupName "+
+		rs = statPQ.executeQuery( 	"SELECT t.typeID, g.groupName "+
 										"FROM invTypes t, invGroups g "+
 										"WHERE g.categoryID=6 "+
 										"AND g.groupID=t.groupID "+
@@ -1142,7 +1196,8 @@ System.out.print("Generating invFlags... ");
 			groupNames.add(rs.getString("groupName") + "s");
 		}
 		
-		prep = conWRITE.prepareStatement("UPDATE invTypes " +
+		conPQ.setAutoCommit(false);
+		prep = conPQ.prepareStatement("UPDATE invTypes " +
 										"SET marketGroupID = " +
 										"("+
 											"SELECT g1.marketGroupID "+
@@ -1165,7 +1220,7 @@ System.out.print("Generating invFlags... ");
 										"), metaGroupID=4 " +
 										"WHERE typeID = ?");
 		
-		PreparedStatement prep2 = conWRITE.prepareStatement("INSERT INTO invMetaTypes " +
+		PreparedStatement prep2 = conPQ.prepareStatement("INSERT INTO invMetaTypes " +
 															"(typeID, parentTypeID, metaGroupID) " +
 															"VALUES(?,null,4)");
 
@@ -1177,18 +1232,17 @@ System.out.print("Generating invFlags... ");
 			prep2.addBatch();
 		}
 		
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
 		prep2.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		
-		statWRITE.executeUpdate(	"INSERT INTO invMarketGroups" +
+		statPQ.executeUpdate(	"INSERT INTO invMarketGroups" +
 									"(marketGroupID, parentGroupID, marketGroupName," +
 									"description, graphicID, hasTypes)" +
 									"VALUES((SELECT max(marketGroupID) FROM invMarketGroups) + 1," +
 									"391, 'Faction', 'Faction ship designs', null , 1)  ");
 		
-		statWRITE.executeUpdate(	"UPDATE invTypes "+
+		statPQ.executeUpdate(	"UPDATE invTypes "+
 									"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups), " +
 									"	 metaGroupID = 4 "+
 									"WHERE typeID IN "+
@@ -1203,17 +1257,18 @@ System.out.print("Generating invFlags... ");
 	}
 	
 /////////////////////////////////////////////////////
-	public static void completeModulesMarketGroups(Connection conWRITE) throws SQLException{
+	public static void completeModulesMarketGroups(Connection conPQ) throws SQLException{
 		System.out.print("Completing modules market groups... ");
-		Statement statWRITE = conWRITE.createStatement();
+		Statement statPQ = conPQ.createStatement();
 				
-		ResultSet rs = statWRITE.executeQuery(	"SELECT t1.typeID , t2.marketGroupID " +
+		ResultSet rs = statPQ.executeQuery(	"SELECT t1.typeID , t2.marketGroupID " +
 												"FROM invTypes t1, invTypes t2, invMetaTypes m " +
 												"WHERE t1.marketGroupID IS NULL " +
 												"AND m.typeID=t1.typeID " +
 												"AND t2.typeID=m.parentTypeID ");
 		
-		PreparedStatement prep = conWRITE.prepareStatement(	"UPDATE invTypes " +
+		conPQ.setAutoCommit(false);
+		PreparedStatement prep = conPQ.prepareStatement(	"UPDATE invTypes " +
 															"SET marketGroupID = ? " +
 															"WHERE typeID = ? ");
 		
@@ -1222,13 +1277,12 @@ System.out.print("Generating invFlags... ");
 			prep.setInt(2, rs.getInt("typeID"));
 			prep.addBatch();
 		}
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		
 		rs.close();
 		
-		statWRITE.executeUpdate("UPDATE invMarketGroups SET parentGroupID=9 " +
+		statPQ.executeUpdate("UPDATE invMarketGroups SET parentGroupID=9 " +
 									"where marketGroupID in (11,24,157,955)");
 		
 		String marketUpdateQuery = "INSERT INTO invMarketGroups(marketGroupID, parentGroupID, " + 
@@ -1266,7 +1320,7 @@ System.out.print("Generating invFlags... ");
 				"(10025, 553, 'Invulnerability Fields', 'shield adaptive hardeners', 1)"};
 		
 		for(String group : createNewMarketGroups){
-			statWRITE.executeUpdate(marketUpdateQuery.replace("?", group));
+			statPQ.executeUpdate(marketUpdateQuery.replace("?", group));
 		}
 		String[] invTypesUpdate = {
 		"UPDATE invTypes SET marketGroupID = 10001 WHERE marketGroupID=535 AND typeName LIKE '%EM Hardener%'",
@@ -1310,10 +1364,10 @@ System.out.print("Generating invFlags... ");
 		"UPDATE invTypes SET marketGroupID = 10025 WHERE marketGroupID=553 AND typeName LIKE '%V-M15%'"};
 		
 		for(String update : invTypesUpdate){
-			statWRITE.executeUpdate(update);
+			statPQ.executeUpdate(update);
 		}
 		
-		statWRITE.executeUpdate("UPDATE invMarketGroups SET hasTypes=0 " +
+		statPQ.executeUpdate("UPDATE invMarketGroups SET hasTypes=0 " +
 									"where marketGroupID in (535,540,541,550,553)");
 		
 		System.out.println("Done");
@@ -1321,26 +1375,26 @@ System.out.print("Generating invFlags... ");
 	}
 
 /////////////////////////////////////////////////////
-	private static void completeTech3Tags(Connection conWRITE) throws SQLException {
+	private static void completeTech3Tags(Connection conPQ) throws SQLException {
 		System.out.print("Completing Tech3 tags... ");
-		Statement statWRITE = conWRITE.createStatement();
+		Statement statPQ = conPQ.createStatement();
 		
-		ResultSet rs = statWRITE.executeQuery("SELECT DISTINCT parentTypeID FROM invMetaTypes WHERE metaGroupID=14");
+		ResultSet rs = statPQ.executeQuery("SELECT DISTINCT parentTypeID FROM invMetaTypes WHERE metaGroupID=14");
 		
-		PreparedStatement prep = conWRITE.prepareStatement("UPDATE invTypes SET metaGroupID=14 WHERE typeID=?");
+		conPQ.setAutoCommit(false);
+		PreparedStatement prep = conPQ.prepareStatement("UPDATE invTypes SET metaGroupID=14 WHERE typeID=?");
 		
 		while(rs.next()){
 			prep.setInt(1, rs.getInt(1));
 			prep.addBatch();
 		}
 		
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		
 		rs.close();
 		
-		statWRITE.executeUpdate("UPDATE invTypes SET metaGroupID=14 WHERE typeID IN (29984,29986,29988,29990)");
+		statPQ.executeUpdate("UPDATE invTypes SET metaGroupID=14 WHERE typeID IN (29984,29986,29988,29990)");
 		
 		System.out.println("Done");
 	}
@@ -1350,13 +1404,11 @@ System.out.print("Generating invFlags... ");
 	
 	
 /////////////////////////////////////////////////////
-	private static void completeBlueprintsMarketGroups(Connection conWRITE) throws SQLException {
+	private static void completeBlueprintsMarketGroups(Connection conPQ) throws SQLException {
 		System.out.print("Completing blueprints market groups... ");
-		Statement statWRITE = conWRITE.createStatement();
+		Statement statPQ = conPQ.createStatement();
 		
-		ResultSet rs = statWRITE.executeQuery
-		
-		
+		ResultSet rs = statPQ.executeQuery
 		("SELECT b1.blueprintTypeID, t2.marketGroupID " +
 				"FROM invTypes t1, invBlueprintTypes b1, invBlueprintTypes b2, invMetaTypes m, invTypes t2 "+
 				"WHERE t1.groupID IN (SELECT groupID FROM invGroups WHERE categoryID=9) "+
@@ -1366,7 +1418,8 @@ System.out.print("Generating invFlags... ");
 				"AND m.parentTypeID = b2.productTypeID "+
 				"AND t2.typeID = b2.blueprintTypeID ");
 		
-		PreparedStatement prep = conWRITE.prepareStatement(	"UPDATE invTypes " +
+		conPQ.setAutoCommit(false);
+		PreparedStatement prep = conPQ.prepareStatement(	"UPDATE invTypes " +
 															"SET marketGroupID = ? " +
 															"WHERE typeID = ? ");
 		
@@ -1375,12 +1428,12 @@ System.out.print("Generating invFlags... ");
 			prep.setInt(2, rs.getInt("blueprintTypeID"));
 			prep.addBatch();
 		}
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		rs.close();
 		
-		prep = conWRITE.prepareStatement(
+		conPQ.setAutoCommit(false);
+		prep = conPQ.prepareStatement(
 				"INSERT INTO invMarketGroups ('marketGroupID','parentGroupID', " +
 									"'marketGroupName','description','hasTypes') " +
 				"VALUES (" + 
@@ -1392,28 +1445,27 @@ System.out.print("Generating invFlags... ");
 			prep.setInt(1, parentGroupID);
 			prep.addBatch();
 		}
-		conWRITE.setAutoCommit(false);
 		prep.executeBatch();
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		rs.close();
 		
-		statWRITE.executeUpdate(	"UPDATE invTypes "+
+		statPQ.executeUpdate(	"UPDATE invTypes "+
 				"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups)-2 "+
 				"WHERE typeID IN "+
 				"(SELECT typeID FROM invTypes "+
 				"WHERE groupID=105 AND marketGroupID IS NULL) ");
-		statWRITE.executeUpdate(	"UPDATE invTypes "+
+		statPQ.executeUpdate(	"UPDATE invTypes "+
 				"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups)-1 "+
 				"WHERE typeID IN "+
 				"(SELECT typeID FROM invTypes "+
 				"WHERE groupID=106 AND marketGroupID IS NULL) ");
-		statWRITE.executeUpdate(	"UPDATE invTypes "+
+		statPQ.executeUpdate(	"UPDATE invTypes "+
 				"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups) "+
 				"WHERE typeID IN "+
 				"(SELECT typeID FROM invTypes "+
 				"WHERE groupID=107 AND marketGroupID IS NULL) ");
 		
-		statWRITE.executeUpdate(	"UPDATE invTypes "+
+		statPQ.executeUpdate(	"UPDATE invTypes "+
 				"SET marketGroupID = (SELECT max(marketGroupID) FROM invMarketGroups) "+
 				"WHERE typeID IN "+
 				"(SELECT typeID FROM invTypes "+
@@ -1423,18 +1475,18 @@ System.out.print("Generating invFlags... ");
 	}
 	
 	///////////////////////////////////////////////////////
-	public static void blueprintMetagroups(Connection conWRITE) throws SQLException {
+	public static void blueprintMetagroups(Connection conPQ) throws SQLException {
 		System.out.print("Updating blueprints metagroups... ");
-		Statement statWRITE = conWRITE.createStatement();
+		Statement statPQ = conPQ.createStatement();
 
-		ResultSet rs = statWRITE.executeQuery("SELECT t1.typeID, t2.metaGroupID "
+		ResultSet rs = statPQ.executeQuery("SELECT t1.typeID, t2.metaGroupID "
 											+ "FROM invtypes t1, invBlueprintTypes b, invTypes t2 "
 											+ "where t1.typeID = b.blueprintTypeID " 
 											+ "and b.productTypeID = t2.typeID");
 		
-		conWRITE.setAutoCommit(false);
+		conPQ.setAutoCommit(false);
 		
-		PreparedStatement prep = conWRITE.prepareStatement("UPDATE invTypes SET metaGroupID = ? WHERE typeID = ?");
+		PreparedStatement prep = conPQ.prepareStatement("UPDATE invTypes SET metaGroupID = ? WHERE typeID = ?");
 		
 		while (rs.next()){
 			prep.setInt(1, rs.getInt("metaGroupID"));
@@ -1445,56 +1497,173 @@ System.out.print("Generating invFlags... ");
 		rs.close();
 		prep.executeBatch();
 		
-		conWRITE.setAutoCommit(true);
+		conPQ.setAutoCommit(true);
 		
 		System.out.println("done");
-		
 	}
-/////////////////////////////////////////////////////
-	public static void correctBugs(Connection conWRITE) throws SQLException{
-		System.out.print("Correcting bugs... ");
-		Statement statWRITE = conWRITE.createStatement();
-				
-		statWRITE.executeUpdate("UPDATE dgmTypeAttributes SET valueInt=valueFloat WHERE typeID=29637 AND attributeID IN (180,181,182,183,184,277,278,279,280,1047)");
-		statWRITE.executeUpdate("UPDATE dgmTypeAttributes SET valueFloat=NULL WHERE typeID=29637 AND attributeID IN (180,181,182,183,184,277,278,279,280,1047)");
-		statWRITE.executeUpdate("DELETE FROM eveGraphics WHERE icon='' ");
-		
-		statWRITE.executeUpdate("UPDATE invTypes SET metaGroupID=0 WHERE metaGroupID IS NULL");
-		statWRITE.executeUpdate("UPDATE invTypes SET metaGroupID=7 WHERE metaGroupID=14");
-		statWRITE.executeUpdate("UPDATE invTypes SET icon=typeID WHERE groupID IN (SELECT groupID FROM invGroups WHERE categoryID=9) AND icon LIKE 'icon%'");
-		statWRITE.executeUpdate("UPDATE invTypes SET icon=typeID WHERE typeID IN (29984,29986,29988,29990)");
-		statWRITE.executeUpdate("UPDATE invGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
-		statWRITE.executeUpdate("UPDATE invCategories SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
-		statWRITE.executeUpdate("UPDATE invMarketGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
-		statWRITE.executeUpdate("UPDATE dgmAttributeTypes SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
-		statWRITE.executeUpdate("INSERT INTO eveUnits(unitID,unitName, displayName, description) VALUES (0, 'noUnit', '', 'no unit')");
-		statWRITE.executeUpdate("UPDATE dgmAttributeTypes SET unitID=0 WHERE unitID IS NULL ");
-		
-		statWRITE.executeUpdate("DELETE FROM invTypes WHERE groupID NOT IN (SELECT groupID FROM invGroups)");
-//		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invMarketGroups)");
-//		statWRITE.executeUpdate("DELETE FROM invTypes WHERE marketGroupID IS NULL");
-		
-		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invTypes) AND hasTypes=1");
-		statWRITE.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT parentGroupID FROM invMarketGroups)");
-		
-		statWRITE.executeUpdate("DELETE FROM invGroups WHERE groupID NOT IN (SELECT groupID FROM invTypes)");
-		statWRITE.executeUpdate("DELETE FROM invGroups WHERE categoryID NOT IN (SELECT categoryID FROM invCategories)");
-		statWRITE.executeUpdate("DELETE FROM invCategories WHERE categoryID NOT IN (SELECT categoryID FROM invGroups)");
+	
+///////////////////////////////////////////////////////
+    /**
+     * This method is designed to take invTypeMaterials and ramTypeRequirements and combine them 
+     * into a single table showing all the materials a blueprint requires, and how much of each 
+     * material is affected by waste when building.
+     */
+    public static void compileMaterialReqs(Connection conPQ) throws SQLException {
+        System.out.print("Compiling blueprints material reqs... ");
+        Statement statPQ = conPQ.createStatement();
+        statPQ.executeUpdate("CREATE TABLE ramBlueprintReqs ("
+                                    + "blueprintTypeID SMALLINT, "
+                                    + "activityID TINYINT UNSIGNED, "
+                                    + "requiredTypeID SMALLINT, "
+                                    + "quantity INT, "
+                                    + "damagePerJob DOUBLE, "
+                                    + "baseMaterial INT, "
+                                    + "CONSTRAINT materials_PK PRIMARY KEY "
+                                    + "(blueprintTypeID, activityID, requiredTypeID)"
+                               + ");");
+        
+        statPQ.executeUpdate("INSERT INTO ramBlueprintReqs(blueprintTypeID, "
+                                    +                 "activityID, "
+                                    +                 "requiredTypeID, "
+                                    +                 "quantity, "
+                                    +                 "damagePerJob, "
+                                    +                 "baseMaterial) "
+                                    + "SELECT rtr.typeID, "
+                                    +        "rtr.activityID, "
+                                    +        "rtr.requiredTypeID, "
+                                    +       "(rtr.quantity + IFNULL(itm.quantity, 0)), "
+                                    +        "rtr.damagePerJob, "
+                                    +        "itm.quantity "
+                                    + "FROM invBlueprintTypes AS b "
+                                    +     "INNER JOIN ramTypeRequirements AS rtr "
+                                    +         "ON rtr.typeID = b.blueprintTypeID "
+                                    +        "AND rtr.activityID = 1 "
+                                    +     "LEFT OUTER JOIN invTypeMaterials AS itm "
+                                    +         "ON itm.typeID = b.productTypeID "
+                                    +        "AND itm.materialTypeID = rtr.requiredTypeID "
+                                    + "WHERE rtr.quantity > 0; ");
+        
+        statPQ.executeUpdate("INSERT INTO ramBlueprintReqs "
+                +                       "(blueprintTypeID, activityID, requiredTypeID, "
+                +          		        "quantity, damagePerJob, baseMaterial) "
+                + "SELECT "
+                +     "b.blueprintTypeID, "
+                +     "1, "
+                +     "itm.materialTypeID, "
+                +     "(itm.quantity - IFNULL(sub.quantity * sub.recycledQuantity, 0)), "
+                +     "1, "
+                +     "(itm.quantity - IFNULL(sub.quantity * sub.recycledQuantity, 0)) "
+                + "FROM invBlueprintTypes AS b "
+                +     "INNER JOIN invTypeMaterials AS itm "
+                +         "ON itm.typeID = b.productTypeID "
+                +     "LEFT OUTER JOIN ramBlueprintReqs m "
+                +         "ON b.blueprintTypeID = m.blueprintTypeID "
+                +         "AND m.requiredTypeID = itm.materialTypeID "
+                +     "LEFT OUTER JOIN ( "
+                +         "SELECT srtr.typeID AS blueprintTypeID, "
+                +                "sitm.materialTypeID AS recycledTypeID, "
+                +                "srtr.quantity AS recycledQuantity, "
+                +                "sitm.quantity "
+                +         "FROM ramTypeRequirements AS srtr "
+                +             "INNER JOIN invTypeMaterials AS sitm "
+                +                 "ON srtr.requiredTypeID = sitm.typeID "
+                +         "WHERE srtr.recycle = 1 "
+                +           "AND srtr.activityID = 1 "
+                +     ") AS sub "
+                +         "ON sub.blueprintTypeID = b.blueprintTypeID "
+                +         "AND sub.recycledTypeID = itm.materialTypeID "
+                + "WHERE m.blueprintTypeID IS NULL "
+                + "AND (itm.quantity - IFNULL(sub.quantity * sub.recycledQuantity, 0)) > 0; ");
 
-		statWRITE.executeUpdate("DELETE FROM invMetaTypes WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
-		statWRITE.executeUpdate("DELETE FROM invBlueprintTypes WHERE blueprintTypeID NOT IN (SELECT typeID FROM invTypes)");
-		statWRITE.executeUpdate("DELETE FROM invBlueprintTypes WHERE productTypeID NOT IN (SELECT typeID FROM invTypes)");
-		statWRITE.executeUpdate("DELETE FROM typeActivityMaterials WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
-		statWRITE.executeUpdate("DELETE FROM dgmTypeAttributes WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
-		statWRITE.executeUpdate("DELETE FROM dgmTypeEffects WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
-		statWRITE.executeUpdate("DELETE FROM eveGraphics " +
+        statPQ.executeUpdate("INSERT INTO ramBlueprintReqs "
+                +                       "(blueprintTypeID, activityID, requiredTypeID, "
+                +                       "quantity, damagePerJob) "
+                +               "SELECT rtr.typeID, "
+                +                      "rtr.activityID, "
+                +                      "rtr.requiredTypeID, "
+                +                      "rtr.quantity, "
+                +                      "rtr.damagePerJob "
+                +               "FROM ramTypeRequirements AS rtr "
+                +               "WHERE rtr.activityID NOT IN (1); ");
+        
+        statPQ.executeUpdate("DROP TABLE ramTypeRequirements;");
+        statPQ.executeUpdate("DROP TABLE invTypeMaterials;");
+        
+        System.out.println("done");
+    }
+    
+///////////////////////////////////////////////////////
+    public static void updateBlueprintIcons(Connection conPQ) throws SQLException {
+        System.out.print("Updating blueprint icons... ");
+        Statement statPQ = conPQ.createStatement();
+        
+        
+        ResultSet rs = statPQ.executeQuery("SELECT t.typeID, tt.icon "
+                                            + "FROM invTypes t, invBlueprintTypes b, invTypes tt "
+                                            + "WHERE t.typeID = b.blueprintTypeID "
+                                            + "AND tt.typeID = b.productTypeID ;");
+        
+        PreparedStatement prep = conPQ.prepareStatement("UPDATE invTypes " 
+                                                         + "SET icon = ? "
+                                                         + "WHERE typeID = ?;");
+        
+        conPQ.setAutoCommit(false);
+        while(rs.next()){
+            prep.setString(1, rs.getString("icon"));
+            prep.setInt(2, rs.getInt("typeID"));
+            prep.addBatch();
+        }
+        prep.executeBatch();
+        conPQ.setAutoCommit(true);
+        
+        System.out.println("done");
+    }
+	
+/////////////////////////////////////////////////////
+	public static void correctBugs(Connection conPQ) throws SQLException{
+		System.out.print("Correcting bugs... ");
+		Statement statPQ = conPQ.createStatement();
+				
+		statPQ.executeUpdate("UPDATE dgmTypeAttributes SET valueInt=valueFloat WHERE typeID=29637 AND attributeID IN (180,181,182,183,184,277,278,279,280,1047)");
+		statPQ.executeUpdate("UPDATE dgmTypeAttributes SET valueFloat=NULL WHERE typeID=29637 AND attributeID IN (180,181,182,183,184,277,278,279,280,1047)");
+		statPQ.executeUpdate("DELETE FROM eveGraphics WHERE icon='' ");
+		
+		statPQ.executeUpdate("UPDATE invTypes SET metaGroupID=0 WHERE metaGroupID IS NULL");
+		statPQ.executeUpdate("UPDATE invTypes SET metaGroupID=7 WHERE metaGroupID=14");
+		statPQ.executeUpdate("UPDATE invTypes SET icon=typeID WHERE groupID IN (SELECT groupID FROM invGroups WHERE categoryID=9) AND icon LIKE 'icon%'");
+		statPQ.executeUpdate("UPDATE invTypes SET icon=typeID WHERE typeID IN (29984,29986,29988,29990)");
+		statPQ.executeUpdate("UPDATE invGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
+		statPQ.executeUpdate("UPDATE invCategories SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
+		statPQ.executeUpdate("UPDATE invMarketGroups SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
+		statPQ.executeUpdate("UPDATE dgmAttributeTypes SET graphicID=NULL WHERE graphicID NOT IN (SELECT graphicID FROM eveGraphics)");
+		statPQ.executeUpdate("INSERT INTO eveUnits(unitID,unitName, displayName, description) VALUES (0, 'noUnit', '', 'no unit')");
+		statPQ.executeUpdate("UPDATE dgmAttributeTypes SET unitID=0 WHERE unitID IS NULL ");
+		
+		statPQ.executeUpdate("DELETE FROM invTypes WHERE groupID NOT IN (SELECT groupID FROM invGroups)");
+//		statPQ.executeUpdate("DELETE FROM invTypes WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invMarketGroups)");
+//		statPQ.executeUpdate("DELETE FROM invTypes WHERE marketGroupID IS NULL");
+		
+		statPQ.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT marketGroupID FROM invTypes) AND hasTypes=1");
+		statPQ.executeUpdate("DELETE FROM invMarketGroups WHERE marketGroupID NOT IN (SELECT parentGroupID FROM invMarketGroups)");
+		
+		statPQ.executeUpdate("DELETE FROM invGroups WHERE groupID NOT IN (SELECT groupID FROM invTypes)");
+		statPQ.executeUpdate("DELETE FROM invGroups WHERE categoryID NOT IN (SELECT categoryID FROM invCategories)");
+		statPQ.executeUpdate("DELETE FROM invCategories WHERE categoryID NOT IN (SELECT categoryID FROM invGroups)");
+
+		statPQ.executeUpdate("DELETE FROM invMetaTypes WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
+		statPQ.executeUpdate("DELETE FROM invBlueprintTypes WHERE blueprintTypeID NOT IN (SELECT typeID FROM invTypes)");
+		statPQ.executeUpdate("DELETE FROM invBlueprintTypes WHERE productTypeID NOT IN (SELECT typeID FROM invTypes)");
+//		statPQ.executeUpdate("DELETE FROM ramBlueprintReqs WHERE blueprintTypeID NOT IN (SELECT typeID FROM invTypes)");
+		statPQ.executeUpdate("DELETE FROM dgmTypeAttributes WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
+		statPQ.executeUpdate("DELETE FROM dgmTypeEffects WHERE typeID NOT IN (SELECT typeID FROM invTypes)");
+		statPQ.executeUpdate("DELETE FROM eveGraphics " +
 									"WHERE graphicID NOT IN " +
 									"(SELECT graphicID FROM invGroups WHERE graphicID NOT NULL " +
 									"UNION SELECT graphicID FROM invMarketGroups WHERE graphicID NOT NULL " +
 									"UNION SELECT graphicID FROM dgmAttributeTypes WHERE graphicID NOT NULL " +
 									"UNION SELECT graphicID FROM invCategories WHERE graphicID NOT NULL)");
 		// insert meta level 0 to items without any
-		statWRITE.executeUpdate(
+		statPQ.executeUpdate(
 				"INSERT INTO dgmTypeAttributes(typeID, attributeID, valueInt, valueFloat) " +
 				"SELECT DISTINCT typeID, 633 AS attributeID, NULL AS valueInt, 0.0 AS valueFloat " +
 				"FROM invTypes " +

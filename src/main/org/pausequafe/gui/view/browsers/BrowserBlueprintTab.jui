@@ -2107,7 +2107,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QTreeView" name="prereqTree"/>
+           <widget class="QTreeView" name="prereqTree">
+            <property name="horizontalScrollBarPolicy">
+             <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff</enum>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QFrame" name="frame">
