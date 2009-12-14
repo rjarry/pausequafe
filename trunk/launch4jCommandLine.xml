@@ -12,7 +12,7 @@
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>PQ.ico</icon>
+  <icon>PauseQuafeWin.ico</icon>
   <singleInstance>
     <mutexName>pausequafe</mutexName>
     <windowTitle>PauseQuafe</windowTitle>
@@ -27,7 +27,7 @@
   <jre>
     <path></path>
     <minVersion>1.5.0</minVersion>
-    <maxVersion></maxVersion>
+    <maxVersion>1.7.0</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
   </jre>
 </launch4jConfig>

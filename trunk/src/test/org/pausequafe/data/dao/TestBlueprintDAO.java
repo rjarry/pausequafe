@@ -4,7 +4,7 @@ import org.pausequafe.data.business.MarketGroup;
 import org.pausequafe.gui.model.browsers.ItemTreeElement;
 import org.pausequafe.gui.model.browsers.ItemTreeModel;
 import org.pausequafe.gui.model.browsers.MarketGroupElement;
-import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
+import org.pausequafe.misc.exceptions.PQEveDatabaseCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.SQLConstants;
@@ -41,7 +41,7 @@ public class TestBlueprintDAO {
 			e.printStackTrace();
 		} catch (PQUserDatabaseFileCorrupted e) {
 			e.printStackTrace();
-		} catch (PQEveDatabaseNotFound e) {
+		} catch (PQEveDatabaseCorrupted e) {
 			e.printStackTrace();
 		}
 

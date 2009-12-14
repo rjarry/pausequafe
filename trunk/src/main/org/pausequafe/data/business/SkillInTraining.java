@@ -1,3 +1,23 @@
+/*****************************************************************************
+ * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Copyright © 2009  diabeteman & Kios Askoner                               *
+ *                                                                           *
+ * This file is part of Pause Quafé.                                         *
+ *                                                                           *
+ * Pause Quafé is free software: you can redistribute it and/or modify       *
+ * it under the terms of the GNU General Public License as published by      *
+ * the Free Software Foundation, either version 3 of the License, or         *
+ * (at your option) any later version.                                       *
+ *                                                                           *
+ * Pause Quafé is distributed in the hope that it will be useful,            *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
+ * GNU General Public License for more details.                              *
+ *                                                                           *
+ * You should have received a copy of the GNU General Public License         *
+ * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
+ *****************************************************************************/
+
 package org.pausequafe.data.business;
 
 import java.util.Calendar;
@@ -9,148 +29,142 @@ import org.pausequafe.misc.util.Constants;
 
 public class SkillInTraining extends SkillInQueue {
 
-	// //////////////////
-	// private fields //
-	// //////////////////
-	private long currentTime;
-	private long currentTQTime;
-	private int skillInTraining;
-	private long cachedUntil;
-	private boolean cached;
+    // //////////////////
+    // private fields //
+    // //////////////////
+    private long currentTime;
+    private long currentTQTime;
+    private int skillInTraining;
+    private long cachedUntil;
+    private boolean cached;
 
-	// ///////////////
-	// constructor //
-	// ///////////////
-	public SkillInTraining() {
-	}
+    // ///////////////
+    // constructor //
+    // ///////////////
+    public SkillInTraining() {
+    }
 
-	// //////////////////
-	// public methods //
-	// //////////////////
-	/**
-	 * calculates the training speed for this skill in SP per milliseconds
-	 * 
-	 * @return the training speed
-	 */
-	public double calculateTrainingSpeed() {
-		return ((double) (endSP - startSP) / (double) (endTime - startTime));
-	}
+    // //////////////////
+    // public methods //
+    // //////////////////
+    /**
+     * calculates the training speed for this skill in SP per milliseconds
+     * 
+     * @return the training speed
+     */
+    public double calculateTrainingSpeed() {
+        return ((double) (endSP - startSP) / (double) (endTime - startTime));
+    }
 
-	/**
-	 * calculates the current SP at the method's calling time (GMT)
-	 * 
-	 * @return the current SP
-	 */
-	public int calculateCurrentSP() {
-		long now = Calendar.getInstance(TimeZone.getTimeZone("GMT"))
-				.getTimeInMillis();
-		return (int) (Math.round((now - startTime)
-				* calculateTrainingSpeed()) + startSP);
-	}
+    /**
+     * calculates the current SP at the method's calling time (GMT)
+     * 
+     * @return the current SP
+     */
+    public int calculateCurrentSP() {
+        long now = Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
+        return (int) (Math.round((now - startTime) * calculateTrainingSpeed()) + startSP);
+    }
 
-	/**
-	 * calculate SP in this skill when started skilling current level
-	 * 
-	 * @return SP when started skilling current level
-	 */
-	public int calculateLevelStartSP() {
-		return Constants.SKILL_LEVEL_REQS[level - 1]
-				* calculateRank();
-	}
+    /**
+     * calculate SP in this skill when started skilling current level
+     * 
+     * @return SP when started skilling current level
+     */
+    public int calculateLevelStartSP() {
+        return Constants.SKILL_LEVEL_REQS[level - 1] * calculateRank();
+    }
 
-	/**
-	 * Calculates the completion by a number from 0.0 to 1.0
-	 * 
-	 * @return the completion
-	 */
-	public double calculateCompletion() {
-		double completion = (double) (calculateCurrentSP() - calculateLevelStartSP())
-				/ (double) (endSP - calculateLevelStartSP());
+    /**
+     * Calculates the completion by a number from 0.0 to 1.0
+     * 
+     * @return the completion
+     */
+    public double calculateCompletion() {
+        double completion = (double) (calculateCurrentSP() - calculateLevelStartSP())
+                / (double) (endSP - calculateLevelStartSP());
 
-		return Math.min(1, completion);
-	}
-	
-	/**
-	 * Calculate the training time.
-	 * @return the training time for this skill in training
-	 */
-	public long calculateTrainingTime(){
-		return endTime - startTime;
-	}
-	
-	
+        return Math.min(1, completion);
+    }
 
-	public String toString() {
-		String print = "";
+    /**
+     * Calculate the training time.
+     * 
+     * @return the training time for this skill in training
+     */
+    public long calculateTrainingTime() {
+        return endTime - startTime;
+    }
 
-		try {
-			print += ItemDAO.getInstance().findItemById(typeID)
-					.getTypeName();
-		} catch (PQException e) {
-			print += typeID;
-		}
+    public String toString() {
+        String print = "";
 
-		print += " training to level " + level;
-		print += "\nCurrent SP : " + calculateCurrentSP();
-		print += "\nDone : " + calculateCompletion() * 100 + " %";
-		// System.out.println(trainingSpeed()*1000*60*60 + " SP / h");
+        try {
+            print += ItemDAO.getInstance().findItemById(typeID).getTypeName();
+        } catch (PQException e) {
+            print += typeID;
+        }
 
-		return print;
-	}
+        print += " training to level " + level;
+        print += "\nCurrent SP : " + calculateCurrentSP();
+        print += "\nDone : " + calculateCompletion() * 100 + " %";
+        // System.out.println(trainingSpeed()*1000*60*60 + " SP / h");
 
-	// ///////////////////
-	// private methods //
-	// ///////////////////
-	private int calculateRank() {
-		return (int) Math.round((double) endSP
-				/ (double) Constants.SKILL_LEVEL_REQS[level]);
-	}
+        return print;
+    }
 
-	// ///////////
-	// getters //
-	// ///////////
-	public long getCurrentTime() {
-		return currentTime;
-	}
+    // ///////////////////
+    // private methods //
+    // ///////////////////
+    private int calculateRank() {
+        return (int) Math.round((double) endSP / (double) Constants.SKILL_LEVEL_REQS[level]);
+    }
 
-	public long getCurrentTQTime() {
-		return currentTQTime;
-	}
+    // ///////////
+    // getters //
+    // ///////////
+    public long getCurrentTime() {
+        return currentTime;
+    }
 
-	public int skillInTraining() {
-		return skillInTraining;
-	}
+    public long getCurrentTQTime() {
+        return currentTQTime;
+    }
 
-	public long getCachedUntil() {
-		return cachedUntil;
-	}
+    public int skillInTraining() {
+        return skillInTraining;
+    }
 
-	public boolean isCached() {
-		return cached;
-	}
+    public long getCachedUntil() {
+        return cachedUntil;
+    }
 
-	// ///////////
-	// setters //
-	// ///////////
-	public void setCurrentTime(long currentTime) {
-		this.currentTime = currentTime;
-	}
+    public boolean isCached() {
+        return cached;
+    }
 
-	public void setCurrentTQTime(long currentTQTime) {
-		this.currentTQTime = currentTQTime;
-	}
+    // ///////////
+    // setters //
+    // ///////////
+    public void setCurrentTime(long currentTime) {
+        this.currentTime = currentTime;
+    }
 
-	public void setCachedUntil(long cachedUntil) {
-		this.cachedUntil = cachedUntil;
-	}
+    public void setCurrentTQTime(long currentTQTime) {
+        this.currentTQTime = currentTQTime;
+    }
 
-	public void setCached(boolean cached) {
-		this.cached = cached;
-	}
+    public void setCachedUntil(long cachedUntil) {
+        this.cachedUntil = cachedUntil;
+    }
 
-	public void setSkillInTraining(int skillCount) {
-		this.skillInTraining = skillCount;
+    public void setCached(boolean cached) {
+        this.cached = cached;
+    }
 
-	}
+    public void setSkillInTraining(int skillCount) {
+        this.skillInTraining = skillCount;
+
+    }
 
 }

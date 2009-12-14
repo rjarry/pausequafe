@@ -5,7 +5,7 @@ import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.gui.model.browsers.ItemPrerequisiteElement;
 import org.pausequafe.gui.model.browsers.ItemTreeElement;
 import org.pausequafe.gui.model.browsers.ItemTreeModel;
-import org.pausequafe.misc.exceptions.PQEveDatabaseNotFound;
+import org.pausequafe.misc.exceptions.PQEveDatabaseCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 
@@ -27,7 +27,7 @@ public class TestTreePrerequisite {
 			e.printStackTrace();
 		} catch (PQUserDatabaseFileCorrupted e) {
 			e.printStackTrace();
-		} catch (PQEveDatabaseNotFound e) {
+		} catch (PQEveDatabaseCorrupted e) {
 			e.printStackTrace();
 		}
 		ItemTreeElement root = new ItemPrerequisiteElement(item);

@@ -1,3 +1,23 @@
+/*****************************************************************************
+ * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Copyright © 2009  diabeteman & Kios Askoner                               *
+ *                                                                           *
+ * This file is part of Pause Quafé.                                         *
+ *                                                                           *
+ * Pause Quafé is free software: you can redistribute it and/or modify       *
+ * it under the terms of the GNU General Public License as published by      *
+ * the Free Software Foundation, either version 3 of the License, or         *
+ * (at your option) any later version.                                       *
+ *                                                                           *
+ * Pause Quafé is distributed in the hope that it will be useful,            *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
+ * GNU General Public License for more details.                              *
+ *                                                                           *
+ * You should have received a copy of the GNU General Public License         *
+ * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
+ *****************************************************************************/
+
 package org.pausequafe.gui.view.browsers;
 
 import java.io.File;
@@ -21,99 +41,108 @@ import com.trolltech.qt.gui.QWidget;
 
 public class BrowsersWindow extends QWidget {
 
-	Ui_BrowsersWindow ui = new Ui_BrowsersWindow();
+    Ui_BrowsersWindow ui = new Ui_BrowsersWindow();
 
-	// //////////////////
-	// private fields //
-	// //////////////////
-	private BrowserSkillTab skillBrowser;
-	private BrowserShipTab shipBrowser;
-	private BrowserItemTab moduleBrowser;
-	private BrowserBlueprintTab blueprintBrowser;
+    // /////////////////
+    // private fields //
+    // /////////////////
+    private BrowserSkillTab skillBrowser;
+    private BrowserShipTab shipBrowser;
+    private BrowserItemTab moduleBrowser;
+    private BrowserBlueprintTab blueprintBrowser;
 
-	private QToolBar toolBar;
-	private QComboBox sheetCombo;
-	
-	private MonitoredCharactersAndSkillPlansModel characterModel;
+    private QToolBar toolBar;
+    private QComboBox sheetCombo;
 
-	// ////////////////
-	// constructors //
-	// ////////////////
-	public BrowsersWindow() {
-		this(null);
-	}
+    private MonitoredCharactersAndSkillPlansModel characterModel;
 
-	public BrowsersWindow(QWidget parent) {
-		super(parent);
-		setupUi();
-		try {
-			characterModel = MonitoredCharactersAndSkillPlansModel.getInstance();
-		} catch (PQSQLDriverNotFoundException e) {
-			popSQLDriverError();
-		} catch (PQUserDatabaseFileCorrupted e) {
-			popUserDBCorrupt();
-		}
-		sheetCombo.setModel(characterModel);
-		
-		changeCurrentCharacter(sheetCombo.currentIndex());
-	}
+    // ///////////////
+    // constructors //
+    // ///////////////
+    public BrowsersWindow() {
+        this(null);
+    }
 
-	// ////////////////
-	// widget setup //
-	// ////////////////
-	private void setupUi() {
-		ui.setupUi(this);
+    public BrowsersWindow(QWidget parent) {
+        super(parent);
+        setupUi();
+        try {
+            characterModel = MonitoredCharactersAndSkillPlansModel.getInstance();
+        } catch (PQSQLDriverNotFoundException e) {
+            popSQLDriverError(e);
+        } catch (PQUserDatabaseFileCorrupted e) {
+            popUserDBCorrupt(e);
+        }
+        sheetCombo.setModel(characterModel);
 
-		this.setWindowTitle("Browsers");
+        changeCurrentCharacter(sheetCombo.currentIndex());
+    }
 
-		toolBar = new QToolBar(this);
-		ui.verticalLayout.insertWidget(0, toolBar);
+    // ///////////////
+    // widget setup //
+    // ///////////////
+    private void setupUi() {
+        ui.setupUi(this);
 
-		sheetCombo = new QComboBox(this);
-		toolBar.addWidget(new QLabel(" Active Character : "));
-		toolBar.addWidget(sheetCombo);
+        this.setWindowTitle("Browsers");
 
-		sheetCombo.currentIndexChanged.connect(this, "changeCurrentCharacter(int)");
+        toolBar = new QToolBar(this);
+        ui.verticalLayout.insertWidget(0, toolBar);
 
-		skillBrowser = new BrowserSkillTab(this, SQLConstants.SKILLS_MKTGRPID);
-		shipBrowser = new BrowserShipTab(this, SQLConstants.SHIPS_MKTGRPID);
-		moduleBrowser = new BrowserItemTab(this, SQLConstants.ITEMS_MKTGRPID);
-		blueprintBrowser = new BrowserBlueprintTab(this, SQLConstants.BLUEPRINTS_MKTGRPID);
+        sheetCombo = new QComboBox(this);
+        toolBar.addWidget(new QLabel(" Active Character : "));
+        toolBar.addWidget(sheetCombo);
 
-		ui.tabWidget.removeTab(0);
+        sheetCombo.currentIndexChanged.connect(this, "changeCurrentCharacter(int)");
 
-		ui.tabWidget.addTab(skillBrowser, "Skills");
-		ui.tabWidget.addTab(shipBrowser, "Ships");
-		ui.tabWidget.addTab(moduleBrowser, "Ship Equipement");
-		ui.tabWidget.addTab(blueprintBrowser, "Blueprints");
+        skillBrowser = new BrowserSkillTab(this, SQLConstants.SKILLS_MKTGRPID);
+        shipBrowser = new BrowserShipTab(this, SQLConstants.SHIPS_MKTGRPID);
+        moduleBrowser = new BrowserItemTab(this, SQLConstants.ITEMS_MKTGRPID);
+        blueprintBrowser = new BrowserBlueprintTab(this, SQLConstants.BLUEPRINTS_MKTGRPID);
 
-		this.resize(1100, 700);
-	}
+        ui.tabWidget.removeTab(0);
 
-	// //////////////////
-	// private methods //
-	// //////////////////
-	private void changeCurrentCharacter(int index) {
-		MonitoredCharacter data = (MonitoredCharacter) sheetCombo.itemData(index,ItemDataRole.DisplayRole);
-		CharacterSheet sheet = data.getSheet(); 
-		skillBrowser.setSheet(sheet);
-		shipBrowser.setSheet(sheet);
-		moduleBrowser.setSheet(sheet);
-		blueprintBrowser.setSheet(sheet);
-	}
+        ui.tabWidget.addTab(skillBrowser, "Skills");
+        ui.tabWidget.addTab(shipBrowser, "Ships");
+        ui.tabWidget.addTab(moduleBrowser, "Ship Equipement");
+        ui.tabWidget.addTab(blueprintBrowser, "Blueprints");
 
-	private void popUserDBCorrupt() {
-		ErrorQuestion error = new ErrorQuestion(this, tr(Constants.USER_DB_CORRUPTED_ERROR));
-		error.exec();
-		if (error.result() == QDialog.DialogCode.Accepted.value()) {
-			File userDb = new File(SQLConstants.USER_DATABASE_FILE);
-			userDb.delete();
-		}
-	}
+        this.resize(1100, 700);
+    }
 
-	private void popSQLDriverError() {
-		ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
-		error.exec();
-	}
+    // //////////////////
+    // private methods //
+    // //////////////////
+    private void changeCurrentCharacter(int index) {
+        MonitoredCharacter data = (MonitoredCharacter) sheetCombo.itemData(index,
+                ItemDataRole.DisplayRole);
+        CharacterSheet sheet;
+        if (data == null) {
+            sheet = null;
+        } else {
+            sheet = data.getSheet();
+        }
+        skillBrowser.setSheet(sheet);
+        shipBrowser.setSheet(sheet);
+        moduleBrowser.setSheet(sheet);
+        blueprintBrowser.setSheet(sheet);
+    }
+
+    private void popUserDBCorrupt(Exception e) {
+        String message = tr(Constants.USER_DB_CORRUPTED_ERROR);
+        message += "\n" + e.getMessage();
+
+        ErrorQuestion error = new ErrorQuestion(this, message);
+        error.exec();
+        if (error.result() == QDialog.DialogCode.Accepted.value()) {
+            File userDb = new File(SQLConstants.USER_DATABASE_FILE);
+            userDb.delete();
+        }
+    }
+
+    private void popSQLDriverError(Exception e) {
+        ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
+        error.exec();
+    }
 
 }

@@ -40,7 +40,7 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>240</width>
+        <width>300</width>
         <height>0</height>
        </size>
       </property>
@@ -2272,7 +2272,7 @@
            <enum>com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus</enum>
           </property>
           <property name="horizontalScrollBarPolicy">
-           <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAsNeeded</enum>
+           <enum>com.trolltech.qt.core.Qt.ScrollBarPolicy.ScrollBarAlwaysOff</enum>
           </property>
           <property name="showDropIndicator" stdset="0">
            <bool>false</bool>
