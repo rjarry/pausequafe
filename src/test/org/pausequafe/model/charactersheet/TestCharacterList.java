@@ -6,11 +6,11 @@ import java.text.FieldPosition;
 import java.util.List;
 import java.util.Scanner;
 
+import org.pausequafe.core.factory.CharacterListFactory;
+import org.pausequafe.core.factory.CharacterSheetFactory;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.CharacterSkill;
-import org.pausequafe.data.dao.CharacterListFactory;
-import org.pausequafe.data.dao.CharacterSheetFactory;
 import org.pausequafe.misc.exceptions.PQException;
 
 public class TestCharacterList {

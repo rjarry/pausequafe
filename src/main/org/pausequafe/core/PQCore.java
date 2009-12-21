@@ -18,50 +18,41 @@
  * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-package org.pausequafe.gui.view.misc;
+package org.pausequafe.core;
 
-import org.pausequafe.misc.util.Constants;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.trolltech.qt.core.Qt;
-import com.trolltech.qt.gui.QDialog;
-import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QPixmap;
-import com.trolltech.qt.gui.QPushButton;
-import com.trolltech.qt.gui.QWidget;
+import com.trolltech.qt.core.QTimer;
 
-public class ErrorQuestion extends QDialog {
+/**
+ * This class handles the scheduling of all the API requests and signal emissions for updating the
+ * GUI.
+ * 
+ * @author diabeteman
+ * 
+ */
+public class PQCore {
 
-    Ui_ErrorQuestion ui = new Ui_ErrorQuestion();
+    // SINGLETON //////////////////////////////////////////////////////////////////////////////////
+    private static PQCore instance;
 
-    private QLabel icon;
-    private QLabel text;
-    private QPushButton okPushButton;
-    private QPushButton cancelPushButton;
+    // TIMERS /////////////////////////////////////////////////////////////////////////////////////
+    private final QTimer serverStatusTimer;
+    private final List<CharacterController> controllers;
 
-    public ErrorQuestion(String message) {
-        this(null, message);
+    // CONSTRUCTOR ////////////////////////////////////////////////////////////////////////////////
+    private PQCore() {
+        serverStatusTimer = new QTimer();
+        controllers = new ArrayList<CharacterController>();
+        serverStatusTimer.timeout.connect(this, "");
     }
 
-    public ErrorQuestion(QWidget parent, String message) {
-        super(parent);
-        setupUi();
-        this.setWindowTitle("Error");
-        text.setText(message);
+    public static PQCore getInstance() {
+        if (instance == null) {
+            instance = new PQCore();
+        }
+        return instance;
     }
 
-    private void setupUi() {
-        ui.setupUi(this);
-
-        icon = (QLabel) this.findChild(QLabel.class, "icon");
-        icon.setPixmap(new QPixmap(Constants.ERROR_ICON_FILE));
-
-        text = (QLabel) this.findChild(QLabel.class, "text");
-        text.setAlignment(Qt.AlignmentFlag.AlignCenter);
-
-        cancelPushButton = (QPushButton) this.findChild(QPushButton.class, "cancelPushButton");
-        cancelPushButton.clicked.connect(this, "reject()");
-
-        okPushButton = (QPushButton) this.findChild(QPushButton.class, "okPushButton");
-        okPushButton.clicked.connect(this, "accept()");
-    }
 }

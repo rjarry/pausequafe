@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+import org.pausequafe.core.factory.CharacterListFactory;
+import org.pausequafe.core.factory.SkillInTrainingFactory;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.SkillInTraining;
-import org.pausequafe.data.dao.CharacterListFactory;
-import org.pausequafe.data.dao.SkillInTrainingFactory;
 import org.pausequafe.misc.exceptions.PQException;
 
 public class TestSkillInTraining {

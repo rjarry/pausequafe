@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -27,6 +27,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.pausequafe.core.threads.ApiRequest;
+import org.pausequafe.core.threads.ServerStatusRequest;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.ServerStatus;
@@ -43,10 +45,8 @@ import org.pausequafe.gui.view.skillplans.SkillPlanView;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
-import org.pausequafe.misc.util.ApiRequest;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.SQLConstants;
-import org.pausequafe.misc.util.ServerStatusRequest;
 
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.core.QTimer;

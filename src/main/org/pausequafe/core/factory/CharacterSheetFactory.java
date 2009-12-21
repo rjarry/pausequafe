@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -18,7 +18,7 @@
  * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-package org.pausequafe.data.dao;
+package org.pausequafe.core.factory;
 
 import java.awt.Image;
 import java.io.File;
@@ -27,6 +27,7 @@ import java.io.IOException;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.pausequafe.core.parsers.CharacterSheetParser;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.misc.exceptions.PQConfigException;

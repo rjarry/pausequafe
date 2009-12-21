@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -20,11 +20,11 @@
 
 package org.pausequafe.gui.view.character;
 
+import org.pausequafe.core.threads.ApiRequest;
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.data.business.SkillQueue;
-import org.pausequafe.misc.util.ApiRequest;
 
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.gui.QVBoxLayout;

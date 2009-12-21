@@ -2,6 +2,7 @@ package org.pausequafe.data.dao;
 
 import java.io.IOException;
 
+import org.pausequafe.core.factory.SkillQueueFactory;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.SkillQueue;
 import org.pausequafe.misc.exceptions.PQException;

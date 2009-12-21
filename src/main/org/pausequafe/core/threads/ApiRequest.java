@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -18,17 +18,17 @@
  * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-package org.pausequafe.misc.util;
+package org.pausequafe.core.threads;
 
 import java.io.IOException;
 
+import org.pausequafe.core.factory.CharacterSheetFactory;
+import org.pausequafe.core.factory.SkillInTrainingFactory;
+import org.pausequafe.core.factory.SkillQueueFactory;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.SkillInTraining;
 import org.pausequafe.data.business.SkillQueue;
-import org.pausequafe.data.dao.CharacterSheetFactory;
-import org.pausequafe.data.dao.SkillInTrainingFactory;
-import org.pausequafe.data.dao.SkillQueueFactory;
 import org.pausequafe.misc.exceptions.PQException;
 
 import com.trolltech.qt.QSignalEmitter;

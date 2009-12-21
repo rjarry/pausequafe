@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -22,8 +22,8 @@ package org.pausequafe;
 
 import java.io.File;
 
+import org.pausequafe.core.dao.MarketGroupDAO;
 import org.pausequafe.data.business.ServerStatus;
-import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.gui.view.main.MainWindow;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;
