@@ -11,9 +11,9 @@
 			<attribute name="javadoc_location" value="file:/D:/dev/lib/qtjambi-win32-lgpl-4.5.2_01/doc/html/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/qtjambi-win32-msvc2005-4.5.2_01.jar"/>
 	<classpathentry kind="lib" path="lib/sqlitejdbc-v054.jar"/>
 	<classpathentry kind="lib" path="lib/sqljdbc.jar"/>
+	<classpathentry kind="lib" path="lib/qtjambi-macosx-gcc-4.5.2_01.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

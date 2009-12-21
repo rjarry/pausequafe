@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -20,9 +20,9 @@
 
 package org.pausequafe.gui.model.browsers;
 
+import org.pausequafe.core.dao.ItemDAO;
 import org.pausequafe.data.business.CharacterSheet;
 import org.pausequafe.data.business.Item;
-import org.pausequafe.data.dao.ItemDAO;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.Formater;

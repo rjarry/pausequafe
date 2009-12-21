@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -23,7 +23,7 @@ package org.pausequafe.data.business;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import org.pausequafe.data.dao.ItemDAO;
+import org.pausequafe.core.dao.ItemDAO;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 

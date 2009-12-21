@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -23,11 +23,11 @@ package org.pausequafe.gui.model.characters;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pausequafe.core.dao.MonitoredCharacterDAO;
+import org.pausequafe.core.dao.SkillPlanDAO;
 import org.pausequafe.data.business.APIData;
 import org.pausequafe.data.business.MonitoredCharacter;
 import org.pausequafe.data.business.SkillPlan;
-import org.pausequafe.data.dao.MonitoredCharacterDAO;
-import org.pausequafe.data.dao.SkillPlanDAO;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application             *
+ * Pause Quafé - An Eve-Online™ character assistance application              *
  * Copyright © 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
  * This file is part of Pause Quafé.                                         *
@@ -24,10 +24,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pausequafe.core.dao.ItemDAO;
+import org.pausequafe.core.dao.MarketGroupDAO;
 import org.pausequafe.data.business.ItemAttribute;
 import org.pausequafe.data.business.ItemDetailed;
-import org.pausequafe.data.dao.ItemDAO;
-import org.pausequafe.data.dao.MarketGroupDAO;
 import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.QModelIndex;

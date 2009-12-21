@@ -9,9 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
+import org.pausequafe.core.factory.CharacterListFactory;
+import org.pausequafe.core.factory.CharacterSheetFactory;
 import org.pausequafe.data.business.APIData;
-import org.pausequafe.data.dao.CharacterListFactory;
-import org.pausequafe.data.dao.CharacterSheetFactory;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 
