@@ -20,7 +20,7 @@
 
 package org.pausequafe.gui.model.browsers;
 
-import org.pausequafe.data.business.CharacterSheet;
+import org.pausequafe.data.character.CharacterSheet;
 import org.pausequafe.misc.exceptions.PQException;
 
 import com.trolltech.qt.core.Qt.ItemDataRole;

@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.pausequafe.core.dao.ItemDAO;
 import org.pausequafe.core.dao.MarketGroupDAO;
-import org.pausequafe.data.business.ItemAttribute;
-import org.pausequafe.data.business.ItemDetailed;
+import org.pausequafe.data.item.ItemAttribute;
+import org.pausequafe.data.item.ItemDetailed;
 import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.QModelIndex;

@@ -28,8 +28,8 @@ import java.util.TimeZone;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.pausequafe.data.business.SkillInQueue;
-import org.pausequafe.data.business.SkillQueue;
+import org.pausequafe.data.character.SkillInQueue;
+import org.pausequafe.data.item.SkillQueue;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 

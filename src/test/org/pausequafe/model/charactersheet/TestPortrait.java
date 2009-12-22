@@ -11,7 +11,7 @@ import javax.swing.WindowConstants;
 
 import org.pausequafe.core.factory.CharacterListFactory;
 import org.pausequafe.core.factory.CharacterSheetFactory;
-import org.pausequafe.data.business.APIData;
+import org.pausequafe.data.character.APIData;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 

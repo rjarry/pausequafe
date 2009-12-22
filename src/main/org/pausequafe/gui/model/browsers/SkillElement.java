@@ -20,9 +20,9 @@
 
 package org.pausequafe.gui.model.browsers;
 
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.PreRequisite;
-import org.pausequafe.data.business.Skill;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.item.PreRequisite;
+import org.pausequafe.data.item.Skill;
 import org.pausequafe.misc.util.Constants;
 
 import com.trolltech.qt.gui.QFont;

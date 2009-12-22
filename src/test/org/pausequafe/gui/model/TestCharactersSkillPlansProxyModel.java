@@ -1,6 +1,6 @@
 package org.pausequafe.gui.model;
 
-import org.pausequafe.data.business.MonitoredCharacter;
+import org.pausequafe.data.character.MonitoredCharacter;
 import org.pausequafe.gui.model.characters.CharaterSkillPlansProxyModel;
 import org.pausequafe.gui.model.characters.MonitoredCharactersAndSkillPlansModel;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;

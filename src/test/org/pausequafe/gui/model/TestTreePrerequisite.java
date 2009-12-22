@@ -1,7 +1,7 @@
 package org.pausequafe.gui.model;
 
 import org.pausequafe.core.dao.ItemDAO;
-import org.pausequafe.data.business.Item;
+import org.pausequafe.data.item.Item;
 import org.pausequafe.gui.model.browsers.ItemPrerequisiteElement;
 import org.pausequafe.gui.model.browsers.ItemTreeElement;
 import org.pausequafe.gui.model.browsers.ItemTreeModel;

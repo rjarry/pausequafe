@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.pausequafe.core.parsers.CharacterListParser;
-import org.pausequafe.data.business.APIData;
+import org.pausequafe.data.character.APIData;
 import org.pausequafe.misc.exceptions.PQConfigException;
 import org.pausequafe.misc.exceptions.PQConnectionException;
 import org.pausequafe.misc.exceptions.PQException;

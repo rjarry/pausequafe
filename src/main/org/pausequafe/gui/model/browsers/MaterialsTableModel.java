@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pausequafe.core.dao.ItemDAO;
-import org.pausequafe.data.business.BPRequiredMaterial;
-import org.pausequafe.data.business.CharacterSheet;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.item.BPRequiredMaterial;
 import org.pausequafe.misc.util.Formater;
 
 import com.trolltech.qt.core.QModelIndex;

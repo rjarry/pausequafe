@@ -38,8 +38,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pausequafe.data.business.MonitoredCharacter;
-import org.pausequafe.data.business.SkillPlan;
+import org.pausequafe.data.character.MonitoredCharacter;
+import org.pausequafe.data.character.SkillPlan;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 

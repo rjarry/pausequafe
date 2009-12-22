@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 import org.pausequafe.core.factory.CharacterListFactory;
 import org.pausequafe.core.factory.SkillInTrainingFactory;
-import org.pausequafe.data.business.APIData;
-import org.pausequafe.data.business.SkillInTraining;
+import org.pausequafe.data.character.APIData;
+import org.pausequafe.data.character.SkillInTraining;
 import org.pausequafe.misc.exceptions.PQException;
 
 public class TestSkillInTraining {

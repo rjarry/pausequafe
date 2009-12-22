@@ -20,7 +20,7 @@
 
 package org.pausequafe.core;
 
-import org.pausequafe.data.business.MonitoredCharacter;
+import org.pausequafe.data.character.MonitoredCharacter;
 
 import com.trolltech.qt.QSignalEmitter;
 

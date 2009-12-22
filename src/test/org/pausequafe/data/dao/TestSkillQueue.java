@@ -3,8 +3,8 @@ package org.pausequafe.data.dao;
 import java.io.IOException;
 
 import org.pausequafe.core.factory.SkillQueueFactory;
-import org.pausequafe.data.business.APIData;
-import org.pausequafe.data.business.SkillQueue;
+import org.pausequafe.data.character.APIData;
+import org.pausequafe.data.item.SkillQueue;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 

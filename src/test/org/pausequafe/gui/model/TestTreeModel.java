@@ -1,7 +1,7 @@
 package org.pausequafe.gui.model;
 
 import org.pausequafe.core.dao.MarketGroupDAO;
-import org.pausequafe.data.business.MarketGroup;
+import org.pausequafe.data.item.MarketGroup;
 import org.pausequafe.gui.model.browsers.ItemTreeElement;
 import org.pausequafe.gui.model.browsers.ItemTreeModel;
 import org.pausequafe.gui.model.browsers.MarketGroupElement;

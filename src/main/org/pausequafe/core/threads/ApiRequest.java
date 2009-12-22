@@ -25,10 +25,10 @@ import java.io.IOException;
 import org.pausequafe.core.factory.CharacterSheetFactory;
 import org.pausequafe.core.factory.SkillInTrainingFactory;
 import org.pausequafe.core.factory.SkillQueueFactory;
-import org.pausequafe.data.business.APIData;
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.SkillInTraining;
-import org.pausequafe.data.business.SkillQueue;
+import org.pausequafe.data.character.APIData;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.character.SkillInTraining;
+import org.pausequafe.data.item.SkillQueue;
 import org.pausequafe.misc.exceptions.PQException;
 
 import com.trolltech.qt.QSignalEmitter;
