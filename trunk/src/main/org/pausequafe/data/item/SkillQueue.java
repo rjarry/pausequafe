@@ -18,11 +18,12 @@
  * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-package org.pausequafe.data.business;
+package org.pausequafe.data.item;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pausequafe.data.character.SkillInQueue;
 import org.pausequafe.misc.util.Formater;
 
 public class SkillQueue {

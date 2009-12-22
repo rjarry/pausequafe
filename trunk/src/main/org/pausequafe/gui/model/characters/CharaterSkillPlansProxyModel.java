@@ -20,8 +20,8 @@
 
 package org.pausequafe.gui.model.characters;
 
-import org.pausequafe.data.business.MonitoredCharacter;
-import org.pausequafe.data.business.SkillPlan;
+import org.pausequafe.data.character.MonitoredCharacter;
+import org.pausequafe.data.character.SkillPlan;
 
 import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.Qt.DropAction;

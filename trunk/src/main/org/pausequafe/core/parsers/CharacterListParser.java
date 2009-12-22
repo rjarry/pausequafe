@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.pausequafe.data.business.APIData;
+import org.pausequafe.data.character.APIData;
 
 public class CharacterListParser {
 

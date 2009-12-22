@@ -21,8 +21,8 @@
 package org.pausequafe.gui.model.browsers;
 
 import org.pausequafe.core.dao.ItemDAO;
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.Item;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.item.Item;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.Formater;

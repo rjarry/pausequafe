@@ -22,7 +22,7 @@ package org.pausequafe.core.parsers;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.pausequafe.data.business.ServerStatus;
+import org.pausequafe.data.misc.ServerStatus;
 
 public class ServerStatusParser {
 

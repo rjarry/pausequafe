@@ -30,9 +30,9 @@ import java.util.TimeZone;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.pausequafe.data.business.AttributeEnhancer;
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.CharacterSkill;
+import org.pausequafe.data.character.AttributeEnhancer;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.character.CharacterSkill;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 

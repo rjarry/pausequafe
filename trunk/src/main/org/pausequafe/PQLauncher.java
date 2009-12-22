@@ -23,7 +23,7 @@ package org.pausequafe;
 import java.io.File;
 
 import org.pausequafe.core.dao.MarketGroupDAO;
-import org.pausequafe.data.business.ServerStatus;
+import org.pausequafe.data.misc.ServerStatus;
 import org.pausequafe.gui.view.main.MainWindow;
 import org.pausequafe.gui.view.misc.ErrorMessage;
 import org.pausequafe.gui.view.misc.ErrorQuestion;

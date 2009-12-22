@@ -20,8 +20,8 @@
 
 package org.pausequafe.gui.model.browsers;
 
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.Item;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.item.Item;
 
 import com.trolltech.qt.gui.QIcon;
 

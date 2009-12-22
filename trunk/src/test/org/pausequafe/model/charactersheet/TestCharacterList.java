@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 import org.pausequafe.core.factory.CharacterListFactory;
 import org.pausequafe.core.factory.CharacterSheetFactory;
-import org.pausequafe.data.business.APIData;
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.CharacterSkill;
+import org.pausequafe.data.character.APIData;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.character.CharacterSkill;
 import org.pausequafe.misc.exceptions.PQException;
 
 public class TestCharacterList {

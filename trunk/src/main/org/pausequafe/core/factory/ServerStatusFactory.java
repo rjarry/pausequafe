@@ -22,7 +22,7 @@ package org.pausequafe.core.factory;
 
 import org.jdom.Document;
 import org.pausequafe.core.parsers.ServerStatusParser;
-import org.pausequafe.data.business.ServerStatus;
+import org.pausequafe.data.misc.ServerStatus;
 
 import be.fomp.jeve.core.api.StandardAPI;
 import be.fomp.jeve.core.api.connectors.JEveConnectionFactory;

@@ -21,7 +21,7 @@
 package org.pausequafe.core.threads;
 
 import org.pausequafe.core.factory.ServerStatusFactory;
-import org.pausequafe.data.business.ServerStatus;
+import org.pausequafe.data.misc.ServerStatus;
 
 import com.trolltech.qt.QSignalEmitter;
 
