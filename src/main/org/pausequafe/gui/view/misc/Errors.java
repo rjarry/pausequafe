@@ -18,38 +18,51 @@
  * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-package org.pausequafe.gui.view.main;
+package org.pausequafe.gui.view.misc;
+
+import java.io.File;
 
 import org.pausequafe.misc.util.Constants;
+import org.pausequafe.misc.util.SQLConstants;
 
-import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QDialog;
-import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QWidget;
 
-public class DeleteCharacterDialog extends QDialog {
+public class Errors {
+    
+    public static void popUserDBCorrupt(QWidget parent, Exception e) {
+        String message = Constants.USER_DB_CORRUPTED_ERROR;
+        message += "\n" + e.getMessage();
 
-    Ui_DeleteCharacterDialog ui = new Ui_DeleteCharacterDialog();
-
-    public DeleteCharacterDialog(String characterName) {
-        this(null, characterName);
+        ErrorQuestion error = new ErrorQuestion(parent, message);
+        error.exec();
+        if (error.result() == QDialog.DialogCode.Accepted.value()) {
+            File userDb = new File(SQLConstants.USER_DATABASE_FILE);
+            userDb.delete();
+        }
     }
 
-    public DeleteCharacterDialog(QWidget parent, String characterName) {
-        super(parent);
-        setupUi();
-        ui.textLabel.setText("Are you sure you want to remove <br><b>" + characterName + "</b>?");
+    public static void popSQLDriverError(QWidget parent, Exception e) {
+        ErrorMessage error = new ErrorMessage(parent, Constants.DRIVER_NOT_FOUND_ERROR);
+        error.exec();
     }
 
-    private void setupUi() {
-        ui.setupUi(this);
-        this.setWindowTitle("Delete Character?");
+    public static void popEveDbCorrupted(QWidget parent, Exception e) {
+        String message = Constants.EVE_DB_CORRUPTED_ERROR;
+        message += "\n" + e.getMessage();
 
-        ui.textLabel.setAlignment(Qt.AlignmentFlag.AlignCenter);
-
-        ui.removeButton.clicked.connect(this, "accept()");
-        ui.cancelButton.clicked.connect(this, "reject()");
-
-        ui.iconLabel.setPixmap(new QPixmap(Constants.QUESTION_ICON_FILE));
+        ErrorMessage error = new ErrorMessage(parent, message);
+        error.exec();
     }
+    
+    public static void popConnectionError(QWidget parent) {
+        ErrorMessage error = new ErrorMessage(parent, Constants.CONNECTION_ERROR);
+        error.exec();
+    }
+    
+    public static void popError(QWidget parent, String message) {
+        ErrorMessage error = new ErrorMessage(parent, message);
+        error.exec();
+    }
+    
 }

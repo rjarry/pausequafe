@@ -1,21 +1,21 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application              *
- * Copyright © 2009  diabeteman & Kios Askoner                               *
+ * Pause QuafÃ© - An Eve-Onlineâ„¢ character assistance application             *
+ * Copyright Â© 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
- * This file is part of Pause Quafé.                                         *
+ * This file is part of Pause QuafÃ©.                                         *
  *                                                                           *
- * Pause Quafé is free software: you can redistribute it and/or modify       *
+ * Pause QuafÃ© is free software: you can redistribute it and/or modify       *
  * it under the terms of the GNU General Public License as published by      *
  * the Free Software Foundation, either version 3 of the License, or         *
  * (at your option) any later version.                                       *
  *                                                                           *
- * Pause Quafé is distributed in the hope that it will be useful,            *
+ * Pause QuafÃ© is distributed in the hope that it will be useful,            *
  * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  * GNU General Public License for more details.                              *
  *                                                                           *
  * You should have received a copy of the GNU General Public License         *
- * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
+ * along with Pause QuafÃ©.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
 package org.pausequafe.misc.util;
@@ -189,10 +189,10 @@ public class Constants {
     // /////////////////
     public static final String ABOUT_TEXT = "<style>a { color: #ff66e0; font-weight : bold; } "
             + "a:visited { color: #ff66e0; font-weight : bold; } </style>"
-            + "<b>Pause Quafé®</b><br>"
+            + "<b>Pause QuafÃ©Â®</b><br>"
             + "<i>version "
             + PQ_VERSION
-            + " - Copyright © 2009</i><br>"
+            + " - Copyright Â© 2009</i><br>"
             + "This program is free software. You can redistribute it and/or modify it<br>"
             + "under the terms of version 2 of the "
             + "<u><a href=\"http://www.gnu.org/copyleft/gpl.html\">GNU General Public Licence</a></u>.<br><br>";
@@ -200,6 +200,6 @@ public class Constants {
     public static final String SUGGESTIONS_TEXT = "Please enjoy this software. "
             + "Any suggestion and/or bug repport is encouraged.<br>"
             + "Donations in ISK are of course welcome \\o/<br><br>"
-            + "<i>Pause Quafé®</i> developped by <b>diabeteman</b> and <b>Kios Askoner</b>";
+            + "<i>Pause QuafÃ©Â®</i> developped by <b>diabeteman</b> and <b>Kios Askoner</b>";
 
 }

@@ -1,40 +1,35 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application              *
- * Copyright © 2009  diabeteman & Kios Askoner                               *
+ * Pause QuafÃ© - An Eve-Onlineâ„¢ character assistance application             *
+ * Copyright Â© 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
- * This file is part of Pause Quafé.                                         *
+ * This file is part of Pause QuafÃ©.                                         *
  *                                                                           *
- * Pause Quafé is free software: you can redistribute it and/or modify       *
+ * Pause QuafÃ© is free software: you can redistribute it and/or modify       *
  * it under the terms of the GNU General Public License as published by      *
  * the Free Software Foundation, either version 3 of the License, or         *
  * (at your option) any later version.                                       *
  *                                                                           *
- * Pause Quafé is distributed in the hope that it will be useful,            *
+ * Pause QuafÃ© is distributed in the hope that it will be useful,            *
  * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  * GNU General Public License for more details.                              *
  *                                                                           *
  * You should have received a copy of the GNU General Public License         *
- * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
+ * along with Pause QuafÃ©.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
 package org.pausequafe.gui.view.browsers;
 
-import java.io.File;
-
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.MonitoredCharacter;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.character.MonitoredCharacter;
 import org.pausequafe.gui.model.characters.MonitoredCharactersAndSkillPlansModel;
-import org.pausequafe.gui.view.misc.ErrorMessage;
-import org.pausequafe.gui.view.misc.ErrorQuestion;
+import org.pausequafe.gui.view.misc.Errors;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
-import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.Qt.ItemDataRole;
 import com.trolltech.qt.gui.QComboBox;
-import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QToolBar;
 import com.trolltech.qt.gui.QWidget;
@@ -69,9 +64,9 @@ public class BrowsersWindow extends QWidget {
         try {
             characterModel = MonitoredCharactersAndSkillPlansModel.getInstance();
         } catch (PQSQLDriverNotFoundException e) {
-            popSQLDriverError(e);
+            Errors.popSQLDriverError(this, e);
         } catch (PQUserDatabaseFileCorrupted e) {
-            popUserDBCorrupt(e);
+            Errors.popUserDBCorrupt(this, e);
         }
         sheetCombo.setModel(characterModel);
 
@@ -128,21 +123,5 @@ public class BrowsersWindow extends QWidget {
         blueprintBrowser.setSheet(sheet);
     }
 
-    private void popUserDBCorrupt(Exception e) {
-        String message = tr(Constants.USER_DB_CORRUPTED_ERROR);
-        message += "\n" + e.getMessage();
-
-        ErrorQuestion error = new ErrorQuestion(this, message);
-        error.exec();
-        if (error.result() == QDialog.DialogCode.Accepted.value()) {
-            File userDb = new File(SQLConstants.USER_DATABASE_FILE);
-            userDb.delete();
-        }
-    }
-
-    private void popSQLDriverError(Exception e) {
-        ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
-        error.exec();
-    }
 
 }

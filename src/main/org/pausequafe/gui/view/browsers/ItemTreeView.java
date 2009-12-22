@@ -1,8 +1,8 @@
 package org.pausequafe.gui.view.browsers;
 
-import org.pausequafe.data.business.Item;
-import org.pausequafe.data.business.MonitoredCharacter;
-import org.pausequafe.data.business.SkillPlan;
+import org.pausequafe.data.character.MonitoredCharacter;
+import org.pausequafe.data.character.SkillPlan;
+import org.pausequafe.data.item.Item;
 import org.pausequafe.gui.model.browsers.ItemElement;
 import org.pausequafe.gui.model.browsers.ItemTreeSortFilterProxyModel;
 import org.pausequafe.gui.model.characters.MonitoredCharactersAndSkillPlansModel;

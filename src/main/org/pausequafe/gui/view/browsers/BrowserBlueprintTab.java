@@ -1,21 +1,21 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application              *
- * Copyright © 2009  diabeteman & Kios Askoner                               *
+ * Pause QuafÃ© - An Eve-Onlineâ„¢ character assistance application             *
+ * Copyright Â© 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
- * This file is part of Pause Quafé.                                         *
+ * This file is part of Pause QuafÃ©.                                         *
  *                                                                           *
- * Pause Quafé is free software: you can redistribute it and/or modify       *
+ * Pause QuafÃ© is free software: you can redistribute it and/or modify       *
  * it under the terms of the GNU General Public License as published by      *
  * the Free Software Foundation, either version 3 of the License, or         *
  * (at your option) any later version.                                       *
  *                                                                           *
- * Pause Quafé is distributed in the hope that it will be useful,            *
+ * Pause QuafÃ© is distributed in the hope that it will be useful,            *
  * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  * GNU General Public License for more details.                              *
  *                                                                           *
  * You should have received a copy of the GNU General Public License         *
- * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
+ * along with Pause QuafÃ©.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
 package org.pausequafe.gui.view.browsers;
@@ -40,34 +40,31 @@ import java.util.List;
 
 import org.pausequafe.core.dao.ItemDAO;
 import org.pausequafe.core.dao.MarketGroupDAO;
-import org.pausequafe.data.business.BPActivity;
-import org.pausequafe.data.business.Blueprint;
-import org.pausequafe.data.business.BlueprintDetailed;
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.Item;
-import org.pausequafe.data.business.MarketGroup;
-import org.pausequafe.data.business.PreRequisite;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.item.BPActivity;
+import org.pausequafe.data.item.Blueprint;
+import org.pausequafe.data.item.BlueprintDetailed;
+import org.pausequafe.data.item.Item;
+import org.pausequafe.data.item.MarketGroup;
+import org.pausequafe.data.item.PreRequisite;
 import org.pausequafe.gui.model.browsers.ItemPrerequisiteElement;
 import org.pausequafe.gui.model.browsers.ItemTreeElement;
 import org.pausequafe.gui.model.browsers.ItemTreeModel;
 import org.pausequafe.gui.model.browsers.ItemTreeSortFilterProxyModel;
 import org.pausequafe.gui.model.browsers.MarketGroupElement;
 import org.pausequafe.gui.model.browsers.MaterialsTableModel;
-import org.pausequafe.gui.view.misc.ErrorMessage;
-import org.pausequafe.gui.view.misc.ErrorQuestion;
+import org.pausequafe.gui.view.misc.Errors;
 import org.pausequafe.misc.exceptions.PQEveDatabaseCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.Formater;
-import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.core.QModelIndex;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QAction;
-import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QImage;
 import com.trolltech.qt.gui.QPainter;
@@ -170,11 +167,11 @@ public class BrowserBlueprintTab extends QWidget {
         try {
             group = MarketGroupDAO.getInstance().findMarketGroupById(marketGroupID);
         } catch (PQSQLDriverNotFoundException e) {
-            popSQLDriverError(e);
+            Errors.popSQLDriverError(this, e);
         } catch (PQUserDatabaseFileCorrupted e) {
-            popUserDBCorrupt(e);
+            Errors.popUserDBCorrupt(this, e);
         } catch (PQEveDatabaseCorrupted e) {
-            popEveDbCorrupted(e);
+            Errors.popEveDbCorrupted(this, e);
         }
         ItemTreeElement root = new MarketGroupElement(group);
         ItemTreeModel browserTreeModel = new ItemTreeModel(root);
@@ -241,9 +238,9 @@ public class BrowserBlueprintTab extends QWidget {
                 File iconFile = new File(icon);
                 if (!iconFile.exists()){
                     icon = NO_ITEM_SELECTED_ICON;
-                } else {
-                    ui.iconLabel.setPixmap(mergeBlueprintBG(icon));
-                }
+                } 
+                ui.iconLabel.setPixmap(mergeBlueprintBG(icon));
+                ui.iconLabel.raise();
 
                 String tagIconFile = METAGROUP_ICONS_TAG[selectedBP.getMetaGroupID()];
                 ui.metaGroupIcon.setPixmap(new QPixmap(tagIconFile));
@@ -276,11 +273,11 @@ public class BrowserBlueprintTab extends QWidget {
                 ui.prereqs.setEnabled(false);
             }
         } catch (PQSQLDriverNotFoundException e) {
-            popSQLDriverError(e);
+            Errors.popSQLDriverError(this, e);
         } catch (PQUserDatabaseFileCorrupted e) {
-            popUserDBCorrupt(e);
+            Errors.popUserDBCorrupt(this, e);
         } catch (PQEveDatabaseCorrupted e) {
-            popEveDbCorrupted(e);
+            Errors.popEveDbCorrupted(this, e);
         }
     }
 
@@ -407,28 +404,4 @@ public class BrowserBlueprintTab extends QWidget {
         }
     }
 
-    private void popUserDBCorrupt(Exception e) {
-        String message = tr(Constants.USER_DB_CORRUPTED_ERROR);
-        message += "\n" + e.getMessage();
-
-        ErrorQuestion error = new ErrorQuestion(this, message);
-        error.exec();
-        if (error.result() == QDialog.DialogCode.Accepted.value()) {
-            File userDb = new File(SQLConstants.USER_DATABASE_FILE);
-            userDb.delete();
-        }
-    }
-
-    private void popSQLDriverError(Exception e) {
-        ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
-        error.exec();
-    }
-
-    private void popEveDbCorrupted(Exception e) {
-        String message = tr(Constants.EVE_DB_CORRUPTED_ERROR);
-        message += "\n" + e.getMessage();
-
-        ErrorMessage error = new ErrorMessage(this, message);
-        error.exec();
-    }
 }

@@ -1,40 +1,36 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application              *
- * Copyright © 2009  diabeteman & Kios Askoner                               *
+ * Pause QuafÃ© - An Eve-Onlineâ„¢ character assistance application             *
+ * Copyright Â© 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
- * This file is part of Pause Quafé.                                         *
+ * This file is part of Pause QuafÃ©.                                         *
  *                                                                           *
- * Pause Quafé is free software: you can redistribute it and/or modify       *
+ * Pause QuafÃ© is free software: you can redistribute it and/or modify       *
  * it under the terms of the GNU General Public License as published by      *
  * the Free Software Foundation, either version 3 of the License, or         *
  * (at your option) any later version.                                       *
  *                                                                           *
- * Pause Quafé is distributed in the hope that it will be useful,            *
+ * Pause QuafÃ© is distributed in the hope that it will be useful,            *
  * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  * GNU General Public License for more details.                              *
  *                                                                           *
  * You should have received a copy of the GNU General Public License         *
- * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
+ * along with Pause QuafÃ©.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
 package org.pausequafe.gui.view.main;
 
-import java.io.File;
 import java.util.List;
 
 import org.pausequafe.core.dao.MonitoredCharacterDAO;
 import org.pausequafe.core.factory.CharacterListFactory;
-import org.pausequafe.data.business.APIData;
-import org.pausequafe.gui.view.misc.ErrorMessage;
-import org.pausequafe.gui.view.misc.ErrorQuestion;
+import org.pausequafe.data.character.APIData;
+import org.pausequafe.gui.view.misc.Errors;
 import org.pausequafe.misc.exceptions.PQConfigException;
 import org.pausequafe.misc.exceptions.PQConnectionException;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
-import org.pausequafe.misc.util.Constants;
-import org.pausequafe.misc.util.SQLConstants;
 
 import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QWidget;
@@ -74,15 +70,9 @@ public class AddCharacterDialog extends QDialog {
         try {
             list = MonitoredCharacterDAO.getInstance().findDistinctApiData();
         } catch (PQSQLDriverNotFoundException e) {
-            ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
-            error.exec();
+            Errors.popSQLDriverError(this, e);
         } catch (PQUserDatabaseFileCorrupted e) {
-            ErrorQuestion error = new ErrorQuestion(this, tr(Constants.USER_DB_CORRUPTED_ERROR));
-            error.exec();
-            if (error.result() == QDialog.DialogCode.Accepted.value()) {
-                File userDb = new File(SQLConstants.USER_DATABASE_FILE);
-                userDb.delete();
-            }
+            Errors.popUserDBCorrupt(this, e);
         }
         ui.userIDCombo.addItem("");
         for (APIData data : list) {
@@ -118,12 +108,10 @@ public class AddCharacterDialog extends QDialog {
             userID = Integer.parseInt(ui.userIDCombo.currentText());
             apiKey = ui.apiKeyText.text();
         } catch (NumberFormatException e1) {
-            ErrorMessage error = new ErrorMessage(this, "Please enter correct API details.");
-            error.exec();
+            Errors.popError(this, "Please enter correct API details.");
             return;
         } catch (PQException e) {
-            ErrorMessage error = new ErrorMessage(this, "Please enter correct API details.");
-            error.exec();
+            Errors.popError(this, "Please enter correct API details.");
             return;
         }
 
@@ -132,17 +120,13 @@ public class AddCharacterDialog extends QDialog {
         try {
             characterList = CharacterListFactory.getCharList(userID, apiKey);
         } catch (PQConfigException e) {
-            ErrorMessage error = new ErrorMessage(this, "Configuration Error.");
-            error.exec();
+            Errors.popError(this, "Configuration Error.");
             return;
         } catch (PQConnectionException e) {
-            ErrorMessage error = new ErrorMessage(this,
-                    "Could not connect to EVE-Online API server.");
-            error.exec();
+            Errors.popError(this, "Could not connect to EVE-Online API server.");
             return;
         } catch (PQException e) {
-            ErrorMessage error = new ErrorMessage(this, "Wrong API Key.");
-            error.exec();
+            Errors.popError(this, "Wrong API Key.");
             return;
         }
 
@@ -152,13 +136,11 @@ public class AddCharacterDialog extends QDialog {
         if (dialog.result() == QDialog.DialogCode.Accepted.value()) {
             int index = dialog.getChosenCharacterIndex();
             if (index == -1) {
-                ErrorMessage error = new ErrorMessage(this, "Character not in the list.");
-                error.exec();
+                Errors.popError(this, "Character not in the list.");
                 return;
             }
             if (MonitoredCharacterDAO.getInstance().isMonitored(characterList.get(index))) {
-                ErrorMessage error = new ErrorMessage(this, "This character is already monitored.");
-                error.exec();
+                Errors.popError(this, "This character is already monitored.");
                 return;
             }
             chosenCharacter = characterList.get(index);
