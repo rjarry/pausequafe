@@ -1,26 +1,25 @@
 /*****************************************************************************
- * Pause Quafé - An Eve-Online™ character assistance application              *
- * Copyright © 2009  diabeteman & Kios Askoner                               *
+ * Pause QuafÃ© - An Eve-Onlineâ„¢ character assistance application             *
+ * Copyright Â© 2009  diabeteman & Kios Askoner                               *
  *                                                                           *
- * This file is part of Pause Quafé.                                         *
+ * This file is part of Pause QuafÃ©.                                         *
  *                                                                           *
- * Pause Quafé is free software: you can redistribute it and/or modify       *
+ * Pause QuafÃ© is free software: you can redistribute it and/or modify       *
  * it under the terms of the GNU General Public License as published by      *
  * the Free Software Foundation, either version 3 of the License, or         *
  * (at your option) any later version.                                       *
  *                                                                           *
- * Pause Quafé is distributed in the hope that it will be useful,            *
+ * Pause QuafÃ© is distributed in the hope that it will be useful,            *
  * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  * GNU General Public License for more details.                              *
  *                                                                           *
  * You should have received a copy of the GNU General Public License         *
- * along with Pause Quafé.  If not, see http://www.gnu.org/licenses/.        *
+ * along with Pause QuafÃ©.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
 package org.pausequafe.gui.view.character;
 
-import java.io.File;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,15 +28,14 @@ import java.util.TimeZone;
 
 import org.pausequafe.core.dao.ItemDAO;
 import org.pausequafe.core.dao.MarketGroupDAO;
-import org.pausequafe.data.business.CharacterSheet;
-import org.pausequafe.data.business.MarketGroup;
-import org.pausequafe.data.business.SkillInTraining;
-import org.pausequafe.data.business.SkillQueue;
+import org.pausequafe.data.character.CharacterSheet;
+import org.pausequafe.data.character.SkillInTraining;
+import org.pausequafe.data.item.MarketGroup;
+import org.pausequafe.data.item.SkillQueue;
 import org.pausequafe.gui.model.browsers.ItemTreeModel;
 import org.pausequafe.gui.model.browsers.ItemTreeSortFilterProxyModel;
 import org.pausequafe.gui.model.browsers.MarketGroupElement;
-import org.pausequafe.gui.view.misc.ErrorMessage;
-import org.pausequafe.gui.view.misc.ErrorQuestion;
+import org.pausequafe.gui.view.misc.Errors;
 import org.pausequafe.misc.exceptions.PQEveDatabaseCorrupted;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
@@ -50,7 +48,6 @@ import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.core.Qt.SortOrder;
-import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QWidget;
 
 public class CharacterSkills extends QWidget {
@@ -86,11 +83,11 @@ public class CharacterSkills extends QWidget {
         try {
             group = MarketGroupDAO.getInstance().findMarketGroupById(SQLConstants.SKILLS_MKTGRPID);
         } catch (PQSQLDriverNotFoundException e) {
-            popSQLDriverError(e);
+            Errors.popSQLDriverError(this, e);
         } catch (PQUserDatabaseFileCorrupted e) {
-            popUserDBCorrupt(e);
+            Errors.popUserDBCorrupt(this, e);
         } catch (PQEveDatabaseCorrupted e) {
-            popEveDbCorrupted(e);
+            Errors.popEveDbCorrupted(this, e);
         }
         MarketGroupElement root = new MarketGroupElement(group);
         ItemTreeModel itemTreeModel = new ItemTreeModel(root);
@@ -115,7 +112,6 @@ public class CharacterSkills extends QWidget {
         ui.skillTree.setSortingEnabled(true);
         ui.skillTree.sortByColumn(0, SortOrder.AscendingOrder);
         ui.skillTree.setIconSize(new QSize(21, 14));
-
     }
 
     // //////////////////
@@ -129,14 +125,12 @@ public class CharacterSkills extends QWidget {
      */
     public void loadSkills(CharacterSheet sheet) {
         if (sheet != null) {
-            // the amount of SP here is only calculated by summing the SP from
-            // all skills.
-            // it represents the total SP of character at the time of the XML
-            // file generation.
+            // the amount of SP here is only calculated by summing the SP from  all skills.
+            // it represents the total SP of character at the time of the XML file generation.
             currentSP = sheet.getSkillPoints();
             ui.skillPoints.setText("<b>" + Formater.printLong(Math.round(currentSP)) + " total SP</b>");
-            ui.skillPoints.setToolTip(sheet.getCloneName() + " ("
-                    + Formater.printLong(sheet.getCloneSkillPoints()) + " SP)");
+            ui.skillPoints.setToolTip(sheet.getCloneName() 
+                    + " (" + Formater.printLong(sheet.getCloneSkillPoints()) + " SP)");
 
             String skillDetailsText = sheet.getLevel1Skills() + " skills at level I\n"
                                     + sheet.getLevel2Skills() + " skills at level II\n" 
@@ -152,7 +146,6 @@ public class CharacterSkills extends QWidget {
             proxyModel.setSheet(sheet);
             proxyModel.setUnknownShown(false);
         }
-
     }
 
     /**
@@ -258,7 +251,7 @@ public class CharacterSkills extends QWidget {
         }
     }
 
-    public String printSkillQueue(SkillQueue queue) {
+    private String printSkillQueue(SkillQueue queue) {
         String out = "";
         if (queue != null) {
             if (thereIsASkillTraining) {
@@ -294,31 +287,6 @@ public class CharacterSkills extends QWidget {
                 ui.timeLeft.setText(Formater.printTime(trainingTimeLeft));
             }
         }
-    }
-
-    private void popUserDBCorrupt(Exception e) {
-        String message = tr(Constants.USER_DB_CORRUPTED_ERROR);
-        message += "\n" + e.getMessage();
-
-        ErrorQuestion error = new ErrorQuestion(this, message);
-        error.exec();
-        if (error.result() == QDialog.DialogCode.Accepted.value()) {
-            File userDb = new File(SQLConstants.USER_DATABASE_FILE);
-            userDb.delete();
-        }
-    }
-
-    private void popSQLDriverError(Exception e) {
-        ErrorMessage error = new ErrorMessage(this, tr(Constants.DRIVER_NOT_FOUND_ERROR));
-        error.exec();
-    }
-
-    private void popEveDbCorrupted(Exception e) {
-        String message = tr(Constants.EVE_DB_CORRUPTED_ERROR);
-        message += "\n" + e.getMessage();
-
-        ErrorMessage error = new ErrorMessage(this, message);
-        error.exec();
     }
 
 }
