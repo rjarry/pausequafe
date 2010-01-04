@@ -23,7 +23,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN    *
 * THE SOFTWARE.                                                                *
 *******************************************************************************/
-defaultTasks 'clean', 'distribWin32'
+defaultTasks 'clean', 'distribWin32', 'distribMac'
 
 usePlugin 'java'
 usePlugin 'eclipse'
@@ -32,10 +32,18 @@ import java.text.SimpleDateFormat
 
 format = new SimpleDateFormat('yyyyMMddHHmm')
 timestamp = format.format(new Date())
-version = 'win32-0.0.2-' + timestamp
+version = '0.0.2-' + timestamp
 archivesBaseName = 'pauseQuafe'
 
 manifest.mainAttributes("Main-Class": "org.pausequafe.PQLauncher")
+def classPath = "lib/jdom-1.0.jar"
+classPath += " lib/JEveCore_Modified-2.0.jar"
+classPath += " lib/sqlitejdbc-v054.jar"
+classPath += " lib/qtjambi-4.5.2_01.jar"
+classPath += " lib/qtjambi-win32-msvc2005-4.5.2_01.jar"
+classPath += " lib/qtjambi-linux32-gcc-4.5.2_01.jar"
+classPath += " lib/qtjambi-macosx-gcc-4.5.2_01.jar"
+manifest.mainAttributes("Class-Path": classPath)
 
 def juicGeneratedDir="$buildDir/generated"
 def normalizedBuildDir=buildDir.path.replace('\\','/')
@@ -46,9 +54,8 @@ task init << {
 }
 
 task juic << {
-	def juicExecutableLocation="juic.exe"
 	def path= System.getenv("PATH") 
-	ant.exec(executable: "juic.exe"){
+	ant.exec(executable: "juic"){
 		env(key:"PATH", path:path)
 		arg(value:"-d")
 		arg(value:juicGeneratedDir)
@@ -79,7 +86,6 @@ dependencies {
 	compile ":jdom:1.0",
 		":JEveCore_Modified:2.0",
 		":qtjambi:4.5.2_01",
-		":qtjambi-win32-msvc2005:4.5.2_01",
 		":sqlitejdbc:v054"
 }
 
@@ -88,45 +94,46 @@ task wrapExe << {
 	def launch4jDir = System.getenv("LAUNCH4J_HOME")
 
 	ant {
-		taskdef(name: "launch4j",
-            classname: "net.sf.launch4j.ant.Launch4jTask",
-            classpath: "${launch4jDir}/launch4j.jar;${launch4jDir}/lib/xstream.jar"
+		taskdef(  name : "launch4j",
+             classname : "net.sf.launch4j.ant.Launch4jTask",
+             classpath : "${launch4jDir}/launch4j.jar;${launch4jDir}/lib/xstream.jar"
         )
 		launch4j(
-			configFile: "launch4jCommandLine.xml",
-			outfile: "${executableDir}/PQ.exe",
-			jar: jar.archivePath
+			configFile : "launch4jCommandLine.xml",
+			   outfile : "${executableDir}/PQ.exe",
+			       jar : jar.archivePath
 		)
 	}
 }
 
-// task wrapApp << {
-	// def jarBundlerDir = System.getenv("JARBUNDLER_HOME")
+task wrapApp << {
+	def jarBundlerDir = System.getenv("JARBUNDLER_HOME")
     
-    // ant {
-        // taskdef(name : "jarbundler",
-           // classname : "net.sourceforge.jarbundler.JarBundler",
-           // classpath : "${jarBundlerDir}/jarbundler-2.1.0.jar"
-        // )
-        // jarbundler(dir: executableDir
-            // name: "PQ"
-            // mainclass: "org.pausequafe.PQLauncher"
-            // jar: jar.archivePath
-            // icon: "PauseQuafeMac.icns"
-            // jvmversion: "1.5+"
-            // arguments: "-XstartOnFirstThread"
-        // )
-    // }
-// }
+    ant {
+        taskdef(  name : "jarbundler",
+             classname : "net.sourceforge.jarbundler.JarBundler",
+             classpath : "${jarBundlerDir}/jarbundler-2.1.0.jar"
+        )
+        jarbundler(dir : executableDir,
+                  name : "PQ",
+             mainclass : "org.pausequafe.PQLauncher",
+                   jar : jar.archivePath,
+                  icon : "PauseQuafeMac.icns",
+            jvmversion : "1.5+",
+             arguments : "-XstartOnFirstThread",
+        )
+    }
+}
 
-// wrapApp.dependsOn jar
+
+wrapApp.dependsOn jar
 wrapExe.dependsOn jar
 juic.dependsOn init
 compileJava.dependsOn juic
 
 task distribWin32(type:Zip) {
 	dependsOn(wrapExe)
-    
+    baseName = "${archivesBaseName}-win32"
 	fileSet(dir:'.') {
 		include('resources/**/*.*')
 		include('settings/*.configuration')
@@ -143,27 +150,24 @@ task distribWin32(type:Zip) {
     }
 }
 
-// task distribMac(type:Zip) {
-	// dependsOn(wrapApp)
-    
-    // destfile : "${normalizedBuildDir}/${archivesBaseName}-macos${version}.zip"
-    
-	// fileSet(dir:'.') {
-		// include('resources/**/*.*')
-		// include('settings/*.configuration')
-		// include('lib/**/*.*')
-		// exclude('resources/*.db3')
-		// exclude('lib/qtjambi-linux32*.jar')
-		// exclude('lib/qtjambi-win32*.jar')
-        // exclude('lib/sqljdbc.jar')
-		// exclude('**/*.svn')
-	// } 
-	// fileSet(dir: executableDir) {
-        // include('*.app')
-        // exclude('*.exe')
-    // }
-// }
-
+task distribMac(type:Zip) {
+	dependsOn(wrapApp)
+    baseName = "${archivesBaseName}-macosx"
+	fileSet(dir:'.') {
+		include('resources/**/*.*')
+		include('settings/*.configuration')
+		include('lib/**/*.*')
+		exclude('resources/*.db3')
+		exclude('lib/qtjambi-linux32*.jar')
+		exclude('lib/qtjambi-win32*.jar')
+		exclude('**/*.svn')
+        exclude('lib/sqljdbc.jar')
+	} 
+	fileSet(dir: executableDir) {
+        include('*.app')
+        exclude('*.exe')
+    }
+}
 
 
 task wrapper(type: Wrapper) {
