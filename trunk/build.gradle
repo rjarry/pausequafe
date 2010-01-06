@@ -116,9 +116,7 @@ task windowsJar(type:Jar){
  dependsOn windowsClasses
  classifier="windows"
  destinationDir=file('build/libs/windows')
- from ('build/classes/windows'){
-  include '**/*.class'
- }
+ from (sourceSets.windows.classes)
  manifest.mainAttributes("Plaform": "Windows")
  manifest.mainAttributes("Class-Path": "lib/" + configurations.windows.resolve().name.join(" lib/"))
 }
@@ -165,9 +163,7 @@ task macosxJar(type:Jar){
  dependsOn macosxClasses
  classifier="macosx"
  destinationDir=file('build/libs/macosx')
- from ('build/classes/macosx'){
-   include '**/*.class'
- }
+ from (sourceSets.macosx.classes)
  manifest.mainAttributes("Platform": "Mac OS X")
  manifest.mainAttributes("Class-Path": "lib/" + configurations.macosx.resolve().name.join(" lib/"))
 }
