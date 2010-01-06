@@ -12,7 +12,7 @@
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>PauseQuafeWin.ico</icon>
+  <icon>Tools/icons/PauseQuafeWin.ico</icon>
   <singleInstance>
     <mutexName>pausequafe</mutexName>
     <windowTitle>PauseQuafe</windowTitle>
