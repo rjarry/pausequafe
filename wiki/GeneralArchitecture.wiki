@@ -7,7 +7,7 @@
 
 We'll discuss the general architecture of *Pause Quafé* here. First from a distant point of view, then we'll focus on the important details.
 
---------------------------
+-----------------------------
 = Global Structure =
 
 == EVE API Connection Module ==
