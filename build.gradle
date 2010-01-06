@@ -35,7 +35,7 @@ version="1.0-$timestamp"
 
 repositories {
  flatDir(dirs:'lib')
- flatDir(dirs:'lib/tools')
+ flatDir(dirs:'Tools/lib')
 }
 
 
@@ -181,9 +181,9 @@ task wrapApp(dependsOn:'macosxJar') << {
                  name : "PQ",
             mainclass : "org.pausequafe.PQLauncher",
                   jar : macosxJar.archivePath,
-                 icon : "PauseQuafeMac.icns",
+                 icon : "Tools/lib/PauseQuafeMac.icns",
            jvmversion : "1.5+",
-            arguments : "-XstartOnFirstThread",
+            arguments : "-XstartOnFirstThread"
        )
    }
 }
