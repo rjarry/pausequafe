@@ -181,7 +181,7 @@ task wrapApp(dependsOn:'macosxJar') << {
                  name : "PQ",
             mainclass : "org.pausequafe.PQLauncher",
                   jar : macosxJar.archivePath,
-                 icon : "Tools/lib/PauseQuafeMac.icns",
+                 icon : "Tools/icons/PauseQuafeMac.icns",
            jvmversion : "1.5+",
             arguments : "-XstartOnFirstThread",
              stubfile : "Tools/lib/JavaApplicationStub"
@@ -209,7 +209,6 @@ task macosxDistrib(type:Zip){
  }
 }
 
-/*
 Closure macClosure = {System.getProperty('os.name').toLowerCase().contains("mac")}
 
 Closure windowsClosure = {System.getProperty('os.name').toLowerCase().contains("win")}
@@ -229,5 +228,5 @@ windowsClasses.onlyIf windowsClosure
 windowsJar.onlyIf windowsClosure
 wrapExe.onlyIf windowsClosure
 windowsDistrib.onlyIf windowsClosure
-*/
+
 
