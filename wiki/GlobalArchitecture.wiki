@@ -1,3 +1,0 @@
-#summary The whole application architecture for developpers only :)
-
-//TODO

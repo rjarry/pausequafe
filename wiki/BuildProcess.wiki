@@ -1,3 +1,0 @@
-#summary Build with Gradle : how-to
-
-//TODO
