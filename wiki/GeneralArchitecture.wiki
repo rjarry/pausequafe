@@ -10,7 +10,9 @@ We'll discuss the general architecture of *Pause Quafé* here. First from a dist
 -----------------------------
 = Global Structure =
 
-== EVE API Connection Module ==
+== Core ==
+
+=== EVE API Connection Module ===
 
 This module must handle an HTTP connections with CCP's API server. We began to use [http://jeveproject.fomp.be/wiki/index.php?title=JEve_Core JEVECore] but, as it not supported anymore, we decided to modify it to adapt it to our needs and to EVE current API.
 
