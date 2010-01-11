@@ -19,4 +19,17 @@ Gradle is licensed under the [http://www.gradle.org/license.html Apache License]
 
 = Build Process =
 
-For Windows
+Gradle runs a single script to build all distributions (Windows, MacOSX & Linux)
+
+Just type :
+{{{
+gradle clean windowsDistrib macosxDistrib linuxDistrib
+}}}
+at the root of the project to run the build. You can omit one or several `xxxDistrib` tasks if you want to. The `clean` task deletes the `build` directory before building.
+
+
+
+All generated artifacts will be in :
+{{{
+build/distributions/
+}}}
