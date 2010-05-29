@@ -23,10 +23,9 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN    *
 * THE SOFTWARE.                                                                *
 *******************************************************************************/
-
 import java.text.SimpleDateFormat
 
-usePlugin 'java'
+apply id: 'java'
 
 archivesBaseName="PauseQuafe"
 
@@ -209,24 +208,5 @@ task macosxDistrib(type:Zip){
  }
 }
 
-Closure macClosure = {System.getProperty('os.name').toLowerCase().contains("mac")}
-
-Closure windowsClosure = {System.getProperty('os.name').toLowerCase().contains("win")}
-
-
-compileMacosxJava.onlyIf macClosure
-processMacosxResources.onlyIf macClosure
-macosxClasses.onlyIf macClosure
-macosxJar.onlyIf macClosure
-wrapApp.onlyIf macClosure
-macosxDistrib.onlyIf macClosure
-
-
-compileWindowsJava.onlyIf windowsClosure
-processWindowsResources.onlyIf windowsClosure
-windowsClasses.onlyIf windowsClosure
-windowsJar.onlyIf windowsClosure
-wrapExe.onlyIf windowsClosure
-windowsDistrib.onlyIf windowsClosure
 
 

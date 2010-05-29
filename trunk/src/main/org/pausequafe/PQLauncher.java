@@ -20,13 +20,10 @@
 
 package org.pausequafe;
 
-import java.io.File;
-
 import org.pausequafe.core.dao.MarketGroupDAO;
 import org.pausequafe.gui.view.main.MainWindow;
 import org.pausequafe.gui.view.main.PQSystemTray;
-import org.pausequafe.gui.view.misc.ErrorMessage;
-import org.pausequafe.gui.view.misc.ErrorQuestion;
+import org.pausequafe.gui.view.misc.Errors;
 import org.pausequafe.misc.exceptions.PQEveDatabaseCorrupted;
 import org.pausequafe.misc.exceptions.PQSQLDriverNotFoundException;
 import org.pausequafe.misc.exceptions.PQUserDatabaseFileCorrupted;
@@ -39,7 +36,6 @@ import com.trolltech.qt.core.QFile;
 import com.trolltech.qt.core.QIODevice.OpenModeFlag;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QColor;
-import com.trolltech.qt.gui.QDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QPixmap;
@@ -61,6 +57,7 @@ public class PQLauncher {
         QFile file = new QFile("resources/ui/quafeStyleSheet.qss");
         file.open(OpenModeFlag.ReadOnly);
         String styleSheet = file.readAll().toString();
+        file.close();
 
         QSplashScreen splash = new QSplashScreen(pix);
         splash.setStyleSheet(styleSheet);
@@ -80,26 +77,13 @@ public class PQLauncher {
             splash.showMessage("Loading proxy configuration...", BOTTOM_LEFT, QColor.white);
             Configuration.setConfigurationFilePath(Constants.PROXY_CONFIG_FILE_PATH);
         } catch (PQSQLDriverNotFoundException e) {
-            ErrorMessage error = new ErrorMessage(splash, Constants.DRIVER_NOT_FOUND_ERROR);
-            error.exec();
+            Errors.popError(splash, Constants.DRIVER_NOT_FOUND_ERROR);
             System.exit(1);
         } catch (PQUserDatabaseFileCorrupted e) {
-            String message = Constants.USER_DB_CORRUPTED_ERROR;
-            message += "\n" + e.getMessage();
-
-            ErrorQuestion error = new ErrorQuestion(splash, message);
-            error.exec();
-            if (error.result() == QDialog.DialogCode.Accepted.value()) {
-                File userDb = new File(SQLConstants.USER_DATABASE_FILE);
-                userDb.delete();
-            }
+            Errors.popUserDBCorrupt(splash, e);
             System.exit(1);
         } catch (PQEveDatabaseCorrupted e) {
-            String message = Constants.EVE_DB_CORRUPTED_ERROR;
-            message += "\n" + e.getMessage();
-
-            ErrorMessage error = new ErrorMessage(splash, message);
-            error.exec();
+            Errors.popEveDbCorrupted(splash, e);
             System.exit(1);
         }
 
