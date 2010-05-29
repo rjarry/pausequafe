@@ -25,6 +25,7 @@ import java.util.List;
 import org.pausequafe.core.threads.ApiRequest;
 import org.pausequafe.data.character.CharacterSheet;
 import org.pausequafe.misc.util.Constants;
+import org.pausequafe.misc.util.CountdownTimer;
 import org.pausequafe.misc.util.Formater;
 
 import com.trolltech.qt.core.QTimer;
@@ -80,11 +81,9 @@ public class CharacterInfo extends QFrame {
         ui.cachedLabel.setText("<b>(Cached)</b>");
         ui.cachedLabel.setVisible(false);
 
-        QPixmap image = new QPixmap();
-        image.load(Constants.BLANK_PORTRAIT);
-
-        int size = ui.portrait.size().height();
-        ui.portrait.setPixmap(image.scaledToHeight(size));
+        QPixmap image = new QPixmap(Constants.BLANK_PORTRAIT);
+        image = image.scaled(ui.portrait.size());
+        ui.portrait.setPixmap(image);
 
         timerHour = new QTimer();
         timerHour.timeout.connect(this, "emitRequestSignal()");
@@ -107,10 +106,9 @@ public class CharacterInfo extends QFrame {
      */
     public void loadPortrait(String fileName) {
         if (fileName != null) {
-            QPixmap image = new QPixmap();
-            image.load(fileName);
-            int size = ui.portrait.size().height();
-            ui.portrait.setPixmap(image.scaledToHeight(size));
+            QPixmap image = new QPixmap(fileName);
+            image = image.scaled(ui.portrait.size());
+            ui.portrait.setPixmap(image);
         }
     }
 
@@ -203,8 +201,8 @@ public class CharacterInfo extends QFrame {
     }
 
     public void resetTimers() {
-        timeLeft.minutes = 60;
-        timeLeft.seconds = 0;
+        timeLeft.setMinutes(60);
+        timeLeft.setSeconds(0);
         timerHour.start(Constants.HOUR);
         timerSecond.start(Constants.SECOND);
         ui.refreshButton.setEnabled(true);
@@ -224,45 +222,6 @@ public class CharacterInfo extends QFrame {
     private void decrementOneSecond() {
         timeLeft.decrementOneSecond();
         ui.clock.setText(timeLeft.printTime());
-    }
-
-    private class CountdownTimer {
-        private int minutes;
-        private int seconds;
-
-        public CountdownTimer(int minutes, int seconds) {
-            this.minutes = minutes;
-            this.seconds = seconds;
-        }
-
-        public boolean decrementOneSecond() {
-            if (seconds == 0) {
-                if (minutes == 0) {
-                    return false;
-                } else {
-                    seconds = 59;
-                    minutes--;
-                }
-            } else {
-                seconds--;
-            }
-            return true;
-        }
-
-        public String printTime() {
-            String time = "";
-            if (minutes < 10) {
-                time += "0" + minutes;
-            } else {
-                time += minutes;
-            }
-            if (seconds < 10) {
-                time += ":0" + seconds;
-            } else {
-                time += ":" + seconds;
-            }
-            return time;
-        }
     }
 
 }

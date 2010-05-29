@@ -27,7 +27,7 @@ public class Migrator {
 //				"databaseName=EVE;" +
 //				"user=SA;" +
 //				"password=connard;");
-		Connection conCCP = DriverManager.getConnection("jdbc:sqlite:resources/dom100-sqlite3-v1.db3");
+		Connection conCCP = DriverManager.getConnection("jdbc:sqlite:resources/tyr10-sqlite3-v1.db3");
 		Connection conPQ = DriverManager.getConnection("jdbc:sqlite:resources/eve-online.db");
 
 		System.out.println("Connected");
