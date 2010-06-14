@@ -173,14 +173,14 @@ public class CharacterSkills extends QWidget {
                 ui.timeLeft.move(165, 13);
                 trainingText.append("<img src=\"" + Constants.WARNING_SMALL_ICON + "\" />");
                 timeText.append("<font color=\"#CC0000\"><b>NO SKILL IN TRAINING!</b></font>");
-                if (queue.getSkillList().size() > 0) {
+                if (queue != null && queue.getSkillList().size() > 0) {
                     timeText.append(" <b><font color=\"#00CC00\">+" 
                                         + (queue.getSkillList().size())
                                   + " queued</font></b>");
+                    toolTipText.append("<p style='white-space:pre'>");
+                    toolTipText.append(printSkillQueue(queue));
+                    toolTipText.append("</p>");
                 }
-                toolTipText.append("<p style='white-space:pre'>");
-                toolTipText.append(printSkillQueue(queue));
-                toolTipText.append("</p>");
             } else {
                 // else we fill the fields
                 thereIsASkillTraining = true;
@@ -201,7 +201,7 @@ public class CharacterSkills extends QWidget {
                 trainingText.append(Formater.printPercent(inTraining.calculateCompletion()));
                 trainingText.append("%)");
 
-                if (queue.getSkillList().size() > 1) {
+                if (queue != null && queue.getSkillList().size() > 1) {
                     trainingText.append(" <b><font color=\"#00CC00\">+"
                                         + (queue.getSkillList().size() - 1) 
                                         + " queued</font></b>");
@@ -233,7 +233,7 @@ public class CharacterSkills extends QWidget {
                 toolTipText.append("<p style='white-space:pre'><b>Training at: ");
                 toolTipText.append(Math.round(trainingSpeed * Constants.HOUR));
                 toolTipText.append(" SP/hour</b><br><br>");
-                toolTipText.append(printSkillQueue(queue));
+                if (queue != null) toolTipText.append(printSkillQueue(queue));
                 toolTipText.append("</p>");
 
                 // we start the timer only if there's a skill in training
