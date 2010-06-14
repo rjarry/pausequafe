@@ -100,7 +100,7 @@ public class MaterialsTableModel extends QAbstractTableModel {
             }
         }
         if (me < 0) {
-            value = value * (1.0 - (me * (waste * 0.01)));
+            value = value * (1.0 - ((me - 1) * (waste * 0.01)));
         } else {
             value = value * (1.0 + ((waste * 0.01) / (1.0 + me)));
         }
