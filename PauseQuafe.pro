@@ -7,23 +7,23 @@ TARGET = PauseQuafe
 DEPENDPATH += . \
               resources \
               src \
-              src\core \
-              src\core\dao \
-              src\core\factory \
-              src\core\parsers \
-              src\core\threads \
-              src\data\character \
-              src\data\item \
-              src\data\misc \
-              src\misc\exceptions \
-              src\misc\util \
-              src\gui\model\browsers \
-              src\gui\model\characters \
-              src\gui\view\browsers \
-              src\gui\view\character \
-              src\gui\view\main \
-              src\gui\view\misc \
-              src\gui\view\skillplans
+              src/core \
+              src/core/dao \
+              src/core/factory \
+              src/core/parsers \
+              src/core/threads \
+              src/data/character \
+              src/data/item \
+              src/data/misc \
+              src/misc/exceptions \
+              src/misc/util \
+              src/gui/model/browsers \
+              src/gui/model/characters \
+              src/gui/view/browsers \
+              src/gui/view/character \
+              src/gui/view/main \
+              src/gui/view/misc \
+              src/gui/view/skillplans
 INCLUDEPATH += src \
     ui
 UI_DIR = ui
