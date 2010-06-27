@@ -21,10 +21,27 @@
 #ifndef BPREQUIREDMATERIAL_H
 #define BPREQUIREDMATERIAL_H
 
+typedef unsigned int uint;
+
 class BPRequiredMaterial
 {
+private:
+    uint typeID;
+    uint quantity;
+    double damagePerJob;
+
 public:
-    BPRequiredMaterial();
+    BPRequiredMaterial(uint typeID, uint quantity, double damagePerJob = 1.0);
+    BPRequiredMaterial(const BPRequiredMaterial & mat);
+
+    double getDamagePerJob() const;
+    uint getQuantity() const;
+    uint getTypeID() const;
+
+    void setDamagePerJob(double damagePerJob);
+    void setQuantity(uint quantity);
+    void setTypeID(uint typeID);
+
 };
 
 #endif // BPREQUIREDMATERIAL_H

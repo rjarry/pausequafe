@@ -21,8 +21,6 @@
 #include "Skill.h"
 #include "misc/util/Constants.h"
 
-#define NO_META_GROUP
-
 Skill::Skill(uint typeID, QString typeName) :
     Item(typeID, typeName, SKILL_CATID)
 {

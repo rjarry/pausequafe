@@ -21,10 +21,57 @@
 #ifndef BPACTIVITY_H
 #define BPACTIVITY_H
 
+#include <QList>
+#include <QString>
+
+#include "data/item/PreRequisite.h"
+#include "data/item/BPRequiredMaterial.h"
+
+enum Activity {
+    NONE = 0,
+    MANUFACTURING = 1,
+    RESEARCH_TECH = 2,
+    RESEARCH_PE = 3,
+    RESEARCH_ME = 4,
+    COPY = 5,
+    DUPLICATING = 6,
+    REVERSE_ENGINEERING = 7,
+    INVENTION = 8
+};
+
+QString ACTIVITY_NAME[] = {
+    "",
+    "Manufacturing",
+    "Researching Technology",
+    "Time Efficiency Research",
+    "Material Efficiency Research",
+    "Copying",
+    "Duplicating",
+    "Reverse Engineering",
+    "Invention"
+};
+
+
 class BPActivity
 {
+private:
+    Activity activity;
+    QList<PreRequisite> prereqs;
+    QList<BPRequiredMaterial> materials;
 public:
-    BPActivity();
+    BPActivity(Activity act);
+    BPActivity(const BPActivity & other);
+    ~BPActivity();
+
+    QString getName();
+
+    Activity getActivityID();
+    QList<PreRequisite> getPrereqs();
+    QList<BPRequiredMaterial> getMaterials();
+
+    void setActivityID(Activity activity);
+    void setPrereqs(QList<PreRequisite> prereqs);
+    void setMaterials(QList<BPRequiredMaterial> materials);
 };
 
 #endif // BPACTIVITY_H

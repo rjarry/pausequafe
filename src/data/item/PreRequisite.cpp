@@ -20,6 +20,24 @@
 
 #include "PreRequisite.h"
 
-PreRequisite::PreRequisite()
+PreRequisite::PreRequisite(int typeID, int requiredLevel) :
+        typeID(typeID),
+        requiredLevel(requiredLevel)
 {
+}
+
+int PreRequisite::getRequiredLevel() const {
+    return requiredLevel;
+}
+
+int PreRequisite::getTypeID() const {
+    return typeID;
+}
+
+void PreRequisite::setRequiredLevel(int requiredLevel) {
+    this->requiredLevel = requiredLevel;
+}
+
+void PreRequisite::setTypeID(int typeID) {
+    this->typeID = typeID;
 }

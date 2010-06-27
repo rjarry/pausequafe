@@ -21,10 +21,36 @@
 #ifndef SKILLQUEUE_H
 #define SKILLQUEUE_H
 
+#include <QList>
+
+#include "data/character/SkillInQueue.h"
+
 class SkillQueue
 {
+private:
+    ulong currentTime;
+    ulong cachedUntil;
+    bool cached;
+    QList<SkillInQueue> skillList;
+
 public:
+    /// constructor ///
     SkillQueue();
+
+    /// public methods ///
+    ulong getTotalTrainingTime();
+
+    /// getters ///
+    ulong getCurrentTime();
+    ulong getCachedUntil();
+    bool isCached();
+    QList<SkillInQueue> & getSkillList();
+
+    /// setters ///
+    void setCurrentTime(ulong currentTime);
+    void setCachedUntil(ulong cachedUntil);
+    void setCached(bool cached);
+    void setSkillList(QList<SkillInQueue> skillList);
 };
 
 #endif // SKILLQUEUE_H

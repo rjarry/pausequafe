@@ -23,8 +23,20 @@
 
 class PreRequisite
 {
+
+private:
+    int typeID;
+    int requiredLevel;
+
 public:
-    PreRequisite();
+    PreRequisite(int typeID = -1, int requiredLevel = -1);
+
+    int getRequiredLevel() const;
+    int getTypeID() const;
+
+    void setRequiredLevel(int requiredLevel);
+    void setTypeID(int typeID);
+
 };
 
 #endif // PREREQUISITE_H

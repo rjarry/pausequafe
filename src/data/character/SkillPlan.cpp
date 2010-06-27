@@ -18,8 +18,55 @@
  * along with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-#include "SkillPlan.h"
+#include "data/character/SkillPlan.h"
 
-SkillPlan::SkillPlan()
+
+///////////////////
+/// constructor ///
+///////////////////
+SkillPlan::SkillPlan(uint characterID, int id, int index, QString name) :
+        characterID(characterID),
+        id(id),
+        index(index),
+        name(name)
 {
+}
+
+
+///////////////
+/// getters ///
+///////////////
+uint SkillPlan::getCharacterID() {
+    return characterID;
+}
+
+int SkillPlan::getId() {
+    return id;
+}
+
+int SkillPlan::getIndex() {
+    return index;
+}
+
+QString SkillPlan::getName() {
+    return name;
+}
+
+///////////////
+/// setters ///
+///////////////
+void SkillPlan::setCharacterID(uint characterID) {
+    this->characterID = characterID;
+}
+
+void SkillPlan::setId(int id) {
+    this->id = id;
+}
+
+void SkillPlan::setIndex(int index) {
+    this->index = index;
+}
+
+void SkillPlan::setName(QString name) {
+    this->name = name;
 }

@@ -21,10 +21,35 @@
 #ifndef SKILLPLAN_H
 #define SKILLPLAN_H
 
+#include <QString>
+
+#define NOID    -1
+#define NONAME  "No name"
+
 class SkillPlan
 {
+private:
+    uint characterID;
+    int id;
+    int index;
+    QString name;
+
 public:
-    SkillPlan();
+    /// constructor ///
+    SkillPlan(uint characterID, int id, int index, QString name);
+
+    /// getters ///
+    uint getCharacterID();
+    int getId();
+    int getIndex();
+    QString getName();
+
+    /// setters ///
+    void setCharacterID(uint characterID);
+    void setId(int id);
+    void setIndex(int index);
+    void setName(QString name);
+
 };
 
 #endif // SKILLPLAN_H

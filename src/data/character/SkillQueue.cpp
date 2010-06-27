@@ -15,11 +15,66 @@
  * GNU General Public License for more details.                              *
  *                                                                           *
  * You should have received a copy of the GNU General Public License         *
- * along with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
+ * aulong with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-#include "SkillQueue.h"
+#include "data/character/SkillQueue.h"
 
-SkillQueue::SkillQueue()
+
+///////////////////
+/// constructor ///
+///////////////////
+SkillQueue::SkillQueue() :
+        skillList(QList<SkillInQueue>())
 {
+}
+
+//////////////////////
+/// public methods ///
+//////////////////////
+ulong SkillQueue::getTotalTrainingTime() {
+    ulong time = 0;
+    foreach (SkillInQueue s, skillList) {
+        time += s.trainingTime();
+    }
+    return time;
+}
+
+///////////////
+/// getters ///
+///////////////
+ulong SkillQueue::getCurrentTime() {
+    return currentTime;
+}
+
+ulong SkillQueue::getCachedUntil() {
+    return cachedUntil;
+}
+
+bool SkillQueue::isCached() {
+    return cached;
+}
+
+QList<SkillInQueue> & SkillQueue::getSkillList() {
+    return skillList;
+}
+
+///////////////
+/// setters ///
+///////////////
+
+void SkillQueue::setCurrentTime(ulong currentTime) {
+    this->currentTime = currentTime;
+}
+
+void SkillQueue::setCachedUntil(ulong cachedUntil) {
+    this->cachedUntil = cachedUntil;
+}
+
+void SkillQueue::setCached(bool cached) {
+    this->cached = cached;
+}
+
+void SkillQueue::setSkillList(QList<SkillInQueue> skillList) {
+    this->skillList = skillList;
 }
