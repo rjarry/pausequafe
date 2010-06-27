@@ -1,0 +1,36 @@
+QWidget {
+	font-family : "Arial";
+	font-size : 12px;
+}
+
+QTreeView {
+	show-decoration-selected: 0;
+
+}
+
+QTreeView::item {
+	border : 1px solid transparent;
+	border-radius : 3px;
+
+}
+
+QTreeView::item:selected {
+	border: 1px solid #ff84ec;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+		stop: 0 #ffb8e9, stop: 1 #ff84ec);
+	color : black;
+	padding : 0px;
+}
+
+QStatusBar:item {
+	border : 0px;
+}
+
+QSpinBox#meSpinBox {
+	font-size : 18px;
+}
+QSpinBox#peSpinBox {
+	font-size : 18px;
+}
+
+

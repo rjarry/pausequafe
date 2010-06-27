@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="eve">
+    <file>db/eve-online.db</file>
+  </qresource>
+</RCC>
