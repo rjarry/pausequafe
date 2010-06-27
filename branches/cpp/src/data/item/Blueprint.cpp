@@ -20,6 +20,22 @@
 
 #include "Blueprint.h"
 
-Blueprint::Blueprint()
+Blueprint::Blueprint(uint id, QString name, uint category, uint metaGroup) :
+        Item(id, name, category, metaGroup),
+        activities(QMap<Activity, BPActivity*>())
 {
+}
+
+Blueprint::~Blueprint() {
+    foreach (BPActivity act, activities.values()) {
+        delete act;
+    }
+    activities.clear();
+}
+
+QMap<Activity, BPActivity*> & Blueprint::getActivities() {
+    return activities;
+}
+void Blueprint::setActivities(QMap<Activity, BPActivity*> activities) {
+    this->activities = activities;
 }

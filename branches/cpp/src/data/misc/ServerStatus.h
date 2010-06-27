@@ -21,10 +21,26 @@
 #ifndef SERVERSTATUS_H
 #define SERVERSTATUS_H
 
+typedef unsigned int uint;
+
 class ServerStatus
 {
+private:
+    uint playerCount;
+    bool onLine;
+    bool unknown;
 public:
-    ServerStatus();
+    ServerStatus(uint playerCount = 0, bool onLine = false, bool unknown = false);
+
+    uint getPlayerCount() const;
+    bool isOnLine() const;
+    bool isUnknown() const;
+
+    void setPlayerCount(uint playerCount);
+    void setOnLine(bool onLine);
+    void setUnknown(bool unknown);
+
+
 };
 
 #endif // SERVERSTATUS_H

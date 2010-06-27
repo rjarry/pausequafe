@@ -20,6 +20,40 @@
 
 #include "BPRequiredMaterial.h"
 
-BPRequiredMaterial::BPRequiredMaterial()
+BPRequiredMaterial::BPRequiredMaterial(uint typeID, uint quantity, double damagePerJob) :
+        typeID(typeID),
+        quantity(quantity),
+        damagePerJob(damagePerJob)
 {
+}
+
+BPRequiredMaterial::BPRequiredMaterial(const BPRequiredMaterial & mat) :
+    typeID(mat.typeID),
+    quantity(mat.quantity),
+    damagePerJob(mat.damagePerJob)
+{
+}
+
+double BPRequiredMaterial::getDamagePerJob() const {
+    return damagePerJob;
+}
+
+uint BPRequiredMaterial::getQuantity() const {
+    return quantity;
+}
+
+uint BPRequiredMaterial::getTypeID() const {
+    return typeID;
+}
+
+void BPRequiredMaterial::setDamagePerJob(double damagePerJob) {
+    this->damagePerJob = damagePerJob;
+}
+
+void BPRequiredMaterial::setQuantity(uint quantity) {
+    this->quantity = quantity;
+}
+
+void BPRequiredMaterial::setTypeID(uint typeID) {
+    this->typeID = typeID;
 }

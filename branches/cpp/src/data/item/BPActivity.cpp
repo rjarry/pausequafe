@@ -20,6 +20,46 @@
 
 #include "BPActivity.h"
 
-BPActivity::BPActivity()
+BPActivity::BPActivity(Activity act) :
+        activity(act)
 {
+}
+
+BPActivity::BPActivity(const BPActivity & other) :
+    activity(other.activity),
+    prereqs(other.prereqs),
+    materials(other.materials)
+{
+}
+
+
+/////////////////
+/// ACCESSORS ///
+/////////////////
+Activity BPActivity::getActivityID() {
+    return activity;
+}
+
+QList<PreRequisite> BPActivity::getPrereqs() {
+    return prereqs;
+}
+
+QList<BPRequiredMaterial> BPActivity::getMaterials() {
+    return materials;
+}
+
+void BPActivity::setActivityID(Activity activity) {
+    this->activity = activity;
+}
+
+void BPActivity::setPrereqs(QList<PreRequisite> prereqs) {
+    this->prereqs = prereqs;
+}
+
+void BPActivity::setMaterials(QList<BPRequiredMaterial> materials) {
+    this->materials = materials;
+}
+
+QString BPActivity::getName() {
+    return ACTIVITY_NAME[activity];
 }

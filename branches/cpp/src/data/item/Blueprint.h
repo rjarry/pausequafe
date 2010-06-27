@@ -21,12 +21,20 @@
 #ifndef BLUEPRINT_H
 #define BLUEPRINT_H
 
-#include "Item.h"
+#include "data/item/Item.h"
+#include "data/item/BPActivity.h"
 
 class Blueprint : public Item
 {
+protected:
+    QMap<Activity, BPActivity*> activities;
+
 public:
-    Blueprint();
+    Blueprint(uint id, QString name, uint category, uint metaGroup);
+    ~Blueprint();
+
+    QMap<Activity, BPActivity*> & getActivities();
+    void setActivities(QMap<Activity, BPActivity*> activities);
 };
 
 #endif // BLUEPRINT_H

@@ -20,6 +20,35 @@
 
 #include "ServerStatus.h"
 
-ServerStatus::ServerStatus()
+ServerStatus::ServerStatus(uint playerCount, bool onLine, bool unknown) :
+        playerCount(playerCount),
+        onLine(onLine),
+        unknown(unknown)
 {
+}
+
+
+bool ServerStatus::isOnLine() const {
+    return onLine;
+}
+
+bool ServerStatus::isUnknown() const {
+    return unknown;
+}
+
+uint ServerStatus::getPlayerCount() const {
+    return playerCount;
+}
+
+void ServerStatus::setOnLine(bool onLine) {
+    this->onLine = onLine;
+}
+
+void ServerStatus::setUnknown(bool unknown) {
+    this->unknown = unknown;
+}
+
+
+void ServerStatus::setPlayerCount(uint playerCount) {
+    this->playerCount = playerCount;
 }
