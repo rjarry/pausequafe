@@ -21,10 +21,13 @@
 #ifndef CHARACTERSHEETPARSER_H
 #define CHARACTERSHEETPARSER_H
 
+#include <QByteArray>
+#include "data/character/CharacterSheet.h"
+
 class CharacterSheetParser
 {
 public:
-    CharacterSheetParser();
+    static CharacterSheet* parse(QByteArray rawData);
 };
 
 #endif // CHARACTERSHEETPARSER_H

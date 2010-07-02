@@ -21,10 +21,13 @@
 #ifndef SKILLINTRAININGPARSER_H
 #define SKILLINTRAININGPARSER_H
 
+#include <QByteArray>
+#include "data/character/SkillInTraining.h"
+
 class SkillInTrainingParser
 {
 public:
-    SkillInTrainingParser();
+    static SkillInTraining* parse(QByteArray rawData);
 };
 
 #endif // SKILLINTRAININGPARSER_H

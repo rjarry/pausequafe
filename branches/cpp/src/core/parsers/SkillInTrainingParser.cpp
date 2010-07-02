@@ -20,6 +20,6 @@
 
 #include "SkillInTrainingParser.h"
 
-SkillInTrainingParser::SkillInTrainingParser()
-{
+SkillInTraining* SkillInTrainingParser::parse(QByteArray rawData) {
+    // TODO
 }

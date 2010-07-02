@@ -20,6 +20,6 @@
 
 #include "ServerStatusParser.h"
 
-ServerStatusParser::ServerStatusParser()
-{
+ServerStatus* ServerStatusParser::parse(QByteArray rawData) {
+    // TODO
 }

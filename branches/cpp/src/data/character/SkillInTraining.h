@@ -22,8 +22,11 @@
 #define SKILLINTRAINING_H
 
 #include "data/character/SkillInQueue.h"
+#include "data/APIObject.h"
 
-class SkillInTraining : public SkillInQueue
+class SkillInTraining : public APIObject,
+                        public SkillInQueue
+
 {
 private:
     uint currentTime;
@@ -35,6 +38,8 @@ private:
 
 public:
     SkillInTraining();
+
+    APIFunction function();
 
     /**
      * Calculates the training speed for this skill in SP per second

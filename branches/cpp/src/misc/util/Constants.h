@@ -21,6 +21,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <QString>
+
 
 ///////////////////////////////////////////////
 #define PQ_VERSION    "0.0.2"

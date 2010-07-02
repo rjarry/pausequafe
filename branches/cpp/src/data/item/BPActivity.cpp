@@ -61,5 +61,5 @@ void BPActivity::setMaterials(QList<BPRequiredMaterial> materials) {
 }
 
 QString BPActivity::getName() {
-    return ACTIVITY_NAME[activity];
+    return ACTIVITY_NAMES[activity];
 }

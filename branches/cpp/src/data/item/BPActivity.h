@@ -39,7 +39,7 @@ enum Activity {
     INVENTION = 8
 };
 
-QString ACTIVITY_NAME[] = {
+static QString ACTIVITY_NAMES[] = {
     "",
     "Manufacturing",
     "Researching Technology",
@@ -61,7 +61,6 @@ private:
 public:
     BPActivity(Activity act);
     BPActivity(const BPActivity & other);
-    ~BPActivity();
 
     QString getName();
 

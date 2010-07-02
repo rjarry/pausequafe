@@ -21,10 +21,14 @@
 #ifndef CHARACTERLISTPARSER_H
 #define CHARACTERLISTPARSER_H
 
+#include <QList>
+#include <QByteArray>
+#include "data/character/CharacterList.h"
+
 class CharacterListParser
 {
 public:
-    CharacterListParser();
+    static CharacterList* parse(QByteArray rawData);
 };
 
 #endif // CHARACTERLISTPARSER_H

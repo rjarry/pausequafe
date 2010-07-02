@@ -30,6 +30,10 @@ SkillInTraining::SkillInTraining() :
 {
 }
 
+APIFunction SkillInTraining::function() {
+    return SKILL_IN_TRAINING;
+}
+
 
 inline uint SkillInTraining::calcRank() {
     return round((double) endSP / (double) SKILL_LEVEL_REQS[level]);

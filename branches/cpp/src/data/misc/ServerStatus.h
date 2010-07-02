@@ -21,9 +21,11 @@
 #ifndef SERVERSTATUS_H
 #define SERVERSTATUS_H
 
+#include "data/APIObject.h"
+
 typedef unsigned int uint;
 
-class ServerStatus
+class ServerStatus : public APIObject
 {
 private:
     uint playerCount;
@@ -31,6 +33,8 @@ private:
     bool unknown;
 public:
     ServerStatus(uint playerCount = 0, bool onLine = false, bool unknown = false);
+
+    APIFunction function();
 
     uint getPlayerCount() const;
     bool isOnLine() const;
