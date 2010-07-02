@@ -24,7 +24,7 @@ import org.pausequafe.core.threads.ApiRequest;
 import org.pausequafe.data.character.CharacterSheet;
 import org.pausequafe.data.character.MonitoredCharacter;
 import org.pausequafe.data.character.SkillInTraining;
-import org.pausequafe.data.item.SkillQueue;
+import org.pausequafe.data.character.SkillQueue;
 
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.gui.QVBoxLayout;

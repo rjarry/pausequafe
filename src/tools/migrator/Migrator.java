@@ -14,6 +14,7 @@ public class Migrator {
 //		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		Class.forName("org.sqlite.JDBC");
 		
+		
 		File dbFile = new File("resources/eve-online.db");
 		if (dbFile.exists()){
 			System.out.println("eve-online.db already exists, deleting...");

@@ -28,7 +28,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.pausequafe.core.parsers.SkillQueueParser;
 import org.pausequafe.data.character.APIData;
-import org.pausequafe.data.item.SkillQueue;
+import org.pausequafe.data.character.SkillQueue;
 import org.pausequafe.misc.exceptions.PQException;
 import org.pausequafe.misc.util.Constants;
 import org.pausequafe.misc.util.FileHandler;
