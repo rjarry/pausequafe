@@ -23,7 +23,6 @@ package org.pausequafe.data.character;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pausequafe.data.item.SkillQueue;
 
 public class MonitoredCharacter {
 

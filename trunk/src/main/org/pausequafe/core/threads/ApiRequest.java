@@ -28,7 +28,7 @@ import org.pausequafe.core.factory.SkillQueueFactory;
 import org.pausequafe.data.character.APIData;
 import org.pausequafe.data.character.CharacterSheet;
 import org.pausequafe.data.character.SkillInTraining;
-import org.pausequafe.data.item.SkillQueue;
+import org.pausequafe.data.character.SkillQueue;
 import org.pausequafe.misc.exceptions.PQException;
 
 import com.trolltech.qt.QSignalEmitter;
