@@ -20,6 +20,6 @@
 
 #include "CharacterSheetParser.h"
 
-CharacterSheetParser::CharacterSheetParser()
-{
+CharacterSheet* CharacterSheetParser::parse(QByteArray rawData) {
+    // TODO
 }

@@ -21,10 +21,13 @@
 #ifndef SKILLQUEUEPARSER_H
 #define SKILLQUEUEPARSER_H
 
+#include <QByteArray>
+#include "data/character/SkillQueue.h"
+
 class SkillQueueParser
 {
 public:
-    SkillQueueParser();
+    static SkillQueue* parse(QByteArray rawData);
 };
 
 #endif // SKILLQUEUEPARSER_H

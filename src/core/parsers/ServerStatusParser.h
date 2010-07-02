@@ -21,10 +21,13 @@
 #ifndef SERVERSTATUSPARSER_H
 #define SERVERSTATUSPARSER_H
 
+#include <QByteArray>
+#include "data/misc/ServerStatus.h"
+
 class ServerStatusParser
 {
 public:
-    ServerStatusParser();
+    static ServerStatus* parse(QByteArray rawData);
 };
 
 #endif // SERVERSTATUSPARSER_H

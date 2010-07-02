@@ -18,8 +18,53 @@
  * along with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-#include "ServerStatusRequest.h"
+#ifndef APIREQUEST_H
+#define APIREQUEST_H
 
-ServerStatusRequest::ServerStatusRequest()
+#include <QByteArray>
+#include <QObject>
+#include <QNetworkReply>
+
+#include "data/APIObject.h"
+#include "data/character/APIData.h"
+#include "core/network/APIConnection.h"
+#include "data/misc/APIError.h"
+
+#include "core/parsers/ServerStatusParser.h"
+#include "core/parsers/PortraitParser.h"
+#include "core/parsers/CharacterListParser.h"
+#include "core/parsers/CharacterSheetParser.h"
+#include "core/parsers/SkillInTrainingParser.h"
+#include "core/parsers/SkillQueueParser.h"
+
+class APIRequest : public QObject
 {
-}
+    Q_OBJECT
+
+private:
+    APIData data;
+    APIFunction function;
+    QNetworkReply* reply;
+
+public:
+    // constructor
+    APIRequest(APIData data, APIFunction function);
+
+    // public methods
+    void go();
+
+    // getters
+    APIData getData() const;
+    APIFunction getFunction() const;
+    // setters
+    void setData(APIData data);
+    void setFunction(APIFunction function);
+
+private slots:
+    void handleReply();
+
+signals:
+    void responseReady(APIObject* obj);
+};
+
+#endif // APIREQUEST_H

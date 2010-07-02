@@ -21,8 +21,11 @@
 #ifndef BLUEPRINT_H
 #define BLUEPRINT_H
 
+#include <QMap>
+
 #include "data/item/Item.h"
 #include "data/item/BPActivity.h"
+#include "misc/util/Constants.h"
 
 class Blueprint : public Item
 {
@@ -30,7 +33,8 @@ protected:
     QMap<Activity, BPActivity*> activities;
 
 public:
-    Blueprint(uint id, QString name, uint category, uint metaGroup);
+    Blueprint(uint id, QString name, uint metaGroup);
+    Blueprint(const Blueprint & other);
     ~Blueprint();
 
     QMap<Activity, BPActivity*> & getActivities();

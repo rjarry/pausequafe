@@ -45,6 +45,10 @@ CharacterSheet::~CharacterSheet() {
 ////////////////////
 // PUBLIC METHODS //
 ////////////////////
+APIFunction CharacterSheet::function() {
+    return CHARACTER_SHEET;
+}
+
 void CharacterSheet::addAttributeEnhancer(AttributeEnhancer *e) {
     attributeEnhancers[e->getAttribute()] = e;
 }

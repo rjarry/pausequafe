@@ -21,12 +21,29 @@
 #ifndef BLUEPRINTDETAILED_H
 #define BLUEPRINTDETAILED_H
 
-#include "Blueprint.h"
+#include <QString>
+
+#include "data/item/Blueprint.h"
 
 class BlueprintDetailed : public Blueprint
 {
+private:
+    uint productTypeID;
+    QString icon;
+    uint techLevel;
+    ulong productionTime;
+    ulong researchMETime;
+    ulong researchPETime;
+    ulong inventionTime;
+    ulong copyTime;
+    uint wasteFactor;
+    uint batchSize;
+    uint maxRuns;
+    double basePrice;
+
 public:
-    BlueprintDetailed();
+    BlueprintDetailed(const Blueprint & bp);
+    BlueprintDetailed(const BlueprintDetailed & other);
 };
 
 #endif // BLUEPRINTDETAILED_H

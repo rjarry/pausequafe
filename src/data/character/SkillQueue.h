@@ -24,8 +24,9 @@
 #include <QList>
 
 #include "data/character/SkillInQueue.h"
+#include "data/APIObject.h"
 
-class SkillQueue
+class SkillQueue : public APIObject
 {
 private:
     ulong currentTime;
@@ -38,6 +39,7 @@ public:
     SkillQueue();
 
     /// public methods ///
+    APIFunction function();
     ulong getTotalTrainingTime();
 
     /// getters ///

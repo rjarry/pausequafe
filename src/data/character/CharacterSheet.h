@@ -29,8 +29,9 @@
 #include "data/character/AttributeEnhancer.h"
 #include "data/character/CharacterSkill.h"
 #include "data/item/Skill.h"
+#include "data/APIObject.h"
 
-class CharacterSheet {
+class CharacterSheet : public APIObject {
 
 private:
     uint characterID;
@@ -63,6 +64,7 @@ public:
     CharacterSheet();
     ~CharacterSheet();
 
+    APIFunction function();
 
     // methods
     void addAttributeEnhancer(AttributeEnhancer *e);

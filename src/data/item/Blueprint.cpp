@@ -20,14 +20,23 @@
 
 #include "Blueprint.h"
 
-Blueprint::Blueprint(uint id, QString name, uint category, uint metaGroup) :
-        Item(id, name, category, metaGroup),
+Blueprint::Blueprint(uint id, QString name, uint metaGroup) :
+        Item(id, name, BLUEPRINT_CATID, metaGroup),
         activities(QMap<Activity, BPActivity*>())
 {
 }
 
+Blueprint::Blueprint(const Blueprint & other) :
+        Item(other.typeID, other.typeName, other.categoryID, other.metaGroupID),
+        activities(QMap<Activity, BPActivity*>())
+{
+    foreach (Activity act, other.activities.keys()) {
+        this->activities.insert(act, new BPActivity(*other.activities.value(act)));
+    }
+}
+
 Blueprint::~Blueprint() {
-    foreach (BPActivity act, activities.values()) {
+    foreach (BPActivity* act, activities.values()) {
         delete act;
     }
     activities.clear();

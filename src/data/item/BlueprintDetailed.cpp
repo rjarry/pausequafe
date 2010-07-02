@@ -18,8 +18,26 @@
  * along with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-#include "BlueprintDetailed.h"
+#include "data/item/BlueprintDetailed.h"
 
-BlueprintDetailed::BlueprintDetailed()
+BlueprintDetailed::BlueprintDetailed(const Blueprint & bp) :
+        Blueprint(bp)
 {
+}
+
+BlueprintDetailed::BlueprintDetailed(const BlueprintDetailed & other) :
+        Blueprint(other.typeID, other.typeName, other.metaGroupID)
+{
+    productTypeID = other.productTypeID;
+    icon = other.icon;
+    techLevel = other.techLevel;
+    productionTime = other.productionTime;
+    researchMETime = other.researchMETime;
+    researchPETime = other.researchPETime;
+    inventionTime = other.inventionTime;
+    copyTime = other.copyTime;
+    wasteFactor = other.wasteFactor;
+    batchSize = other.batchSize;
+    maxRuns = other.maxRuns;
+    basePrice = other.maxRuns;
 }

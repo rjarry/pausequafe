@@ -20,6 +20,6 @@
 
 #include "CharacterListParser.h"
 
-CharacterListParser::CharacterListParser()
-{
+CharacterList* CharacterListParser::parse(QByteArray rawData) {
+    // TODO
 }

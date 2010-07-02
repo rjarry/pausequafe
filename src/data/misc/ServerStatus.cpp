@@ -27,6 +27,10 @@ ServerStatus::ServerStatus(uint playerCount, bool onLine, bool unknown) :
 {
 }
 
+APIFunction ServerStatus::function() {
+    return SERVER_STATUS;
+}
+
 
 bool ServerStatus::isOnLine() const {
     return onLine;

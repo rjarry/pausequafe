@@ -20,6 +20,6 @@
 
 #include "SkillQueueParser.h"
 
-SkillQueueParser::SkillQueueParser()
-{
+SkillQueue* SkillQueueParser::parse(QByteArray rawData) {
+    // TODO
 }
