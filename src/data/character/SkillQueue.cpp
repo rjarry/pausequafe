@@ -32,8 +32,8 @@ SkillQueue::SkillQueue() :
 //////////////////////
 /// public methods ///
 //////////////////////
-APIFunction SkillQueue::function() {
-    return SKILL_QUEUE;
+APIObject::Function SkillQueue::function() {
+    return APIObject::SKILL_QUEUE;
 }
 
 ulong SkillQueue::getTotalTrainingTime() {

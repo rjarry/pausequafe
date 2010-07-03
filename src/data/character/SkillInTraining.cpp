@@ -30,8 +30,8 @@ SkillInTraining::SkillInTraining() :
 {
 }
 
-APIFunction SkillInTraining::function() {
-    return SKILL_IN_TRAINING;
+APIObject::Function SkillInTraining::function() {
+    return APIObject::SKILL_IN_TRAINING;
 }
 
 

@@ -34,7 +34,7 @@ private:
 public:
     ServerStatus(uint playerCount = 0, bool onLine = false, bool unknown = false);
 
-    APIFunction function();
+    APIObject::Function function();
 
     uint getPlayerCount() const;
     bool isOnLine() const;

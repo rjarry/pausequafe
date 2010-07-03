@@ -20,49 +20,35 @@
 
 #include "core/network/APIConnection.h"
 
+
 APIConnection::APIConnection() {
 }
 
 APIConnection::~APIConnection() {
 }
 
-APIConnection* APIConnection::getInstance() {
-    if (!_INSTANCE) {
-        _INSTANCE = new APIConnection();
-    }
-    return _INSTANCE;
-}
 
-void APIConnection::killInstance() {
-    if (_INSTANCE) {
-        delete _INSTANCE;
-        _INSTANCE = NULL;
-    }
-}
+QNetworkReply* APIConnection::get(const APIData & data, const APIObject::Function function) {
 
-
-QNetworkReply* APIConnection::get(APIRequest* request) {
-
-    APIFunction function = request->getFunction();
     QUrl url;
     url.setUrl(URL_VALUES[function]);
 
     switch (function) {
-    case SERVER_STATUS:
+    case APIObject::SERVER_STATUS:
         /* no parameters needed */
         break;
-    case PORTRAIT:
+    case APIObject::PORTRAIT:
         url.addQueryItem("s", QString::number(PORTRAIT_SIZE));
-        url.addQueryItem("c", QString::number(request->getData().getCharacterID()));
+        url.addQueryItem("c", QString::number(data.getCharacterID()));
         break;
-    case CHARACTERS:
-        url.addQueryItem("userID", QString::number(request->getData().getUserID()));
-        url.addQueryItem("apiKey", request->getData().getApiKey());
+    case APIObject::CHARACTERS:
+        url.addQueryItem("userID", QString::number(data.getUserID()));
+        url.addQueryItem("apiKey", data.getApiKey());
         break;
     default:
-        url.addQueryItem("userID", QString::number(request->getData().getUserID()));
-        url.addQueryItem("characterID", QString::number(request->getData().getCharacterID()));
-        url.addQueryItem("apiKey", request->getData().getApiKey());
+        url.addQueryItem("userID", QString::number(data.getUserID()));
+        url.addQueryItem("characterID", QString::number(data.getCharacterID()));
+        url.addQueryItem("apiKey", data.getApiKey());
     }
 
     QNetworkRequest httpRequest(url);
@@ -71,10 +57,10 @@ QNetworkReply* APIConnection::get(APIRequest* request) {
     return manager.get(httpRequest);
 }
 
-
 void APIConnection::setProxy(QNetworkProxy proxy) {
     manager.setProxy(proxy);
 }
+
 QNetworkProxy APIConnection::getProxy() {
     return this->manager.proxy();
 }

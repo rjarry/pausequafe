@@ -39,7 +39,7 @@ public:
     SkillQueue();
 
     /// public methods ///
-    APIFunction function();
+    APIObject::Function function();
     ulong getTotalTrainingTime();
 
     /// getters ///

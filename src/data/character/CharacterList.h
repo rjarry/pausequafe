@@ -21,7 +21,7 @@ public:
     CharacterList();
     virtual ~CharacterList();
 
-    APIFunction function();
+    APIObject::Function function();
 
     QList<APIData> getList() const;
 

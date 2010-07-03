@@ -5,7 +5,7 @@
  *      Author: diabeteman
  */
 
-#include "CharacterList.h"
+#include "data/character/CharacterList.h"
 
 CharacterList::CharacterList() {
 }
@@ -13,8 +13,8 @@ CharacterList::CharacterList() {
 CharacterList::~CharacterList() {
 }
 
-APIFunction function() {
-    return CHARACTERS;
+APIObject::Function CharacterList::function() {
+    return APIObject::CHARACTERS;
 }
 
 

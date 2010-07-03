@@ -24,18 +24,22 @@
 ///////////////////
 /// constructor ///
 ///////////////////
-APIRequest::APIRequest(APIData data, APIFunction function) :
+APIRequest::APIRequest(APIData data, APIObject::Function function) :
     data(data),
     function(function)
 {
     connect(reply, SIGNAL(finished()), this, SLOT(handleReply()));
 }
 
+APIRequest::~APIRequest() {
+    disconnect(this, SLOT(handleReply()));
+}
+
 //////////////////////
 /// public methods ///
 //////////////////////
 void APIRequest::go() {
-    reply = APIConnection::getInstance()->get(this);
+    reply = APIConnection::getInstance()->get(data, function);
 }
 
 /////////////////////
@@ -50,22 +54,22 @@ void APIRequest::handleReply() {
         object = new APIError(reply->errorString(), rawData);
     } else {
         switch (function) {
-        case SERVER_STATUS:
+        case APIObject::SERVER_STATUS:
             object = ServerStatusParser::parse(rawData);
             break;
-        case PORTRAIT:
-            object = PortraitParser::parse(rawData);
+        case APIObject::PORTRAIT:
+            object = PortraitParser::parse(rawData, data.getCharacterName());
             break;
-        case CHARACTERS:
+        case APIObject::CHARACTERS:
             object = CharacterListParser::parse(rawData);
             break;
-        case CHARACTER_SHEET:
+        case APIObject::CHARACTER_SHEET:
             object = CharacterSheetParser::parse(rawData);
             break;
-        case SKILL_IN_TRAINING:
+        case APIObject::SKILL_IN_TRAINING:
             object = SkillInTrainingParser::parse(rawData);
             break;
-        case SKILL_QUEUE:
+        case APIObject::SKILL_QUEUE:
             object = SkillQueueParser::parse(rawData);
             break;
         default:
@@ -84,7 +88,7 @@ APIData APIRequest::getData() const {
     return data;
 }
 
-APIFunction APIRequest::getFunction() const {
+APIObject::Function APIRequest::getFunction() const {
     return function;
 }
 
@@ -95,7 +99,7 @@ void APIRequest::setData(APIData data) {
     this->data = data;
 }
 
-void APIRequest::setFunction(APIFunction function) {
+void APIRequest::setFunction(APIObject::Function function) {
     this->function = function;
 }
 

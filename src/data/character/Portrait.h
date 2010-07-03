@@ -19,7 +19,7 @@ public:
     Portrait(QString filePath = QString());
     virtual ~Portrait();
 
-    APIFunction function();
+    APIObject::Function function();
 
     QString getFilePath() const;
 

@@ -13,7 +13,7 @@
 
 class PortraitParser {
 public:
-    static Portrait* parse(QByteArray rawData);
+    static Portrait* parse(QByteArray rawData, QString characterName);
 };
 
 #endif /* PORTRAITPARSER_H_ */

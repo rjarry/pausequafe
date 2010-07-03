@@ -21,23 +21,25 @@
 #ifndef APIOBJECT_H_
 #define APIOBJECT_H_
 
-enum APIFunction {
-    SERVER_STATUS = 0,
-    PORTRAIT,
-    CHARACTERS,
-    CHARACTER_SHEET,
-    SKILL_IN_TRAINING,
-    SKILL_QUEUE,
-    ERROR
-};
+
 
 class APIObject {
 
 public:
+    enum Function {
+        SERVER_STATUS = 0,
+        PORTRAIT,
+        CHARACTERS,
+        CHARACTER_SHEET,
+        SKILL_IN_TRAINING,
+        SKILL_QUEUE,
+        ERROR
+    };
+
     APIObject() {}
     ~APIObject() {}
 
-    virtual APIFunction function() = 0;
+    virtual APIObject::Function function() = 0;
 };
 
 #endif /* APIOBJECT_H_ */

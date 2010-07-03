@@ -18,17 +18,5 @@
  * along with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-#include "APIError.h"
+#include "misc/util/Singleton.h"
 
-APIError::APIError(QString errorText, QByteArray data) :
-    errorText(errorText),
-    errorData(data)
-{
-}
-
-APIError::~APIError() {
-}
-
-APIObject::Function APIError::function() {
-    return APIObject::ERROR;
-}

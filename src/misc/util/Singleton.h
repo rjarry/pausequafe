@@ -18,17 +18,39 @@
  * along with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-#include "APIError.h"
+#ifndef SINGLETON_H_
+#define SINGLETON_H_
 
-APIError::APIError(QString errorText, QByteArray data) :
-    errorText(errorText),
-    errorData(data)
-{
-}
+#ifndef NULL
+#define NULL  0
+#endif
 
-APIError::~APIError() {
-}
+template<class T>
+class Singleton {
+public:
 
-APIObject::Function APIError::function() {
-    return APIObject::ERROR;
-}
+    static T* getInstance() {
+        if (!instance)
+            instance = new T;
+        return instance;
+    };
+
+    static void killInstance(){
+        if (instance)
+            delete instance;
+        instance = NULL;
+    };
+
+protected:
+    Singleton() {};
+    ~Singleton() {};
+
+private:
+    static T* instance;
+
+
+};
+template<class T> T* Singleton<T>::instance = NULL;
+
+
+#endif /* SINGLETON_H_ */
