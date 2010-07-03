@@ -39,7 +39,7 @@ private:
 public:
     SkillInTraining();
 
-    APIFunction function();
+    APIObject::Function function();
 
     /**
      * Calculates the training speed for this skill in SP per second

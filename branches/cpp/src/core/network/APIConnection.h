@@ -21,14 +21,15 @@
 #ifndef APICONNECTION_H_
 #define APICONNECTION_H_
 
-#include <QObject>
 #include <QNetworkProxy>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-#include "misc/util/Constants.h"
-#include "core/network/APIRequest.h"
 #include "data/APIObject.h"
+#include "data/character/APIData.h"
+#include "misc/util/Constants.h"
+#include "misc/util/Singleton.h"
+
 
 
 #define PORTRAIT_URL        "http://img.eve.is/serv.asp"
@@ -46,24 +47,21 @@ static QString URL_VALUES[] = {
 };
 
 
-class APIConnection : public QObject
+class APIConnection : public Singleton<APIConnection>
 {
-    Q_OBJECT
+    friend class Singleton<APIConnection>;
 
-public:
-
-    QNetworkReply* get(APIRequest* request);
-    void setProxy(QNetworkProxy proxy);
-    QNetworkProxy getProxy();
-
-    static APIConnection* getInstance();
-    static void killInstance();
 private:
-    static APIConnection* _INSTANCE;
     QNetworkAccessManager manager;
 
     APIConnection();
-    virtual ~APIConnection();
+    ~APIConnection();
+
+public:
+    QNetworkReply* get(const APIData & data, const APIObject::Function function);
+    void setProxy(QNetworkProxy proxy);
+    QNetworkProxy getProxy();
+
 
 };
 

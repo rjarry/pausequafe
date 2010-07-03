@@ -35,7 +35,7 @@ public:
     APIError(QString errorText = QString(), QByteArray data = QByteArray());
     ~APIError();
 
-    APIFunction function();
+    APIObject::Function function();
 };
 
 #endif /* APIERROR_H_ */

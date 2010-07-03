@@ -64,7 +64,7 @@ public:
     CharacterSheet();
     ~CharacterSheet();
 
-    APIFunction function();
+    APIObject::Function function();
 
     // methods
     void addAttributeEnhancer(AttributeEnhancer *e);

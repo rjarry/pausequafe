@@ -15,8 +15,8 @@ Portrait::Portrait(QString filePath) :
 Portrait::~Portrait() {
 }
 
-APIFunction Portrait::function() {
-    return PORTRAIT;
+APIObject::Function Portrait::function() {
+    return APIObject::PORTRAIT;
 }
 
 

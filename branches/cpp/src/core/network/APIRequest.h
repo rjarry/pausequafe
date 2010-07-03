@@ -43,22 +43,23 @@ class APIRequest : public QObject
 
 private:
     APIData data;
-    APIFunction function;
+    APIObject::Function function;
     QNetworkReply* reply;
 
 public:
     // constructor
-    APIRequest(APIData data, APIFunction function);
+    APIRequest(APIData data, APIObject::Function function);
+    ~APIRequest();
 
     // public methods
     void go();
 
     // getters
     APIData getData() const;
-    APIFunction getFunction() const;
+    APIObject::Function getFunction() const;
     // setters
     void setData(APIData data);
-    void setFunction(APIFunction function);
+    void setFunction(APIObject::Function function);
 
 private slots:
     void handleReply();
