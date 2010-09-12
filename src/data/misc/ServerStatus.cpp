@@ -31,6 +31,9 @@ APIObject::Function ServerStatus::function() {
     return APIObject::SERVER_STATUS;
 }
 
+QString ServerStatus::toString() {
+    return QString("TODO: ServerStatus::toString()");
+}
 
 bool ServerStatus::isOnLine() const {
     return onLine;

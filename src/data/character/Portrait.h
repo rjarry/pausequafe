@@ -20,6 +20,7 @@ public:
     virtual ~Portrait();
 
     APIObject::Function function();
+    QString toString();
 
     QString getFilePath() const;
 

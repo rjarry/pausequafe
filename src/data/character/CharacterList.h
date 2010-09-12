@@ -9,6 +9,7 @@
 #define CHARACTERLIST_H_
 
 #include <QList>
+#include <QString>
 #include "data/APIObject.h"
 #include "data/character/APIData.h"
 
@@ -22,11 +23,11 @@ public:
     virtual ~CharacterList();
 
     APIObject::Function function();
+    QString toString();
 
     QList<APIData> getList() const;
 
     void setList(QList<APIData> list);
-
 };
 
 #endif /* CHARACTERLIST_H_ */

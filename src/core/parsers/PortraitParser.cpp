@@ -5,21 +5,19 @@
  *      Author: diabeteman
  */
 
-#include "PortraitParser.h"
-#include <QtGui/QDesktopServices>
+#include "core/parsers/PortraitParser.h"
+#include "misc/util/Constants.h"
+
 #include <QDir>
+#include <QImageWriter>
 
 Portrait* PortraitParser::parse(QByteArray rawData, QString characterName) {
 
-    QString systemCache = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-    QDir cacheDir(systemCache + "/PauseQuafe/images/");
-    if (!cacheDir.exists()) {
-        QDir::root().mkpath(systemCache + "/PauseQuafe/images/");
+    if (!Settings::APP_CACHE.exists()) {
+        QDir::root().mkpath(Settings::APP_CACHE.path());
     }
 
-    QDir::root().cd(cacheDir.path());
-
-    QString imageFileName = cacheDir.filePath(characterName + ".jpg");
+    QString imageFileName = Settings::APP_CACHE.filePath(characterName + ".jpg");
 
     QFile imageFile(imageFileName);
     if (imageFile.open(QIODevice::WriteOnly)) {

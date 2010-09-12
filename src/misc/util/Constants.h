@@ -21,8 +21,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <QString>
-
+#include <QDir>
+#include <QDesktopServices>
 
 ///////////////////////////////////////////////
 #define PQ_VERSION    "0.0.2"
@@ -37,8 +37,14 @@
 #define HOUR         (60 * MINUTE)
 #define DAY            (24 * HOUR)
 
-static const unsigned SKILL_LEVEL_REQS[] = { 0, 250, 1414, 8000, 45255, 256000 };
+namespace Settings {
+    #define APPDATA QDesktopServices::storageLocation(QDesktopServices::DataLocation)
 
+    // application paths
+    static const QDir APP_CACHE = QDir(APPDATA + "/PauseQuafe/cache/");
+    static const QDir SETTINGS_DIR = QDir(APPDATA + "/PauseQuafe/");
+}
+static const unsigned SKILL_LEVEL_REQS[] = { 0, 250, 1414, 8000, 45255, 256000 };
 // learning skills typeIDs
 #define ANALYTICAL_MIND    3377
 #define CLARITY           12387

@@ -5,11 +5,13 @@
  *      Author: diabeteman
  */
 
-#include "Portrait.h"
+#include "data/character/Portrait.h"
+#include <QMetaType>
 
 Portrait::Portrait(QString filePath) :
     filePath(filePath)
 {
+    qRegisterMetaType<Portrait>("Portrait");
 }
 
 Portrait::~Portrait() {
@@ -19,13 +21,14 @@ APIObject::Function Portrait::function() {
     return APIObject::PORTRAIT;
 }
 
-
-QString Portrait::getFilePath() const
-{
+QString Portrait::toString() {
     return filePath;
 }
 
-void Portrait::setFilePath(QString filePath)
-{
+QString Portrait::getFilePath() const {
+    return filePath;
+}
+
+void Portrait::setFilePath(QString filePath) {
     this->filePath = filePath;
 }

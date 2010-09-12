@@ -21,9 +21,10 @@
 #ifndef APIOBJECT_H_
 #define APIOBJECT_H_
 
+#include <QString>
+#include <QVariant>
 
-
-class APIObject {
+class APIObject : public QVariant {
 
 public:
     enum Function {
@@ -36,10 +37,13 @@ public:
         ERROR
     };
 
+    static const int META_TYPE;
+
     APIObject() {}
     ~APIObject() {}
 
     virtual APIObject::Function function() = 0;
+    virtual QString toString() = 0;
 };
 
 #endif /* APIOBJECT_H_ */

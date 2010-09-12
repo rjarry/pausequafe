@@ -35,7 +35,8 @@ win32:RC_FILE = resources/appIcons/pq.rc
 ICON = resources/appIcons/PauseQuafeMac.icns
 
 # Input
-HEADERS += src/misc/util/Singleton.h \
+HEADERS += src/testnet.h \
+    src/misc/util/Singleton.h \
     src/core/CharacterController.h \
     src/core/PQCore.h \
     src/data/APIObject.h \
@@ -127,7 +128,8 @@ HEADERS += src/misc/util/Singleton.h \
     src/gui/view/misc/StyleSheetEditor.h \
     src/gui/view/skillplans/AddSkillPlanDialog.h \
     src/gui/view/skillplans/SkillPlanView.h
-FORMS += src/gui/view/browsers/BrowserBlueprintTab.ui \
+FORMS += src/testnet.ui \
+    src/gui/view/browsers/BrowserBlueprintTab.ui \
     src/gui/view/browsers/BrowserItemTab.ui \
     src/gui/view/browsers/BrowserShipTab.ui \
     src/gui/view/browsers/BrowserSkillTab.ui \
@@ -148,7 +150,8 @@ FORMS += src/gui/view/browsers/BrowserBlueprintTab.ui \
     src/gui/view/misc/StyleSheetEditor.ui \
     src/gui/view/skillplans/AddSkillPlanDialog.ui \
     src/gui/view/skillplans/SkillPlanView.ui
-SOURCES += src/misc/util/Singleton.cpp \
+SOURCES += src/testnet.cpp \
+    src/misc/util/Singleton.cpp \
     src/main.cpp \
     src/core/CharacterController.cpp \
     src/core/PQCore.cpp \

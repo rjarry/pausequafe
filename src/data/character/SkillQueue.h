@@ -37,6 +37,7 @@ private:
 public:
     /// constructor ///
     SkillQueue();
+    QString toString();
 
     /// public methods ///
     APIObject::Function function();

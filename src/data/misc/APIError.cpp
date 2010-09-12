@@ -18,12 +18,14 @@
  * along with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-#include "APIError.h"
+#include <QMetaType>
+#include "data/misc/APIError.h"
 
 APIError::APIError(QString errorText, QByteArray data) :
     errorText(errorText),
     errorData(data)
 {
+    qRegisterMetaType<APIError>("APIError");
 }
 
 APIError::~APIError() {
@@ -32,3 +34,8 @@ APIError::~APIError() {
 APIObject::Function APIError::function() {
     return APIObject::ERROR;
 }
+
+QString APIError::toString() {
+    return QString("TODO: APIError::toString()");
+}
+

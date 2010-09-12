@@ -36,6 +36,15 @@ APIObject::Function SkillQueue::function() {
     return APIObject::SKILL_QUEUE;
 }
 
+QString SkillQueue::toString() {
+    QString out;
+    foreach(SkillInQueue s, skillList) {
+        out.append(s.toString());
+    }
+    return out;
+}
+
+
 ulong SkillQueue::getTotalTrainingTime() {
     ulong time = 0;
     foreach (SkillInQueue s, skillList) {
