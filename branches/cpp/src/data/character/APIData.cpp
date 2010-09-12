@@ -20,9 +20,9 @@
 
 #include "APIData.h"
 
-//////////////////
-// constructors //
-//////////////////
+////////////////////
+/// constructors ///
+////////////////////
 APIData::APIData(uint userID, QString apiKey) :
     userID(userID),	apiKey(apiKey)
 {}
@@ -34,9 +34,20 @@ APIData::APIData(uint characterID, uint userID, QString apiKey) :
 APIData::APIData(uint characterID, QString characterName, uint userID, QString apiKey) :
 	characterID(characterID), characterName(characterName), userID(userID), apiKey(apiKey)
 {}
-/////////////
-// getters //
-/////////////
+
+///////////////
+/// methods ///
+///////////////
+QString APIData::toString() {
+    return QString("TODO: APIData::toString()");
+}
+
+
+
+
+///////////////
+/// getters ///
+///////////////
 QString APIData::getApiKey() const
 {
     return apiKey;
@@ -56,9 +67,9 @@ uint APIData::getUserID() const
 {
     return userID;
 }
-/////////////
-// setters //
-/////////////
+///////////////
+/// setters ///
+///////////////
 void APIData::setApiKey(QString apiKey)
 {
     this->apiKey = apiKey;

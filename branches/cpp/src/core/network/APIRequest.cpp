@@ -50,6 +50,7 @@ void APIRequest::handleReply() {
     QByteArray rawData = reply->readAll();
     APIObject* object;
 
+
     if (reply->error()) {
         object = new APIError(reply->errorString(), rawData);
     } else {
@@ -76,6 +77,9 @@ void APIRequest::handleReply() {
             object = NULL;
         }
     }
+
+    reply->deleteLater();
+    reply = NULL;
 
     emit responseReady(object);
 }

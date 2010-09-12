@@ -41,6 +41,8 @@ public:
 
     APIObject::Function function();
 
+    QString toString();
+
     /**
      * Calculates the training speed for this skill in SP per second
      *

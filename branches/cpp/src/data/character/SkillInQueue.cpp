@@ -28,7 +28,9 @@ ulong SkillInQueue::trainingTime() {
     return endTime - startTime;
 }
 
-
+QString SkillInQueue::toString() {
+    return QString("TODO: SkillInQueue::toString()");
+}
 
 
 // getters //

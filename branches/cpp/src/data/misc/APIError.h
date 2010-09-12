@@ -36,6 +36,7 @@ public:
     ~APIError();
 
     APIObject::Function function();
+    QString toString();
 };
 
 #endif /* APIERROR_H_ */

@@ -37,6 +37,8 @@ public:
     APIData(uint characterID, uint userID, QString apiKey);
     APIData(uint characterID, QString characterName, uint userID, QString apiKey);
 
+    QString toString();
+
     // getters
     QString getApiKey() const;
     uint getCharacterID() const;

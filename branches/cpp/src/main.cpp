@@ -18,13 +18,12 @@
  * along with Pause Quafe.  If not, see http://www.gnu.org/licenses/.        *
  *****************************************************************************/
 
-#include "gui/view/main/MainWindow.h"
-
+#include <QApplication>
+#include "testnet.h"
 
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
-
 
     return a.exec();
 }

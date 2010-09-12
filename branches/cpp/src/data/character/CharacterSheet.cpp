@@ -20,6 +20,7 @@
 
 #include "data/character/CharacterSheet.h"
 #include "misc/util/Constants.h"
+#include <QMetaType>
 
 //////////////////
 // constructors //
@@ -29,6 +30,7 @@ CharacterSheet::CharacterSheet() :
     attributeEnhancers(QMap<Attribute, AttributeEnhancer*> ()),
     skills(QMap<unsigned, CharacterSkill*> ())
 {
+    qRegisterMetaType<CharacterSheet>("CharacterSheet");
 }
 
 CharacterSheet::~CharacterSheet() {
@@ -42,6 +44,9 @@ CharacterSheet::~CharacterSheet() {
     attributeEnhancers.clear();
 }
 
+QString CharacterSheet::toString() {
+    return QString("TODO: CharacterSheet::toString()");
+}
 ////////////////////
 // PUBLIC METHODS //
 ////////////////////

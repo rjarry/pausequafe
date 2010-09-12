@@ -40,6 +40,7 @@ public:
     SkillInQueue();
 
     ulong trainingTime();
+    QString toString();
 
     // getters //
     ulong getEndTime();

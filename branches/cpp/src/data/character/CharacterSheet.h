@@ -65,6 +65,7 @@ public:
     ~CharacterSheet();
 
     APIObject::Function function();
+    QString toString();
 
     // methods
     void addAttributeEnhancer(AttributeEnhancer *e);

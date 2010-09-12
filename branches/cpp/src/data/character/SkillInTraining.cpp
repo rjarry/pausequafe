@@ -34,6 +34,10 @@ APIObject::Function SkillInTraining::function() {
     return APIObject::SKILL_IN_TRAINING;
 }
 
+QString SkillInTraining::toString() {
+    return QString("TODO: SkillInTraining::toString()");
+}
+
 
 inline uint SkillInTraining::calcRank() {
     return round((double) endSP / (double) SKILL_LEVEL_REQS[level]);

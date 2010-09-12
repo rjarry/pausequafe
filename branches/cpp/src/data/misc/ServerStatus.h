@@ -21,6 +21,8 @@
 #ifndef SERVERSTATUS_H
 #define SERVERSTATUS_H
 
+#include <QString>
+#include <QMetaType>
 #include "data/APIObject.h"
 
 typedef unsigned int uint;
@@ -31,10 +33,13 @@ private:
     uint playerCount;
     bool onLine;
     bool unknown;
+
 public:
+    static int META_TYPE;
     ServerStatus(uint playerCount = 0, bool onLine = false, bool unknown = false);
 
     APIObject::Function function();
+    QString toString();
 
     uint getPlayerCount() const;
     bool isOnLine() const;
@@ -43,8 +48,6 @@ public:
     void setPlayerCount(uint playerCount);
     void setOnLine(bool onLine);
     void setUnknown(bool unknown);
-
-
 };
 
 #endif // SERVERSTATUS_H
