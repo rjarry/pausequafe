@@ -1,0 +1,188 @@
+<ui version="4.0" language="jambi" >
+ <class>AboutPQ</class>
+ <widget class="QDialog" name="AboutPQ" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>520</width>
+    <height>389</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>520</width>
+    <height>389</height>
+   </size>
+  </property>
+  <property name="maximumSize" >
+   <size>
+    <width>520</width>
+    <height>389</height>
+   </size>
+  </property>
+  <property name="windowTitle" >
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="closeButton" >
+   <property name="geometry" >
+    <rect>
+     <x>220</x>
+     <y>360</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="focusPolicy" >
+    <enum>com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus</enum>
+   </property>
+   <property name="text" >
+    <string>Close</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="image" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>500</width>
+     <height>342</height>
+    </rect>
+   </property>
+   <property name="minimumSize" >
+    <size>
+     <width>500</width>
+     <height>342</height>
+    </size>
+   </property>
+   <property name="maximumSize" >
+    <size>
+     <width>500</width>
+     <height>342</height>
+    </size>
+   </property>
+   <property name="frameShape" >
+    <enum>com.trolltech.qt.gui.QFrame.Shape.StyledPanel</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>com.trolltech.qt.gui.QFrame.Shadow.Sunken</enum>
+   </property>
+   <property name="lineWidth" >
+    <number>3</number>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textUp" >
+   <property name="geometry" >
+    <rect>
+     <x>52</x>
+     <y>15</y>
+     <width>451</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="palette" >
+    <palette>
+     <active>
+      <colorrole role="Link" >
+       <brush brushstyle="SolidPattern" >
+        <color alpha="255" >
+         <red>255</red>
+         <green>47</green>
+         <blue>200</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="LinkVisited" >
+       <brush brushstyle="SolidPattern" >
+        <color alpha="255" >
+         <red>255</red>
+         <green>174</green>
+         <blue>220</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="Link" >
+       <brush brushstyle="SolidPattern" >
+        <color alpha="255" >
+         <red>255</red>
+         <green>47</green>
+         <blue>200</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="LinkVisited" >
+       <brush brushstyle="SolidPattern" >
+        <color alpha="255" >
+         <red>255</red>
+         <green>174</green>
+         <blue>220</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="Link" >
+       <brush brushstyle="SolidPattern" >
+        <color alpha="255" >
+         <red>255</red>
+         <green>47</green>
+         <blue>200</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="LinkVisited" >
+       <brush brushstyle="SolidPattern" >
+        <color alpha="255" >
+         <red>255</red>
+         <green>174</green>
+         <blue>220</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
+   <property name="text" >
+    <string>TextLabel</string>
+   </property>
+   <property name="textFormat" >
+    <enum>com.trolltech.qt.core.Qt.TextFormat.RichText</enum>
+   </property>
+   <property name="openExternalLinks" >
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textDown" >
+   <property name="geometry" >
+    <rect>
+     <x>17</x>
+     <y>286</y>
+     <width>481</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>TextLabel</string>
+   </property>
+   <property name="textFormat" >
+    <enum>com.trolltech.qt.core.Qt.TextFormat.RichText</enum>
+   </property>
+   <property name="openExternalLinks" >
+    <bool>true</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
