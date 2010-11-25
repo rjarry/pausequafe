@@ -1,5 +1,4 @@
 /*******************************************************************************
-*                                                                              *
 * The MIT licence                                                              *
 *                                                                              *
 * Copyright (c) 2009 PauseQuafe                                                *
@@ -23,6 +22,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN    *
 * THE SOFTWARE.                                                                *
 *******************************************************************************/
+
 import java.text.SimpleDateFormat
 
 apply id: 'java'
@@ -33,69 +33,65 @@ def timestamp = new SimpleDateFormat('yyyyMMddHHmm').format(new Date())
 version="1.0-$timestamp"
 
 repositories {
- flatDir(dirs:'lib')
- flatDir(dirs:'Tools/lib')
+    flatDir(dirs:'lib')
+    flatDir(dirs:'Tools/lib')
 }
-
 
 manifest.mainAttributes("Main-Class": "org.pausequafe.PQLauncher")
 manifest.mainAttributes("Version": version)
 
-
-
 // Set of dependencies container
-configurations{
- // windows will contain windows dependencies and rutime dependencies
- // note : runtime configuration extends the compile configuration (by the java plugin)
- windows{
- extendsFrom runtime
- }
- macosx{
- extendsFrom runtime
- }
- macosxTools
+configurations {
+    windows {
+        // windows will contain windows dependencies and rutime dependencies
+        // note : runtime configuration extends the compile configuration (by the java plugin)
+        extendsFrom runtime
+    }
+    macosx {
+        extendsFrom runtime
+    }
+    macosxTools
 }
 
 // Fill in dependencies container
 dependencies {
- compile ":jdom:1.0",
-         ":JEveCore_Modified:2.0",
-         ":qtjambi:4.5.2_01",
-          ":sqlitejdbc:v054"
+    compile("jdom:jdom:1.0",
+            ":JEveCore_Modified:2.0",
+            "net.sf.qtjambi:qtjambi:4.6.3",
+            "org.xerial:sqlite-jdbc:3.7.2")
 
- windows ":qtjambi-win32-msvc2005:4.5.2_01"
- macosx ":qtjambi-macosx-gcc:4.5.2_01"
- macosxTools ":jarbundler:2.1.0"
- 
+    windows("net.sf.qtjambi:qtjambi-platform-win32:4.6.3")
+    macosx("net.sf.qtjambi:qtjambi-platform-mac32:4.6.3")
+    macosxTools(":jarbundler:2.1.0")
 }
 
 // Set of sources container and parameters
 sourceSets {
- windows{
- java.srcDirs file('src/main'), file('build/generated')
-}
- macosx{
- java.srcDirs file('src/main'), file('build/generated')
- }
+    windows{
+        java.srcDirs(file('src/main'), file('build/generated'))
+    }
+    macosx{
+        java.srcDirs(file('src/main'), file('build/generated'))
+    }
 }
 
-def juicGeneratedDir="$buildDir/generated"
 def normalizedBuildDir=buildDir.path.replace('\\','/')
 def executableDir="$normalizedBuildDir/executables"
 
 task init << {
- file(executableDir).mkdirs()
+    file(executableDir).mkdirs()
 }
 
-task juic (dependsOn:'init')<< {
- def path= System.getenv("PATH")
- ant.exec(executable: "juic"){
-       env(key:"PATH", path:path)
-       arg(value:"-d")
-       arg(value:juicGeneratedDir)
-       arg(value:"-cp")
-       arg(value:"src/main")
- }
+task juic (dependsOn:'init') << {
+    def juicGeneratedDir="$buildDir/generated"
+    def path= System.getenv("PATH")
+    ant.exec(executable: "juic") {
+        env(key:"PATH", path:path)
+        arg(value:"-d")
+        arg(value:juicGeneratedDir)
+        arg(value:"-cp")
+        arg(value:"src/main")
+    }
 }
 
 
@@ -112,70 +108,66 @@ compileMacosxJava.dependsOn juic
 
 // Generate the windows jar with all its own manifest
 task windowsJar(type:Jar){
- dependsOn windowsClasses
- classifier="windows"
- destinationDir=file('build/libs/windows')
- from (sourceSets.windows.classes)
- manifest.mainAttributes("Plaform": "Windows")
- manifest.mainAttributes("Class-Path": "lib/" + configurations.windows.resolve().name.join(" lib/"))
+    dependsOn windowsClasses
+    classifier="windows"
+    destinationDir=file('build/libs/windows')
+    from (sourceSets.windows.classes)
+    manifest.mainAttributes("Plaform": "Windows")
+    manifest.mainAttributes("Class-Path": "lib/" + configurations.windows.resolve().name.join(" lib/"))
 }
 
 // Wrap the jar archive into an executable
 task wrapExe(dependsOn:'windowsJar') << {
- def launch4jDir = System.getenv("LAUNCH4J_HOME")
- ant {
-  taskdef(  name : "launch4j",
-            classname : "net.sf.launch4j.ant.Launch4jTask",
-            classpath : "${launch4jDir}/launch4j.jar;${launch4jDir}/lib/xstream.jar"
-  )
-  launch4j(
-       configFile : "launch4jCommandLine.xml",
-       outfile : "${executableDir}/PQ.exe",
-       jar : windowsJar.archivePath
-  )
- }
+    def launch4jDir = System.getenv("LAUNCH4J_HOME")
+    ant {
+        taskdef(name : "launch4j",
+                classname : "net.sf.launch4j.ant.Launch4jTask",
+                classpath : "${launch4jDir}/launch4j.jar;${launch4jDir}/lib/xstream.jar")
+        launch4j(configFile : "launch4jCommandLine.xml",
+                 outfile : "${executableDir}/PQ.exe",
+                 jar : windowsJar.archivePath)
+    }
 }
 
 
 // Generate the windows zip distribution
-task windowsDistrib(type:Zip){
- dependsOn wrapExe
- classifier="windows"
- from('.') {
+task windowsDistrib(type:Zip) {
+    dependsOn wrapExe
+    classifier="windows"
+    from('.') {
        include 'resources/**/*.*'
        include 'settings/*.configuration'
        exclude 'resources/*.db3'
        exclude '**/*.svn'
- }
- into ('lib') {
-   from configurations.windows
-   include '*.jar'
- }
- from(executableDir) {
-       include '*.exe'
-  }
+    }
+    into ('lib') {
+        from configurations.windows
+        include '*.jar'
+    }
+    from(executableDir) {
+        include '*.exe'
+    }
 }
 
 
 // Generate the macosx jar with all its own manifest
 task macosxJar(type:Jar){
- dependsOn macosxClasses
- classifier="macosx"
- destinationDir=file('build/libs/macosx')
- from (sourceSets.macosx.classes)
- manifest.mainAttributes("Platform": "Mac OS X")
- manifest.mainAttributes("Class-Path": "lib/" + configurations.macosx.resolve().name.join(" lib/"))
+    dependsOn macosxClasses
+    classifier="macosx"
+    destinationDir=file('build/libs/macosx')
+    from (sourceSets.macosx.classes)
+    manifest.mainAttributes("Platform": "Mac OS X")
+    manifest.mainAttributes("Class-Path": "lib/" + configurations.macosx.resolve().name.join(" lib/"))
 }
 
 
 
 task wrapApp(dependsOn:'macosxJar') << {
-
    ant {
        taskdef(  name : "jarbundler",
             classname : "net.sourceforge.jarbundler.JarBundler",
-            classpath : configurations.macosxTools.asPath
-       )
+            classpath : configurations.macosxTools.asPath)
+
        jarbundler(dir : executableDir,
                  name : "PQ",
             mainclass : "org.pausequafe.PQLauncher",
@@ -183,29 +175,28 @@ task wrapApp(dependsOn:'macosxJar') << {
                  icon : "Tools/icons/PauseQuafeMac.icns",
            jvmversion : "1.5+",
             arguments : "-XstartOnFirstThread",
-             stubfile : "Tools/lib/JavaApplicationStub"
-       )
+             stubfile : "Tools/lib/JavaApplicationStub")
    }
 }
 
 
 // Generate the macosx zip distribution
 task macosxDistrib(type:Zip){
- dependsOn wrapApp
- classifier="macosx"
- into ('lib') {
-   from configurations.macosx
-   include '*.jar'
- }
- from('.') {
-       include 'resources/**/*.*'
-       include 'settings/*.configuration'
-       exclude 'resources/*.db3'
-       exclude '**/*.svn'
- }
- from(executableDir) {
-     include '*.app/**'
- }
+    dependsOn wrapApp
+    classifier="macosx"
+    into ('lib') {
+    from configurations.macosx
+        include '*.jar'
+    }
+    from('.') {
+        include 'resources/**/*.*'
+        include 'settings/*.configuration'
+        exclude 'resources/*.db3'
+        exclude '**/*.svn'
+    }
+    from(executableDir) {
+        include '*.app/**'
+    }
 }
 
 
