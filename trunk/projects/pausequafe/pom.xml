@@ -1,25 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.pausequafe</groupId>
-  <artifactId>pausequafe</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>org.pausequafe</groupId>
+	<artifactId>pausequafe</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>pausequafe</name>
+	<name>pausequafe</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-  <profiles>
+	<profiles>
 		<profile>
 			<id>qtjambiProfile</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			
+
 			<repositories>
 				<repository>
 					<id>qtjambi</id>
@@ -37,7 +37,7 @@
 			</pluginRepositories>
 		</profile>
 	</profiles>
-  
+
 
 	<dependencies>
 		<dependency>
@@ -66,9 +66,15 @@
 			<type>jar</type>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>be.fomp</groupId>
+			<artifactId>jeve</artifactId>
+			<version>1.0</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
-	
-		<build>
+
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -106,12 +112,9 @@
 					<!-- Specifies where sources are. This parameter is MANDATORY -->
 					<sourcesDir>src/main/java</sourcesDir>
 					<destinationDir>src/generated/java</destinationDir>
-					<!--
-						following parameters aren't mandatory, they use defaults as
-						specified here if not specified
-						<translationsDir>src/main/resources/translations</translationsDir>
-						<destinationDir>target/generated-sources/qtjambi</destinationDir>
-					-->
+					<!-- following parameters aren't mandatory, they use defaults as specified 
+						here if not specified <translationsDir>src/main/resources/translations</translationsDir> 
+						<destinationDir>target/generated-sources/qtjambi</destinationDir> -->
 					<!-- cause -noobsolete switch for lupdate -->
 					<noObsoleteTranslations>true</noObsoleteTranslations>
 				</configuration>
